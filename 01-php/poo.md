@@ -102,6 +102,75 @@ B::testSelf();   // Affiche "A"
 B::testStatic(); // Affiche "B" (C'est le Late Static Binding)
 ```
 
+## Covariance et Contravariance
+
+Voici deux exemples concrets utilisant une hiérarchie de classes simple (Animal / Chat) pour bien visualiser la mécanique.
+
+Pour ces exemples, imaginons cette base :
+
+```php
+class Animal {}
+
+class Chat extends Animal {}
+```
+
+### 1. Covariance : Le type de retour plus précis
+
+**Le principe :** Le parent promet de renvoyer quelque chose de "général". L'enfant a le droit d'être plus spécifique.
+
+*Imaginez une animalerie : l'enseigne dit "Ici on adopte des animaux". Si vous entrez et qu'on vous donne un Chat, la promesse est tenue (un chat est un animal).*
+
+```php
+interface Animalerie {
+    // Contrat : Je promets de renvoyer au moins un Animal
+    public function adopter(): Animal;
+}
+
+class Chatterie implements Animalerie {
+    // COVARIANCE :
+    // Je renvoie un 'Chat', qui est plus précis que 'Animal'.
+    // C'est valide car le code qui appelle s'attend à un Animal,
+    // et il reçoit bien un Animal (sous forme de Chat).
+    public function adopter(): Chat
+    {
+        return new Chat();
+    }
+}
+```
+
+### 2. Contravariance : Le type d'argument plus large
+
+**Le principe :** Le parent exige un argument très spécifique pour fonctionner. L'enfant a le droit d'être plus souple et d'accepter un éventail plus large.
+
+*Imaginez un vétérinaire spécialisé : le contrat dit "Je sais soigner les Chats". Si l'implémentation (le docteur) dit "Moi je sais soigner tous les Animaux", alors il sait forcément soigner les chats.*
+
+```php
+interface SoigneurDeChats {
+    // Contrat : Je sais soigner spécifiquement les Chats
+    public function soigner(Chat $chat): void;
+}
+
+class SoigneurGeneraliste implements SoigneurDeChats {
+    // CONTRAVARIANCE :
+    // J'accepte 'Animal', qui est plus large que 'Chat'.
+    // C'est valide car si on m'envoie un Chat (comme exigé par l'interface),
+    // je suis capable de le gérer puisque c'est un Animal.
+    public function soigner(Animal $animal): void
+    {
+        echo "Je soigne cet animal.";
+    }
+}
+```
+
+### Résumé visuel pour s'en souvenir
+
+Pour respecter le principe de substitution de Liskov (SOLID), une classe enfant doit être :
+
+*   **Plus exigeante sur ce qu'elle fournit** (Sortie / Return) $\rightarrow$ Covariance.
+*   **Moins exigeante sur ce qu'elle reçoit** (Entrée / Arguments) $\rightarrow$ Contravariance.
+
+Voulez-vous voir comment cela s'articule avec les **Types d'Union** (PHP 8.0) qui permettent d'aller encore plus loin dans cette logique ?
+
 ## 🧠 Concepts Clés
 1.  **WeakMap / WeakReference** (PHP 8.0) : Permet de référencer des objets sans empêcher le Garbage Collector de les détruire. Utilisé pour des caches ou des associations temporaires.
 2.  **Générateurs (`yield`)** : Permettent de parcourir de grands ensembles de données sans tout charger en mémoire. Une méthode avec `yield` renvoie un objet `Generator`.
