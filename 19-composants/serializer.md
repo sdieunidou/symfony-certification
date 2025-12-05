@@ -44,15 +44,15 @@ $user = $serializer->deserialize($jsonData, User::class, 'json');
 
 ---
 
-## 3. Gestion des Attributs (Groups & Ignore)
+## 3. Gestion des Attributs et Mapping
 
-C'est la fonctionnalité la plus utilisée pour contrôler quelles propriétés sont exposées.
+C'est la fonctionnalité la plus utilisée pour contrôler quelles propriétés sont exposées et comment.
 
 ### Groupes de Sérialisation
-Utilisez l'attribut `#[Groups]` (ou annotations).
+Utilisez l'attribut `#[Groups]`.
 
 ```php
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class User
 {
@@ -72,32 +72,60 @@ $json = $serializer->serialize($user, 'json', ['groups' => 'user:read']);
 // Résultat : {"email": "...", "username": "..."}
 ```
 
+### SerializedName & SerializedPath
+Si la structure JSON diffère de votre objet.
+
+*   `#[SerializedName('customer_id')]` : Renomme la clé JSON.
+*   `#[SerializedPath('[address][city]')]` : Mappe une structure imbriquée vers une propriété à plat (Flattening).
+
 ### Ignorer des attributs
 *   `#[Ignore]` : La propriété est totalement ignorée.
-*   `#[MaxDepth(1)]` : Pour gérer les relations profondes.
+*   `#[MaxDepth(1)]` : Pour gérer les relations profondes (nécessite `enable_max_depth` dans le contexte).
 
 ---
 
 ## 4. Contexte et Options
 
-Le 3ème argument de `serialize/deserialize` est un tableau de contexte `$context`.
+Le 3ème argument de `serialize/deserialize` est un tableau de contexte `$context`. Vous pouvez aussi utiliser l'attribut `#[Context]` directement sur la classe ou la propriété.
 
+```php
+use Symfony\Component\Serializer\Attribute\Context;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+
+class Meeting
+{
+    #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
+    public \DateTime $date;
+}
+```
+
+### Options Courantes
 *   `AbstractNormalizer::IGNORED_ATTRIBUTES` : `['password']`
 *   `AbstractNormalizer::CALLBACKS` : Pour modifier une valeur à la volée.
-*   `DateTimeNormalizer::FORMAT_KEY` : `['Y-m-d']`
-*   `ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER` : Fonction appelée si une boucle est détectée (A -> B -> A).
-    ```php
-    'circular_reference_handler' => function ($object) {
-        return $object->getId();
-    }
-    ```
+*   `AbstractNormalizer::OBJECT_TO_POPULATE` : Mettre à jour un objet existant au lieu d'en créer un nouveau.
+*   `ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER` : Gérer les boucles (A -> B -> A).
 
 ---
 
 ## 5. Fonctionnalités Avancées
 
+### Named Serializers (Symfony 7.2+)
+Vous pouvez configurer plusieurs instances de Serializer avec des configurations différentes (ex: un pour l'API publique, un pour l'export CSV interne).
+
+```yaml
+# config/packages/serializer.yaml
+framework:
+    serializer:
+        named_serializers:
+            api_client:
+                name_converter: 'serializer.name_converter.camel_case_to_snake_case'
+                default_context:
+                    enable_max_depth: true
+```
+Injection : `#[Target('apiClient.serializer')] SerializerInterface $apiSerializer`.
+
 ### Discriminator Map (Polymorphisme)
-Si vous avez une propriété qui peut contenir plusieurs types d'objets (héritage), le Serializer utilise un champ `type` pour savoir quelle classe instancier lors de la désérialisation.
+Si vous avez une propriété qui peut contenir plusieurs types d'objets (héritage), le Serializer utilise un champ `type` pour savoir quelle classe instancier.
 
 ```php
 #[DiscriminatorMap(typeProperty: 'type', mapping: [
@@ -107,17 +135,10 @@ Si vous avez une propriété qui peut contenir plusieurs types d'objets (hérita
 interface UserInterface {}
 ```
 
-### SerializedName
-Si le nom de la propriété PHP diffère du nom dans le JSON (ex: legacy API).
-```php
-#[SerializedName('customer_id')]
-private int $id;
-```
-
 ---
 
 ## 6. Points de vigilance pour la Certification
 
-*   **Getters/Setters** : Par défaut, `ObjectNormalizer` utilise les getters (`getNom()`, `isActif()`) et setters. Si la propriété est `public`, il l'utilise directement.
+*   **Getters/Setters** : Par défaut, `ObjectNormalizer` utilise les getters (`getNom()`, `isActif()`, `hasRole()`) et setters. Si la propriété est `public`, il l'utilise directement.
 *   **Constructeur** : Lors de la désérialisation, si l'objet a des arguments obligatoires dans le constructeur, le serializer essaie de mapper les champs du JSON aux arguments du constructeur (s'ils portent le même nom).
 *   **Format vs Type** : Le 2ème argument de `serialize` est le **format** ('json'), le 2ème de `deserialize` est le **type** (classe cible).
