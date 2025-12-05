@@ -1,0 +1,66 @@
+{
+  "source_file": "12-console/helpers.md",
+  "title": "Helpers Natifs",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle classe de 'Haut Niveau' est recommandée pour gérer l'affichage et l'interaction dans la console, remplaçant l'utilisation directe des Helpers individuels ?",
+      "type": "single_choice",
+      "options": [
+        "ConsoleHelper",
+        "SymfonyStyle ($io)",
+        "OutputFormatter",
+        "CommandStyle"
+      ],
+      "correct_answers": [
+        "SymfonyStyle ($io)"
+      ],
+      "explanation": "`SymfonyStyle` est la surcouche standard qui offre un design cohérent et simplifie l'accès aux tableaux, barres de progression, et questions."
+    },
+    {
+      "id": 2,
+      "question": "Quel Helper permet d'afficher des données structurées sous forme de grille ASCII ?",
+      "type": "single_choice",
+      "options": [
+        "GridHelper",
+        "Table",
+        "ListHelper",
+        "MatrixHelper"
+      ],
+      "correct_answers": [
+        "Table"
+      ],
+      "explanation": "Le helper `Table` permet de construire des tableaux avec en-têtes et lignes formatées."
+    },
+    {
+      "id": 3,
+      "question": "Quelle est la classe utilisée pour ajouter une ligne de séparation horizontale à l'intérieur d'un tableau ?",
+      "type": "single_choice",
+      "options": [
+        "TableLine",
+        "TableSeparator",
+        "HLine",
+        "RowSeparator"
+      ],
+      "correct_answers": [
+        "TableSeparator"
+      ],
+      "explanation": "On insère une instance de `new TableSeparator()` dans le tableau des lignes (`setRows`) pour créer une séparation."
+    },
+    {
+      "id": 4,
+      "question": "Comment accède-t-on historiquement à un Helper (ex: 'question') depuis l'objet `$this` dans une commande ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->getHelper('question')`",
+        "`$this->question()`",
+        "`$this->helpers['question']`",
+        "On doit l'instancier avec `new QuestionHelper()`."
+      ],
+      "correct_answers": [
+        "`$this->getHelper('question')`"
+      ],
+      "explanation": "Les commandes possèdent un `HelperSet` accessible via la méthode `getHelper()`."
+    }
+  ]
+}

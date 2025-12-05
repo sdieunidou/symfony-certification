@@ -1,0 +1,81 @@
+{
+  "source_file": "12-console/input-output.md",
+  "title": "Options et Arguments (Input)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence principale entre un Argument et une Option dans une commande Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Les Arguments sont nommés (`--arg`), les Options sont positionnelles.",
+        "Les Arguments sont positionnels (l'ordre compte), les Options sont nommées et désordonnées (`--opt`).",
+        "Les Arguments sont obligatoires, les Options facultatives.",
+        "Les Arguments sont des entiers, les Options des chaînes."
+      ],
+      "correct_answers": [
+        "Les Arguments sont positionnels (l'ordre compte), les Options sont nommées et désordonnées (`--opt`)."
+      ],
+      "explanation": "Les arguments dépendent de leur position dans la ligne de commande, tandis que les options sont identifiées par leur drapeau (flag)."
+    },
+    {
+      "id": 2,
+      "question": "Quel type d'argument permet d'accepter une liste de valeurs (ex: `file1 file2 file3`) et doit obligatoirement être placé en dernier ?",
+      "type": "single_choice",
+      "options": [
+        "`InputArgument::REQUIRED`",
+        "`InputArgument::OPTIONAL`",
+        "`InputArgument::IS_ARRAY`",
+        "`InputArgument::LIST`"
+      ],
+      "correct_answers": [
+        "`InputArgument::IS_ARRAY`"
+      ],
+      "explanation": "`InputArgument::IS_ARRAY` capture toutes les valeurs restantes dans un tableau."
+    },
+    {
+      "id": 3,
+      "question": "Quelle option de configuration (`InputOption`) permet de créer un 'drapeau' booléen qui ne prend pas de valeur (ex: `--verbose`) ?",
+      "type": "single_choice",
+      "options": [
+        "`InputOption::VALUE_REQUIRED`",
+        "`InputOption::VALUE_OPTIONAL`",
+        "`InputOption::VALUE_NONE`",
+        "`InputOption::BOOLEAN`"
+      ],
+      "correct_answers": [
+        "`InputOption::VALUE_NONE`"
+      ],
+      "explanation": "`VALUE_NONE` signifie que l'option n'attend aucune valeur après elle. Sa simple présence la définit à `true`."
+    },
+    {
+      "id": 4,
+      "question": "À quoi servent les 'Output Sections' (`$output->section()`) ?",
+      "type": "single_choice",
+      "options": [
+        "À colorer le texte.",
+        "À diviser l'écran en plusieurs zones indépendantes permettant d'effacer ou réécrire une partie spécifique (ex: barres de progression multiples).",
+        "À paginer les résultats.",
+        "À écrire dans des fichiers différents."
+      ],
+      "correct_answers": [
+        "À diviser l'écran en plusieurs zones indépendantes permettant d'effacer ou réécrire une partie spécifique (ex: barres de progression multiples)."
+      ],
+      "explanation": "Les sections permettent de manipuler le curseur et le contenu de zones spécifiques de la sortie standard sans affecter le reste."
+    },
+    {
+      "id": 5,
+      "question": "Est-il possible de placer un argument `REQUIRED` après un argument `OPTIONAL` ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, sans problème.",
+        "Non, car cela rendrait le parsing impossible (on ne saurait pas à qui attribuer la valeur).",
+        "Oui, si on utilise `--`.",
+        "Uniquement dans Symfony 7."
+      ],
+      "correct_answers": [
+        "Non, car cela rendrait le parsing impossible (on ne saurait pas à qui attribuer la valeur)."
+      ],
+      "explanation": "Si un argument optionnel est omis, tous les arguments suivants seraient décalés. Les arguments obligatoires doivent donc toujours précéder les optionnels."
+    }
+  ]
+}

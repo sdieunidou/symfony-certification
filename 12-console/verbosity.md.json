@@ -1,0 +1,66 @@
+{
+  "source_file": "12-console/verbosity.md",
+  "title": "Niveaux de Verbosité (Verbosity)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel niveau de verbosité permet d'afficher la Stack Trace complète d'une exception ?",
+      "type": "single_choice",
+      "options": [
+        "Normal (défaut)",
+        "Verbose (-v)",
+        "Very Verbose (-vv)",
+        "Debug (-vvv)"
+      ],
+      "correct_answers": [
+        "Debug (-vvv)"
+      ],
+      "explanation": "Le mode Debug (`-vvv`) est le seul qui affiche toutes les traces internes, indispensable pour le débogage approfondi."
+    },
+    {
+      "id": 2,
+      "question": "Quelle option permet de rendre une commande totalement silencieuse (sauf erreur fatale PHP), utile pour les CRON ?",
+      "type": "single_choice",
+      "options": [
+        "`--silent`",
+        "`--quiet` ou `-q`",
+        "`--no-output`",
+        "`--mute`"
+      ],
+      "correct_answers": [
+        "`--quiet` ou `-q`"
+      ],
+      "explanation": "Le mode Quiet (`VERBOSITY_QUIET`) supprime toute sortie standard."
+    },
+    {
+      "id": 3,
+      "question": "Si vous écrivez `$output->writeln('Info', OutputInterface::VERBOSITY_VERBOSE)`, quand le message sera-t-il affiché ?",
+      "type": "single_choice",
+      "options": [
+        "Uniquement si l'option est exactement `-v`.",
+        "Si l'option est `-v`, `-vv` ou `-vvv`.",
+        "Toujours, sauf si `-q`.",
+        "Uniquement en environnement de dev."
+      ],
+      "correct_answers": [
+        "Si l'option est `-v`, `-vv` ou `-vvv`."
+      ],
+      "explanation": "Les niveaux de verbosité sont cumulatifs. Si on demande du VERBOSE, le VERY_VERBOSE et le DEBUG l'incluent."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode de l'objet Output permet de tester si le mode est au moins 'Verbose' ?",
+      "type": "single_choice",
+      "options": [
+        "`$output->isVerbose()`",
+        "`$output->hasVerbosity()`",
+        "`$output->getVerbosity() >= 1`",
+        "`$output->isDebug()`"
+      ],
+      "correct_answers": [
+        "`$output->isVerbose()`"
+      ],
+      "explanation": "`isVerbose()` retourne `true` si le niveau est VERBOSE, VERY_VERBOSE ou DEBUG."
+    }
+  ]
+}

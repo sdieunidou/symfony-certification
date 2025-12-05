@@ -1,0 +1,66 @@
+{
+  "source_file": "12-console/io.md",
+  "title": "Symfony Style (IO)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est l'objectif principal de la classe `SymfonyStyle` ?",
+      "type": "single_choice",
+      "options": [
+        "Rendre la console compatible Windows.",
+        "Fournir une API unifiée pour standardiser l'apparence (Look & Feel) et les interactions des commandes Symfony.",
+        "Accélérer l'exécution des commandes.",
+        "Gérer les arguments d'entrée."
+      ],
+      "correct_answers": [
+        "Fournir une API unifiée pour standardiser l'apparence (Look & Feel) et les interactions des commandes Symfony."
+      ],
+      "explanation": "`SymfonyStyle` abstrait la complexité du formatage pour offrir des blocs visuels cohérents (titres, succès, erreurs) à travers tout le framework."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode de `SymfonyStyle` permet de poser une question dont la réponse sera masquée (ex: mot de passe) ?",
+      "type": "single_choice",
+      "options": [
+        "`$io->ask()`",
+        "`$io->askHidden()`",
+        "`$io->secret()`",
+        "`$io->password()`"
+      ],
+      "correct_answers": [
+        "`$io->askHidden()`"
+      ],
+      "explanation": "`askHidden` cache la saisie de l'utilisateur dans le terminal."
+    },
+    {
+      "id": 3,
+      "question": "Comment valider l'entrée utilisateur avec la méthode `$io->ask()` ?",
+      "type": "single_choice",
+      "options": [
+        "C'est impossible, il faut valider après.",
+        "En passant une fonction de callback en 3ème argument qui lance une exception si la valeur est invalide.",
+        "En définissant le type attendu en 2ème argument.",
+        "En utilisant les annotations de validation."
+      ],
+      "correct_answers": [
+        "En passant une fonction de callback en 3ème argument qui lance une exception si la valeur est invalide."
+      ],
+      "explanation": "Le validateur est une fonction qui reçoit la réponse et doit retourner la valeur validée ou lancer une exception pour redemander la saisie."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode affiche un message de succès sur fond vert ?",
+      "type": "single_choice",
+      "options": [
+        "`$io->ok()`",
+        "`$io->success()`",
+        "`$io->green()`",
+        "`$io->done()`"
+      ],
+      "correct_answers": [
+        "`$io->success()`"
+      ],
+      "explanation": "`$io->success()` formate le texte dans un bloc vert standardisé."
+    }
+  ]
+}

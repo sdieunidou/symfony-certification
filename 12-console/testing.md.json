@@ -1,0 +1,66 @@
+{
+  "source_file": "12-console/testing.md",
+  "title": "Tester les Commandes",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle classe utilitaire Symfony fournit-il pour tester une commande de manière isolée (Test Unitaire/Intégration) ?",
+      "type": "single_choice",
+      "options": [
+        "`CommandTester`",
+        "`ApplicationTester`",
+        "`ConsoleTester`",
+        "`ProcessTester`"
+      ],
+      "correct_answers": [
+        "`CommandTester`"
+      ],
+      "explanation": "`CommandTester` est conçu pour wrapper une instance de `Command`, exécuter sa méthode `execute` et capturer l'entrée/sortie."
+    },
+    {
+      "id": 2,
+      "question": "Pourquoi faut-il souvent utiliser `$application->find('nom:commande')` dans un test plutôt que d'instancier `new MaCommande()` directement ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que c'est plus court.",
+        "Pour que la commande soit correctement initialisée avec ses dépendances injectées par le conteneur de services.",
+        "Parce que le constructeur est privé.",
+        "Pour vérifier que le nom de la commande est correct."
+      ],
+      "correct_answers": [
+        "Pour que la commande soit correctement initialisée avec ses dépendances injectées par le conteneur de services."
+      ],
+      "explanation": "Si vous faites `new MaCommande()`, vous devez passer les dépendances manuellement. Passer par `$application->find()` (après un bootKernel) récupère la version configurée dans le conteneur."
+    },
+    {
+      "id": 3,
+      "question": "Quelle assertion permet de vérifier que la commande s'est terminée sans erreur (code de sortie 0) ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->assertTrue($tester->isSuccessful())`",
+        "`$commandTester->assertCommandIsSuccessful()`",
+        "`$this->assertEquals(0, $tester->getStatusCode())`",
+        "Toutes les réponses ci-dessus."
+      ],
+      "correct_answers": [
+        "`$commandTester->assertCommandIsSuccessful()`"
+      ],
+      "explanation": "`assertCommandIsSuccessful()` est la méthode d'assertion dédiée fournie par `CommandTester` (depuis Symfony 4/5)."
+    },
+    {
+      "id": 4,
+      "question": "Comment passer une option booléenne (ex: `--admin`) à la méthode `execute` du `CommandTester` ?",
+      "type": "single_choice",
+      "options": [
+        "`['--admin']`",
+        "`['--admin' => true]`",
+        "`['--admin' => 'yes']`",
+        "`['admin' => true]`"
+      ],
+      "correct_answers": [
+        "`['--admin' => true]`"
+      ],
+      "explanation": "Le tableau d'input de `execute` attend les noms des options comme clés et `true` comme valeur pour les options booléennes (`VALUE_NONE`)."
+    }
+  ]
+}

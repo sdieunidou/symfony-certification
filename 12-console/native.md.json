@@ -1,0 +1,81 @@
+{
+  "source_file": "12-console/native.md",
+  "title": "Commandes Natives Indispensables",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle commande permet de visualiser comment Symfony associe une URL donnée à un contrôleur (utile pour debugger les 404) ?",
+      "type": "single_choice",
+      "options": [
+        "`router:list`",
+        "`debug:router`",
+        "`router:match /mon-url`",
+        "`debug:url`"
+      ],
+      "correct_answers": [
+        "`router:match /mon-url`"
+      ],
+      "explanation": "La commande `router:match` prend un chemin en argument et montre quelle route matche ou pourquoi aucune ne matche."
+    },
+    {
+      "id": 2,
+      "question": "Si vous lancez `php bin/console cache:clear` sans préciser l'environnement, quel cache est vidé par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "Le cache de production (`prod`).",
+        "Le cache de développement (`dev`).",
+        "Tous les caches (`dev`, `test`, `prod`).",
+        "Aucun, il faut préciser l'environnement."
+      ],
+      "correct_answers": [
+        "Le cache de développement (`dev`)."
+      ],
+      "explanation": "Par défaut, la console Symfony s'exécute avec `APP_ENV=dev` (sauf si défini autrement dans `.env`). Donc `cache:clear` vide le cache de dev."
+    },
+    {
+      "id": 3,
+      "question": "Quelle commande utiliser pour générer un fichier de migration Doctrine basé sur les différences entre vos entités et la base de données ?",
+      "type": "single_choice",
+      "options": [
+        "`doctrine:schema:update --force`",
+        "`doctrine:migrations:migrate`",
+        "`doctrine:migrations:diff`",
+        "`doctrine:database:create`"
+      ],
+      "correct_answers": [
+        "`doctrine:migrations:diff`"
+      ],
+      "explanation": "`doctrine:migrations:diff` compare le schéma des entités avec la BDD actuelle et génère le fichier PHP de migration."
+    },
+    {
+      "id": 4,
+      "question": "Quelle option permet d'exécuter une commande interactive de manière non-interactive (pour les scripts CI/CD) ?",
+      "type": "single_choice",
+      "options": [
+        "`--force`",
+        "`--quiet`",
+        "`--no-interaction` ou `-n`",
+        "`--yes`"
+      ],
+      "correct_answers": [
+        "`--no-interaction` ou `-n`"
+      ],
+      "explanation": "Cette option désactive toutes les questions interactives et utilise les valeurs par défaut. Si une valeur obligatoire manque, la commande échoue."
+    },
+    {
+      "id": 5,
+      "question": "Quelle commande permet de lister tous les services publics définis dans le conteneur ?",
+      "type": "single_choice",
+      "options": [
+        "`debug:container`",
+        "`debug:services`",
+        "`container:list`",
+        "`debug:autowiring`"
+      ],
+      "correct_answers": [
+        "`debug:container`"
+      ],
+      "explanation": "`debug:container` affiche la liste des services et leurs alias. `debug:autowiring` est spécifique aux types injectables."
+    }
+  ]
+}
