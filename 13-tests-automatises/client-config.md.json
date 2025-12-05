@@ -1,0 +1,66 @@
+{
+  "source_file": "13-tests-automatises/client-config.md",
+  "title": "Configuration du Client de Test (KernelBrowser)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel fichier d'environnement est spécifiquement ignoré lors de l'exécution des tests pour garantir la cohérence ?",
+      "type": "single_choice",
+      "options": [
+        "`.env`",
+        "`.env.test`",
+        "`.env.local`",
+        "`.env.test.local`"
+      ],
+      "correct_answers": [
+        "`.env.local`"
+      ],
+      "explanation": "Le fichier `.env.local` contient souvent des config machine-spécifique pour le développement. En test, on veut un environnement reproductible, donc il est ignoré au profit de `.env.test`."
+    },
+    {
+      "id": 2,
+      "question": "Par défaut, le client de test suit-il les redirections HTTP (codes 3xx) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, il s'arrête sur la réponse de redirection pour permettre de la tester.",
+        "Oui, mais seulement les 301.",
+        "Cela dépend de la configuration du navigateur."
+      ],
+      "correct_answers": [
+        "Non, il s'arrête sur la réponse de redirection pour permettre de la tester."
+      ],
+      "explanation": "Pour suivre une redirection, il faut appeler explicitement `$client->followRedirect()` ou activer le suivi automatique avec `$client->followRedirects(true)`."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi configurer `$client->catchExceptions(false)` lors du debugging d'un test ?",
+      "type": "single_choice",
+      "options": [
+        "Pour empêcher le test d'échouer.",
+        "Pour laisser l'exception remonter jusqu'à PHPUnit et voir la Stack Trace dans la console au lieu d'une page HTML d'erreur 500.",
+        "Pour désactiver le profiler.",
+        "Pour tester le gestionnaire d'exceptions personnalisé."
+      ],
+      "correct_answers": [
+        "Pour laisser l'exception remonter jusqu'à PHPUnit et voir la Stack Trace dans la console au lieu d'une page HTML d'erreur 500."
+      ],
+      "explanation": "C'est une pratique courante : si `catchExceptions` est true (défaut), Symfony attrape l'erreur et rend une Response 500. Si false, PHPUnit attrape l'exception et affiche les détails."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode permet de définir des en-têtes HTTP par défaut pour toutes les requêtes du client ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->setHeaders([...])`",
+        "`$client->setServerParameters([...])`",
+        "`$client->setDefaultOptions([...])`",
+        "`$client->config([...])`"
+      ],
+      "correct_answers": [
+        "`$client->setServerParameters([...])`"
+      ],
+      "explanation": "On utilise `setServerParameters` en passant des clés au format PHP `$_SERVER` (ex: `HTTP_AUTHORIZATION`)."
+    }
+  ]
+}

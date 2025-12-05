@@ -1,0 +1,66 @@
+{
+  "source_file": "13-tests-automatises/client.md",
+  "title": "Objet Client (KernelBrowser)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment connecter un utilisateur programmatiquement dans un test fonctionnel sans passer par le formulaire de login ?",
+      "type": "single_choice",
+      "options": [
+        "En envoyant une requête POST vers `/login`.",
+        "En utilisant la méthode `$client->loginUser($user)`.",
+        "En définissant un cookie de session manuellement.",
+        "En modifiant la base de données."
+      ],
+      "correct_answers": [
+        "En utilisant la méthode `$client->loginUser($user)`."
+      ],
+      "explanation": "C'est le helper standard qui simule l'authentification au niveau du système de sécurité de Symfony."
+    },
+    {
+      "id": 2,
+      "question": "Que fait la méthode `$client->restart()` ?",
+      "type": "single_choice",
+      "options": [
+        "Elle redémarre le serveur web.",
+        "Elle efface les cookies et l'historique du client, simulant un nouveau navigateur.",
+        "Elle relance la dernière requête.",
+        "Elle vide le cache."
+      ],
+      "correct_answers": [
+        "Elle efface les cookies et l'historique du client, simulant un nouveau navigateur."
+      ],
+      "explanation": "Utile si vous voulez tester plusieurs scénarios utilisateur séquentiels totalement isolés dans la même méthode de test."
+    },
+    {
+      "id": 3,
+      "question": "Que se passe-t-il au niveau du Kernel Symfony entre deux requêtes `$client->request()` ?",
+      "type": "single_choice",
+      "options": [
+        "Rien, le Kernel reste le même.",
+        "Le Kernel est 'rebooté' (éteint et rallumé) pour assurer l'isolation (mémoire, services).",
+        "Le conteneur de services est vidé mais le Kernel reste actif.",
+        "La base de données est réinitialisée."
+      ],
+      "correct_answers": [
+        "Le Kernel est 'rebooté' (éteint et rallumé) pour assurer l'isolation (mémoire, services)."
+      ],
+      "explanation": "Ce reboot garantit que chaque requête est traitée dans un état propre, comme en production, bien que cela détache les entités Doctrine gérées par le test."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode permet d'envoyer une requête AJAX (avec le header `X-Requested-With: XMLHttpRequest`) ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->ajax(...)`",
+        "`$client->xmlHttpRequest(...)`",
+        "`$client->fetch(...)`",
+        "`$client->async(...)`"
+      ],
+      "correct_answers": [
+        "`$client->xmlHttpRequest(...)`"
+      ],
+      "explanation": "C'est un raccourci pratique pour `$client->request()` qui ajoute automatiquement le bon header."
+    }
+  ]
+}

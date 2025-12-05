@@ -1,0 +1,66 @@
+{
+  "source_file": "13-tests-automatises/crawler.md",
+  "title": "Objet Crawler (DomCrawler)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Pour soumettre un formulaire avec le Crawler, quel élément devez-vous sélectionner en premier ?",
+      "type": "single_choice",
+      "options": [
+        "La balise `<form>` elle-même.",
+        "Un bouton de soumission (submit button) à l'intérieur du formulaire.",
+        "Le premier champ input.",
+        "L'URL de l'action."
+      ],
+      "correct_answers": [
+        "Un bouton de soumission (submit button) à l'intérieur du formulaire."
+      ],
+      "explanation": "Le Crawler fonctionne par interaction utilisateur : on clique sur un bouton, ce qui nous donne accès à l'objet Form associé."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode permet d'extraire le texte contenu dans un nœud sélectionné ?",
+      "type": "single_choice",
+      "options": [
+        "`->html()`",
+        "`->content()`",
+        "`->text()`",
+        "`->value()`"
+      ],
+      "correct_answers": [
+        "`->text()`"
+      ],
+      "explanation": "`text()` retourne le contenu textuel du nœud (sans les balises HTML)."
+    },
+    {
+      "id": 3,
+      "question": "Comment remplir un champ de formulaire nommé `my_form[name]` une fois l'objet `$form` obtenu ?",
+      "type": "single_choice",
+      "options": [
+        "`$form->set('name', 'Value');`",
+        "`$form['my_form[name]'] = 'Value';`",
+        "`$form->fill(['name' => 'Value']);`",
+        "`$client->fillField('name', 'Value');`"
+      ],
+      "correct_answers": [
+        "`$form['my_form[name]'] = 'Value';`"
+      ],
+      "explanation": "L'objet Form implémente `ArrayAccess`, permettant de définir les valeurs des champs comme s'il s'agissait d'un tableau."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode permet d'itérer sur plusieurs nœuds trouvés par le Crawler ?",
+      "type": "single_choice",
+      "options": [
+        "`foreach ($crawler as $node)`",
+        "`$crawler->each(function ($node, $i) { ... })`",
+        "`$crawler->map(...)`",
+        "`$crawler->walk(...)`"
+      ],
+      "correct_answers": [
+        "`$crawler->each(function ($node, $i) { ... })`"
+      ],
+      "explanation": "La méthode `each` prend une callback qui reçoit chaque nœud et son index."
+    }
+  ]
+}

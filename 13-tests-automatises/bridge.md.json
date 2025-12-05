@@ -1,0 +1,66 @@
+{
+  "source_file": "13-tests-automatises/bridge.md",
+  "title": "Pont PHPUnit (PHPUnit Bridge)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la fonctionnalité principale du PHPUnit Bridge dans le contexte d'une migration de version Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Il améliore les performances des tests.",
+        "Il génère un rapport sur les dépréciations (`trigger_deprecation`) déclenchées pendant les tests pour aider à la mise à jour.",
+        "Il permet d'écrire des tests en YAML.",
+        "Il remplace PHPUnit par Pest."
+      ],
+      "correct_answers": [
+        "Il génère un rapport sur les dépréciations (`trigger_deprecation`) déclenchées pendant les tests pour aider à la mise à jour."
+      ],
+      "explanation": "Le bridge écoute tous les appels aux dépréciations et fournit un résumé (rouge/vert) à la fin, permettant de viser le 'Deprecation-Free'."
+    },
+    {
+      "id": 2,
+      "question": "Comment le PHPUnit Bridge gère-t-il l'installation de PHPUnit ?",
+      "type": "single_choice",
+      "options": [
+        "Il utilise la version installée globalement sur le système.",
+        "Il installe une version de PHPUnit isolée et compatible avec le projet dans le dossier `bin/.phpunit/`.",
+        "Il télécharge PHPUnit à chaque exécution.",
+        "Il n'installe rien."
+      ],
+      "correct_answers": [
+        "Il installe une version de PHPUnit isolée et compatible avec le projet dans le dossier `bin/.phpunit/`."
+      ],
+      "explanation": "Cela garantit que chaque projet utilise la version de PHPUnit qui correspond à sa version de PHP et de Symfony, sans conflit global."
+    },
+    {
+      "id": 3,
+      "question": "À quoi servent les classes `ClockMock` et `DnsMock` fournies par le bridge ?",
+      "type": "single_choice",
+      "options": [
+        "À tester la base de données.",
+        "À simuler les fonctions natives PHP liées au temps (`time()`) et au réseau (`checkdnsrr()`) sans modifier le code.",
+        "À mocker les services Symfony.",
+        "À accélérer l'exécution des tests."
+      ],
+      "correct_answers": [
+        "À simuler les fonctions natives PHP liées au temps (`time()`) et au réseau (`checkdnsrr()`) sans modifier le code."
+      ],
+      "explanation": "Ces mocks interviennent au niveau du namespace pour surcharger les fonctions natives, ce qui est très utile pour les tests temporels (bien que le composant Clock soit désormais préféré)."
+    },
+    {
+      "id": 4,
+      "question": "Par défaut, le bridge rapporte-t-il les dépréciations provenant du dossier `/vendor` ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toutes.",
+        "Non, elles sont généralement ignorées car ce n'est pas votre code.",
+        "Uniquement celles de Doctrine.",
+        "Oui, si le mode debug est activé."
+      ],
+      "correct_answers": [
+        "Non, elles sont généralement ignorées car ce n'est pas votre code."
+      ],
+      "explanation": "Le bridge se concentre sur les dépréciations causées par VOTRE code ou l'utilisation que vous faites des bibliothèques, pas les problèmes internes aux bibliothèques tierces."
+    }
+  ]
+}
