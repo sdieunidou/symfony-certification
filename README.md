@@ -29,7 +29,6 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Mise en cache](./02-http/caching.md)
 * [Négociation de contenu](./02-http/negociation-contenu.md)
 * [Détection de la langue](./02-http/detection-langue.md)
-* [Composant Symfony HttpClient](./02-http/http-client.md)
 
 ### [3. Architecture Symfony](./03-architecture-symfony/)
 * [Symfony Flex](./03-architecture-symfony/flex.md)
@@ -206,6 +205,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 
 ### [18. Composants](./18-composants/)
 * [HttpKernel](./18-composants/http-kernel.md)
+* [HttpClient](./18-composants/http-client.md)
 * [HttpFoundation](./18-composants/http-foundation.md)
 * [Config](./18-composants/config.md)
 * [Serializer](./18-composants/serializer.md)
@@ -215,3 +215,14 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Notifier](./18-composants/notifier.md)
 * [Scheduler](./18-composants/scheduler.md)
 * [AssetMapper](./18-composants/asset-mapper.md)
+
+### [19. API & REST](./19-api/)
+* [Concepts REST](./19-api/rest-concepts.md)
+* [DTOs & MapRequestPayload](./19-api/dto.md)
+* [Sérialisation en API](./19-api/serializer-usage.md)
+* [Validation de Payload](./19-api/payload-validation.md)
+* [Authentification Stateless](./19-api/stateless-auth.md)
+* [CORS](./19-api/cors.md)
+* [Négociation & Versioning](./19-api/content-negotiation.md)
+* [Documentation (OpenAPI)](./19-api/documentation.md)
+* [API Platform](./19-api/api-platform.md)
