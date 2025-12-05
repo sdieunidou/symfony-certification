@@ -1,0 +1,66 @@
+{
+  "source_file": "14-divers/configuration.md",
+  "title": "Configuration & Environnements",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel fichier a la priorité la plus élevée (écrase tous les autres) pour définir une variable d'environnement ?",
+      "type": "single_choice",
+      "options": [
+        "Le fichier `.env` à la racine.",
+        "Le fichier `.env.local`.",
+        "Une vraie variable d'environnement système (définie via export, Apache, Docker...).",
+        "Le fichier `.env.prod`."
+      ],
+      "correct_answers": [
+        "Une vraie variable d'environnement système (définie via export, Apache, Docker...)."
+      ],
+      "explanation": "Les variables système réelles ont toujours la priorité absolue sur les fichiers `.env` gérés par le composant Dotenv."
+    },
+    {
+      "id": 2,
+      "question": "Quelle commande permet de voir la configuration finale (résolue) d'un bundle, après fusion de tous les fichiers YAML ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console config:dump-reference`",
+        "`php bin/console debug:config`",
+        "`php bin/console debug:container`",
+        "`php bin/console config:list`"
+      ],
+      "correct_answers": [
+        "`php bin/console debug:config`"
+      ],
+      "explanation": "`debug:config` montre ce que Symfony utilise réellement, tandis que `config:dump-reference` montre toutes les options disponibles."
+    },
+    {
+      "id": 3,
+      "question": "Comment injecter un paramètre de configuration (défini dans `parameters:`) directement dans le constructeur d'un service via un attribut ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Inject('%parameter_name%')]`",
+        "`#[Autowire('%parameter_name%')]`",
+        "`#[Param('parameter_name')]`",
+        "`#[Value('%parameter_name%')]`"
+      ],
+      "correct_answers": [
+        "`#[Autowire('%parameter_name%')]`"
+      ],
+      "explanation": "L'attribut `#[Autowire]` permet d'injecter des paramètres scalaires (entourés de `%`) ou des variables d'env."
+    },
+    {
+      "id": 4,
+      "question": "Quel processeur de variable d'environnement permet de lire le contenu d'un fichier (utile pour les secrets Docker) ?",
+      "type": "single_choice",
+      "options": [
+        "`%env(read:VAR)%`",
+        "`%env(file:VAR)%`",
+        "`%env(content:VAR)%`",
+        "`%env(json:VAR)%`"
+      ],
+      "correct_answers": [
+        "`%env(file:VAR)%`"
+      ],
+      "explanation": "Le processeur `file:` considère la valeur de la variable comme un chemin de fichier et retourne son contenu."
+    }
+  ]
+}

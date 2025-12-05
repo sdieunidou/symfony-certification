@@ -1,0 +1,67 @@
+{
+  "source_file": "14-divers/logging.md",
+  "title": "Logging (Journalisation)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle interface standard (PSR) Symfony utilise-t-il pour le logging ?",
+      "type": "single_choice",
+      "options": [
+        "`Psr\Log\LoggerInterface`",
+        "`Symfony\Component\Logging\Logger`",
+        "`Monolog\Logger`",
+        "`Psr\Http\Message\LoggerInterface`"
+      ],
+      "correct_answers": [
+        "`Psr\Log\LoggerInterface`"
+      ],
+      "explanation": "Symfony suit le standard PSR-3. L'interface `LoggerInterface` permet de typer les dépendances sans se coupler à Monolog directement."
+    },
+    {
+      "id": 2,
+      "question": "Pourquoi est-il recommandé d'utiliser le contexte (`$logger->info('User {id}', ['id' => 1])`) plutôt que la concaténation ?",
+      "type": "single_choice",
+      "options": [
+        "Pour économiser de la mémoire.",
+        "Pour permettre aux outils d'analyse de logs (Kibana, Sentry) d'indexer les valeurs structurées.",
+        "C'est juste une question de style.",
+        "La concaténation est interdite par PSR-3."
+      ],
+      "correct_answers": [
+        "Pour permettre aux outils d'analyse de logs (Kibana, Sentry) d'indexer les valeurs structurées."
+      ],
+      "explanation": "Le contexte préserve la structure des données. La concaténation transforme tout en une simple chaîne de caractères difficile à parser."
+    },
+    {
+      "id": 3,
+      "question": "Comment injecter un logger spécifique à un canal (ex: 'doctrine') dans votre service ?",
+      "type": "multiple_choice",
+      "options": [
+        "En utilisant l'attribut `#[Target('doctrine')]` sur l'argument `LoggerInterface`.",
+        "En nommant l'argument `$doctrineLogger` (Convention de nommage de l'autowiring).",
+        "En instanciant `new Logger('doctrine')`.",
+        "En configurant `bind` dans services.yaml."
+      ],
+      "correct_answers": [
+        "En utilisant l'attribut `#[Target('doctrine')]` sur l'argument `LoggerInterface`.",
+        "En nommant l'argument `$doctrineLogger` (Convention de nommage de l'autowiring)."
+      ],
+      "explanation": "Les deux méthodes fonctionnent. L'attribut `#[Target]` est la méthode explicite moderne, mais le nommage de variable fonctionne aussi."
+    },
+    {
+      "id": 4,
+      "question": "Quel niveau de log (PSR-3) correspond à 'Une erreur d'exécution qui ne nécessite pas d'action immédiate' ?",
+      "type": "single_choice",
+      "options": [
+        "`warning`",
+        "`error`",
+        "`critical`",
+        "`notice`"
+      ],
+      "correct_answers": [
+        "`error`"
+      ],
+      "explanation": "`error` signale un échec, mais le système continue de tourner. `critical` ou `alert` nécessiteraient une intervention."
+    }
+  ]
+}

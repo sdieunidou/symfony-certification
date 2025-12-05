@@ -1,0 +1,66 @@
+{
+  "source_file": "15-design-patterns/solid.md",
+  "title": "Principes SOLID",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Que signifie le principe SRP (Single Responsibility Principle) ?",
+      "type": "single_choice",
+      "options": [
+        "Une classe ne doit être instanciée qu'une seule fois.",
+        "Une classe ne doit avoir qu'une seule raison de changer (une seule responsabilité).",
+        "Une fonction ne doit pas dépasser 20 lignes.",
+        "Un projet ne doit avoir qu'un seul développeur."
+      ],
+      "correct_answers": [
+        "Une classe ne doit avoir qu'une seule raison de changer (une seule responsabilité)."
+      ],
+      "explanation": "Si une classe gère à la fois la validation, la persistance et l'envoi d'emails, elle a trop de raisons de changer. Il faut déléguer."
+    },
+    {
+      "id": 2,
+      "question": "Quel principe est illustré par l'utilisation de l'EventDispatcher pour étendre le comportement d'un service sans modifier son code source ?",
+      "type": "single_choice",
+      "options": [
+        "SRP (Single Responsibility)",
+        "OCP (Open/Closed Principle)",
+        "LSP (Liskov Substitution)",
+        "DIP (Dependency Inversion)"
+      ],
+      "correct_answers": [
+        "OCP (Open/Closed Principle)"
+      ],
+      "explanation": "Le code est ouvert à l'extension (via les listeners) mais fermé à la modification (on ne touche pas au cœur du service)."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi le principe d'Inversion de Dépendance (DIP) recommande-t-il de dépendre des abstractions (interfaces) plutôt que des implémentations ?",
+      "type": "single_choice",
+      "options": [
+        "Pour rendre le code plus complexe.",
+        "Pour réduire le couplage, faciliter les tests (mocking) et permettre de changer d'implémentation facilement.",
+        "Pour améliorer les performances de compilation.",
+        "C'est une obligation de PHP."
+      ],
+      "correct_answers": [
+        "Pour réduire le couplage, faciliter les tests (mocking) et permettre de changer d'implémentation facilement."
+      ],
+      "explanation": "Si on dépend d'une classe concrète `MySQLDatabase`, on ne peut pas tester sans base de données ni changer pour `PostgreSQL` sans tout réécrire."
+    },
+    {
+      "id": 4,
+      "question": "Quel principe est violé si une classe enfant lance une exception inattendue là où la classe parente ne le faisait pas, cassant ainsi le code client ?",
+      "type": "single_choice",
+      "options": [
+        "LSP (Liskov Substitution Principle)",
+        "ISP (Interface Segregation Principle)",
+        "SRP (Single Responsibility Principle)",
+        "OCP (Open/Closed Principle)"
+      ],
+      "correct_answers": [
+        "LSP (Liskov Substitution Principle)"
+      ],
+      "explanation": "Le principe de Liskov exige qu'une sous-classe puisse remplacer la classe parente sans altérer la cohérence du programme."
+    }
+  ]
+}

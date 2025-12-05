@@ -1,0 +1,51 @@
+{
+  "source_file": "15-design-patterns/law-of-demeter.md",
+  "title": "La Loi de Déméter (Law of Demeter - LoD)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le principe fondamental de la Loi de Déméter ?",
+      "type": "single_choice",
+      "options": [
+        "Ne jamais utiliser de méthodes statiques.",
+        "Un module ne doit pas connaître les détails internes des objets qu'il manipule ('Ne parlez qu'à vos amis immédiats').",
+        "Toujours utiliser l'injection de dépendances.",
+        "Ne jamais utiliser de boucles `for`."
+      ],
+      "correct_answers": [
+        "Un module ne doit pas connaître les détails internes des objets qu'il manipule ('Ne parlez qu'à vos amis immédiats')."
+      ],
+      "explanation": "Cela vise à réduire le couplage en interdisant le chaînage excessif de méthodes (`$a->getB()->getC()->do()`)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est une violation typique de la Loi de Déméter dans un contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->render('template.html.twig')`",
+        "`$user->getAddress()->getZipCode()`",
+        "`$repo->find($id)`",
+        "`$form->handleRequest($request)`"
+      ],
+      "correct_answers": [
+        "`$user->getAddress()->getZipCode()`"
+      ],
+      "explanation": "Le contrôleur accède à la propriété d'une propriété (`Address` puis `ZipCode`). Si la structure de User change, le contrôleur casse."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi injecter le `ContainerInterface` entier dans un service est-il considéré comme une mauvaise pratique (Service Locator) ?",
+      "type": "single_choice",
+      "options": [
+        "Car le conteneur est trop lourd en mémoire.",
+        "Car cela viole la Loi de Déméter (on parle au conteneur pour parler au service) et masque les dépendances réelles.",
+        "Car c'est déprécié en PHP 8.",
+        "Car cela empêche l'utilisation des attributs."
+      ],
+      "correct_answers": [
+        "Car cela viole la Loi de Déméter (on parle au conteneur pour parler au service) et masque les dépendances réelles."
+      ],
+      "explanation": "On demande à 'l'ami' (Container) de nous donner 'l'ami de l'ami' (Service). Il faut injecter le Service directement."
+    }
+  ]
+}

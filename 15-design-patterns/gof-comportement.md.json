@@ -1,0 +1,81 @@
+{
+  "source_file": "15-design-patterns/gof-comportement.md",
+  "title": "Design Patterns GoF - Comportement",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel Design Pattern est utilisé par le composant Messenger pour exécuter une série d'actions (Logging, Transaction...) autour du traitement d'un message ?",
+      "type": "single_choice",
+      "options": [
+        "Strategy",
+        "Chain of Responsibility (Middleware)",
+        "Observer",
+        "Visitor"
+      ],
+      "correct_answers": [
+        "Chain of Responsibility (Middleware)"
+      ],
+      "explanation": "Les Middlewares forment une chaîne où chacun peut agir avant et après le suivant."
+    },
+    {
+      "id": 2,
+      "question": "Quel pattern permet de stocker une requête sous forme d'objet pour la traiter de manière asynchrone ou découplée (ex: CQRS) ?",
+      "type": "single_choice",
+      "options": [
+        "Command",
+        "Memento",
+        "State",
+        "Mediator"
+      ],
+      "correct_answers": [
+        "Command"
+      ],
+      "explanation": "Le pattern Command encapsule la demande (Input) dans un objet (Message/Command) qui est ensuite passé à un Handler."
+    },
+    {
+      "id": 3,
+      "question": "Quel composant Symfony implémente le pattern 'Observer' pour permettre à des parties du code de réagir à des actions sans être couplées ?",
+      "type": "single_choice",
+      "options": [
+        "Serializer",
+        "EventDispatcher",
+        "HttpClient",
+        "Dotenv"
+      ],
+      "correct_answers": [
+        "EventDispatcher"
+      ],
+      "explanation": "L'EventDispatcher notifie les abonnés (Listeners/Subscribers) lorsqu'un événement survient."
+    },
+    {
+      "id": 4,
+      "question": "Dans Symfony, comment implémente-t-on généralement le pattern 'Strategy' pour choisir un algorithme parmi plusieurs (ex: Calcul de frais de port) ?",
+      "type": "single_choice",
+      "options": [
+        "Avec des `if/else` géants.",
+        "En injectant un itérateur de services taggés (Tagged Iterator) et en sélectionnant le bon via une méthode `supports()`.",
+        "En utilisant l'héritage multiple.",
+        "En clonant les services."
+      ],
+      "correct_answers": [
+        "En injectant un itérateur de services taggés (Tagged Iterator) et en sélectionnant le bon via une méthode `supports()`."
+      ],
+      "explanation": "C'est l'implémentation idiomatique dans Symfony : on injecte toutes les stratégies disponibles et on boucle pour trouver celle qui s'applique."
+    },
+    {
+      "id": 5,
+      "question": "Quel pattern le Serializer utilise-t-il pour parcourir et transformer un graphe d'objets complexe ?",
+      "type": "single_choice",
+      "options": [
+        "Visitor",
+        "Template Method",
+        "Interpreter",
+        "Mediator"
+      ],
+      "correct_answers": [
+        "Visitor"
+      ],
+      "explanation": "Le Serializer 'visite' chaque nœud (objet, propriété) du graphe pour lui appliquer une transformation (normalisation)."
+    }
+  ]
+}

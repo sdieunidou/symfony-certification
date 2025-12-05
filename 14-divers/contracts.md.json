@@ -1,0 +1,66 @@
+{
+  "source_file": "14-divers/contracts.md",
+  "title": "Symfony Contracts",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est l'objectif principal des 'Symfony Contracts' ?",
+      "type": "single_choice",
+      "options": [
+        "Rendre le code plus rapide.",
+        "Fournir un ensemble d'interfaces (abstractions) pour permettre un couplage faible et l'interopérabilité.",
+        "Remplacer les PSRs.",
+        "Gérer les contrats juridiques de l'application."
+      ],
+      "correct_answers": [
+        "Fournir un ensemble d'interfaces (abstractions) pour permettre un couplage faible et l'interopérabilité."
+      ],
+      "explanation": "En dépendant des contrats (Interfaces) plutôt que des implémentations concrètes, on peut changer de librairie ou d'implémentation sans modifier le code métier."
+    },
+    {
+      "id": 2,
+      "question": "Quelle interface du composant Service Contracts permet à un service d'accéder au conteneur de manière restreinte (utilisée par `AbstractController`) ?",
+      "type": "single_choice",
+      "options": [
+        "`ContainerInterface`",
+        "`ServiceSubscriberInterface`",
+        "`ServiceProviderInterface`",
+        "`ContainerAwareInterface`"
+      ],
+      "correct_answers": [
+        "`ServiceSubscriberInterface`"
+      ],
+      "explanation": "Cette interface oblige le service à déclarer explicitement (via un tableau statique) quels services il souhaite récupérer du conteneur."
+    },
+    {
+      "id": 3,
+      "question": "Quelle est la relation entre les Contrats Symfony et les PSRs (PHP-FIG) ?",
+      "type": "single_choice",
+      "options": [
+        "Ils sont totalement incompatibles.",
+        "Les Contrats Symfony remplacent les PSRs qui sont dépréciées.",
+        "Les Contrats sont souvent basés sur les PSRs, mais peuvent proposer une approche différente ou plus simple quand la PSR est jugée trop complexe.",
+        "Ce sont exactement la même chose."
+      ],
+      "correct_answers": [
+        "Les Contrats sont souvent basés sur les PSRs, mais peuvent proposer une approche différente ou plus simple quand la PSR est jugée trop complexe."
+      ],
+      "explanation": "Symfony supporte les PSRs, mais les Contracts offrent parfois une alternative plus pragmatique ou évolutive (ex: Cache Contract vs PSR-6)."
+    },
+    {
+      "id": 4,
+      "question": "Que contient le paquet `symfony/deprecation-contracts` ?",
+      "type": "single_choice",
+      "options": [
+        "Une liste de fonctions supprimées de PHP.",
+        "Une fonction `trigger_deprecation()` standardisée pour gérer les dépréciations.",
+        "Un outil pour supprimer le code mort.",
+        "Un journal des erreurs."
+      ],
+      "correct_answers": [
+        "Une fonction `trigger_deprecation()` standardisée pour gérer les dépréciations."
+      ],
+      "explanation": "Cela permet à tout l'écosystème Symfony (et autres librairies) de signaler des dépréciations de manière uniforme, gérées ensuite par le PHPUnit Bridge ou le ErrorHandler."
+    }
+  ]
+}

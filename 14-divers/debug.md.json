@@ -1,0 +1,66 @@
+{
+  "source_file": "14-divers/debug.md",
+  "title": "Débogage et VarDumper",
+  "questions": [
+    {
+      "id": 1,
+      "question": "À quoi sert la commande `php bin/console server:dump` ?",
+      "type": "single_choice",
+      "options": [
+        "À vider le cache du serveur.",
+        "À lancer un serveur d'affichage pour la fonction `dump()`, évitant de polluer la sortie HTTP (API) ou CLI.",
+        "À dumper la base de données.",
+        "À afficher la configuration du serveur web."
+      ],
+      "correct_answers": [
+        "À lancer un serveur d'affichage pour la fonction `dump()`, évitant de polluer la sortie HTTP (API) ou CLI."
+      ],
+      "explanation": "C'est idéal pour déboguer des APIs JSON ou des Workers : les `dump()` sont interceptés et affichés dans la console où tourne `server:dump`."
+    },
+    {
+      "id": 2,
+      "question": "Quel composant permet de mesurer le temps d'exécution de segments de code spécifiques et de les visualiser dans le Profiler ?",
+      "type": "single_choice",
+      "options": [
+        "Timer",
+        "Stopwatch",
+        "Clock",
+        "Benchmark"
+      ],
+      "correct_answers": [
+        "Stopwatch"
+      ],
+      "explanation": "Le composant `Stopwatch` (`$stopwatch->start()`, `$stopwatch->stop()`) ajoute des événements temporels dans la timeline du profiler."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi l'utilisation de la fonction `dump()` est-elle risquée en production ?",
+      "type": "single_choice",
+      "options": [
+        "Elle ralentit le serveur de 50%.",
+        "Elle expose des mots de passe.",
+        "Si le paquet `symfony/var-dumper` (ou le bundle Debug) n'est pas installé en prod (require-dev), cela causera une erreur fatale 'Call to undefined function'.",
+        "Elle remplit les logs d'erreurs."
+      ],
+      "correct_answers": [
+        "Si le paquet `symfony/var-dumper` (ou le bundle Debug) n'est pas installé en prod (require-dev), cela causera une erreur fatale 'Call to undefined function'."
+      ],
+      "explanation": "Bien que `dump()` soit défini globalement quand le composant est là, on tend à le garder en dépendance de dev. L'oublier dans le code peut donc casser la prod."
+    },
+    {
+      "id": 4,
+      "question": "Où s'affiche le résultat d'un `dump($var)` lorsqu'on navigue sur une page HTML avec le profiler activé ?",
+      "type": "single_choice",
+      "options": [
+        "Directement en haut de la page, en brut.",
+        "Dans la 'Debug Toolbar' (icône cible) au survol.",
+        "Dans la console du navigateur.",
+        "Dans le fichier de log."
+      ],
+      "correct_answers": [
+        "Dans la 'Debug Toolbar' (icône cible) au survol."
+      ],
+      "explanation": "Le VarDumper intercepte la sortie et l'intègre proprement dans la barre de débogage pour ne pas casser le layout de la page."
+    }
+  ]
+}

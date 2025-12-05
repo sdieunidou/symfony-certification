@@ -1,0 +1,66 @@
+{
+  "source_file": "14-divers/errors.md",
+  "title": "Gestion des Erreurs (ErrorHandler)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Dans quel dossier devez-vous placer vos templates Twig pour personnaliser les pages d'erreur (404, 500) ?",
+      "type": "single_choice",
+      "options": [
+        "`templates/errors/`",
+        "`templates/bundles/TwigBundle/Exception/`",
+        "`templates/exception/`",
+        "`src/Exception/Templates/`"
+      ],
+      "correct_answers": [
+        "`templates/bundles/TwigBundle/Exception/`"
+      ],
+      "explanation": "C'est la convention de surcharge de Symfony pour le TwigBundle. Par exemple : `error404.html.twig`."
+    },
+    {
+      "id": 2,
+      "question": "Comment prévisualiser une page d'erreur (ex: 404) en environnement de développement sans provoquer une vraie erreur ?",
+      "type": "single_choice",
+      "options": [
+        "En modifiant le code pour lancer une exception.",
+        "En accédant aux routes spéciales `/_error/{code}` (ex: `/_error/404`).",
+        "En passant `APP_ENV=prod` dans le `.env`.",
+        "C'est impossible."
+      ],
+      "correct_answers": [
+        "En accédant aux routes spéciales `/_error/{code}` (ex: `/_error/404`)."
+      ],
+      "explanation": "Symfony expose ces routes (via le routing de dev) pour permettre le design des pages d'erreur sans quitter le mode debug."
+    },
+    {
+      "id": 3,
+      "question": "Quelle nouveauté de Symfony 7.3 permet de gérer les erreurs fatales qui surviennent AVANT le démarrage du Kernel ou pendant le rendu Twig ?",
+      "type": "single_choice",
+      "options": [
+        "Le mode `Rescue`.",
+        "Les Pages d'Erreur Statiques (générées via `error:dump`).",
+        "Le `FatalErrorHandler`.",
+        "Le fallback HTML."
+      ],
+      "correct_answers": [
+        "Les Pages d'Erreur Statiques (générées via `error:dump`)."
+      ],
+      "explanation": "La commande `error:dump` génère des fichiers HTML statiques que le serveur web peut servir directement si PHP plante complètement."
+    },
+    {
+      "id": 4,
+      "question": "Quel handler Monolog est couramment utilisé en production pour n'écrire les logs qu'en cas d'erreur critique (gardant le contexte de debug en mémoire) ?",
+      "type": "single_choice",
+      "options": [
+        "`stream`",
+        "`fingers_crossed`",
+        "`buffer`",
+        "`filter`"
+      ],
+      "correct_answers": [
+        "`fingers_crossed`"
+      ],
+      "explanation": "Ce handler garde les logs dans un buffer et ne les écrit sur le disque que si un certain niveau (ex: ERROR) est atteint. Cela permet d'avoir les logs 'debug' qui ont précédé l'erreur sans polluer le disque le reste du temps."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "14-divers/deployment.md",
+  "title": "Bonnes Pratiques de Déploiement",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle commande Composer doit-on lancer lors d'un déploiement en production pour optimiser les performances et exclure les outils de dev ?",
+      "type": "single_choice",
+      "options": [
+        "`composer update`",
+        "`composer install --no-dev --optimize-autoloader`",
+        "`composer require prod`",
+        "`composer dump-autoload`"
+      ],
+      "correct_answers": [
+        "`composer install --no-dev --optimize-autoloader`"
+      ],
+      "explanation": "L'option `--no-dev` évite d'installer les paquets de test (phpunit, profiler) et `--optimize-autoloader` génère une classmap statique plus rapide."
+    },
+    {
+      "id": 2,
+      "question": "Quelle directive PHP (php.ini) est cruciale pour les performances en production mais nécessite un redémarrage de PHP-FPM à chaque déploiement ?",
+      "type": "single_choice",
+      "options": [
+        "`memory_limit=-1`",
+        "`opcache.validate_timestamps=0`",
+        "`display_errors=Off`",
+        "`max_execution_time=30`"
+      ],
+      "correct_answers": [
+        "`opcache.validate_timestamps=0`"
+      ],
+      "explanation": "Cette directive empêche PHP de vérifier si les fichiers ont changé sur le disque à chaque requête, éliminant beaucoup d'I/O. En contrepartie, le code n'est jamais rechargé sans restart."
+    },
+    {
+      "id": 3,
+      "question": "Comment gérer les migrations de base de données en production ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `doctrine:schema:update --force`.",
+        "Utiliser `doctrine:migrations:migrate --no-interaction`.",
+        "Le faire manuellement via PhpMyAdmin.",
+        "Supprimer et recréer la base."
+      ],
+      "correct_answers": [
+        "Utiliser `doctrine:migrations:migrate --no-interaction`."
+      ],
+      "explanation": "`schema:update` est dangereux et réservé au développement. Les migrations permettent un versioning contrôlé et réversible des changements de schéma."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi utilise-t-on la commande `composer dump-env prod` ?",
+      "type": "single_choice",
+      "options": [
+        "Pour supprimer le fichier `.env`.",
+        "Pour compiler tous les fichiers `.env` en un seul fichier PHP statique optimisé (`.env.local.php`).",
+        "Pour chiffrer les variables d'environnement.",
+        "Pour valider la syntaxe du fichier `.env`."
+      ],
+      "correct_answers": [
+        "Pour compiler tous les fichiers `.env` en un seul fichier PHP statique optimisé (`.env.local.php`)."
+      ],
+      "explanation": "Cela évite à Symfony de devoir parser les fichiers `.env` à chaque requête, ce qui est coûteux."
+    }
+  ]
+}

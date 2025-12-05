@@ -1,0 +1,66 @@
+{
+  "source_file": "15-design-patterns/gof-creation.md",
+  "title": "Design Patterns GoF - Création",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment le pattern Singleton est-il implémenté dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Par des classes statiques (`MyClass::getInstance()`).",
+        "Par le Conteneur de Services qui, par défaut, partage une instance unique de chaque service.",
+        "Il n'est pas utilisé.",
+        "Par le mot clé `global`."
+      ],
+      "correct_answers": [
+        "Par le Conteneur de Services qui, par défaut, partage une instance unique de chaque service."
+      ],
+      "explanation": "Dans Symfony, un service est un singleton 'par conteneur'. C'est la méthode propre pour gérer l'unicité sans coupler le code."
+    },
+    {
+      "id": 2,
+      "question": "Quel pattern utilise le `FormBuilder` pour construire un formulaire complexe étape par étape (`->add(...)`) ?",
+      "type": "single_choice",
+      "options": [
+        "Factory Method",
+        "Builder",
+        "Prototype",
+        "Abstract Factory"
+      ],
+      "correct_answers": [
+        "Builder"
+      ],
+      "explanation": "Le pattern Builder sépare la construction d'un objet complexe de sa représentation."
+    },
+    {
+      "id": 3,
+      "question": "Quand on utilise la méthode `$this->createForm()` dans un contrôleur, quel pattern est utilisé pour masquer la complexité d'instanciation ?",
+      "type": "single_choice",
+      "options": [
+        "Factory Method",
+        "Singleton",
+        "Prototype",
+        "Builder"
+      ],
+      "correct_answers": [
+        "Factory Method"
+      ],
+      "explanation": "Le contrôleur agit comme une fabrique (Factory) : on lui demande un produit (le Form) sans se soucier de comment il est instancié (dépendances, options...)."
+    },
+    {
+      "id": 4,
+      "question": "À quoi sert le pattern Prototype (clonage) dans le contexte des entités ?",
+      "type": "single_choice",
+      "options": [
+        "À rien, c'est interdit.",
+        "À dupliquer un objet existant (ex: un projet template) avec ses relations, en utilisant `__clone` pour assurer une copie profonde (Deep Copy).",
+        "À créer des singletons.",
+        "À valider les données."
+      ],
+      "correct_answers": [
+        "À dupliquer un objet existant (ex: un projet template) avec ses relations, en utilisant `__clone` pour assurer une copie profonde (Deep Copy)."
+      ],
+      "explanation": "Le clonage permet de créer une nouvelle instance basée sur une instance existante plutôt que de repartir de zéro."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "15-design-patterns/gof-structure.md",
+  "title": "Design Patterns GoF - Structure",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel pattern permet de faire collaborer une classe tierce (interface incompatible) avec votre propre code (interface attendue) ?",
+      "type": "single_choice",
+      "options": [
+        "Bridge",
+        "Adapter",
+        "Decorator",
+        "Proxy"
+      ],
+      "correct_answers": [
+        "Adapter"
+      ],
+      "explanation": "L'Adaptateur convertit l'interface d'une classe en une autre interface attendue par le client."
+    },
+    {
+      "id": 2,
+      "question": "Quel pattern permet d'ajouter du comportement (ex: logging) à un service existant sans modifier son code, via la configuration `decorates` ?",
+      "type": "single_choice",
+      "options": [
+        "Decorator",
+        "Facade",
+        "Composite",
+        "Flyweight"
+      ],
+      "correct_answers": [
+        "Decorator"
+      ],
+      "explanation": "La décoration de service remplace le service original par une classe enveloppe (Wrapper) qui ajoute le comportement puis délègue au service original."
+    },
+    {
+      "id": 3,
+      "question": "Comment Doctrine gère-t-il le Lazy Loading des relations (ex: `$user->getPosts()`) sans charger la base de données immédiatement ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant le pattern Proxy.",
+        "En utilisant le pattern Adapter.",
+        "En utilisant le pattern Singleton.",
+        "En utilisant des tableaux statiques."
+      ],
+      "correct_answers": [
+        "En utilisant le pattern Proxy."
+      ],
+      "explanation": "Doctrine injecte un objet Proxy (substitut) à la place de la vraie collection. La requête SQL n'est exécutée que lorsque l'on accède réellement aux données du proxy."
+    },
+    {
+      "id": 4,
+      "question": "Le client de test `static::createClient()` qui masque la complexité du Kernel et de la Request est un exemple de quel pattern ?",
+      "type": "single_choice",
+      "options": [
+        "Bridge",
+        "Facade",
+        "Composite",
+        "Flyweight"
+      ],
+      "correct_answers": [
+        "Facade"
+      ],
+      "explanation": "Une Façade fournit une interface simplifiée unifiée pour un ensemble d'interfaces d'un sous-système."
+    }
+  ]
+}
