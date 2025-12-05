@@ -36,6 +36,13 @@ Indique que cette route ne doit pas utiliser de Session.
 *   Si la route tente de démarrer la session, une exception est levée (en debug).
 *   Utile pour sécuriser les APIs REST.
 
+### 8. `_query` (Symfony 7.4)
+Permet d'injecter des paramètres de Query String par défaut, comme si l'utilisateur les avait passés dans l'URL.
+```php
+#[Route('/search', defaults: ['_query' => ['page' => 1]])]
+```
+*Attention : Déprécié de passer autre chose qu'un tableau en 7.4.*
+
 ## Exemple d'Usage (Contrôleur)
 
 ```php

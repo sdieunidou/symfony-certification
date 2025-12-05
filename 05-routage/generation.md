@@ -29,10 +29,24 @@ $url = $this->generateUrl('blog_show', ['slug' => 'my-post'], UrlGeneratorInterf
 
 {# Absolue (fonction url()) #}
 <a href="{{ url('blog_show', {slug: 'my-post'}) }}">Lien Absolu</a>
+
+{# Génération JS Safe #}
+<script>
+    const url = "{{ path('api_get', {id: 123})|escape('js') }}";
+</script>
 ```
 
 ### Dans un Service
 Injectez `Symfony\Component\Routing\Generator\UrlGeneratorInterface` (ou `RouterInterface` qui l'étend).
+
+### Dans une Commande (CLI)
+En CLI, il n'y a pas de requête HTTP, donc Symfony ne connaît pas le domaine (`localhost`).
+Il faut configurer `framework.router.default_uri` dans `config/packages/routing.yaml` :
+```yaml
+framework:
+    router:
+        default_uri: 'https://example.org/my/app'
+```
 
 ## Gestion des Paramètres
 *   **Paramètres de Route** : Remplacent les placeholders (`{slug}`).
@@ -41,12 +55,29 @@ Injectez `Symfony\Component\Routing\Generator\UrlGeneratorInterface` (ou `Router
     *   Appel : `generateUrl('blog_show', ['slug' => 'abc', 'ref' => 'twitter'])`
     *   Résultat : `/blog/abc?ref=twitter`
 
+## Signer des URIs (`UriSigner`)
+Pour sécuriser des liens sensibles (reset password, email validation) sans base de données, on peut signer l'URL avec un hash.
+
+```php
+// Service: Symfony\Component\HttpFoundation\UriSigner
+
+// Générer
+$url = 'https://example.com/reset?user=123';
+$signedUrl = $uriSigner->sign($url, new \DateInterval('PT1H')); // Expire dans 1h (Nouveauté 7.1)
+// Ajoute & _hash=... & _expiration=...
+
+// Vérifier
+if ($uriSigner->check($signedUrl)) {
+    // OK
+}
+```
+*   **Nouveauté 7.3** : Méthode `verify($uri)` qui lance des exceptions précises (`ExpiredSignedUriException`, `UnsignedUriException`).
+*   **Nouveauté 7.4** : Attribut `#[IsSignatureValid]` pour sécuriser un contrôleur automatiquement.
+
 ## 🧠 Concepts Clés
 1.  **Découplage** : Changer le path d'une route dans la config (`/blog/{slug}` -> `/article/{slug}`) met à jour instantanément toutes les URLs du site.
 2.  **Missing Params** : Si vous oubliez un paramètre obligatoire (`slug`), une `MissingMandatoryParametersException` est levée.
-3.  **Asset vs Route** :
-    *   `path()` / `url()` : Pour les pages dynamiques (Routing).
-    *   `asset()` : Pour les fichiers statiques (Images, CSS, JS) dans `public/`.
+3.  **HTTPS** : On peut forcer le HTTPS sur les URLs générées via `router.request_context.scheme` ou l'option `schemes: ['https']` sur la route.
 
 ## ⚠️ Points de vigilance (Certification)
 *   **Scheme Relative** : `UrlGeneratorInterface::NETWORK_PATH` génère des URLs commençant par `//example.com/...` (hérite du protocole courant, http ou https).

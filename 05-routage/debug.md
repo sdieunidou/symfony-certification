@@ -14,6 +14,12 @@ php bin/console debug:router
 # Filtrer par nom
 php bin/console debug:router app_blog
 
+# Filtrer par méthode (Nouveauté 7.3)
+php bin/console debug:router --method=POST
+
+# Afficher les alias (Nouveauté 7.3)
+php bin/console debug:router --show-aliases
+
 # Afficher les détails complets (Contrôleur, Regex, Defaults)
 php bin/console debug:router app_blog_show
 ```

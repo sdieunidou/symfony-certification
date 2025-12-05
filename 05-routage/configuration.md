@@ -9,6 +9,7 @@ Dans Symfony 7, la configuration se fait principalement par **Attributs PHP**.
 ### 1. Attributs PHP (`#[Route]`) - **Recommandé**
 Standard depuis Symfony 6/7. Remplace les Annotations (`@Route`).
 *   **Avantage** : Le code et la route sont au même endroit (Localité). Refactoring facile (renommer la méthode ou classe ne casse pas le lien).
+*   **Config** : Nécessite `config/routes/attributes.yaml` pour dire à Symfony où chercher les classes (Kernel).
 
 ```php
 namespace App\Controller;
@@ -27,6 +28,7 @@ Utilisé pour :
 *   Surcharger des routes de bundles tiers.
 *   Définir des routes statiques (sans contrôleur PHP dédié, ex: `TemplateController`).
 *   Monter des groupes de routes (Importer tout un dossier).
+*   Définir des **Alias de Route** (pour la BC).
 
 ```yaml
 # Import des attributs (Fait par défaut dans une app Symfony)
@@ -40,22 +42,60 @@ legacy_home:
     controller: App\Controller\HomeController::index
 ```
 
-### 3. XML / PHP
-Possibles mais rares (utilisés par les développeurs de bundles pour la performance ou l'autocomplétion XML). Non prioritaires pour la certification.
+### 3. PHP (`config/routes.php`)
+Utilisé par les power-users pour l'autocomplétion et le refactoring statique.
 
-## Nommage des Routes
-Chaque route interne doit avoir un nom unique (`name`).
-*   **Convention** : `snake_case`.
-*   **Préfixe** : `app_` pour vos routes applicatives, `admin_` pour l'admin, `api_` pour l'API. Cela évite les collisions avec les routes des bundles installés (`fos_user_...`).
-*   **Exemple** : `app_blog_show`, `app_cart_add`.
+```php
+return function (RoutingConfigurator $routes): void {
+    $routes->add('blog_list', '/blog')
+        ->controller([BlogController::class, 'list']);
+};
+```
+
+### 4. XML (Déprécié Symfony 7.4)
+Le format XML est officiellement déprécié en 7.4 et sera supprimé en 8.0.
+
+## Alias de Route (Route Aliasing)
+Permet de donner plusieurs noms à la même route (ex: pour la rétrocompatibilité après un renommage).
+*   **Nouveauté 7.3** : Support des alias dans les Attributs.
+
+```php
+#[Route('/product/{id}', name: 'product_show', alias: ['product_details'])]
+```
+
+On peut aussi marquer un alias comme **Déprécié** pour prévenir les utilisateurs de l'API :
+```php
+use Symfony\Component\Routing\Attribute\DeprecatedAlias;
+
+#[Route('/product/{id}', 
+    name: 'product_show', 
+    alias: new DeprecatedAlias(aliasName: 'product_old', package: 'my/app', version: '1.0')
+)]
+```
+
+## Groupes et Préfixes
+On peut grouper des routes (par classe ou par import) pour leur appliquer des options communes :
+*   **Prefix** : `/admin`
+*   **Name Prefix** : `admin_`
+*   **Host** : `admin.example.com`
+*   **Requirements** : `_locale: en|fr`
+
+```php
+#[Route('/blog', name: 'blog_')]
+class BlogController extends AbstractController
+{
+    // URL: /blog/list, Name: blog_list
+    #[Route('/list', name: 'list')] 
+    public function list() {}
+}
+```
 
 ## 🧠 Concepts Clés
-1.  **Compilation** : En prod, toutes les routes (Attributs, YAML, XML) sont compilées en un seul fichier PHP optimisé (regex géante) dans `var/cache/prod`. Il n'y a pas de différence de performance à l'exécution entre YAML et Attributs.
+1.  **Compilation** : En prod, toutes les routes (Attributs, YAML, PHP) sont compilées en un seul fichier PHP optimisé (regex géante) dans `var/cache/prod`. Il n'y a pas de différence de performance à l'exécution entre YAML et Attributs.
 2.  **First Match Wins** : Le routeur s'arrête à la **première** route qui correspond.
     *   `/blog/new` doit être déclaré **AVANT** `/blog/{slug}`. Sinon `{slug}` va matcher "new" et appeler le contrôleur `show` avec "new" comme slug.
 
 ## ⚠️ Points de vigilance (Certification)
-*   **Annotations vs Attributs** : Les annotations (`/** @Route */`) sont dépréciées et nécessitent `doctrine/annotations`. Symfony 7 utilise les attributs natifs PHP 8 (`#[Route]`).
 *   **UTF-8** : Par défaut, le routeur suppose que les URLs sont en UTF-8. On peut configurer `utf8: true` pour matcher des caractères spéciaux (emojis, accents) dans les regex.
 
 ## Ressources

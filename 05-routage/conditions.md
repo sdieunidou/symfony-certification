@@ -26,7 +26,7 @@ class MobileController extends AbstractController
 ```
 
 ## Variables Disponibles
-Dans l'expression, vous avez accès à deux variables objets :
+Dans l'expression, vous avez accès à trois variables :
 
 1.  **`request`** (`Symfony\Component\HttpFoundation\Request`) : La requête HTTP complète.
     *   `request.headers.get('Referer')`
@@ -35,6 +35,14 @@ Dans l'expression, vous avez accès à deux variables objets :
 2.  **`context`** (`Symfony\Component\Routing\RequestContext`) : Le contexte de routage (subset de la requête utilisé par le routeur).
     *   `context.getMethod()`
     *   `context.getHost()`
+3.  **`params`** (`array`) : Les paramètres de route matchés (ex: `params['id']`).
+    *   `condition: "params['id'] < 1000"`
+
+## Fonctions Disponibles
+*   `env('VARIABLE_NAME')` : Lire une variable d'environnement.
+*   `service('service_alias')` : Appeler un service dédié au matching (Routing Condition Service).
+    *   Nécessite que le service soit tagué `routing.condition_service` (ou attribut `#[AsRoutingConditionService]`).
+    *   Ex: `condition: "service('route_checker').check(request)"`.
 
 ## Cas d'usage Avancés
 *   **Feature Flipping** : Router vers un nouveau contrôleur si un paramètre de requête est présent.
@@ -47,7 +55,7 @@ Dans l'expression, vous avez accès à deux variables objets :
 
 ## ⚠️ Points de vigilance (Certification)
 *   **Performance** : Contrairement aux regex d'URL qui sont compilées (rapides), les conditions sont évaluées en PHP au runtime. Abuser des conditions sur des routes très fréquentées peut avoir un impact (minime mais existant).
-*   **Dumper** : Les conditions ne peuvent pas être dumpées en règles Apache/Nginx pures. Elles nécessitent que PHP soit exécuté.
+*   **URL Generation** : Les conditions ne sont **PAS** prises en compte lors de la génération d'URL (`generateUrl`). Si vous avez deux routes avec le même nom et des conditions différentes, Symfony prendra la première, point barre.
 
 ## Ressources
 *   [Symfony Docs - Route Conditions](https://symfony.com/doc/current/routing.html#matching-expressions)
