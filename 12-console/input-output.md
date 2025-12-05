@@ -38,6 +38,37 @@ $name = $input->getArgument('name');
 $iter = $input->getOption('iterations');
 ```
 
+### Injection via Attributs (Symfony 7.x)
+Vous pouvez injecter directement les arguments/options dans la méthode `__invoke` ou `execute` via l'attribut `#[Argument]`.
+
+```php
+use Symfony\Component\Console\Attribute\Argument;
+
+public function __invoke(
+    #[Argument('Description')] string $username, 
+    OutputInterface $output
+): int {
+    $output->writeln("User: $username");
+    return Command::SUCCESS;
+}
+```
+
+## Output Sections (Sections de Sortie)
+Permet de diviser la sortie en plusieurs zones indépendantes pour effacer/réécrire une partie spécifique (ex: barres de progression multiples, tableau dynamique).
+
+```php
+$section1 = $output->section();
+$section2 = $output->section();
+
+$section1->writeln('Téléchargement...');
+$section2->writeln('Vérification...');
+
+// Écrase le contenu de la section 1 uniquement
+$section1->overwrite('Téléchargement terminé.');
+// Efface le contenu de la section 2
+$section2->clear(); 
+```
+
 ## 🧠 Concepts Clés
 1.  **--** : L'opérateur double tiret `--` permet de stopper le parsing des options. Tout ce qui suit sera considéré comme des arguments. Utile si un argument commence par un tiret.
 2.  **Validation** : La console ne valide pas le format des données (email, int), juste leur présence. Pour valider, faites-le manuellement dans `execute`.

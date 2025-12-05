@@ -6,43 +6,33 @@ C'est le point d'entrée pour les tâches CRON, les imports de données, ou les 
 
 ## Structure d'une Commande
 
+### 1. Classe Standard (Extends Command)
+
 ```php
 namespace App\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\SymfonyStyle;
+// ...
 
-#[AsCommand(name: 'app:test', description: 'Test command')]
+#[AsCommand(name: 'app:test')]
 class TestCommand extends Command
 {
-    public function __construct(
-        private MyService $service // Injection de dépendance
-    ) {
-        parent::__construct();
-    }
+    // ... méthode execute() ...
+}
+```
 
-    protected function configure(): void
-    {
-        // Définition inputs
-    }
+### 2. Commande Invokable (Symfony 7.3+)
+Depuis Symfony 7.3, il n'est plus obligatoire d'étendre la classe de base `Command`. Il suffit d'implémenter une méthode `__invoke()`.
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+```php
+#[AsCommand(name: 'app:simple')]
+class SimpleCommand
+{
+    public function __invoke(OutputInterface $output): int
     {
-        $io = new SymfonyStyle($input, $output);
-        
-        try {
-            $this->service->doSomething();
-            $io->success('Opération réussie.');
-            
-            return Command::SUCCESS; // 0
-        } catch (\Exception $e) {
-            $io->error($e->getMessage());
-            
-            return Command::FAILURE; // 1
-        }
+        $output->writeln('Hello !');
+        return Command::SUCCESS;
     }
 }
 ```

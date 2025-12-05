@@ -20,9 +20,10 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 
 #[AsCommand(
-    name: 'app:user:create',
+    name: 'app:user:create|app:add-user', // Alias via pipe (Symfony 7.4+)
     description: 'Crée un nouvel utilisateur.',
-    aliases: ['app:add-user'],
+    aliases: ['app:new-user'], // Alias classique (tableau)
+    usages: ['bob', 'alice --admin'], // Exemples d'usage (Symfony 7.4+)
     hidden: false
 )]
 class CreateUserCommand extends Command

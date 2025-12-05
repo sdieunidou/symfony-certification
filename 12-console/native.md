@@ -13,6 +13,10 @@ Un développeur Symfony passe 30% de son temps dans le terminal. Connaître les 
 *   `cache:pool:clear` : Vide les pools de cache PSR-6 (Redis, Filesystem).
 *   `cache:warmup` : Prépare le cache (sans le vider avant).
 
+## Autocomplétion & Profiling
+*   **Complétion** : `php bin/console completion` génère le script pour Bash/Zsh/Fish.
+*   **Profiling** : `php bin/console app:my-command --profile` active le profileur Symfony pour la commande (visible dans le web profiler).
+
 ## Débogage (Debug Bundle)
 *   `debug:container` : Liste les services publics.
 *   `debug:autowiring` : Liste les types injectables (interfaces).
