@@ -1,0 +1,126 @@
+{
+  "source_file": "01-php/spl.md",
+  "title": "SPL (Standard PHP Library)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Qu'est-ce que la SPL (Standard PHP Library) ?",
+      "type": "single_choice",
+      "options": [
+        "Un framework PHP ancien.",
+        "Une collection d'interfaces et de classes standards intégrées au cœur de PHP pour résoudre des problèmes courants.",
+        "Une extension tierce à installer via PECL.",
+        "Un gestionnaire de paquets."
+      ],
+      "correct_answers": [
+        "Une collection d'interfaces et de classes standards intégrées au cœur de PHP pour résoudre des problèmes courants."
+      ],
+      "explanation": "La SPL fournit des outils essentiels (Itérateurs, Structures de données, Exceptions, Gestion de fichiers) disponibles nativement."
+    },
+    {
+      "id": 2,
+      "question": "Quelle fonction de la SPL est le moteur de l'autoloading moderne (utilisé par Composer) ?",
+      "type": "single_choice",
+      "options": [
+        "__autoload()",
+        "spl_autoload_register()",
+        "require_once()",
+        "include_path()"
+      ],
+      "correct_answers": [
+        "spl_autoload_register()"
+      ],
+      "explanation": "`spl_autoload_register` permet d'empiler plusieurs autoloaders, contrairement à l'ancienne méthode `__autoload` qui est obsolète."
+    },
+    {
+      "id": 3,
+      "question": "Quelle structure de données SPL permet d'utiliser des objets comme clés d'une collection ?",
+      "type": "single_choice",
+      "options": [
+        "SplFixedArray",
+        "SplObjectStorage",
+        "SplHeap",
+        "ArrayObject"
+      ],
+      "correct_answers": [
+        "SplObjectStorage"
+      ],
+      "explanation": "Les tableaux PHP standards ne peuvent avoir que des entiers ou des chaînes comme clés. `SplObjectStorage` permet de mapper des objets à des données."
+    },
+    {
+      "id": 4,
+      "question": "Si j'implémente l'interface `ArrayAccess` sur ma classe, que puis-je faire ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser l'objet dans une boucle foreach.",
+        "Accéder aux propriétés de l'objet avec la syntaxe tableau (ex: `$obj['key']`).",
+        "Compter les éléments avec `count()`.",
+        "Convertir l'objet en array avec `(array)`."
+      ],
+      "correct_answers": [
+        "Accéder aux propriétés de l'objet avec la syntaxe tableau (ex: `$obj['key']`)."
+      ],
+      "explanation": "Attention, `ArrayAccess` ne rend pas l'objet itérable. Pour le foreach, il faut `Iterator`."
+    },
+    {
+      "id": 5,
+      "question": "Quelle classe SPL est utilisée intensivement par Symfony (Finder, UploadedFile) pour manipuler les fichiers ?",
+      "type": "single_choice",
+      "options": [
+        "SplFileObject",
+        "SplFileInfo",
+        "DirectoryIterator",
+        "FileSystem"
+      ],
+      "correct_answers": [
+        "SplFileInfo"
+      ],
+      "explanation": "`SplFileInfo` fournit une API orientée objet pour récupérer des informations sur un fichier (taille, chemin, permissions)."
+    },
+    {
+      "id": 6,
+      "question": "Quelle exception de la SPL devriez-vous lancer si un argument passé à votre méthode n'est pas du type ou de la forme attendue ?",
+      "type": "single_choice",
+      "options": [
+        "Exception",
+        "RuntimeException",
+        "InvalidArgumentException",
+        "UnexpectedValueException"
+      ],
+      "correct_answers": [
+        "InvalidArgumentException"
+      ],
+      "explanation": "C'est l'exception standard (qui hérite de LogicException) pour signaler une mauvaise utilisation d'une méthode par le développeur appelant."
+    },
+    {
+      "id": 7,
+      "question": "Peut-on implémenter l'interface `Traversable` directement ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, sans problème.",
+        "Non, c'est une interface interne. Il faut implémenter Iterator ou IteratorAggregate.",
+        "Oui, mais seulement sur des classes abstraites.",
+        "Oui, en PHP 8 uniquement."
+      ],
+      "correct_answers": [
+        "Non, c'est une interface interne. Il faut implémenter Iterator ou IteratorAggregate."
+      ],
+      "explanation": "`Traversable` est le parent abstrait que PHP vérifie pour le `foreach`, mais les classes utilisateur doivent passer par une de ses sous-interfaces concrètes."
+    },
+    {
+      "id": 8,
+      "question": "Quelle structure SPL est optimisée pour gérer un tableau de taille fixe avec des indices entiers ?",
+      "type": "single_choice",
+      "options": [
+        "SplDoublyLinkedList",
+        "SplFixedArray",
+        "SplQueue",
+        "ArrayObject"
+      ],
+      "correct_answers": [
+        "SplFixedArray"
+      ],
+      "explanation": "`SplFixedArray` est plus rapide et consomme moins de mémoire qu'un tableau PHP classique car il n'a pas besoin de gérer le hachage des clés associatives."
+    }
+  ]
+}

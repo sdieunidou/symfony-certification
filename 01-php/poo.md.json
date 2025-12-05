@@ -1,0 +1,126 @@
+{
+  "source_file": "01-php/poo.md",
+  "title": "Programmation Orientée Objet (POO)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence entre l'opérateur `==` et `===` lors de la comparaison de deux objets ?",
+      "type": "single_choice",
+      "options": [
+        "`==` compare les références mémoire, `===` compare les valeurs des propriétés.",
+        "`==` compare les valeurs des propriétés (égalité), `===` vérifie s'il s'agit de la même instance en mémoire (identité).",
+        "Il n'y a aucune différence pour les objets.",
+        "`===` est plus lent que `==`."
+      ],
+      "correct_answers": [
+        "`==` compare les valeurs des propriétés (égalité), `===` vérifie s'il s'agit de la même instance en mémoire (identité)."
+      ],
+      "explanation": "L'opérateur strict `===` retourne true uniquement si les deux variables pointent vers le même objet instancié (même ID d'objet)."
+    },
+    {
+      "id": 2,
+      "question": "Qu'est-ce que le 'Late Static Binding' (ex: `static::method()`) ?",
+      "type": "single_choice",
+      "options": [
+        "Une méthode pour lier des variables statiques tardivement.",
+        "Un mécanisme qui résout la méthode appelée au moment de l'exécution en fonction de la classe appelante réelle (souvent l'enfant), et non de la classe où le code est écrit.",
+        "Une erreur de compilation courante.",
+        "L'obligation de déclarer les méthodes statiques à la fin de la classe."
+      ],
+      "correct_answers": [
+        "Un mécanisme qui résout la méthode appelée au moment de l'exécution en fonction de la classe appelante réelle (souvent l'enfant), et non de la classe où le code est écrit."
+      ],
+      "explanation": "`static::` permet d'accéder aux méthodes/propriétés surchargées dans une classe enfant, même si l'appel est fait depuis une méthode de la classe parente. `self::` référencerait le parent."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert la méthode magique `__invoke()` ?",
+      "type": "single_choice",
+      "options": [
+        "À invoquer le constructeur parent.",
+        "À permettre d'utiliser un objet comme s'il était une fonction (ex: `$obj()`).",
+        "À intercepter les appels de méthodes inexistantes.",
+        "À cloner l'objet."
+      ],
+      "correct_answers": [
+        "À permettre d'utiliser un objet comme s'il était une fonction (ex: `$obj()`)."
+      ],
+      "explanation": "C'est très utilisé dans Symfony pour les Single Action Controllers ou les Message Handlers."
+    },
+    {
+      "id": 4,
+      "question": "Si une classe enfant définit son propre constructeur `__construct`, que se passe-t-il avec le constructeur du parent ?",
+      "type": "single_choice",
+      "options": [
+        "Il est appelé automatiquement avant celui de l'enfant.",
+        "Il est appelé automatiquement après celui de l'enfant.",
+        "Il n'est pas appelé automatiquement, l'enfant doit appeler explicitement `parent::__construct()`.",
+        "Il est supprimé et ne peut plus être appelé."
+      ],
+      "correct_answers": [
+        "Il n'est pas appelé automatiquement, l'enfant doit appeler explicitement `parent::__construct()`."
+      ],
+      "explanation": "En PHP, la surcharge du constructeur écrase celui du parent. L'appel manuel est nécessaire pour garantir l'initialisation correcte de la classe parente."
+    },
+    {
+      "id": 5,
+      "question": "Qu'est-ce que la Covariance (type de retour) ?",
+      "type": "single_choice",
+      "options": [
+        "La capacité d'une méthode enfant à retourner un type plus précis (sous-type) que celui défini dans le parent.",
+        "La capacité d'une méthode enfant à retourner un type plus large que le parent.",
+        "L'interdiction de changer le type de retour.",
+        "La possibilité de retourner `void`."
+      ],
+      "correct_answers": [
+        "La capacité d'une méthode enfant à retourner un type plus précis (sous-type) que celui défini dans le parent."
+      ],
+      "explanation": "C'est conforme au principe de Liskov : si le parent promet un `Animal`, l'enfant a le droit de promettre (et retourner) un `Chat`."
+    },
+    {
+      "id": 6,
+      "question": "Qu'est-ce que la Contravariance (type d'argument) ?",
+      "type": "single_choice",
+      "options": [
+        "La capacité d'une méthode enfant à accepter un type d'argument plus large (super-type) que celui défini dans le parent.",
+        "La capacité d'une méthode enfant à restreindre le type d'argument.",
+        "L'obligation d'avoir exactement les mêmes arguments.",
+        "Une erreur de typage."
+      ],
+      "correct_answers": [
+        "La capacité d'une méthode enfant à accepter un type d'argument plus large (super-type) que celui défini dans le parent."
+      ],
+      "explanation": "Si le parent exige un `Chat`, l'enfant peut accepter n'importe quel `Animal`, car il saura forcément traiter le `Chat` demandé par le contrat initial."
+    },
+    {
+      "id": 7,
+      "question": "Que fait la méthode `__clone()` ?",
+      "type": "single_choice",
+      "options": [
+        "Elle crée une nouvelle instance vide.",
+        "Elle est appelée automatiquement après le clonage superficiel pour permettre de cloner aussi les propriétés objets (Deep Copy).",
+        "Elle empêche le clonage de l'objet.",
+        "Elle remplace le constructeur."
+      ],
+      "correct_answers": [
+        "Elle est appelée automatiquement après le clonage superficiel pour permettre de cloner aussi les propriétés objets (Deep Copy)."
+      ],
+      "explanation": "Par défaut, `clone $obj` copie les propriétés scalaires mais garde les références vers les mêmes sous-objets. `__clone` permet de corriger cela."
+    },
+    {
+      "id": 8,
+      "question": "Depuis PHP 8.2, que signifie déclarer une classe comme `readonly` ?",
+      "type": "single_choice",
+      "options": [
+        "On ne peut plus créer de nouvelles instances.",
+        "Toutes ses propriétés sont implicitement `readonly`, typées, et ne peuvent être initialisées qu'une fois.",
+        "Elle ne peut pas être héritée.",
+        "Ses méthodes ne peuvent pas modifier d'état externe."
+      ],
+      "correct_answers": [
+        "Toutes ses propriétés sont implicitement `readonly`, typées, et ne peuvent être initialisées qu'une fois."
+      ],
+      "explanation": "Cela facilite la création d'objets immuables (Immutable Objects), comme des DTO ou Value Objects."
+    }
+  ]
+}

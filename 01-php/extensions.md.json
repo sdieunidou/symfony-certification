@@ -1,0 +1,126 @@
+{
+  "source_file": "01-php/extensions.md",
+  "title": "Extensions PHP",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment sont gérées les extensions PHP nécessaires à un projet Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Elles sont toutes incluses dans le framework.",
+        "Elles doivent être vérifiées dans le `composer.json` (section require) et activées dans le `php.ini`.",
+        "Symfony télécharge automatiquement les binaires manquants.",
+        "On ne peut pas utiliser d'extensions externes avec Symfony."
+      ],
+      "correct_answers": [
+        "Elles doivent être vérifiées dans le `composer.json` (section require) et activées dans le `php.ini`."
+      ],
+      "explanation": "Composer vérifie la présence des extensions requises (ex: `ext-intl`) lors de l'installation, mais c'est à l'administrateur système de les installer et activer."
+    },
+    {
+      "id": 2,
+      "question": "Quelle extension est cruciale pour la gestion correcte de l'internationalisation et le formatage des données (dates, monnaies) dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "mbstring",
+        "intl",
+        "gd",
+        "curl"
+      ],
+      "correct_answers": [
+        "intl"
+      ],
+      "explanation": "L'extension `intl` (Internationalization Functions) est indispensable pour les composants de traduction, de validation et de formatage de Symfony."
+    },
+    {
+      "id": 3,
+      "question": "Qu'est-ce qu'un 'Polyfill' dans l'écosystème PHP/Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Un outil de remplissage de base de données.",
+        "Une bibliothèque PHP pure qui émule les fonctionnalités d'une extension native manquante.",
+        "Un plugin pour l'IDE.",
+        "Un système de cache."
+      ],
+      "correct_answers": [
+        "Une bibliothèque PHP pure qui émule les fonctionnalités d'une extension native manquante."
+      ],
+      "explanation": "Les polyfills (comme `symfony/polyfill-intl-icu`) permettent d'assurer le fonctionnement du code même si l'extension native C n'est pas installée, au prix d'une performance moindre."
+    },
+    {
+      "id": 4,
+      "question": "À quoi sert l'extension OPcache ?",
+      "type": "single_choice",
+      "options": [
+        "À mettre en cache les résultats des requêtes SQL.",
+        "À stocker les sessions utilisateurs.",
+        "À mettre en cache le bytecode PHP compilé en mémoire partagée.",
+        "À optimiser les images."
+      ],
+      "correct_answers": [
+        "À mettre en cache le bytecode PHP compilé en mémoire partagée."
+      ],
+      "explanation": "OPcache améliore considérablement les performances en évitant la recompilation du code PHP à chaque requête. Il est indispensable en production."
+    },
+    {
+      "id": 5,
+      "question": "Quelle fonctionnalité d'OPcache (PHP 7.4+) permet de charger les classes en mémoire au démarrage du serveur ?",
+      "type": "single_choice",
+      "options": [
+        "JIT Compiler",
+        "Preloading",
+        "Opcode Caching",
+        "FastCGI"
+      ],
+      "correct_answers": [
+        "Preloading"
+      ],
+      "explanation": "Le Preloading permet de charger et compiler des frameworks entiers au démarrage du service PHP-FPM, rendant les classes disponibles immédiatement pour toutes les requêtes."
+    },
+    {
+      "id": 6,
+      "question": "Quelle extension de débogage ne doit JAMAIS être activée en production en raison de son impact sur les performances ?",
+      "type": "single_choice",
+      "options": [
+        "opcache",
+        "xdebug",
+        "intl",
+        "pdo"
+      ],
+      "correct_answers": [
+        "xdebug"
+      ],
+      "explanation": "Xdebug ajoute un surcoût (overhead) très important à l'exécution du code et ne doit être utilisé qu'en environnement de développement."
+    },
+    {
+      "id": 7,
+      "question": "Quelle extension moderne remplace `mcrypt` pour la cryptographie dans PHP ?",
+      "type": "single_choice",
+      "options": [
+        "hash",
+        "sodium",
+        "bcrypt",
+        "md5"
+      ],
+      "correct_answers": [
+        "sodium"
+      ],
+      "explanation": "L'extension `sodium` (Libsodium) est le standard moderne, sécurisé et performant pour la cryptographie en PHP depuis la version 7.2."
+    },
+    {
+      "id": 8,
+      "question": "Comment vérifier programmatiquement si une extension est chargée ?",
+      "type": "single_choice",
+      "options": [
+        "extension_exists('name')",
+        "extension_loaded('name')",
+        "phpinfo()",
+        "get_loaded_extensions()"
+      ],
+      "correct_answers": [
+        "extension_loaded('name')"
+      ],
+      "explanation": "La fonction `extension_loaded('nom_extension')` retourne `true` si l'extension est active."
+    }
+  ]
+}

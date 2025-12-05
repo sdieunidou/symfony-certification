@@ -1,0 +1,126 @@
+{
+  "source_file": "01-php/namespaces.md",
+  "title": "Namespaces (Espaces de noms)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle norme PSR régit l'organisation des namespaces et l'autoloading dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-1",
+        "PSR-4",
+        "PSR-7",
+        "PSR-12"
+      ],
+      "correct_answers": [
+        "PSR-4"
+      ],
+      "explanation": "La PSR-4 (Autoloader) définit la correspondance standard entre l'arborescence des fichiers et les namespaces (ex: `App\Controller` -> `src/Controller`)."
+    },
+    {
+      "id": 2,
+      "question": "Dans un fichier PHP, où doit se placer la déclaration `namespace` ?",
+      "type": "single_choice",
+      "options": [
+        "N'importe où dans le fichier.",
+        "Toujours en première ligne significative (après `<?php` et les éventuels `declare`).",
+        "Après les instructions `use`.",
+        "À l'intérieur de la classe."
+      ],
+      "correct_answers": [
+        "Toujours en première ligne significative (après `<?php` et les éventuels `declare`)."
+      ],
+      "explanation": "La déclaration du namespace doit être la toute première instruction (hors commentaires et declare), sinon PHP génère une erreur fatale."
+    },
+    {
+      "id": 3,
+      "question": "Si j'utilise la classe `Exception` native de PHP à l'intérieur d'un namespace `App\Service` sans l'importer, que se passe-t-il ?",
+      "type": "single_choice",
+      "options": [
+        "PHP trouve automatiquement la classe globale `Exception`.",
+        "PHP cherche la classe `App\Service\Exception` et échoue si elle n'existe pas.",
+        "PHP génère un warning mais utilise la classe globale.",
+        "PHP crée une classe `Exception` vide à la volée."
+      ],
+      "correct_answers": [
+        "PHP cherche la classe `App\Service\Exception` et échoue si elle n'existe pas."
+      ],
+      "explanation": "Dans un namespace, les appels de classe sont relatifs au namespace courant par défaut. Pour utiliser une classe globale, il faut soit l'importer (`use Exception`), soit la préfixer (`\Exception`)."
+    },
+    {
+      "id": 4,
+      "question": "Comment importer plusieurs classes d'un même namespace en une seule instruction (depuis PHP 7.0) ?",
+      "type": "single_choice",
+      "options": [
+        "use Symfony\Component\HttpKernel\*",
+        "use Symfony\Component\HttpKernel\{Bundle, Kernel};",
+        "include namespace Symfony\Component\HttpKernel;",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "use Symfony\Component\HttpKernel\{Bundle, Kernel};"
+      ],
+      "explanation": "La syntaxe de groupement `{A, B}` permet de simplifier les imports multiples provenant du même préfixe."
+    },
+    {
+      "id": 5,
+      "question": "Comment résoudre un conflit de nom entre deux classes importées (ex: `App\Entity\User` et `App\Security\User`) ?",
+      "type": "single_choice",
+      "options": [
+        "C'est impossible, il faut renommer une des classes à la source.",
+        "En utilisant un alias avec le mot-clé `as` (ex: `use App\Security\User as SecurityUser`).",
+        "En changeant l'ordre des imports.",
+        "En utilisant des namespaces relatifs."
+      ],
+      "correct_answers": [
+        "En utilisant un alias avec le mot-clé `as` (ex: `use App\Security\User as SecurityUser`)."
+      ],
+      "explanation": "L'aliasing permet de donner un nom local unique à une classe importée pour éviter les collisions."
+    },
+    {
+      "id": 6,
+      "question": "Quel est le comportement de PHP pour les fonctions et constantes natives appelées à l'intérieur d'un namespace (ex: `strlen()`) ?",
+      "type": "single_choice",
+      "options": [
+        "Il cherche d'abord dans le namespace courant, puis 'fallback' sur le namespace global si non trouvé.",
+        "Il cherche uniquement dans le namespace courant et échoue si non trouvé.",
+        "Il cherche uniquement dans le global.",
+        "Il exige un import explicite."
+      ],
+      "correct_answers": [
+        "Il cherche d'abord dans le namespace courant, puis 'fallback' sur le namespace global si non trouvé."
+      ],
+      "explanation": "Contrairement aux classes, les fonctions et constantes bénéficient d'un mécanisme de repli vers l'espace global."
+    },
+    {
+      "id": 7,
+      "question": "Que représente le namespace spécial `namespace` utilisé comme préfixe (ex: `new namespace\MaClasse()`) ?",
+      "type": "single_choice",
+      "options": [
+        "Le namespace global.",
+        "Le namespace courant du fichier.",
+        "Le namespace parent.",
+        "Le namespace 'Vendor'."
+      ],
+      "correct_answers": [
+        "Le namespace courant du fichier."
+      ],
+      "explanation": "C'est l'équivalent explicite pour dire 'dans le namespace actuel', similaire à `self::` pour les classes."
+    },
+    {
+      "id": 8,
+      "question": "Les namespaces ont-ils un impact sur les performances à l'exécution (Runtime) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, ils ralentissent chaque appel de classe.",
+        "Non, la résolution des noms est effectuée à la compilation.",
+        "Oui, mais uniquement s'il y a beaucoup de sous-namespaces.",
+        "Oui, car l'autoloader doit parcourir les dossiers."
+      ],
+      "correct_answers": [
+        "Non, la résolution des noms est effectuée à la compilation."
+      ],
+      "explanation": "Une fois compilé en opcode, les noms sont pleinement résolus. L'impact est donc nul à l'exécution."
+    }
+  ]
+}

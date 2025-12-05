@@ -1,0 +1,127 @@
+{
+  "source_file": "01-php/interfaces.md",
+  "title": "Interfaces",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le rôle principal d'une interface en PHP ?",
+      "type": "single_choice",
+      "options": [
+        "Fournir une implémentation par défaut pour les méthodes.",
+        "Définir un contrat strict (méthodes publiques) que les classes doivent implémenter.",
+        "Permettre l'héritage multiple de propriétés.",
+        "Optimiser la compilation du code."
+      ],
+      "correct_answers": [
+        "Définir un contrat strict (méthodes publiques) que les classes doivent implémenter."
+      ],
+      "explanation": "Une interface définit la signature des méthodes (le 'quoi') sans fournir d'implémentation (le 'comment'), garantissant que la classe respecte un contrat spécifique."
+    },
+    {
+      "id": 2,
+      "question": "Quelles sont les limitations d'une interface ?",
+      "type": "multiple_choice",
+      "options": [
+        "Elle ne peut pas contenir de propriétés (variables).",
+        "Toutes ses méthodes sont implicitement publiques.",
+        "Elle ne peut pas avoir de constantes.",
+        "Une classe ne peut implémenter qu'une seule interface."
+      ],
+      "correct_answers": [
+        "Elle ne peut pas contenir de propriétés (variables).",
+        "Toutes ses méthodes sont implicitement publiques."
+      ],
+      "explanation": "Les interfaces ne peuvent pas avoir d'état (propriétés) et ne gèrent pas la visibilité (tout est public). En revanche, elles peuvent avoir des constantes et une classe peut en implémenter plusieurs."
+    },
+    {
+      "id": 3,
+      "question": "En PHP 7.4+, qu'est-ce que la covariance concernant les interfaces ?",
+      "type": "single_choice",
+      "options": [
+        "La possibilité d'accepter un type d'argument plus large dans l'implémentation.",
+        "La possibilité de définir un type de retour plus précis (enfant) dans l'implémentation que dans l'interface.",
+        "L'obligation d'utiliser exactement les mêmes types partout.",
+        "La capacité à implémenter deux interfaces avec la même méthode."
+      ],
+      "correct_answers": [
+        "La possibilité de définir un type de retour plus précis (enfant) dans l'implémentation que dans l'interface."
+      ],
+      "explanation": "La covariance permet à une méthode d'implémentation de retourner un sous-type du type de retour défini dans l'interface (ex: retourner `User` au lieu de `?User` ou `UserInterface`)."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi est-il déconseillé de mettre `__construct` dans une interface ?",
+      "type": "single_choice",
+      "options": [
+        "C'est interdit par le langage.",
+        "Le constructeur relève de l'implémentation (comment on construit l'objet) et non du comportement (ce que l'objet fait).",
+        "Cela empêche l'autowiring de Symfony.",
+        "Les constructeurs ne peuvent pas être publics."
+      ],
+      "correct_answers": [
+        "Le constructeur relève de l'implémentation (comment on construit l'objet) et non du comportement (ce que l'objet fait)."
+      ],
+      "explanation": "Une interface définit un contrat d'utilisation (API). Imposer une signature de constructeur lie trop fortement l'interface à l'implémentation concrète et à ses dépendances."
+    },
+    {
+      "id": 5,
+      "question": "Comment Symfony utilise-t-il les interfaces pour l'Injection de Dépendances ?",
+      "type": "single_choice",
+      "options": [
+        "Il ignore les interfaces.",
+        "Via l'Autowiring : on type-hint l'interface (ex: LoggerInterface) et Symfony injecte le service concret correspondant.",
+        "Il oblige à créer une classe abstraite pour chaque interface.",
+        "Il utilise les interfaces uniquement pour les contrôleurs."
+      ],
+      "correct_answers": [
+        "Via l'Autowiring : on type-hint l'interface (ex: LoggerInterface) et Symfony injecte le service concret correspondant."
+      ],
+      "explanation": "C'est un principe clé : dépendre des abstractions. Symfony map automatiquement les interfaces courantes aux services concrets."
+    },
+    {
+      "id": 6,
+      "question": "Que stipule le principe de Ségrégation des Interfaces (ISP) de SOLID ?",
+      "type": "single_choice",
+      "options": [
+        "Il faut créer une seule interface géante pour regrouper toutes les fonctionnalités.",
+        "Il faut préférer plusieurs petites interfaces spécifiques plutôt qu'une interface généraliste.",
+        "Les interfaces ne doivent jamais hériter d'autres interfaces.",
+        "Chaque classe doit avoir sa propre interface."
+      ],
+      "correct_answers": [
+        "Il faut préférer plusieurs petites interfaces spécifiques plutôt qu'une interface généraliste."
+      ],
+      "explanation": "Cela évite aux classes d'avoir à implémenter des méthodes dont elles n'ont pas besoin (méthodes vides ou qui lancent des exceptions)."
+    },
+    {
+      "id": 7,
+      "question": "Une interface peut-elle étendre une autre interface ?",
+      "type": "single_choice",
+      "options": [
+        "Non, l'héritage est réservé aux classes.",
+        "Oui, une interface peut étendre une ou plusieurs autres interfaces.",
+        "Oui, mais une seule à la fois.",
+        "Uniquement si elles sont dans le même namespace."
+      ],
+      "correct_answers": [
+        "Oui, une interface peut étendre une ou plusieurs autres interfaces."
+      ],
+      "explanation": "Les interfaces supportent l'héritage multiple via `interface A extends B, C`."
+    },
+    {
+      "id": 8,
+      "question": "Que retourne l'opérateur `instanceof MyInterface` si l'objet implémente cette interface ?",
+      "type": "single_choice",
+      "options": [
+        "Une erreur.",
+        "false",
+        "true",
+        "Le nom de la classe."
+      ],
+      "correct_answers": [
+        "true"
+      ],
+      "explanation": "`instanceof` vérifie si l'objet respecte le contrat de l'interface, que ce soit directement ou via l'héritage."
+    }
+  ]
+}

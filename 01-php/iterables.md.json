@@ -1,0 +1,126 @@
+{
+  "source_file": "01-php/iterables.md",
+  "title": "Itérables, Générateurs et Mémoire",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Que représente le pseudo-type `iterable` introduit en PHP 7.1 ?",
+      "type": "single_choice",
+      "options": [
+        "Uniquement les tableaux (array).",
+        "Uniquement les objets implémentant Iterator.",
+        "À la fois les tableaux (array) et les objets implémentant Traversable.",
+        "Une nouvelle structure de donnée native plus rapide que les array."
+      ],
+      "correct_answers": [
+        "À la fois les tableaux (array) et les objets implémentant Traversable."
+      ],
+      "explanation": "`iterable` est le type union par excellence pour tout ce qui peut être parcouru par une boucle `foreach`."
+    },
+    {
+      "id": 2,
+      "question": "Quel est l'avantage principal d'utiliser un Générateur (`yield`) par rapport à un tableau classique pour traiter de gros volumes de données ?",
+      "type": "single_choice",
+      "options": [
+        "La vitesse d'exécution pure (CPU).",
+        "L'économie drastique de mémoire (RAM) grâce au Lazy Loading.",
+        "La possibilité d'accéder aléatoirement aux données.",
+        "La compatibilité avec les versions antérieures de PHP."
+      ],
+      "correct_answers": [
+        "L'économie drastique de mémoire (RAM) grâce au Lazy Loading."
+      ],
+      "explanation": "Un générateur traite les données une par une sans tout charger en mémoire, évitant les erreurs 'Out of Memory' sur les grands datasets."
+    },
+    {
+      "id": 3,
+      "question": "Quelle fonction permet à une classe PHP d'être simplement itérable sans implémenter les 5 méthodes de l'interface `Iterator` ?",
+      "type": "single_choice",
+      "options": [
+        "Implémenter `IteratorAggregate` et définir `getIterator()`.",
+        "Implémenter `Traversable` directement.",
+        "Utiliser la méthode magique `__invoke`.",
+        "Définir une méthode publique `foreach()`."
+      ],
+      "correct_answers": [
+        "Implémenter `IteratorAggregate` et définir `getIterator()`."
+      ],
+      "explanation": "`IteratorAggregate` demande juste une méthode `getIterator()` qui peut retourner un `ArrayIterator` ou un `Generator`, simplifiant grandement le code."
+    },
+    {
+      "id": 4,
+      "question": "Que fait le mot-clé `yield from` ?",
+      "type": "single_choice",
+      "options": [
+        "Il arrête le générateur.",
+        "Il permet de déléguer l'émission de valeurs à un autre itérable (tableau ou générateur).",
+        "Il crée un tableau à partir du générateur.",
+        "Il importe une variable externe."
+      ],
+      "correct_answers": [
+        "Il permet de déléguer l'émission de valeurs à un autre itérable (tableau ou générateur)."
+      ],
+      "explanation": "Cela permet d'aplatir ou de concaténer des itérables au sein d'un générateur parent."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est une limitation importante des générateurs ?",
+      "type": "single_choice",
+      "options": [
+        "Ils ne peuvent pas retourner de clés.",
+        "Ils ne peuvent pas être parcourus (rewind) une seconde fois une fois l'itération commencée ou terminée.",
+        "Ils ne fonctionnent pas avec foreach.",
+        "Ils utilisent plus de mémoire que les tableaux."
+      ],
+      "correct_answers": [
+        "Ils ne peuvent pas être parcourus (rewind) une seconde fois une fois l'itération commencée ou terminée."
+      ],
+      "explanation": "Contrairement aux tableaux, un générateur est un flux à usage unique. Pour le parcourir à nouveau, il faut réappeler la fonction pour recréer l'objet générateur."
+    },
+    {
+      "id": 6,
+      "question": "Quelle classe SPL permet de parcourir le système de fichiers ?",
+      "type": "single_choice",
+      "options": [
+        "FileIterator",
+        "DirectoryIterator / FilesystemIterator",
+        "PathIterator",
+        "DiskIterator"
+      ],
+      "correct_answers": [
+        "DirectoryIterator / FilesystemIterator"
+      ],
+      "explanation": "La SPL fournit des itérateurs natifs comme `FilesystemIterator` pour manipuler fichiers et dossiers efficacement."
+    },
+    {
+      "id": 7,
+      "question": "Si une fonction contient le mot-clé `yield`, quel type d'objet retourne-t-elle lorsqu'on l'appelle ?",
+      "type": "single_choice",
+      "options": [
+        "Un `array`.",
+        "La valeur du premier yield.",
+        "Un objet de la classe interne `Generator`.",
+        "Rien (void)."
+      ],
+      "correct_answers": [
+        "Un objet de la classe interne `Generator`."
+      ],
+      "explanation": "L'appel de la fonction ne lance pas le code mais retourne immédiatement un objet `Generator` qui contrôle l'exécution."
+    },
+    {
+      "id": 8,
+      "question": "Peut-on implémenter directement l'interface `Traversable` dans une classe PHP utilisateur ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, c'est recommandé.",
+        "Non, c'est une interface interne réservée au moteur PHP. Il faut implémenter Iterator ou IteratorAggregate.",
+        "Oui, mais seulement en PHP 8.",
+        "Non, `Traversable` n'existe pas."
+      ],
+      "correct_answers": [
+        "Non, c'est une interface interne réservée au moteur PHP. Il faut implémenter Iterator ou IteratorAggregate."
+      ],
+      "explanation": "`Traversable` est l'interface de base que détecte `foreach`, mais les classes utilisateur doivent passer par ses enfants `Iterator` ou `IteratorAggregate`."
+    }
+  ]
+}

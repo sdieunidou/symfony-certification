@@ -1,0 +1,127 @@
+{
+  "source_file": "01-php/traits.md",
+  "title": "Traits",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est l'objectif principal des Traits en PHP ?",
+      "type": "single_choice",
+      "options": [
+        "Remplacer les interfaces.",
+        "Permettre la composition horizontale de comportement (copier-coller de code) pour contourner l'héritage unique.",
+        "Créer des classes statiques.",
+        "Définir des types de données."
+      ],
+      "correct_answers": [
+        "Permettre la composition horizontale de comportement (copier-coller de code) pour contourner l'héritage unique."
+      ],
+      "explanation": "Les traits permettent de réutiliser des méthodes dans plusieurs classes indépendantes qui n'ont pas de lien de parenté."
+    },
+    {
+      "id": 2,
+      "question": "Quel est l'ordre de priorité (Précédence) lors de l'appel d'une méthode si elle existe à la fois dans la classe, le trait et la classe parente ?",
+      "type": "single_choice",
+      "options": [
+        "Parent > Trait > Classe Courante",
+        "Trait > Classe Courante > Parent",
+        "Classe Courante > Trait > Classe Parente",
+        "C'est une erreur fatale (conflit)."
+      ],
+      "correct_answers": [
+        "Classe Courante > Trait > Classe Parente"
+      ],
+      "explanation": "La classe courante gagne toujours (elle écrase le trait). Le trait gagne sur la classe parente (il écrase l'héritage)."
+    },
+    {
+      "id": 3,
+      "question": "Si deux traits utilisés dans la même classe définissent la même méthode, comment résoudre le conflit ?",
+      "type": "multiple_choice",
+      "options": [
+        "PHP résout automatiquement en prenant le dernier trait.",
+        "Il faut utiliser le mot-clé `insteadof` pour choisir quel trait est prioritaire.",
+        "Il faut utiliser le mot-clé `as` pour renommer (alias) l'une des méthodes.",
+        "On ne peut pas utiliser deux traits avec la même méthode."
+      ],
+      "correct_answers": [
+        "Il faut utiliser le mot-clé `insteadof` pour choisir quel trait est prioritaire.",
+        "Il faut utiliser le mot-clé `as` pour renommer (alias) l'une des méthodes."
+      ],
+      "explanation": "La résolution explicite est obligatoire sinon PHP génère une erreur fatale."
+    },
+    {
+      "id": 4,
+      "question": "Peut-on vérifier si un objet utilise un trait avec `instanceof` ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, `$obj instanceof MyTrait` fonctionne.",
+        "Non, un trait n'est pas un type/interface. `instanceof` ne fonctionne pas.",
+        "Oui, mais seulement en PHP 8.",
+        "Oui, si le trait a des propriétés."
+      ],
+      "correct_answers": [
+        "Non, un trait n'est pas un type/interface. `instanceof` ne fonctionne pas."
+      ],
+      "explanation": "Un trait est un mécanisme de copier-coller au niveau du compilateur, il ne crée pas de hiérarchie de type. On utilise `class_uses()` ou `trait_exists()` pour l'introspection."
+    },
+    {
+      "id": 5,
+      "question": "Un trait peut-il définir des méthodes abstraites ?",
+      "type": "single_choice",
+      "options": [
+        "Non.",
+        "Oui, pour forcer la classe utilisatrice à implémenter ces méthodes.",
+        "Oui, mais la classe utilisatrice doit alors être abstraite.",
+        "Seulement si le trait est déclaré abstrait."
+      ],
+      "correct_answers": [
+        "Oui, pour forcer la classe utilisatrice à implémenter ces méthodes."
+      ],
+      "explanation": "C'est très utile pour exprimer une dépendance du trait envers la classe qui l'accueille (ex: le trait a besoin d'une méthode `getId()`)."
+    },
+    {
+      "id": 6,
+      "question": "Peut-on changer la visibilité d'une méthode importée par un trait ?",
+      "type": "single_choice",
+      "options": [
+        "Non, la visibilité est figée.",
+        "Oui, en utilisant la syntaxe `use MyTrait { method as private; }`.",
+        "Oui, en redéfinissant la méthode dans la classe.",
+        "Uniquement de protected vers public."
+      ],
+      "correct_answers": [
+        "Oui, en utilisant la syntaxe `use MyTrait { method as private; }`."
+      ],
+      "explanation": "L'opérateur `as` permet de changer à la fois le nom et la visibilité."
+    },
+    {
+      "id": 7,
+      "question": "Depuis PHP 8.2, quelle est la règle concernant les constantes dans les traits ?",
+      "type": "single_choice",
+      "options": [
+        "Les traits ne peuvent pas avoir de constantes.",
+        "Les traits peuvent avoir des constantes, mais on ne peut pas y accéder directement via le nom du trait.",
+        "Si une classe redéfinit une constante du trait, elle doit être compatible (valeur et visibilité identiques), sinon erreur fatale.",
+        "Les constantes de trait sont toujours privées."
+      ],
+      "correct_answers": [
+        "Si une classe redéfinit une constante du trait, elle doit être compatible (valeur et visibilité identiques), sinon erreur fatale."
+      ],
+      "explanation": "Cela empêche des incohérences silencieuses où le trait attend une valeur et la classe en fournit une autre."
+    },
+    {
+      "id": 8,
+      "question": "Est-il recommandé d'ajouter des propriétés (état) dans un trait ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, c'est la meilleure façon de partager des données.",
+        "C'est possible, mais souvent déconseillé car cela peut créer des conflits de noms et masquer la complexité de l'état de l'objet.",
+        "C'est interdit par PHP.",
+        "Uniquement des propriétés statiques."
+      ],
+      "correct_answers": [
+        "C'est possible, mais souvent déconseillé car cela peut créer des conflits de noms et masquer la complexité de l'état de l'objet."
+      ],
+      "explanation": "Les traits sont plus sûrs lorsqu'ils fournissent uniquement du comportement (méthodes)."
+    }
+  ]
+}

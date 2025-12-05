@@ -1,0 +1,126 @@
+{
+  "source_file": "01-php/exceptions.md",
+  "title": "Gestion des Exceptions et des Erreurs",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est l'interface racine de toutes les erreurs et exceptions en PHP ?",
+      "type": "single_choice",
+      "options": [
+        "Exception",
+        "Error",
+        "Throwable",
+        "Object"
+      ],
+      "correct_answers": [
+        "Throwable"
+      ],
+      "explanation": "Depuis PHP 7, `Throwable` est l'interface racine que implémentent à la fois `Exception` (erreurs utilisateur/logique) et `Error` (erreurs internes PHP)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence principale entre `LogicException` et `RuntimeException` ?",
+      "type": "single_choice",
+      "options": [
+        "`LogicException` indique un bug dans le code (à corriger), tandis que `RuntimeException` dépend de l'environnement d'exécution (à gérer).",
+        "`LogicException` est fatale, `RuntimeException` ne l'est pas.",
+        "`RuntimeException` est obsolète depuis PHP 8.",
+        "On doit catcher `LogicException` mais jamais `RuntimeException`."
+      ],
+      "correct_answers": [
+        "`LogicException` indique un bug dans le code (à corriger), tandis que `RuntimeException` dépend de l'environnement d'exécution (à gérer)."
+      ],
+      "explanation": "Les `LogicException` (comme `InvalidArgumentException`) signalent une erreur de développement. Les `RuntimeException` (comme `PDOException`) surviennent à cause de facteurs externes (base de données, fichiers)."
+    },
+    {
+      "id": 3,
+      "question": "Depuis PHP 8.0, l'instruction `throw` est devenue une expression. Qu'est-ce que cela permet ?",
+      "type": "single_choice",
+      "options": [
+        "De lancer des exceptions sans message.",
+        "D'utiliser `throw` dans des endroits où une expression est attendue, comme un opérateur ternaire ou coalescent.",
+        "De lancer plusieurs exceptions simultanément.",
+        "D'utiliser `throw` comme nom de variable."
+      ],
+      "correct_answers": [
+        "D'utiliser `throw` dans des endroits où une expression est attendue, comme un opérateur ternaire ou coalescent."
+      ],
+      "explanation": "Cela permet des écritures concises comme `$val = $array['key'] ?? throw new Exception('Manquant');`."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi utiliser l'argument `$previous` (Exception Chaining) lors du relancement d'une exception ?",
+      "type": "single_choice",
+      "options": [
+        "Pour annuler l'exception précédente.",
+        "Pour conserver la trace de l'exception d'origine (cause racine) tout en lançant une nouvelle exception plus métier.",
+        "Pour réduire la consommation mémoire.",
+        "C'est obligatoire en PHP 8."
+      ],
+      "correct_answers": [
+        "Pour conserver la trace de l'exception d'origine (cause racine) tout en lançant une nouvelle exception plus métier."
+      ],
+      "explanation": "Le chaînage d'exceptions permet de ne pas perdre le contexte de l'erreur originale (stack trace) lorsqu'on l'enveloppe dans une nouvelle exception."
+    },
+    {
+      "id": 5,
+      "question": "Que se passe-t-il si un bloc `finally` contient une instruction `return` ?",
+      "type": "single_choice",
+      "options": [
+        "Le `return` du `finally` est ignoré.",
+        "Le `return` du `finally` écrase toute valeur de retour précédente (du `try` ou du `catch`).",
+        "Cela provoque une erreur de syntaxe.",
+        "Le programme s'arrête immédiatement."
+      ],
+      "correct_answers": [
+        "Le `return` du `finally` écrase toute valeur de retour précédente (du `try` ou du `catch`)."
+      ],
+      "explanation": "Le bloc `finally` est toujours exécuté avant de quitter la fonction. Si un `return` s'y trouve, il prend la priorité sur tout autre `return`."
+    },
+    {
+      "id": 6,
+      "question": "Comment attraper plusieurs types d'exceptions dans le même bloc catch (Multi-catch) ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant une virgule : `catch (ExceptionA, ExceptionB $e)`",
+        "En utilisant le caractère pipe : `catch (ExceptionA|ExceptionB $e)`",
+        "En utilisant le mot clé `or` : `catch (ExceptionA or ExceptionB $e)`",
+        "Ce n'est pas possible, il faut plusieurs blocs catch."
+      ],
+      "correct_answers": [
+        "En utilisant le caractère pipe : `catch (ExceptionA|ExceptionB $e)`"
+      ],
+      "explanation": "Introduit en PHP 7.1, le caractère `|` permet de spécifier plusieurs types d'exceptions pour un même bloc de traitement."
+    },
+    {
+      "id": 7,
+      "question": "Quelle est la bonne pratique concernant l'ordre des blocs `catch` ?",
+      "type": "single_choice",
+      "options": [
+        "Du plus général au plus spécifique.",
+        "Du plus spécifique au plus général.",
+        "L'ordre n'a aucune importance.",
+        "Les exceptions PHP natives d'abord, puis les exceptions personnalisées."
+      ],
+      "correct_answers": [
+        "Du plus spécifique au plus général."
+      ],
+      "explanation": "Il faut capturer les exceptions les plus précises d'abord. Si on capture `Exception` en premier, les blocs suivants pour `RuntimeException` ne seront jamais atteints car `RuntimeException` hérite de `Exception`."
+    },
+    {
+      "id": 8,
+      "question": "Quelle exception est levée par PHP (depuis la version 7/8) en cas d'erreur de typage (ex: passer un string à une fonction attendant un int en mode strict) ?",
+      "type": "single_choice",
+      "options": [
+        "RunTimeException",
+        "UnexpectedValueException",
+        "TypeError",
+        "ParseError"
+      ],
+      "correct_answers": [
+        "TypeError"
+      ],
+      "explanation": "Les erreurs de type génèrent désormais une `TypeError`, qui hérite de `Error` (et donc de `Throwable`)."
+    }
+  ]
+}
