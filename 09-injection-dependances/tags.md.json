@@ -1,0 +1,66 @@
+{
+  "source_file": "09-injection-dependances/tags.md",
+  "title": "Tags de Service",
+  "questions": [
+    {
+      "id": 1,
+      "question": "À quoi servent les Tags dans le conteneur de services ?",
+      "type": "single_choice",
+      "options": [
+        "À commenter le code.",
+        "À marquer des services pour qu'ils soient détectés et traités par d'autres services (système de plugins/extensions).",
+        "À définir la version du service.",
+        "À gérer la sécurité."
+      ],
+      "correct_answers": [
+        "À marquer des services pour qu'ils soient détectés et traités par d'autres services (système de plugins/extensions)."
+      ],
+      "explanation": "Par exemple, le tag `console.command` permet à l'application Console de découvrir toutes les commandes disponibles."
+    },
+    {
+      "id": 2,
+      "question": "Si `autoconfigure` est activé, comment Symfony tague-t-il les services ?",
+      "type": "single_choice",
+      "options": [
+        "Il ne fait rien, il faut taguer manuellement.",
+        "Il ajoute automatiquement des tags en fonction de l'interface implémentée par la classe.",
+        "Il tague tout avec `app.service`.",
+        "Il lit les commentaires PHPDoc."
+      ],
+      "correct_answers": [
+        "Il ajoute automatiquement des tags en fonction de l'interface implémentée par la classe."
+      ],
+      "explanation": "Ex: Implémenter `EventSubscriberInterface` ajoute le tag `kernel.event_subscriber`."
+    },
+    {
+      "id": 3,
+      "question": "Quel attribut PHP 8 permet d'injecter une collection de services tagués (Itérable) directement dans le constructeur ?",
+      "type": "single_choice",
+      "options": [
+        "`#[TaggedIterator('nom_du_tag')]`",
+        "`#[InjectTags('nom_du_tag')]`",
+        "`#[Collect('nom_du_tag')]`",
+        "`#[Services('nom_du_tag')]`"
+      ],
+      "correct_answers": [
+        "`#[TaggedIterator('nom_du_tag')]`"
+      ],
+      "explanation": "C'est la méthode moderne pour consommer des tags sans écrire de Compiler Pass."
+    },
+    {
+      "id": 4,
+      "question": "Que permet l'attribut `priority` sur un tag ?",
+      "type": "single_choice",
+      "options": [
+        "Rien.",
+        "De définir l'ordre dans lequel les services tagués seront traités/injectés.",
+        "De rendre le service public.",
+        "De définir le niveau de log."
+      ],
+      "correct_answers": [
+        "De définir l'ordre dans lequel les services tagués seront traités/injectés."
+      ],
+      "explanation": "Plus la priorité est élevée, plus le service est traité tôt (ex: Listeners)."
+    }
+  ]
+}

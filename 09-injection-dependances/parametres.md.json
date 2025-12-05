@@ -1,0 +1,66 @@
+{
+  "source_file": "09-injection-dependances/parametres.md",
+  "title": "Paramètres de Configuration",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle syntaxe permet de référencer un paramètre dans le fichier `services.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "`@param_name`",
+        "`$param_name`",
+        "`%param_name%`",
+        "`#param_name`"
+      ],
+      "correct_answers": [
+        "`%param_name%`"
+      ],
+      "explanation": "Les pourcentages encadrent le nom du paramètre."
+    },
+    {
+      "id": 2,
+      "question": "Comment référencer une variable d'environnement dans un paramètre de manière dynamique ?",
+      "type": "single_choice",
+      "options": [
+        "`%env(MY_VAR)%`",
+        "`$env(MY_VAR)`",
+        "`env(MY_VAR)`",
+        "`%MY_VAR%`"
+      ],
+      "correct_answers": [
+        "`%env(MY_VAR)%`"
+      ],
+      "explanation": "Cela permet de lire la valeur au runtime, sans la hardcoder."
+    },
+    {
+      "id": 3,
+      "question": "Comment injecter un paramètre directement dans une propriété ou un argument de constructeur avec les attributs PHP 8 ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Inject('%param%')]`",
+        "`#[Autowire('%param%')]`",
+        "`#[Parameter('param')]`",
+        "`#[Value('%param%')]`"
+      ],
+      "correct_answers": [
+        "`#[Autowire('%param%')]`"
+      ],
+      "explanation": "`Autowire` gère aussi bien les services que les paramètres scalaires."
+    },
+    {
+      "id": 4,
+      "question": "Quel paramètre du kernel contient le chemin absolu vers la racine du projet ?",
+      "type": "single_choice",
+      "options": [
+        "`kernel.root_dir`",
+        "`kernel.project_dir`",
+        "`kernel.dir`",
+        "`app.dir`"
+      ],
+      "correct_answers": [
+        "`kernel.project_dir`"
+      ],
+      "explanation": "`kernel.root_dir` est déprécié et pointait vers `src/` (ou `app/` historiquement). `project_dir` pointe vers la racine où se trouve `composer.json`."
+    }
+  ]
+}

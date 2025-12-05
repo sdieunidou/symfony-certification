@@ -1,0 +1,51 @@
+{
+  "source_file": "09-injection-dependances/semantic-config.md",
+  "title": "Configuration Sémantique (Bundles)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel composant est utilisé pour définir et valider la structure de configuration d'un bundle (TreeBuilder) ?",
+      "type": "single_choice",
+      "options": [
+        "Config",
+        "Yaml",
+        "DependencyInjection",
+        "OptionsResolver"
+      ],
+      "correct_answers": [
+        "Config"
+      ],
+      "explanation": "Le composant `Config` permet de définir une arborescence de configuration typée et validée."
+    },
+    {
+      "id": 2,
+      "question": "Dans quelle classe d'un Bundle traite-t-on la configuration utilisateur pour charger les services ?",
+      "type": "single_choice",
+      "options": [
+        "La classe du Bundle (`MyBundle`).",
+        "L'Extension du Bundle (`DependencyInjection\MyBundleExtension`).",
+        "La classe Configuration.",
+        "Le Kernel."
+      ],
+      "correct_answers": [
+        "L'Extension du Bundle (`DependencyInjection\MyBundleExtension`)."
+      ],
+      "explanation": "La méthode `load()` de l'extension reçoit les configurations fusionnées et manipule le conteneur."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert la classe qui implémente `ConfigurationInterface` ?",
+      "type": "single_choice",
+      "options": [
+        "À stocker les paramètres.",
+        "À définir la structure (schéma), les types et les valeurs par défaut de la configuration exposée par le bundle.",
+        "À charger les fichiers YAML.",
+        "À valider les formulaires."
+      ],
+      "correct_answers": [
+        "À définir la structure (schéma), les types et les valeurs par défaut de la configuration exposée par le bundle."
+      ],
+      "explanation": "Elle génère un `TreeBuilder` qui décrit les nœuds autorisés (scalar, array, boolean...)."
+    }
+  ]
+}

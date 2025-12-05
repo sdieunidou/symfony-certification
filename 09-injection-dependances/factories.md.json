@@ -1,0 +1,51 @@
+{
+  "source_file": "09-injection-dependances/factories.md",
+  "title": "Factories (Usines)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quand utiliser une Factory pour créer un service ?",
+      "type": "single_choice",
+      "options": [
+        "Toujours.",
+        "Lorsque la création du service nécessite une logique complexe, des calculs, ou dépend d'une bibliothèque tierce non compatible avec l'injection directe.",
+        "Pour les services Doctrine.",
+        "Pour créer des contrôleurs."
+      ],
+      "correct_answers": [
+        "Lorsque la création du service nécessite une logique complexe, des calculs, ou dépend d'une bibliothèque tierce non compatible avec l'injection directe."
+      ],
+      "explanation": "La factory encapsule la complexité de l'instanciation."
+    },
+    {
+      "id": 2,
+      "question": "Comment configurer une factory en PHP avec les attributs/autowiring ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas possible, il faut du YAML.",
+        "Il suffit de créer une méthode qui retourne l'objet souhaité, et de configurer le service pour utiliser cette méthode comme factory dans `services.yaml` (ou via un attribut si disponible).",
+        "En implémentant `FactoryInterface`.",
+        "En utilisant `new`."
+      ],
+      "correct_answers": [
+        "Il suffit de créer une méthode qui retourne l'objet souhaité, et de configurer le service pour utiliser cette méthode comme factory dans `services.yaml` (ou via un attribut si disponible)."
+      ],
+      "explanation": "La configuration YAML `factory: ['@App\Factory\MyFactory', 'create']` reste la norme pour lier la factory au service produit."
+    },
+    {
+      "id": 3,
+      "question": "Une factory peut-elle être elle-même un service avec des dépendances ?",
+      "type": "single_choice",
+      "options": [
+        "Non, elle doit être statique.",
+        "Oui, c'est tout l'intérêt. On injecte les dépendances dans la Factory, qui les utilise pour construire l'objet final.",
+        "Oui, mais sans arguments.",
+        "Seulement si elle est publique."
+      ],
+      "correct_answers": [
+        "Oui, c'est tout l'intérêt. On injecte les dépendances dans la Factory, qui les utilise pour construire l'objet final."
+      ],
+      "explanation": "Cela permet de configurer l'objet produit avec des paramètres de l'application."
+    }
+  ]
+}

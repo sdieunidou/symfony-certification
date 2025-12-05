@@ -1,0 +1,66 @@
+{
+  "source_file": "09-injection-dependances/decoration.md",
+  "title": "Décoration de Service",
+  "questions": [
+    {
+      "id": 1,
+      "question": "À quoi sert la décoration de service ?",
+      "type": "single_choice",
+      "options": [
+        "À ajouter du CSS.",
+        "À remplacer un service existant par le vôtre, tout en conservant la possibilité d'utiliser le service original (enveloppe/wrapper).",
+        "À créer un alias.",
+        "À supprimer un service."
+      ],
+      "correct_answers": [
+        "À remplacer un service existant par le vôtre, tout en conservant la possibilité d'utiliser le service original (enveloppe/wrapper)."
+      ],
+      "explanation": "C'est une alternative puissante à l'héritage pour étendre ou modifier le comportement d'un service tiers."
+    },
+    {
+      "id": 2,
+      "question": "Quel attribut PHP permet de décorer un service ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Decorates]`",
+        "`#[AsDecorator]`",
+        "`#[Override]`",
+        "`#[Replace]`"
+      ],
+      "correct_answers": [
+        "`#[AsDecorator]`"
+      ],
+      "explanation": "`#[AsDecorator(decorates: MailerInterface::class)]`."
+    },
+    {
+      "id": 3,
+      "question": "Si vous décorez le service `mailer`, quel ID de service devez-vous injecter dans votre classe décoratrice pour accéder au service original ?",
+      "type": "single_choice",
+      "options": [
+        "`mailer`",
+        "`mailer.original`",
+        "Le service injecté dépend de la configuration, mais par convention on injecte souvent l'interface du service décoré.",
+        "`parent`"
+      ],
+      "correct_answers": [
+        "Le service injecté dépend de la configuration, mais par convention on injecte souvent l'interface du service décoré."
+      ],
+      "explanation": "En YAML, on utilise souvent `.inner`. Avec l'attribut `AsDecorator`, l'autowiring injecte automatiquement le service décoré si on type l'argument avec l'interface."
+    },
+    {
+      "id": 4,
+      "question": "Que se passe-t-il pour le reste de l'application quand vous décorez `App\Service\Mailer` ?",
+      "type": "single_choice",
+      "options": [
+        "Rien, il faut modifier tous les contrôleurs pour utiliser le nouveau service.",
+        "Symfony remplace transparently l'ancien service par le vôtre partout où il est injecté.",
+        "Cela crée une erreur circulaire.",
+        "Les deux services coexistent."
+      ],
+      "correct_answers": [
+        "Symfony remplace transparently l'ancien service par le vôtre partout où il est injecté."
+      ],
+      "explanation": "L'ID du service reste le même pour les consommateurs, mais il pointe maintenant vers votre instance."
+    }
+  ]
+}

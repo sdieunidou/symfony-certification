@@ -1,0 +1,68 @@
+{
+  "source_file": "09-injection-dependances/autowiring.md",
+  "title": "Autowiring",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment l'Autowiring de Symfony détermine-t-il quel service injecter ?",
+      "type": "single_choice",
+      "options": [
+        "En se basant sur le nom de la variable.",
+        "En se basant sur le type (Type Hinting) de l'argument du constructeur.",
+        "En cherchant une annotation.",
+        "Il faut configurer chaque service manuellement."
+      ],
+      "correct_answers": [
+        "En se basant sur le type (Type Hinting) de l'argument du constructeur."
+      ],
+      "explanation": "Symfony analyse `__construct(LoggerInterface $logger)` et trouve le service qui implémente `LoggerInterface`."
+    },
+    {
+      "id": 2,
+      "question": "Comment résoudre un conflit d'autowiring si plusieurs services implémentent la même interface ?",
+      "type": "multiple_choice",
+      "options": [
+        "En utilisant l'attribut `#[Autowire(service: 'id_du_service')]`.",
+        "En renommant la variable comme l'ID du service (ex: `$monologLoggerRequest`).",
+        "En définissant un binding global (par nom d'argument) dans `services.yaml`.",
+        "En utilisant `#[Target('id_du_service')]`."
+      ],
+      "correct_answers": [
+        "En utilisant l'attribut `#[Autowire(service: 'id_du_service')]`.",
+        "En définissant un binding global (par nom d'argument) dans `services.yaml`.",
+        "En utilisant `#[Target('id_du_service')]`."
+      ],
+      "explanation": "Le nom de la variable n'est utilisé pour la résolution que si un binding explicite a été configuré dans `services.yaml`."
+    },
+    {
+      "id": 3,
+      "question": "L'autowiring a-t-il un impact sur la performance en production ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, il ralentit chaque requête car il utilise la réflexion.",
+        "Non, car tout est résolu et compilé dans le cache lors du 'warmup' (build time).",
+        "Oui, mais c'est négligeable.",
+        "Seulement s'il y a des erreurs."
+      ],
+      "correct_answers": [
+        "Non, car tout est résolu et compilé dans le cache lors du 'warmup' (build time)."
+      ],
+      "explanation": "Le conteneur compilé contient du code PHP optimisé avec les injections en dur."
+    },
+    {
+      "id": 4,
+      "question": "Comment injecter un paramètre scalaire (string, int) via l'autowiring ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas possible, il faut définir le service manuellement.",
+        "En utilisant l'attribut `#[Autowire('%nom_du_parametre%')]`.",
+        "En typant l'argument `string`.",
+        "En utilisant `#[Inject]`."
+      ],
+      "correct_answers": [
+        "En utilisant l'attribut `#[Autowire('%nom_du_parametre%')]`."
+      ],
+      "explanation": "C'est la méthode recommandée depuis Symfony 6.1."
+    }
+  ]
+}

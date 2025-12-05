@@ -1,0 +1,66 @@
+{
+  "source_file": "09-injection-dependances/registration.md",
+  "title": "Enregistrement de Services (`services.yaml`)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Que fait l'option `autowire: true` dans `services.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "Elle crée les services automatiquement.",
+        "Elle permet à Symfony de deviner et d'injecter automatiquement les dépendances dans le constructeur en se basant sur le typage.",
+        "Elle active le wiring des routes.",
+        "Elle supprime les services inutilisés."
+      ],
+      "correct_answers": [
+        "Elle permet à Symfony de deviner et d'injecter automatiquement les dépendances dans le constructeur en se basant sur le typage."
+      ],
+      "explanation": "C'est la fonctionnalité clé pour ne plus avoir à écrire manuellement les arguments de chaque service."
+    },
+    {
+      "id": 2,
+      "question": "Que fait l'option `autoconfigure: true` ?",
+      "type": "single_choice",
+      "options": [
+        "Elle configure les paramètres.",
+        "Elle ajoute automatiquement les tags appropriés aux services en fonction des interfaces qu'ils implémentent (ex: `Command`, `EventSubscriber`).",
+        "Elle active l'autowiring.",
+        "Elle charge les bundles."
+      ],
+      "correct_answers": [
+        "Elle ajoute automatiquement les tags appropriés aux services en fonction des interfaces qu'ils implémentent (ex: `Command`, `EventSubscriber`)."
+      ],
+      "explanation": "Sans cela, il faudrait taguer manuellement chaque commande console ou écouteur d'événement."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert la section `App\` dans `services.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "À définir le namespace de l'application.",
+        "À enregistrer automatiquement toutes les classes du dossier `src/` comme services (Service Discovery).",
+        "À exclure les services tiers.",
+        "À configurer l'application."
+      ],
+      "correct_answers": [
+        "À enregistrer automatiquement toutes les classes du dossier `src/` comme services (Service Discovery)."
+      ],
+      "explanation": "Cela évite de devoir déclarer chaque classe PHP une par une dans le fichier YAML."
+    },
+    {
+      "id": 4,
+      "question": "Si vous avez besoin de passer un argument scalaire (string) à un service spécifique qui ne peut pas être autowiré, comment faites-vous ?",
+      "type": "single_choice",
+      "options": [
+        "Impossible.",
+        "En le redéfinissant explicitement dans `services.yaml` avec la clé `arguments`.",
+        "En modifiant le constructeur.",
+        "En utilisant une variable globale."
+      ],
+      "correct_answers": [
+        "En le redéfinissant explicitement dans `services.yaml` avec la clé `arguments`."
+      ],
+      "explanation": "La définition explicite surcharge la définition générique."
+    }
+  ]
+}

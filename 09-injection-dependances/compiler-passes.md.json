@@ -1,0 +1,66 @@
+{
+  "source_file": "09-injection-dependances/compiler-passes.md",
+  "title": "Passes de Compilateur (Compiler Passes)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "À quel moment un CompilerPass est-il exécuté ?",
+      "type": "single_choice",
+      "options": [
+        "À chaque requête HTTP.",
+        "Uniquement lors de la compilation du conteneur (cache warmup).",
+        "Au déploiement.",
+        "Quand on appelle un service."
+      ],
+      "correct_answers": [
+        "Uniquement lors de la compilation du conteneur (cache warmup)."
+      ],
+      "explanation": "C'est pour cela qu'on ne peut pas injecter de services dans un CompilerPass, seulement manipuler leurs définitions."
+    },
+    {
+      "id": 2,
+      "question": "Quel est l'usage principal d'un CompilerPass personnalisé ?",
+      "type": "single_choice",
+      "options": [
+        "Créer des routes.",
+        "Modifier dynamiquement les définitions de services (ex: trouver tous les services avec un tag et les injecter dans un Manager).",
+        "Valider la configuration.",
+        "Optimiser le code PHP."
+      ],
+      "correct_answers": [
+        "Modifier dynamiquement les définitions de services (ex: trouver tous les services avec un tag et les injecter dans un Manager)."
+      ],
+      "explanation": "C'est le mécanisme standard pour implémenter le pattern plugin/extensions via les tags."
+    },
+    {
+      "id": 3,
+      "question": "Quelle méthode moderne remplace souvent l'écriture manuelle d'un CompilerPass pour gérer les collections de services ?",
+      "type": "single_choice",
+      "options": [
+        "L'attribut `#[TaggedIterator('mon_tag')]`.",
+        "L'autowiring.",
+        "L'interface `ServiceSubscriberInterface`.",
+        "La configuration YAML."
+      ],
+      "correct_answers": [
+        "L'attribut `#[TaggedIterator('mon_tag')]`."
+      ],
+      "explanation": "Injecter un `iterable` tagué dans le constructeur permet de récupérer tous les services correspondants sans code de compilation complexe."
+    },
+    {
+      "id": 4,
+      "question": "Peut-on modifier un service une fois le conteneur compilé (Frozen) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, via des setters.",
+        "Non, le conteneur est gelé pour des raisons de performance et d'intégrité.",
+        "Oui, en mode debug.",
+        "Oui, en utilisant `set()`."
+      ],
+      "correct_answers": [
+        "Non, le conteneur est gelé pour des raisons de performance et d'intégrité."
+      ],
+      "explanation": "Au runtime, le graphe de dépendances est fixe."
+    }
+  ]
+}

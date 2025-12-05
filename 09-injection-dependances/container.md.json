@@ -1,0 +1,66 @@
+{
+  "source_file": "09-injection-dependances/container.md",
+  "title": "Conteneur de Services (Service Container)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Par défaut, les services dans Symfony sont-ils publics ou privés ?",
+      "type": "single_choice",
+      "options": [
+        "Publics (accessibles via `$container->get()`).",
+        "Privés (accessibles uniquement par injection).",
+        "Cela dépend de la version de PHP.",
+        "Publics en dev, privés en prod."
+      ],
+      "correct_answers": [
+        "Privés (accessibles uniquement par injection)."
+      ],
+      "explanation": "Depuis Symfony 4, les services sont privés par défaut pour permettre l'optimisation (suppression des services inutilisés)."
+    },
+    {
+      "id": 2,
+      "question": "Qu'est-ce qu'un service 'Synthétique' (Synthetic) ?",
+      "type": "single_choice",
+      "options": [
+        "Un service qui n'existe pas.",
+        "Un service qui est injecté dans le conteneur au runtime (ex: `kernel`, `request_stack`) au lieu d'être créé par le conteneur.",
+        "Un alias.",
+        "Un service déprécié."
+      ],
+      "correct_answers": [
+        "Un service qui est injecté dans le conteneur au runtime (ex: `kernel`, `request_stack`) au lieu d'être créé par le conteneur."
+      ],
+      "explanation": "Le conteneur ne connaît pas la recette pour les créer, ils viennent de l'extérieur."
+    },
+    {
+      "id": 3,
+      "question": "Les services sont-ils des Singletons ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, par défaut, on reçoit toujours la même instance du service durant une même requête.",
+        "Non, une nouvelle instance est créée à chaque injection.",
+        "Seulement si on ajoute `shared: true`.",
+        "Cela dépend de l'autowiring."
+      ],
+      "correct_answers": [
+        "Oui, par défaut, on reçoit toujours la même instance du service durant une même requête."
+      ],
+      "explanation": "C'est le comportement par défaut. Pour avoir une nouvelle instance à chaque fois, il faut configurer `shared: false`."
+    },
+    {
+      "id": 4,
+      "question": "Quelle commande permet de vérifier la validité de la configuration du conteneur (arguments manquants, etc.) ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console debug:container`",
+        "`php bin/console lint:container`",
+        "`php bin/console container:check`",
+        "`php bin/console cache:warmup`"
+      ],
+      "correct_answers": [
+        "`php bin/console lint:container`"
+      ],
+      "explanation": "Cette commande est cruciale en CI pour détecter les erreurs de configuration avant le déploiement."
+    }
+  ]
+}
