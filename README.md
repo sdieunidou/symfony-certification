@@ -17,6 +17,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Traits](./01-php/traits.md)
 * [Extensions PHP](./01-php/extensions.md)
 * [SPL (Standard PHP Library)](./01-php/spl.md)
+* [Itérables et Générateurs](./01-php/iterables.md)
 
 ### [2. HTTP](./02-http/)
 * [Interaction Client / Serveur](./02-http/client-serveur.md)

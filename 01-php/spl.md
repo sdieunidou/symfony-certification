@@ -30,22 +30,9 @@ spl_autoload_register(function ($class) {
 ```
 
 ## Les Itérateurs (Iterators)
-Pattern fondamental pour parcourir des collections sans exposer leur structure interne.
-*   **`ArrayIterator`** : Itérer sur un array (pour le passer là où un Iterator est attendu).
-*   **`DirectoryIterator`** / **`RecursiveDirectoryIterator`** : Parcourir le système de fichiers.
-*   **`FilterIterator`** : Filtrer les résultats à la volée.
-*   **`LimitIterator`** : Pagination (Offset/Limit).
+La gestion des itérateurs et des générateurs est traitée en détail dans le fichier dédié : **[Itérables et Générateurs](iterables.md)**.
 
-## Exemple : DirectoryIterator
-
-```php
-$dir = new \DirectoryIterator('/tmp');
-foreach ($dir as $fileinfo) {
-    if (!$fileinfo->isDot()) {
-        echo $fileinfo->getFilename() . "\n";
-    }
-}
-```
+La SPL fournit néanmoins les implémentations concrètes (comme `DirectoryIterator` ou `ArrayIterator`).
 
 ## Exceptions SPL
 La SPL fournit une hiérarchie d'exceptions standards à utiliser de préférence aux exceptions génériques.
