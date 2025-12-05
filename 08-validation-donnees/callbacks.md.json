@@ -1,0 +1,66 @@
+{
+  "source_file": "08-validation-donnees/callbacks.md",
+  "title": "Validateurs Callback",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est l'intérêt d'utiliser une contrainte Callback (`#[Assert\Callback]`) ?",
+      "type": "single_choice",
+      "options": [
+        "Valider un email.",
+        "Implémenter une règle de validation métier spécifique et complexe directement dans l'entité, sans créer de classe de contrainte séparée.",
+        "Appeler une API externe.",
+        "Créer un service."
+      ],
+      "correct_answers": [
+        "Implémenter une règle de validation métier spécifique et complexe directement dans l'entité, sans créer de classe de contrainte séparée."
+      ],
+      "explanation": "C'est idéal pour les règles 'one-shot' qui ne seront pas réutilisées ailleurs."
+    },
+    {
+      "id": 2,
+      "question": "Quel objet est passé en premier argument de la méthode de callback ?",
+      "type": "single_choice",
+      "options": [
+        "`Request`",
+        "`ConstraintViolationList`",
+        "`ExecutionContextInterface`",
+        "`FormInterface`"
+      ],
+      "correct_answers": [
+        "`ExecutionContextInterface`"
+      ],
+      "explanation": "L'ExecutionContext permet d'ajouter des violations (`buildViolation(...)->addViolation()`)."
+    },
+    {
+      "id": 3,
+      "question": "Peut-on injecter des services (ex: Repository) dans un callback de validation défini dans une entité ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, via le constructeur de l'entité.",
+        "Non, l'entité n'est pas un service. Pour utiliser des services, il faut créer une Contrainte Personnalisée (Custom Constraint).",
+        "Oui, en ajoutant des arguments à la méthode de callback.",
+        "Oui, via l'autowiring."
+      ],
+      "correct_answers": [
+        "Non, l'entité n'est pas un service. Pour utiliser des services, il faut créer une Contrainte Personnalisée (Custom Constraint)."
+      ],
+      "explanation": "Le callback est limité aux données internes de l'objet validé."
+    },
+    {
+      "id": 4,
+      "question": "Comment attacher une erreur de validation à un champ spécifique depuis un callback ?",
+      "type": "single_choice",
+      "options": [
+        "`$context->addError('message', 'field_name')`",
+        "`$context->buildViolation('message')->atPath('field_name')->addViolation()`",
+        "`throw new ValidationException('message', 'field_name')`",
+        "Ce n'est pas possible, l'erreur est toujours globale."
+      ],
+      "correct_answers": [
+        "`$context->buildViolation('message')->atPath('field_name')->addViolation()`"
+      ],
+      "explanation": "`atPath` permet de cibler une propriété pour que l'erreur s'affiche à côté du champ dans le formulaire."
+    }
+  ]
+}

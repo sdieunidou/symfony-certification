@@ -1,0 +1,66 @@
+{
+  "source_file": "08-validation-donnees/logic.md",
+  "title": "Validation Logique et Conditionnelle",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle contrainte permet d'arrêter la validation d'une propriété dès la première erreur rencontrée (pour éviter d'afficher 3 erreurs pour le même champ) ?",
+      "type": "single_choice",
+      "options": [
+        "`StopOnError`",
+        "`Sequentially`",
+        "`GroupSequence`",
+        "`Chain`"
+      ],
+      "correct_answers": [
+        "`Sequentially`"
+      ],
+      "explanation": "`#[Assert\Sequentially([...])]` exécute les contraintes dans l'ordre et s'arrête au premier échec."
+    },
+    {
+      "id": 2,
+      "question": "Quelle contrainte permet d'appliquer des règles de validation uniquement si une condition (expression) est vraie ?",
+      "type": "single_choice",
+      "options": [
+        "`If`",
+        "`When`",
+        "`Condition`",
+        "`Case`"
+      ],
+      "correct_answers": [
+        "`When`"
+      ],
+      "explanation": "`#[Assert\When(expression: 'this.isShipped', constraints: [...])]`."
+    },
+    {
+      "id": 3,
+      "question": "Quelle contrainte permet de valider qu'au moins une contrainte parmi une liste est respectée (ex: soit un email, soit un téléphone) ?",
+      "type": "single_choice",
+      "options": [
+        "`OneOf`",
+        "`AtLeastOneOf`",
+        "`Any`",
+        "`Either`"
+      ],
+      "correct_answers": [
+        "`AtLeastOneOf`"
+      ],
+      "explanation": "Elle réussit si au moins une des validations internes passe."
+    },
+    {
+      "id": 4,
+      "question": "La contrainte `Expression` utilise-t-elle le moteur PHP natif ou un composant spécifique ?",
+      "type": "single_choice",
+      "options": [
+        "PHP natif (eval).",
+        "Le composant `ExpressionLanguage` de Symfony.",
+        "Twig.",
+        "SQL."
+      ],
+      "correct_answers": [
+        "Le composant `ExpressionLanguage` de Symfony."
+      ],
+      "explanation": "Cela permet d'écrire des règles logiques (`this.amount > 10`) de manière sécurisée et compilée."
+    }
+  ]
+}

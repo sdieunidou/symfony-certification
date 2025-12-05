@@ -1,0 +1,66 @@
+{
+  "source_file": "08-validation-donnees/groupes.md",
+  "title": "Groupes de Validation",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Si aucune option `groups` n'est spécifiée sur une contrainte, à quel groupe appartient-elle ?",
+      "type": "single_choice",
+      "options": [
+        "`Global`",
+        "`Default`",
+        "`All`",
+        "`Main`"
+      ],
+      "correct_answers": [
+        "`Default`"
+      ],
+      "explanation": "C'est le groupe standard validé par défaut."
+    },
+    {
+      "id": 2,
+      "question": "À quoi correspond le groupe de validation portant le nom de la classe (ex: `App\Entity\User` ou juste `User`) ?",
+      "type": "single_choice",
+      "options": [
+        "À un groupe personnalisé qu'il faut créer.",
+        "C'est un alias du groupe `Default` pour cette classe.",
+        "C'est un groupe réservé aux callbacks.",
+        "C'est le groupe pour la validation de base de données."
+      ],
+      "correct_answers": [
+        "C'est un alias du groupe `Default` pour cette classe."
+      ],
+      "explanation": "Cela permet d'inclure les contraintes par défaut de la classe User lorsqu'on valide une séquence de groupes."
+    },
+    {
+      "id": 3,
+      "question": "Si vous validez le groupe `['registration']`, les contraintes du groupe `Default` sont-elles validées ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, seuls les groupes explicitement demandés sont validés.",
+        "Oui, si `registration` étend `Default`.",
+        "Seulement si elles sont critiques."
+      ],
+      "correct_answers": [
+        "Non, seuls les groupes explicitement demandés sont validés."
+      ],
+      "explanation": "Si vous voulez aussi les contraintes par défaut, il faut passer `['Default', 'registration']`."
+    },
+    {
+      "id": 4,
+      "question": "Dans un formulaire, comment définir dynamiquement les groupes de validation (ex: selon les données saisies) ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant un Listener `PRE_SUBMIT`.",
+        "En passant une Closure (fonction anonyme) à l'option `validation_groups` dans `configureOptions`.",
+        "C'est impossible.",
+        "En modifiant l'entité."
+      ],
+      "correct_answers": [
+        "En passant une Closure (fonction anonyme) à l'option `validation_groups` dans `configureOptions`."
+      ],
+      "explanation": "La closure reçoit le formulaire en argument et peut retourner un tableau de groupes basé sur les données (`$form->getData()`)."
+    }
+  ]
+}

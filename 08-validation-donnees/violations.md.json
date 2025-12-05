@@ -1,0 +1,66 @@
+{
+  "source_file": "08-validation-donnees/violations.md",
+  "title": "Violations et Contraintes Personnalisées",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quels sont les deux éléments nécessaires pour créer une contrainte de validation personnalisée ?",
+      "type": "single_choice",
+      "options": [
+        "Une classe `Constraint` (DTO de configuration) et une classe `ConstraintValidator` (Logique).",
+        "Une Interface et un Trait.",
+        "Un Service et un EventListener.",
+        "Une Entité et un Repository."
+      ],
+      "correct_answers": [
+        "Une classe `Constraint` (DTO de configuration) et une classe `ConstraintValidator` (Logique)."
+      ],
+      "explanation": "La classe de contrainte définit les options (message, mode), le validateur effectue la vérification."
+    },
+    {
+      "id": 2,
+      "question": "Dans le `ConstraintValidator`, quel objet permet d'ajouter une erreur ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->violations`",
+        "`$this->context` (`ExecutionContextInterface`)",
+        "`$this->errors`",
+        "`$this->validator`"
+      ],
+      "correct_answers": [
+        "`$this->context` (`ExecutionContextInterface`)"
+      ],
+      "explanation": "On utilise `$this->context->buildViolation(...)->addViolation()`."
+    },
+    {
+      "id": 3,
+      "question": "Comment Symfony associe-t-il une classe `Constraint` à son `ConstraintValidator` ?",
+      "type": "single_choice",
+      "options": [
+        "Par magie.",
+        "Par convention de nommage : `MyConstraint` -> `MyConstraintValidator`.",
+        "Il faut le configurer manuellement dans `services.yaml`.",
+        "Via l'attribut `#[Validator]`."
+      ],
+      "correct_answers": [
+        "Par convention de nommage : `MyConstraint` -> `MyConstraintValidator`."
+      ],
+      "explanation": "Si vous respectez la convention, c'est automatique. Sinon, la méthode `validatedBy()` de la contrainte doit retourner le FQCN du validateur."
+    },
+    {
+      "id": 4,
+      "question": "Comment gérer les traductions des messages de validation personnalisés ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant `trans()` dans le validateur.",
+        "En créant un fichier `translations/validators.fr.yaml` et en utilisant la clé du message.",
+        "C'est automatique via Google Translate.",
+        "On ne peut pas traduire les messages custom."
+      ],
+      "correct_answers": [
+        "En créant un fichier `translations/validators.fr.yaml` et en utilisant la clé du message."
+      ],
+      "explanation": "Le domaine de traduction par défaut pour la validation est `validators`."
+    }
+  ]
+}

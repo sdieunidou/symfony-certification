@@ -1,0 +1,66 @@
+{
+  "source_file": "08-validation-donnees/objets.md",
+  "title": "Validation d'Objets PHP (Service Validator)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel service faut-il injecter pour valider un objet manuellement ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\Component\Validator\Validator\ValidatorInterface`",
+        "`Symfony\Component\Form\FormValidator`",
+        "`Doctrine\ORM\Validator`",
+        "`App\Service\Validator`"
+      ],
+      "correct_answers": [
+        "`Symfony\Component\Validator\Validator\ValidatorInterface`"
+      ],
+      "explanation": "C'est le point d'entrée principal du composant Validator."
+    },
+    {
+      "id": 2,
+      "question": "Que retourne la méthode `$validator->validate($object)` ?",
+      "type": "single_choice",
+      "options": [
+        "Un booléen (`true` ou `false`).",
+        "Un tableau de chaînes d'erreurs.",
+        "Un objet `ConstraintViolationListInterface` (itérable et countable).",
+        "Une exception."
+      ],
+      "correct_answers": [
+        "Un objet `ConstraintViolationListInterface` (itérable et countable)."
+      ],
+      "explanation": "Cet objet contient la liste des violations. S'il est vide (`count($errors) === 0`), l'objet est valide."
+    },
+    {
+      "id": 3,
+      "question": "Peut-on appliquer des contraintes de validation sur un getter (ex: `isPasswordSafe()`) ?",
+      "type": "single_choice",
+      "options": [
+        "Non, uniquement sur les propriétés.",
+        "Oui, si le nom de la méthode commence par `get`, `is` ou `has`.",
+        "Oui, sur n'importe quelle méthode.",
+        "Seulement si la méthode est publique."
+      ],
+      "correct_answers": [
+        "Oui, si le nom de la méthode commence par `get`, `is` ou `has`."
+      ],
+      "explanation": "Symfony considère ces méthodes comme des propriétés virtuelles."
+    },
+    {
+      "id": 4,
+      "question": "Comment valider une valeur simple (scalaire) sans créer de classe ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas possible.",
+        "En passant la valeur et les contraintes à `$validator->validate($value, $constraints)`.",
+        "En utilisant `filter_var`.",
+        "En créant un objet DTO à la volée."
+      ],
+      "correct_answers": [
+        "En passant la valeur et les contraintes à `$validator->validate($value, $constraints)`."
+      ],
+      "explanation": "Le validateur peut valider n'importe quelle donnée brute si on lui fournit les contraintes."
+    }
+  ]
+}

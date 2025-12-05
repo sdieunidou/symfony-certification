@@ -1,0 +1,96 @@
+{
+  "source_file": "08-validation-donnees/contraintes.md",
+  "title": "Contraintes de Validation Natives",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle contrainte utiliser pour s'assurer qu'un champ n'est pas vide (obligatoire) ?",
+      "type": "single_choice",
+      "options": [
+        "`NotNull`",
+        "`NotEmpty`",
+        "`NotBlank`",
+        "`Required`"
+      ],
+      "correct_answers": [
+        "`NotBlank`"
+      ],
+      "explanation": "`NotBlank` vérifie que la valeur n'est pas `null`, pas `false`, pas tableau vide, et pas une chaîne vide (même avec espaces)."
+    },
+    {
+      "id": 2,
+      "question": "Par défaut, comment se comportent la plupart des contraintes (ex: `Email`, `Length`) si la valeur est `null` ?",
+      "type": "single_choice",
+      "options": [
+        "Elles échouent (erreur de validation).",
+        "Elles ignorent la validation (considéré comme valide).",
+        "Elles lancent une exception PHP.",
+        "Elles convertissent `null` en chaîne vide."
+      ],
+      "correct_answers": [
+        "Elles ignorent la validation (considéré comme valide)."
+      ],
+      "explanation": "C'est un principe clé : pour rendre un champ obligatoire, il faut EXPLICITEMENT ajouter `NotNull` ou `NotBlank`. Les autres contraintes ne valident que si une valeur est présente."
+    },
+    {
+      "id": 3,
+      "question": "Quelle contrainte permet de valider chaque élément d'un tableau (ex: un tableau d'emails) ?",
+      "type": "single_choice",
+      "options": [
+        "`Collection`",
+        "`All`",
+        "`ForEach`",
+        "`Array`"
+      ],
+      "correct_answers": [
+        "`All`"
+      ],
+      "explanation": "`#[Assert\All([new Assert\Email()])]` applique la contrainte Email à chaque entrée du tableau."
+    },
+    {
+      "id": 4,
+      "question": "Quelle contrainte permet de valider la structure d'un tableau associatif (clés et valeurs) ?",
+      "type": "single_choice",
+      "options": [
+        "`Structure`",
+        "`Map`",
+        "`Collection`",
+        "`Assoc`"
+      ],
+      "correct_answers": [
+        "`Collection`"
+      ],
+      "explanation": "La contrainte `Collection` permet de définir des contraintes pour chaque clé attendue du tableau."
+    },
+    {
+      "id": 5,
+      "question": "Quelle contrainte vérifie qu'une valeur est vraie (utile pour les cases 'J'accepte les conditions') ?",
+      "type": "single_choice",
+      "options": [
+        "`True`",
+        "`IsTrue`",
+        "`Accepted`",
+        "`Valid`"
+      ],
+      "correct_answers": [
+        "`IsTrue`"
+      ],
+      "explanation": "Elle est souvent utilisée sur des propriétés virtuelles (getters) ou des champs de formulaire non mappés."
+    },
+    {
+      "id": 6,
+      "question": "Quelle contrainte permet de valider qu'un fichier image respecte certaines dimensions ?",
+      "type": "single_choice",
+      "options": [
+        "`File`",
+        "`Image`",
+        "`Dimensions`",
+        "`Size`"
+      ],
+      "correct_answers": [
+        "`Image`"
+      ],
+      "explanation": "`Image` hérite de `File` mais ajoute des options comme `minWidth`, `maxHeight`, etc."
+    }
+  ]
+}

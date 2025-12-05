@@ -1,0 +1,66 @@
+{
+  "source_file": "08-validation-donnees/sequences.md",
+  "title": "Séquence de Groupe (Group Sequence)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "À quoi sert une `GroupSequence` ?",
+      "type": "single_choice",
+      "options": [
+        "À valider plusieurs groupes en même temps.",
+        "À définir un ordre de validation des groupes et arrêter la validation dès qu'un groupe échoue (fail-fast).",
+        "À grouper des contraintes pour les réutiliser.",
+        "À trier les erreurs."
+      ],
+      "correct_answers": [
+        "À définir un ordre de validation des groupes et arrêter la validation dès qu'un groupe échoue (fail-fast)."
+      ],
+      "explanation": "C'est utile pour ne pas exécuter des validations lourdes (ex: appel API) si les validations simples (ex: format email) ont déjà échoué."
+    },
+    {
+      "id": 2,
+      "question": "Où définit-on la séquence de groupe par défaut pour une entité ?",
+      "type": "single_choice",
+      "options": [
+        "Dans le fichier `validation.yaml`.",
+        "Avec l'attribut `#[Assert\GroupSequence]` sur la classe de l'entité.",
+        "Dans le contrôleur.",
+        "Sur chaque propriété."
+      ],
+      "correct_answers": [
+        "Avec l'attribut `#[Assert\GroupSequence]` sur la classe de l'entité."
+      ],
+      "explanation": "Cela remplace le comportement du groupe `Default`."
+    },
+    {
+      "id": 3,
+      "question": "Si vous définissez `#[GroupSequence(['User', 'Strict'])]`, quand le groupe 'Strict' sera-t-il validé ?",
+      "type": "single_choice",
+      "options": [
+        "Toujours, après le groupe 'User'.",
+        "Uniquement si le groupe 'User' n'a généré aucune violation.",
+        "En même temps que le groupe 'User'.",
+        "Jamais."
+      ],
+      "correct_answers": [
+        "Uniquement si le groupe 'User' n'a généré aucune violation."
+      ],
+      "explanation": "C'est le principe de l'arrêt séquentiel."
+    },
+    {
+      "id": 4,
+      "question": "Quelle interface permet de définir dynamiquement la séquence de groupes selon l'état de l'objet (ex: User Premium) ?",
+      "type": "single_choice",
+      "options": [
+        "`DynamicGroupInterface`",
+        "`GroupSequenceProviderInterface`",
+        "`SequenceInterface`",
+        "`ValidationProviderInterface`"
+      ],
+      "correct_answers": [
+        "`GroupSequenceProviderInterface`"
+      ],
+      "explanation": "L'entité doit implémenter `getGroupSequence()` qui retourne le tableau des groupes à valider."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "08-validation-donnees/scopes.md",
+  "title": "Portée de Validation (Validation Scopes - Cascade)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Par défaut, si vous validez un objet `Order` qui contient un objet `Address`, les contraintes de `Address` sont-elles validées ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, la validation est récursive par défaut.",
+        "Non, la validation s'arrête à l'objet racine, sauf si on demande explicitement la cascade.",
+        "Oui, mais seulement pour les propriétés publiques.",
+        "Cela dépend de la configuration globale."
+      ],
+      "correct_answers": [
+        "Non, la validation s'arrête à l'objet racine, sauf si on demande explicitement la cascade."
+      ],
+      "explanation": "Pour valider les sous-objets, il faut utiliser la contrainte `Valid`."
+    },
+    {
+      "id": 2,
+      "question": "Quelle contrainte permet d'activer la validation en cascade sur une propriété (objet ou collection) ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Assert\Cascade]`",
+        "`#[Assert\Recursive]`",
+        "`#[Assert\Valid]`",
+        "`#[Assert\Deep]`"
+      ],
+      "correct_answers": [
+        "`#[Assert\Valid]`"
+      ],
+      "explanation": "Cette contrainte dit au validateur de traverser la propriété et de valider l'objet cible."
+    },
+    {
+      "id": 3,
+      "question": "Comment Symfony gère-t-il les références circulaires lors de la validation en cascade (A -> B -> A) ?",
+      "type": "single_choice",
+      "options": [
+        "Il plante avec une `InfiniteLoopException`.",
+        "Il détecte la circularité et ne valide pas deux fois le même objet dans le même contexte.",
+        "Il continue indéfiniment jusqu'à saturation mémoire.",
+        "Il ignore l'objet B."
+      ],
+      "correct_answers": [
+        "Il détecte la circularité et ne valide pas deux fois le même objet dans le même contexte."
+      ],
+      "explanation": "Le graphe d'objets est parcouru intelligemment pour éviter les boucles infinies."
+    },
+    {
+      "id": 4,
+      "question": "Dans un formulaire imbriqué (Embedded Form), faut-il ajouter manuellement `#[Assert\Valid]` sur la propriété liée ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, le composant Form l'ajoute automatiquement si `cascade_validation` est true (ce qui est le défaut pour les enfants).",
+        "Seulement si le formulaire enfant est mappé.",
+        "Non, les formulaires ne valident pas les objets."
+      ],
+      "correct_answers": [
+        "Non, le composant Form l'ajoute automatiquement si `cascade_validation` est true (ce qui est le défaut pour les enfants)."
+      ],
+      "explanation": "Cependant, pour une validation hors formulaire (API/DTO), l'attribut est obligatoire."
+    }
+  ]
+}
