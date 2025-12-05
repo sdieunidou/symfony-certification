@@ -8,123 +8,204 @@ Il supporte nativement :
 3.  **Le Streaming** : Traitement des réponses flux par flux (Server-Sent Events, Téléchargements).
 4.  **L'Autowiring Scopé** : Configuration spécifique par API (GitHub, Stripe, etc.).
 
-## Application dans Symfony 7.0
-Il remplace Guzzle comme standard de facto dans l'écosystème Symfony. Il implémente `Symfony\Contracts\HttpClient\HttpClientInterface` et peut agir comme un adaptateur `PSR-18`.
+## Installation
+```bash
+composer require symfony/http-client
+```
 
-## Exemple de code Complet
+## Basic Usage
+L'interface principale est `Symfony\Contracts\HttpClient\HttpClientInterface`.
 
 ```php
-<?php
-
-namespace App\Service;
-
 use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Component\HttpFoundation\Response;
 
-class GithubClient
+class GithubService
 {
     public function __construct(
-        // Injection du client global ou d'un client scopé (via named autowiring)
-        private HttpClientInterface $client
+        private HttpClientInterface $client,
     ) {}
 
-    public function getRepos(string $username): array
+    public function getRepos(): array
     {
-        // 1. Préparation de la requête (NON BLOQUANT)
-        // La connexion réseau ne s'ouvre pas encore forcément.
-        $response = $this->client->request('GET', "https://api.github.com/users/$username/repos", [
-            'headers' => ['Accept' => 'application/vnd.github+json'],
-            'timeout' => 5.0,
-            // 'json' => ['foo' => 'bar'], // Pour POST/PUT
-            // 'query' => ['sort' => 'updated'],
-        ]);
+        $response = $this->client->request(
+            'GET',
+            'https://api.github.com/repos/symfony/symfony-docs'
+        );
 
-        // 2. Logique métier pendant que la requête part...
-        // ...
+        $statusCode = $response->getStatusCode(); // 200
+        $contentType = $response->getHeaders()['content-type'][0]; // 'application/json'
+        $content = $response->getContent(); // string body
+        $content = $response->toArray(); // array (si JSON)
 
-        // 3. Accès aux données (BLOQUANT)
-        // C'est ici que le script attend la réponse si elle n'est pas encore arrivée.
-        
-        if ($response->getStatusCode() !== 200) {
-            throw new \Exception("Erreur API: " . $response->getStatusCode());
-        }
-
-        // Conversion JSON -> Array automatique
-        return $response->toArray(); 
+        return $content;
     }
 }
 ```
 
-## Requêtes Concurrentes (Parallélisme)
-C'est la "killer feature". Vous pouvez lancer 10 requêtes en parallèle et attendre qu'elles finissent toutes, en un temps égal à la requête la plus lente (au lieu de la somme des temps).
-
+### Utilisation Standalone
 ```php
-$responses = [];
-$urls = ['https://api.a.com', 'https://api.b.com', 'https://api.c.com'];
+use Symfony\Component\HttpClient\HttpClient;
 
-// Lance les 3 requêtes
-foreach ($urls as $url) {
-    $responses[] = $client->request('GET', $url);
-}
-
-// Attend et traite au fil de l'eau
-// stream() permet de traiter les réponses dès qu'elles arrivent, dans le désordre
-foreach ($client->stream($responses) as $response => $chunk) {
-    if ($chunk->isLast()) {
-        // Réponse complète reçue
-        echo "Fini : " . $response->getInfo('url');
-    }
-}
+$client = HttpClient::create();
+$response = $client->request('GET', 'https://...');
 ```
 
-## Configuration "Scoped Client" (`framework.yaml`)
-Ne jamais coder les URLs en dur. Utilisez les clients scopés.
+## Options de Requête (`request`)
+Le 3ème argument de `request()` accepte de nombreuses options :
+
+*   `headers`: Tableau d'en-têtes HTTP.
+*   `body`: Corps de la requête (string, array pour form-data, resource).
+*   `json`: Encodage automatique en JSON et ajout du header `Content-Type: application/json`.
+*   `query`: Paramètres de l'URL (Query String).
+*   `auth_basic`: Authentification Basic (`['username', 'password']` ou `'token'`).
+*   `auth_bearer`: Token Bearer.
+*   `timeout`: Timeout en secondes (float).
+*   `max_redirects`: Nombre max de redirections suivies.
+*   `verify_peer`: Validation SSL (true/false).
+*   `proxy`: URL du proxy.
+*   `user_data`: Données arbitraires attachées à la réponse.
+
+## Configuration (`framework.yaml`)
+
+### Options par défaut (Globales)
+```yaml
+framework:
+    http_client:
+        default_options:
+            max_redirects: 7
+            headers:
+                User-Agent: 'My App/1.0'
+        max_host_connections: 10 # Connexions max par hôte
+```
+
+### Scoped Clients (Clients Scopés)
+Permet d'auto-configurer le client selon l'URL ou le service injecté.
 
 ```yaml
 framework:
     http_client:
         scoped_clients:
+            # Option 1 : Matching sur URL (regex)
             github.client:
-                base_uri: 'https://api.github.com'
+                scope: 'https://api\.github\.com'
                 headers:
-                    Accept: 'application/vnd.github+json'
-                auth_basic: '%env(GITHUB_TOKEN)%'
+                    Authorization: 'token %env(GITHUB_TOKEN)%'
+            
+            # Option 2 : Base URI (URLs relatives dans request())
+            content_api:
+                base_uri: 'https://content.example.com'
+                timeout: 2.5
 ```
 
-Injection ciblée (Named Autowiring) :
+**Injection :**
+Utilisez le "Named Autowiring" (nom du service = nom de la variable en camelCase).
 ```php
 public function __construct(HttpClientInterface $githubClient) { ... }
 ```
 
+### Retry Failed Requests
+Symfony peut relancer automatiquement les requêtes échouées (réseau ou 5xx).
+
+```yaml
+framework:
+    http_client:
+        default_options:
+            retry_failed:
+                max_retries: 3
+                delay: 1000 # ms
+                multiplier: 2
+                http_codes: [429, 500, 502, 503, 504]
+```
+
+## Requêtes Concurrentes & Streaming
+Le client est asynchrone par défaut. Tant que vous n'appelez pas une méthode bloquante (`getContent()`, `getStatusCode()`), le réseau peut travailler en arrière-plan.
+
+### Multiplexing (Exécution parallèle)
+Pour attendre plusieurs réponses simultanément :
+
+```php
+$responses = [
+    $client->request('GET', 'https://api.a.com'),
+    $client->request('GET', 'https://api.b.com'),
+];
+
+foreach ($client->stream($responses) as $response => $chunk) {
+    if ($chunk->isTimeout()) { /* ... */ }
+    if ($chunk->isFirst()) {
+        // Headers reçus
+    }
+    if ($chunk->isLast()) {
+        // Réponse complète reçue
+        $data = $response->toArray();
+    }
+}
+```
+Le temps total sera égal à la requête la plus lente, pas la somme.
+
 ## Tests et Mocking
-Symfony fournit un `MockHttpClient` et `MockResponse` pour les tests unitaires, évitant les appels réseaux réels.
+Le composant fournit des outils puissants pour tester sans appels réseaux.
+
+### MockHttpClient
+Remplace le client réel dans les tests.
 
 ```php
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 
-public function testGetRepos()
-{
-    $mockResponse = new MockResponse(json_encode(['repo1']), ['http_code' => 200]);
-    $mockClient = new MockHttpClient($mockResponse);
-    
-    $service = new GithubClient($mockClient);
-    // ... assertions
-}
+// Mock simple
+$mockResponse = new MockResponse(json_encode(['id' => 123]), [
+    'http_code' => 201,
+    'response_headers' => ['Content-Type' => 'application/json'],
+]);
+
+$client = new MockHttpClient($mockResponse, 'https://example.com');
+$result = $client->request('POST', '/users');
+
+// Assertions sur la requête envoyée
+$this->assertSame('POST', $mockResponse->getRequestMethod());
+$this->assertSame('https://example.com/users', $mockResponse->getRequestUrl());
+$this->assertStringContainsString('Content-Type', $mockResponse->getRequestOptions()['headers'][0] ?? '');
 ```
 
-## 🧠 Concepts Clés
-1.  **Lazy Loading** : La méthode `request()` retourne immédiatement un objet `ResponseInterface`. Le réseau est sollicité paresseusement.
-2.  **PSR-18 vs Natif** : L'interface PSR-18 (`ClientInterface`) force le comportement synchrone (retourne une `Response` peuplée). L'interface Symfony (`HttpClientInterface`) est asynchrone par nature.
-3.  **Retry Mechanism** : Le composant inclut un mécanisme de `RetryableHttpClient` (décorateur) pour relancer automatiquement les requêtes en cas d'erreur réseau ou code 5xx (configurable via `framework.yaml`).
+### Mock avec Callback
+Pour une logique dynamique ou simuler des exceptions réseau.
+
+```php
+$callback = function ($method, $url, $options) {
+    if ($method === 'DELETE') {
+        return new MockResponse('', ['http_code' => 204]);
+    }
+    return new MockResponse('{"error": "Not Found"}', ['http_code' => 404]);
+};
+
+$client = new MockHttpClient($callback);
+```
+
+### Simulation d'erreurs réseau
+```php
+// Simule un DNS failure ou connection timeout
+$response = new MockResponse([], ['error' => 'Network unreachable']);
+```
+
+### Profiling & HAR
+Le client est intégré au Profiler Symfony. En test, vous pouvez même rejouer des fichiers `.har` (HTTP Archive) enregistrés par votre navigateur.
 
 ## ⚠️ Points de vigilance (Certification)
-*   **Exceptions** :
-    *   `TransportExceptionInterface` : Erreur réseau (DNS, Timeout, Connexion refusée).
-    *   `ClientExceptionInterface` : Codes 4xx (si vous appelez `$response->getContent()` ou `check=true`).
-    *   `ServerExceptionInterface` : Codes 5xx.
-    *   **Important** : Par défaut, `request()` ne lance PAS d'exception pour les 4xx/5xx. Les exceptions sont lancées uniquement quand vous lisez le contenu (`getContent`, `toArray`), sauf si vous passez `false` au paramètre `$throw` dans `getContent()`.
-*   **Hosting** : Pour que l'asynchrone fonctionne bien, l'extension `curl` est fortement recommandée. Sans elle, le client fonctionne mais de manière synchrone (fallback PHP streams).
+
+1.  **Exceptions** :
+    *   `TransportExceptionInterface` : Erreur réseau pure (DNS, pas de connexion). Lancée souvent dès l'appel à une méthode de `Response`.
+    *   `ClientExceptionInterface` (4xx) & `ServerExceptionInterface` (5xx) : Lancées UNIQUEMENT si vous lisez le contenu (`getContent()`, `toArray()`) ET que `$throw` est true (défaut).
+    *   `RedirectionExceptionInterface` : 3xx (si max_redirects atteint).
+
+2.  **Idempotence** : `HttpClient::create()` détecte automatiquement si `curl` est installé. Si oui, il l'utilise (meilleures perfs, HTTP/2). Sinon, fallback sur les streams PHP natifs.
+
+3.  **Server-Sent Events (SSE)** :
+    ```php
+    $response = $client->request('GET', 'https://...', ['headers' => ['Accept' => 'text/event-stream']]);
+    foreach ($client->stream($response) as $chunk) {
+        // Traitement des événements chunk par chunk
+    }
+    ```
 
 ## Ressources
 *   [Symfony Docs - HTTP Client](https://symfony.com/doc/current/http_client.html)

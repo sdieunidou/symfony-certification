@@ -2,45 +2,68 @@
 
 ## Concept clé
 Le déploiement est le passage de l'état de développement à l'état de production.
-L'objectif est la performance et la stabilité.
+L'objectif est la performance, la stabilité et la sécurité.
 
-## Checklist de Production
+## Stratégies de Déploiement
+1.  **Basic File Transfer (FTP/SCP)** : Copie manuelle. Risqué et déconseillé (fichiers incohérents pendant l'upload, rollback difficile).
+2.  **Source Control (Git)** : `git pull` sur le serveur. Mieux, mais nécessite une gestion manuelle des dépendances et migrations.
+3.  **Build Scripts / Outils** :
+    *   **Deployer** (PHP) : Outil standard, scriptable en PHP.
+    *   **Ansistrano** (Ansible) : Automatisation via YAML.
+    *   **Plateformes PaaS** (Platform.sh / Upsun) : Déploiement intégré et géré par l'hébergeur.
 
-### 1. Environnement
-*   `APP_ENV=prod`
-*   `APP_DEBUG=0`
-*   Ceci désactive le Profiler, le re-parsing des configs à chaque requête, et active le cache agressif.
+## Checklist de Production (Common Tasks)
 
-### 2. Dépendances
+### 1. Vérification des Prérequis
+Sur le serveur de production, il est recommandé de vérifier la compatibilité de l'environnement.
+*   En dev : `symfony check:requirements`
+*   En prod (sans CLI) : `composer require symfony/requirements-checker` (génère un script PHP web ou CLI à exécuter).
+
+### 2. Environnement & Variables
+*   **Définition** : Variables d'environnement réelles (Nginx, Systemd) OU fichier `.env.prod.local`.
+*   **Optimisation** : `composer dump-env prod`.
+    *   Génère un fichier `.env.local.php` optimisé (tableau PHP statique).
+    *   Évite le parsing coûteux des fichiers `.env` à chaque requête.
+*   **Configuration** :
+    *   `APP_ENV=prod`
+    *   `APP_DEBUG=0` (Désactive le Profiler et le re-parsing des configs).
+
+### 3. Dépendances (Composer)
 *   `composer install --no-dev --optimize-autoloader --classmap-authoritative`
-*   Supprime les paquets de test/debug et optimise le chargement des classes (Map statique).
+*   `--no-dev` : Exclut les paquets de test/profiling.
+*   `--optimize-autoloader` : Génère une classmap pour accélérer l'autoloading.
+*   **Note** : Si erreur "class not found", vérifier que `APP_ENV=prod` est bien défini avant l'install (pour les scripts post-install).
 
-### 3. Cache Warmup
-*   `php bin/console cache:clear`
-*   Cette commande vide le cache ET le "réchauffe" (warmup) : compile le conteneur, les routes, les templates Twig, les annotations. Cela évite que le premier utilisateur ne subisse le temps de compilation.
+### 4. Cache Warmup
+*   `APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear`
+*   Vide le cache ET le "réchauffe" (warmup) : compile le conteneur, les routes, les templates Twig, les annotations. Évite la lenteur pour le premier utilisateur.
 
-### 4. Assets
-*   Compilation des assets (Webpack Encore / AssetMapper).
-*   `php bin/console asset-map:compile`
+### 5. Base de Données
+*   **Migrations** : `php bin/console doctrine:migrations:migrate --no-interaction`
+*   *Jamais de `doctrine:schema:update` en production.*
 
-### 5. OPcache (PHP)
-Crucial pour la performance.
-*   `opcache.validate_timestamps=0` : PHP ne vérifie plus si les fichiers ont changé. Gain d'I/O énorme. (Implique de redémarrer PHP-FPM à chaque déploiement).
-*   **Preloading** : Configurer le script de préchargement généré par Symfony (`var/cache/prod/App_KernelProdContainer.preload.php`) dans `opcache.preload`.
+### 6. Assets (Frontend)
+*   **Webpack Encore** : `npm run build` puis upload du dossier `public/build`.
+*   **AssetMapper** : `php bin/console asset-map:compile`.
+
+### 7. Performance PHP (OPcache)
+*   `opcache.validate_timestamps=0` : PHP ne vérifie plus si les fichiers ont changé sur le disque (Gain I/O).
+    *   *Implique un redémarrage obligatoire de PHP-FPM à chaque déploiement.*
+*   **Preloading** : Charger le script généré `var/cache/prod/App_KernelProdContainer.preload.php` dans la directive `opcache.preload` du `php.ini`.
 
 ## Secrets (Vault)
-Ne stockez pas les mots de passe en clair dans `.env` sur le serveur.
-Utilisez le composant Secrets pour chiffrer les valeurs.
-*   `php bin/console secrets:set DATABASE_URL`
-*   Nécessite la clé de déchiffrement (`config/secrets/prod/prod.decrypt.private.php`) sur le serveur.
+Pour sécuriser les identifiants sensibles (API Keys, DB password) :
+*   Ne pas les stocker en clair dans `.env`.
+*   Utiliser `php bin/console secrets:set DATABASE_URL`.
+*   Nécessite la clé de déchiffrement (`config/secrets/prod/prod.decrypt.private.php`) sur le serveur de production.
 
-## 🧠 Concepts Clés
-1.  **Atomicité** : Utilisez des déploiements atomiques (ex: lien symbolique vers le nouveau dossier de release) pour éviter de servir une application cassée pendant l'upload des fichiers.
-2.  **Trust Proxies** : Configurez les IPs de vos Load Balancers (Cloudflare, AWS) dans `trusted_proxies` pour avoir la bonne IP client et le bon protocole HTTPS.
+## Troubleshooting & Cas Particuliers
+*   **Absence de `composer.json`** : Si vous déployez uniquement l'artifact (sans `composer.json` à la racine), surchargez la méthode `Kernel::getProjectDir()` pour indiquer la bonne racine du projet, sinon Symfony risque de ne pas trouver les répertoires `var/` ou `config/`.
+*   **Apache** : Sur un hébergement mutualisé, le paquet `symfony/apache-pack` peut être nécessaire pour générer le `.htaccess`.
 
-## ⚠️ Points de vigilance (Certification)
-*   **Permissions** : Les dossiers `var/log` et `var/cache` doivent être accessibles en écriture par l'utilisateur web (www-data). Le reste doit être en lecture seule idéalement.
-*   **Doctrine** : Ne jamais faire `doctrine:schema:update` en prod. Utilisez les migrations (`doctrine:migrations:migrate`).
+## 🧠 Concepts Clés (Certification)
+1.  **Atomicité** : Le déploiement ne doit pas casser le site en cours de route. L'idéal est de préparer un nouveau dossier (release), de tout construire dedans (warmup), puis de changer un **lien symbolique** `current` pointant vers ce dossier.
+2.  **Trust Proxies** : Si derrière un Load Balancer (AWS, Cloudflare), configurer `trusted_proxies` pour récupérer la bonne IP client et le protocole HTTPS.
 
 ## Ressources
 *   [Symfony Docs - Deployment](https://symfony.com/doc/current/deployment.html)
