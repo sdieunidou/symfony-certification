@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/mailer.md",
+  "title": "Le Composant Mailer",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la classe recommandée pour envoyer des emails utilisant des templates Twig dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\Component\Mime\Email`",
+        "`Symfony\Bridge\Twig\Mime\TemplatedEmail`",
+        "`Swift_Message`",
+        "`Symfony\Component\Mailer\TwigEmail`"
+      ],
+      "correct_answers": [
+        "`Symfony\Bridge\Twig\Mime\TemplatedEmail`"
+      ],
+      "explanation": "`TemplatedEmail` étend la classe de base `Email` en ajoutant des méthodes pour le contexte Twig (`context`, `htmlTemplate`)."
+    },
+    {
+      "id": 2,
+      "question": "Comment configurer le transport (DSN) du Mailer pour utiliser une stratégie de 'Failover' (haute disponibilité) ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas possible nativement.",
+        "En utilisant le schéma `failover(...)` dans le DSN (ex: `failover(smtp1://... smtp2://...)`).",
+        "En créant deux services Mailer.",
+        "En utilisant un Load Balancer externe."
+      ],
+      "correct_answers": [
+        "En utilisant le schéma `failover(...)` dans le DSN (ex: `failover(smtp1://... smtp2://...)`)."
+      ],
+      "explanation": "Symfony supporte nativement le failover et le round-robin directement dans la chaîne de configuration DSN."
+    },
+    {
+      "id": 3,
+      "question": "Comment rendre l'envoi d'email asynchrone pour ne pas bloquer l'utilisateur ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `swiftmailer`.",
+        "Configurer le routing Messenger pour envoyer les messages de type `SendEmailMessage` vers un transport asynchrone (queue).",
+        "Lancer un processus en arrière-plan manuellement.",
+        "Utiliser AJAX."
+      ],
+      "correct_answers": [
+        "Configurer le routing Messenger pour envoyer les messages de type `SendEmailMessage` vers un transport asynchrone (queue)."
+      ],
+      "explanation": "Le composant Mailer est conçu pour s'intégrer transparentement avec Messenger. Si configuré, `send()` ne fait que dispatcher un message dans le bus."
+    },
+    {
+      "id": 4,
+      "question": "En développement, comment intercepter tous les emails sortants pour les rediriger vers une adresse unique (ex: le développeur) ?",
+      "type": "single_choice",
+      "options": [
+        "En modifiant le code PHP.",
+        "En configurant `framework.mailer.envelope.recipients` dans `config/packages/dev/mailer.yaml`.",
+        "En utilisant Mailtrap.",
+        "En désactivant le réseau."
+      ],
+      "correct_answers": [
+        "En configurant `framework.mailer.envelope.recipients` dans `config/packages/dev/mailer.yaml`."
+      ],
+      "explanation": "Cette fonctionnalité d'interception (Envelope Listener) est native et évite d'envoyer accidentellement des mails aux vrais utilisateurs avec des données de prod/staging."
+    }
+  ]
+}

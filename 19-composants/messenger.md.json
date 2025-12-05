@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/messenger.md",
+  "title": "Le Composant Messenger",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Dans Symfony Messenger, quel est le rôle du 'Bus' ?",
+      "type": "single_choice",
+      "options": [
+        "Traiter le message.",
+        "Dispatcher le message vers les bons Handlers (via des middlewares).",
+        "Stocker le message en base.",
+        "Afficher le message à l'utilisateur."
+      ],
+      "correct_answers": [
+        "Dispatcher le message vers les bons Handlers (via des middlewares)."
+      ],
+      "explanation": "Le Bus est le point d'entrée (`dispatch()`). Il ne connaît pas la logique métier, il orchestre juste le flux."
+    },
+    {
+      "id": 2,
+      "question": "Comment traite-t-on un message de manière asynchrone avec Messenger ?",
+      "type": "single_choice",
+      "options": [
+        "En ajoutant `implements AsyncInterface` au message.",
+        "En configurant le `routing` dans `messenger.yaml` pour diriger la classe du message vers un transport asynchrone (ex: `async`).",
+        "En utilisant `bus->dispatchAsync()`.",
+        "C'est automatique pour tous les messages."
+      ],
+      "correct_answers": [
+        "En configurant le `routing` dans `messenger.yaml` pour diriger la classe du message vers un transport asynchrone (ex: `async`)."
+      ],
+      "explanation": "Le routing décide si un message est traité immédiatement (sync) ou envoyé dans une file d'attente (transport) pour être consommé plus tard."
+    },
+    {
+      "id": 3,
+      "question": "Si un handler échoue (exception), que fait Messenger par défaut si une stratégie de retry est configurée ?",
+      "type": "single_choice",
+      "options": [
+        "Il supprime le message.",
+        "Il arrête le serveur.",
+        "Il remet le message dans la file pour être rejoué plus tard (avec un délai/backoff), jusqu'au nombre max d'essais.",
+        "Il envoie un email à l'admin."
+      ],
+      "correct_answers": [
+        "Il remet le message dans la file pour être rejoué plus tard (avec un délai/backoff), jusqu'au nombre max d'essais."
+      ],
+      "explanation": "C'est la résilience native de Messenger. Après l'épuisement des retries, le message va dans le transport `failure`."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi faut-il redémarrer les workers (`messenger:stop-workers`) lors d'un déploiement ?",
+      "type": "single_choice",
+      "options": [
+        "Pour vider la mémoire.",
+        "Parce que les workers sont des processus PHP longue durée qui ont chargé le code en mémoire au démarrage. Ils ne voient pas les modifications de code du nouveau déploiement.",
+        "Pour réinitialiser la connexion BDD.",
+        "Ce n'est pas nécessaire."
+      ],
+      "correct_answers": [
+        "Parce que les workers sont des processus PHP longue durée qui ont chargé le code en mémoire au démarrage. Ils ne voient pas les modifications de code du nouveau déploiement."
+      ],
+      "explanation": "Sans redémarrage, le worker continuerait d'exécuter l'ancien code, potentiellement incompatible avec la nouvelle structure de base de données."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/process.md",
+  "title": "Le Composant Process",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Pourquoi est-il recommandé d'utiliser le composant `Process` plutôt que les fonctions natives PHP comme `exec` ou `system` ?",
+      "type": "single_choice",
+      "options": [
+        "Pour la coloration syntaxique.",
+        "Pour l'abstraction multiplateforme (Windows/Linux), la gestion de l'échappement des arguments (sécurité) et la gestion des timeouts.",
+        "Parce que `exec` est supprimé en PHP 8.",
+        "Pour utiliser Docker."
+      ],
+      "correct_answers": [
+        "Pour l'abstraction multiplateforme (Windows/Linux), la gestion de l'échappement des arguments (sécurité) et la gestion des timeouts."
+      ],
+      "explanation": "Le composant Process sécurise et normalise l'exécution de commandes, évitant les pièges classiques de l'injection de commande."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence entre la méthode `run()` et la méthode `start()` ?",
+      "type": "single_choice",
+      "options": [
+        "`run()` est asynchrone, `start()` est synchrone.",
+        "`run()` est bloquant (attend la fin du processus), `start()` est asynchrone (lance le processus en arrière-plan et rend la main au script PHP).",
+        "`start()` est déprécié.",
+        "Aucune."
+      ],
+      "correct_answers": [
+        "`run()` est bloquant (attend la fin du processus), `start()` est asynchrone (lance le processus en arrière-plan et rend la main au script PHP)."
+      ],
+      "explanation": "`start()` est essentiel pour paralléliser des tâches ou gérer des processus longs tout en gardant le contrôle."
+    },
+    {
+      "id": 3,
+      "question": "Comment passer des arguments de manière sécurisée au constructeur de `Process` ?",
+      "type": "single_choice",
+      "options": [
+        "Sous forme d'une seule chaîne : `new Process('ls -l ' . $dir)`.",
+        "Sous forme d'un tableau : `new Process(['ls', '-l', $dir])`.",
+        "En concaténant avec `escapeshellarg`.",
+        "En utilisant `Process::fromShellCommandline`."
+      ],
+      "correct_answers": [
+        "Sous forme d'un tableau : `new Process(['ls', '-l', $dir])`."
+      ],
+      "explanation": "L'utilisation du tableau garantit que chaque argument est échappé individuellement, rendant l'injection impossible."
+    },
+    {
+      "id": 4,
+      "question": "Comment récupérer la sortie (STDOUT) d'un processus en temps réel (streaming) pendant son exécution ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas possible.",
+        "En passant une fonction de callback (closure) à la méthode `run()` ou `start()`.",
+        "En lisant le fichier `/tmp/output`.",
+        "Avec `getOutput()` à la fin."
+      ],
+      "correct_answers": [
+        "En passant une fonction de callback (closure) à la méthode `run()` ou `start()`."
+      ],
+      "explanation": "Le callback reçoit le type (ERR/OUT) et le buffer au fur et à mesure qu'il est émis par le processus."
+    }
+  ]
+}

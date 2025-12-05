@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/scheduler.md",
+  "title": "Le Composant Scheduler",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la principale différence architecturale entre le Scheduler Symfony et une tâche CRON classique ?",
+      "type": "single_choice",
+      "options": [
+        "Le Scheduler utilise une base de données.",
+        "Cron lance un nouveau processus PHP à chaque exécution (froid), alors que le Scheduler utilise un Worker longue durée (chaud) qui dort entre les tâches.",
+        "Le Scheduler est moins précis.",
+        "Cron ne fonctionne que sur Linux."
+      ],
+      "correct_answers": [
+        "Cron lance un nouveau processus PHP à chaque exécution (froid), alors que le Scheduler utilise un Worker longue durée (chaud) qui dort entre les tâches."
+      ],
+      "explanation": "Le Scheduler est un daemon (via Messenger) qui reste en mémoire, ce qui est plus performant mais nécessite de gérer les fuites de mémoire."
+    },
+    {
+      "id": 2,
+      "question": "Sur quel composant Symfony s'appuie le Scheduler pour dispatcher et exécuter les tâches ?",
+      "type": "single_choice",
+      "options": [
+        "HttpKernel",
+        "EventDispatcher",
+        "Messenger",
+        "Process"
+      ],
+      "correct_answers": [
+        "Messenger"
+      ],
+      "explanation": "Le Scheduler génère des messages Messenger standard. Ils sont traités par les mêmes mécanismes (Handlers, Middlewares, Transports)."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert l'attribut `#[AsSchedule]` sur une classe implémentant `ScheduleProviderInterface` ?",
+      "type": "single_choice",
+      "options": [
+        "À définir la fréquence.",
+        "À déclarer cette classe comme fournisseur de planning (Schedule) pour qu'elle soit détectée automatiquement par Symfony.",
+        "À désactiver le scheduler.",
+        "À sécuriser l'accès."
+      ],
+      "correct_answers": [
+        "À déclarer cette classe comme fournisseur de planning (Schedule) pour qu'elle soit détectée automatiquement par Symfony."
+      ],
+      "explanation": "C'est le point d'entrée pour configurer quelles tâches doivent s'exécuter et quand."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi est-il important de rendre le schedule 'Stateful' (avec un Cache/Lock) dans un environnement avec plusieurs workers (ou redémarrages) ?",
+      "type": "single_choice",
+      "options": [
+        "Pour sauvegarder les logs.",
+        "Pour éviter qu'une tâche ne soit exécutée plusieurs fois par erreur (doublon) si le worker redémarre ou s'il y en a plusieurs.",
+        "Pour accélérer l'exécution.",
+        "C'est obligatoire."
+      ],
+      "correct_answers": [
+        "Pour éviter qu'une tâche ne soit exécutée plusieurs fois par erreur (doublon) si le worker redémarre ou s'il y en a plusieurs."
+      ],
+      "explanation": "Le lock permet de mémoriser 'J'ai déjà lancé la tâche de 12:00' pour ne pas la relancer si le worker reboot à 12:01."
+    }
+  ]
+}

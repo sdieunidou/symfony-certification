@@ -1,0 +1,68 @@
+{
+  "source_file": "19-composants/notifier.md",
+  "title": "Le Composant Notifier",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence conceptuelle majeure entre le composant `Mailer` et le composant `Notifier` ?",
+      "type": "single_choice",
+      "options": [
+        "Notifier est plus rapide.",
+        "Mailer envoie des emails bruts. Notifier envoie des messages conceptuels (Notification) à un Destinataire (Recipient) via différents canaux (SMS, Chat, Email) choisis selon l'importance.",
+        "Notifier ne supporte pas les emails.",
+        "Mailer est déprécié."
+      ],
+      "correct_answers": [
+        "Mailer envoie des emails bruts. Notifier envoie des messages conceptuels (Notification) à un Destinataire (Recipient) via différents canaux (SMS, Chat, Email) choisis selon l'importance."
+      ],
+      "explanation": "Notifier ajoute une couche d'abstraction de haut niveau centrée sur l'utilisateur et l'urgence, pas sur le protocole technique."
+    },
+    {
+      "id": 2,
+      "question": "Dans la configuration `channel_policy`, si vous définissez `urgent: ['sms', 'email']`, que se passe-t-il pour une notification d'importance 'Urgent' ?",
+      "type": "single_choice",
+      "options": [
+        "Elle est envoyée par SMS uniquement.",
+        "Elle est envoyée par Email uniquement.",
+        "Elle est envoyée par SMS ET par Email simultanément.",
+        "Elle est envoyée aléatoirement sur l'un des deux."
+      ],
+      "correct_answers": [
+        "Elle est envoyée par SMS ET par Email simultanément."
+      ],
+      "explanation": "Le Notifier envoie la notification sur tous les canaux listés pour ce niveau d'importance."
+    },
+    {
+      "id": 3,
+      "question": "Quelle interface doit implémenter votre entité User pour être utilisée facilement comme destinataire (`Recipient`) dans `Notifier` ?",
+      "type": "single_choice",
+      "options": [
+        "`UserInterface`",
+        "`RecipientInterface` (ou `EmailRecipientInterface` / `SmsRecipientInterface`)",
+        "`NotifiableInterface`",
+        "`MessageInterface`"
+      ],
+      "correct_answers": [
+        "`RecipientInterface` (ou `EmailRecipientInterface` / `SmsRecipientInterface`)"
+      ],
+      "explanation": "Ces interfaces obligent l'entité à exposer `getEmail()` ou `getPhone()`, permettant au Notifier de savoir où envoyer le message."
+    },
+    {
+      "id": 4,
+      "question": "Quels types de canaux sont supportés par Notifier ?",
+      "type": "multiple_choice",
+      "options": [
+        "Texter (SMS)",
+        "Chatter (Slack, Telegram, Discord)",
+        "Browser / Push (Firebase, Mercure)",
+        "Fax"
+      ],
+      "correct_answers": [
+        "Texter (SMS)",
+        "Chatter (Slack, Telegram, Discord)",
+        "Browser / Push (Firebase, Mercure)"
+      ],
+      "explanation": "Notifier couvre la plupart des moyens de communication modernes."
+    }
+  ]
+}
