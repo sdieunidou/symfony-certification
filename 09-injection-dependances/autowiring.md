@@ -51,8 +51,32 @@ Pour définir une règle globale (ex: `$adminEmail` vaut toujours la même chose
 services:
     _defaults:
         bind:
+            # Binding par nom uniquement
             string $adminEmail: 'admin@example.com'
-            LoggerInterface $requestLogger: '@monolog.logger.request'
+            
+            # Binding par Type + Nom (Prioritaire sur l'autowiring standard)
+            Psr\Log\LoggerInterface $requestLogger: '@monolog.logger.request'
+```
+
+### 4. Adaptateurs d'Interface Fonctionnelle (Symfony 6.3+)
+Si vous avez une interface avec une seule méthode (Functional Interface) et un service qui a une méthode correspondante (mais pas le même nom ou la même signature exacte), vous pouvez créer un adaptateur à la volée.
+
+**Via Attribut :**
+```php
+use Symfony\Component\DependencyInjection\Attribute\AutowireCallable;
+
+public function __construct(
+    #[AutowireCallable(service: MessageUtils::class, method: 'format')]
+    private MessageFormatterInterface $formatter
+) {}
+```
+
+**Via YAML (`from_callable`) :**
+Cela crée un service qui implémente l'interface et redirige l'appel.
+```yaml
+app.message_formatter:
+    class: App\Service\MessageFormatterInterface
+    from_callable: ['@App\Service\MessageUtils', 'format']
 ```
 
 ## 🧠 Concepts Clés

@@ -24,5 +24,12 @@ Un service synthétique est un service qui n'est pas créé par le conteneur, ma
 *   **Injection de Conteneur** : Injecter le service `service_container` (ou `ContainerInterface`) dans vos propres services est considéré comme une mauvaise pratique (**Service Locator Pattern**). Il faut injecter uniquement les dépendances réelles.
 *   **Debug** : `php bin/console debug:container` liste tous les services publics et privés.
 
+## Linting de la Configuration
+Avant de déployer en production, il est crucial de valider la configuration du conteneur.
+*   `php bin/console lint:container` : Vérifie que les services sont correctement configurés (arguments, types).
+*   `php bin/console lint:container --resolve-env-vars` : (Symfony 7.2+) Force la résolution des variables d'env pour vérifier qu'elles existent.
+
+Ces vérifications s'appuient sur des *Compiler Passes* comme `CheckTypeDeclarationsPass` et `CheckAliasValidityPass` (Symfony 7.1+).
+
 ## Ressources
 *   [Symfony Docs - Service Container](https://symfony.com/doc/current/service_container.html)
