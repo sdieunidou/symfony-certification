@@ -182,3 +182,18 @@ Ce dépôt contient des fiches de révision complètes pour la certification Sym
 * [Runtime](./14-divers/runtime.md)
 * [Clock](./14-divers/clock.md)
 
+### [15. Design Patterns](./15-design-patterns/)
+* [Principes SOLID](./15-design-patterns/solid.md)
+* [GoF - Création](./15-design-patterns/gof-creation.md)
+* [GoF - Structure](./15-design-patterns/gof-structure.md)
+* [GoF - Comportement](./15-design-patterns/gof-comportement.md)
+
+### [16. Architecture](./16-architecture/)
+* [Domain Driven Design (DDD)](./16-architecture/ddd.md)
+* [Clean Architecture](./16-architecture/clean-architecture.md)
+
+### [17. Scalabilité & Concurrence](./17-scalabilite-concurrence/)
+* [Principe ACID](./17-scalabilite-concurrence/acid.md)
+* [Concurrence avec Doctrine](./17-scalabilite-concurrence/doctrine-concurrence.md)
+* [Doctrine & Messenger](./17-scalabilite-concurrence/doctrine-messenger.md)
+* [Déploiement ZDD](./17-scalabilite-concurrence/zero-downtime.md)
