@@ -19,7 +19,14 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [SPL (Standard PHP Library)](./01-php/spl.md)
 * [Itérables et Générateurs](./01-php/iterables.md)
 
-### [2. HTTP](./02-http/)
+### [2. Design Patterns](./15-design-patterns/)
+* [Principes SOLID](./15-design-patterns/solid.md)
+* [Loi de Déméter](./15-design-patterns/law-of-demeter.md)
+* [GoF - Création](./15-design-patterns/gof-creation.md)
+* [GoF - Structure](./15-design-patterns/gof-structure.md)
+* [GoF - Comportement](./15-design-patterns/gof-comportement.md)
+
+### [3. HTTP](./02-http/)
 * [Interaction Client / Serveur](./02-http/client-serveur.md)
 * [Codes de statut](./02-http/codes-statut.md)
 * [Requête HTTP](./02-http/requete-http.md)
@@ -30,7 +37,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Négociation de contenu](./02-http/negociation-contenu.md)
 * [Détection de la langue](./02-http/detection-langue.md)
 
-### [3. Architecture Symfony](./03-architecture-symfony/)
+### [4. Architecture Symfony](./03-architecture-symfony/)
 * [Installation & Setup](./03-architecture-symfony/installation.md)
 * [Symfony Flex](./03-architecture-symfony/flex.md)
 * [Symfony CLI](./03-architecture-symfony/cli.md)
@@ -49,7 +56,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Interopérabilité & PSRs](./03-architecture-symfony/psrs.md)
 * [Conventions de nommage](./03-architecture-symfony/naming-conventions.md)
 
-### [4. Contrôleurs](./04-controleurs/)
+### [5. Contrôleurs](./04-controleurs/)
 * [Conventions](./04-controleurs/conventions.md)
 * [AbstractController](./04-controleurs/abstract-controller.md)
 * [Request](./04-controleurs/request.md)
@@ -64,7 +71,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Contrôleurs internes](./04-controleurs/internal-controllers.md)
 * [Argument Value Resolvers](./04-controleurs/argument-resolvers.md)
 
-### [5. Routage](./05-routage/)
+### [6. Routage](./05-routage/)
 * [Configuration (YAML/Attributs)](./05-routage/configuration.md)
 * [Paramètres d'URL](./05-routage/parametres.md)
 * [Valeurs par défaut](./05-routage/defaults.md)
@@ -77,7 +84,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Locale](./05-routage/locale.md)
 * [Débogage](./05-routage/debug.md)
 
-### [6. Templating Twig](./06-templating-twig/)
+### [7. Templating Twig](./06-templating-twig/)
 * [Syntaxe (v3.8)](./06-templating-twig/syntaxe.md)
 * [Méthodes de Rendu (Rendering)](./06-templating-twig/rendering.md)
 * [Auto escaping](./06-templating-twig/escaping.md)
@@ -96,7 +103,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Locations & Organisation](./06-templating-twig/locations.md)
 * [Débogage](./06-templating-twig/debug.md)
 
-### [7. Formulaires](./07-formulaires/)
+### [8. Formulaires](./07-formulaires/)
 * [Création](./07-formulaires/creation.md)
 * [Traitement](./07-formulaires/processing.md)
 * [Validation](./07-formulaires/validation.md)
@@ -113,7 +120,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Extensions de Type](./07-formulaires/extensions.md)
 * [Tests Unitaires](./07-formulaires/testing.md)
 
-### [8. Validation](./08-validation-donnees/)
+### [9. Validation](./08-validation-donnees/)
 * [Contraintes Natives](./08-validation-donnees/contraintes.md)
 * [Validation d'Objets](./08-validation-donnees/objets.md)
 * [Violations et Contraintes Custom](./08-validation-donnees/violations.md)
@@ -123,7 +130,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Portée et Cascade (Scopes)](./08-validation-donnees/scopes.md)
 * [Callbacks](./08-validation-donnees/callbacks.md)
 
-### [9. Injection de Dépendances](./09-injection-dependances/)
+### [10. Injection de Dépendances](./09-injection-dependances/)
 * [Service Container](./09-injection-dependances/container.md)
 * [Services natifs](./09-injection-dependances/services-natifs.md)
 * [Paramètres](./09-injection-dependances/parametres.md)
@@ -136,7 +143,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Compiler Passes](./09-injection-dependances/compiler-passes.md)
 * [Service Locators](./09-injection-dependances/service-locators.md)
 
-### [10. Sécurité](./10-securite/)
+### [11. Sécurité](./10-securite/)
 * [Authentification](./10-securite/authentication.md)
 * [Autorisation](./10-securite/authorization.md)
 * [Configuration](./10-securite/configuration.md)
@@ -150,7 +157,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Voters](./10-securite/voters.md)
 * [Protection CSRF](./10-securite/csrf.md)
 
-### [11. Cache (HTTP & Composant)](./11-cache/)
+### [12. Cache (HTTP & Composant)](./11-cache/)
 * [Types de cache](./11-cache/http-types.md)
 * [Expiration](./11-cache/http-expiration.md)
 * [Validation](./11-cache/http-validation.md)
@@ -164,7 +171,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Cache Asynchrone (Stampede)](./11-cache/component-async.md)
 * [Commandes Console](./11-cache/component-commands.md)
 
-### [12. Console](./12-console/)
+### [13. Console](./12-console/)
 * [Commandes natives](./12-console/native.md)
 * [Commandes personnalisées](./12-console/custom.md)
 * [Configuration](./12-console/configuration.md)
@@ -175,7 +182,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Verbosité](./12-console/verbosity.md)
 * [Tests de commandes](./12-console/testing.md)
 
-### [13. Tests Automatisés](./13-tests-automatises/)
+### [14. Tests Automatisés](./13-tests-automatises/)
 * [Tests unitaires](./13-tests-automatises/unitaires.md)
 * [Tests fonctionnels](./13-tests-automatises/fonctionnels.md)
 * [Tests E2E avec Panther](./13-tests-automatises/panther.md)
@@ -189,7 +196,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [PHPUnit Bridge](./13-tests-automatises/bridge.md)
 * [Legacy](./13-tests-automatises/legacy.md)
 
-### [14. Divers](./14-divers/)
+### [15. Divers](./14-divers/)
 * [Configuration](./14-divers/configuration.md)
 * [Bonnes Pratiques](./14-divers/best-practices.md)
 * [Logging (Monolog)](./14-divers/logging.md)
@@ -204,13 +211,6 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Symfony Contracts](./14-divers/contracts.md)
 * [Symfony AI](./14-divers/symfony-ai.md)
 * [Création de Bundle](./14-divers/bundles.md)
-
-### [15. Design Patterns](./15-design-patterns/)
-* [Principes SOLID](./15-design-patterns/solid.md)
-* [Loi de Déméter](./15-design-patterns/law-of-demeter.md)
-* [GoF - Création](./15-design-patterns/gof-creation.md)
-* [GoF - Structure](./15-design-patterns/gof-structure.md)
-* [GoF - Comportement](./15-design-patterns/gof-comportement.md)
 
 ### [16. Architecture](./16-architecture/)
 * [Domain Driven Design (DDD)](./16-architecture/ddd.md)
@@ -245,7 +245,14 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Documentation (OpenAPI)](./18-api/documentation.md)
 * [API Platform](./18-api/api-platform.md)
 
-### [19. Composants](./19-composants/)
+### [19. Frontend](./20-frontend/)
+* [AssetMapper (No-Build)](./20-frontend/asset-mapper.md)
+* [Webpack Encore (Build)](./20-frontend/webpack-encore.md)
+* [Symfony UX & Stimulus](./20-frontend/symfony-ux.md)
+* [WebLink & Performance](./20-frontend/web-link.md)
+* [Traitement des Assets (Sass/Tailwind)](./20-frontend/assets-processing.md)
+
+### [20. Composants](./19-composants/)
 * [HttpKernel](./19-composants/http-kernel.md)
 * [HttpClient](./19-composants/http-client.md)
 * [HttpFoundation](./19-composants/http-foundation.md)
@@ -268,10 +275,3 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [UID (UUID/ULID)](./19-composants/uid.md)
 * [Webhook](./19-composants/webhook.md)
 * [Yaml](./19-composants/yaml.md)
-
-### [20. Frontend](./20-frontend/)
-* [AssetMapper (No-Build)](./20-frontend/asset-mapper.md)
-* [Webpack Encore (Build)](./20-frontend/webpack-encore.md)
-* [Symfony UX & Stimulus](./20-frontend/symfony-ux.md)
-* [WebLink & Performance](./20-frontend/web-link.md)
-* [Traitement des Assets (Sass/Tailwind)](./20-frontend/assets-processing.md)
