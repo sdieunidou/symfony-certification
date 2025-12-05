@@ -1,0 +1,66 @@
+{
+  "source_file": "07-formulaires/csrf.md",
+  "title": "Protection CSRF (Cross-Site Request Forgery)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "La protection CSRF est-elle activée par défaut dans les formulaires Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Non, il faut l'activer manuellement.",
+        "Oui, via l'option `csrf_protection` qui vaut `true` par défaut.",
+        "Seulement en production.",
+        "Uniquement si le composant Security est installé."
+      ],
+      "correct_answers": [
+        "Oui, via l'option `csrf_protection` qui vaut `true` par défaut."
+      ],
+      "explanation": "Symfony sécurise les formulaires automatiquement en générant un token caché."
+    },
+    {
+      "id": 2,
+      "question": "Comment s'appelle le champ caché contenant le token CSRF par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "`csrf_token`",
+        "`_token`",
+        "`token`",
+        "`_csrf`"
+      ],
+      "correct_answers": [
+        "`_token`"
+      ],
+      "explanation": "Ce champ doit être présent dans la requête POST pour que la soumission soit valide."
+    },
+    {
+      "id": 3,
+      "question": "Si vous utilisez `{{ form_end(form) }}` dans Twig, devez-vous ajouter le token manuellement ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, avec `{{ form_row(form._token) }}`.",
+        "Non, `form_end()` affiche automatiquement tous les champs restants, y compris le champ caché `_token`.",
+        "Oui, sinon le formulaire échoue.",
+        "Cela dépend du thème."
+      ],
+      "correct_answers": [
+        "Non, `form_end()` affiche automatiquement tous les champs restants, y compris le champ caché `_token`."
+      ],
+      "explanation": "C'est un avantage majeur d'utiliser `form_end()` plutôt que de fermer la balise `</form>` à la main."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi désactiver la protection CSRF pour une API REST ?",
+      "type": "single_choice",
+      "options": [
+        "Pour aller plus vite.",
+        "Parce que les APIs sont souvent Stateless (sans session) et utilisent d'autres mécanismes d'authentification (Token Bearer) qui ne sont pas vulnérables aux CSRF classiques.",
+        "Parce que c'est impossible à gérer en JSON.",
+        "C'est déconseillé, il faut toujours la garder."
+      ],
+      "correct_answers": [
+        "Parce que les APIs sont souvent Stateless (sans session) et utilisent d'autres mécanismes d'authentification (Token Bearer) qui ne sont pas vulnérables aux CSRF classiques."
+      ],
+      "explanation": "La CSRF exploite la confiance implicite du navigateur (cookies de session). Sans cookie de session, pas de CSRF."
+    }
+  ]
+}

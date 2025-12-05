@@ -1,0 +1,81 @@
+{
+  "source_file": "07-formulaires/data-transformers.md",
+  "title": "Transformateurs de Données (Data Transformers)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quels sont les 3 types de formats de données dans un formulaire Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Input, Output, Error",
+        "Model Data (Objet PHP), Norm Data (Standard), View Data (Format HTML string/array).",
+        "JSON, XML, HTML",
+        "Database, Controller, View"
+      ],
+      "correct_answers": [
+        "Model Data (Objet PHP), Norm Data (Standard), View Data (Format HTML string/array)."
+      ],
+      "explanation": "Comprendre ces 3 états est la clé pour manipuler les Data Transformers."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence entre un Model Transformer et un View Transformer ?",
+      "type": "single_choice",
+      "options": [
+        "Le Model Transformer convertit entre le Modèle et la donnée Normalisée. Le View Transformer convertit entre la donnée Normalisée et la Vue.",
+        "Le Model Transformer est pour la base de données, le View Transformer pour Twig.",
+        "C'est la même chose.",
+        "Le View Transformer est exécuté avant le Model Transformer."
+      ],
+      "correct_answers": [
+        "Le Model Transformer convertit entre le Modèle et la donnée Normalisée. Le View Transformer convertit entre la donnée Normalisée et la Vue."
+      ],
+      "explanation": "Exemple : Entité -> ID (ModelTransformer) -> String formatée (ViewTransformer)."
+    },
+    {
+      "id": 3,
+      "question": "Quelle méthode est appelée lors de la soumission du formulaire pour convertir la donnée utilisateur vers le modèle ?",
+      "type": "single_choice",
+      "options": [
+        "`transform()`",
+        "`reverseTransform()`",
+        "`submit()`",
+        "`convert()`"
+      ],
+      "correct_answers": [
+        "`reverseTransform()`"
+      ],
+      "explanation": "`transform()` va du modèle vers la vue (affichage). `reverseTransform()` va de la vue vers le modèle (soumission)."
+    },
+    {
+      "id": 4,
+      "question": "Quelle exception faut-il lancer dans un Data Transformer si la conversion échoue (ex: ID introuvable) ?",
+      "type": "single_choice",
+      "options": [
+        "`\Exception`",
+        "`TransformationFailedException`",
+        "`InvalidArgumentException`",
+        "`NotFoundHttpException`"
+      ],
+      "correct_answers": [
+        "`TransformationFailedException`"
+      ],
+      "explanation": "Cette exception est attrapée par le formulaire et convertie en erreur de validation affichée à l'utilisateur (message personnalisable via `invalid_message`)."
+    },
+    {
+      "id": 5,
+      "question": "Quel objet permet de créer un Data Transformer simple (via des closures) sans créer de classe dédiée ?",
+      "type": "single_choice",
+      "options": [
+        "`ClosureTransformer`",
+        "`CallbackTransformer`",
+        "`SimpleTransformer`",
+        "`FunctionTransformer`"
+      ],
+      "correct_answers": [
+        "`CallbackTransformer`"
+      ],
+      "explanation": "Il prend deux callbacks en argument : l'un pour `transform`, l'autre pour `reverseTransform`."
+    }
+  ]
+}

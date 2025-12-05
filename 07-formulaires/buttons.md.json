@@ -1,0 +1,51 @@
+{
+  "source_file": "07-formulaires/buttons.md",
+  "title": "Gestion des Boutons (Buttons)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment vérifier dans le contrôleur quel bouton a été utilisé pour soumettre le formulaire ?",
+      "type": "single_choice",
+      "options": [
+        "En vérifiant `$_POST['save']`.",
+        "En utilisant `$form->get('nom_bouton')->isClicked()`.",
+        "En utilisant `$form->getClickedButton()`.",
+        "En ajoutant un listener."
+      ],
+      "correct_answers": [
+        "En utilisant `$form->get('nom_bouton')->isClicked()`."
+      ],
+      "explanation": "C'est la méthode standard pour gérer les formulaires avec plusieurs actions (ex: 'Enregistrer' et 'Enregistrer et Nouveau')."
+    },
+    {
+      "id": 2,
+      "question": "Quel Type de champ permet d'ajouter un bouton de soumission ?",
+      "type": "single_choice",
+      "options": [
+        "`ButtonType`",
+        "`SubmitType`",
+        "`ResetType`",
+        "`ActionType`"
+      ],
+      "correct_answers": [
+        "`SubmitType`"
+      ],
+      "explanation": "`SubmitType` génère un `<button type=\"submit\">` qui envoie le formulaire. `ButtonType` génère un bouton simple (type=\"button\") sans effet par défaut."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi est-il parfois recommandé d'ajouter les boutons dans le template Twig ou le Contrôleur plutôt que dans la classe `FormType` ?",
+      "type": "single_choice",
+      "options": [
+        "Pour des raisons de performance.",
+        "Pour rendre la classe `FormType` réutilisable dans différents contextes (Création vs Édition) qui nécessitent des boutons différents.",
+        "C'est obligatoire depuis Symfony 6.",
+        "Les boutons ne marchent pas dans les FormType."
+      ],
+      "correct_answers": [
+        "Pour rendre la classe `FormType` réutilisable dans différents contextes (Création vs Édition) qui nécessitent des boutons différents."
+      ],
+      "explanation": "Cela découple la définition des données (FormType) de l'action utilisateur (Controller/View)."
+    }
+  ]
+}

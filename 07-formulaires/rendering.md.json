@@ -1,0 +1,81 @@
+{
+  "source_file": "07-formulaires/rendering.md",
+  "title": "Rendu des Formulaires (Rendering)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle fonction Twig permet d'ouvrir la balise `<form>` avec les bons attributs (action, method, enctype) ?",
+      "type": "single_choice",
+      "options": [
+        "`form_open(form)`",
+        "`form_start(form)`",
+        "`form_header(form)`",
+        "`form_begin(form)`"
+      ],
+      "correct_answers": [
+        "`form_start(form)`"
+      ],
+      "explanation": "Elle configure automatiquement `enctype=\"multipart/form-data\"` si un champ fichier est présent."
+    },
+    {
+      "id": 2,
+      "question": "Quelle fonction Twig affiche le label, le widget, les erreurs et l'aide d'un champ en une seule fois ?",
+      "type": "single_choice",
+      "options": [
+        "`form_widget(form.field)`",
+        "`form_row(form.field)`",
+        "`form_group(form.field)`",
+        "`form_field(form.field)`"
+      ],
+      "correct_answers": [
+        "`form_row(form.field)`"
+      ],
+      "explanation": "C'est le moyen le plus rapide de prototyper. Le rendu exact dépend du thème (Bootstrap, etc.)."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi est-il important d'appeler `form_end(form)` à la fin ?",
+      "type": "single_choice",
+      "options": [
+        "Pour fermer la balise div.",
+        "Pour afficher le bouton submit.",
+        "Pour afficher tous les champs restants (non rendus manuellement), notamment les champs cachés comme le token CSRF.",
+        "Pour valider le formulaire côté client."
+      ],
+      "correct_answers": [
+        "Pour afficher tous les champs restants (non rendus manuellement), notamment les champs cachés comme le token CSRF."
+      ],
+      "explanation": "Sans cela (`form_rest`), le token CSRF peut manquer et la soumission échouera."
+    },
+    {
+      "id": 4,
+      "question": "Comment ajouter une classe CSS spécifique à un champ lors du rendu Twig ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas possible, il faut le faire dans le PHP.",
+        "En passant un tableau d'attributs : `{{ form_widget(form.name, {'attr': {'class': 'my-class'}}) }}`.",
+        "En utilisant `form_class()`.",
+        "En entourant le champ d'une div."
+      ],
+      "correct_answers": [
+        "En passant un tableau d'attributs : `{{ form_widget(form.name, {'attr': {'class': 'my-class'}}) }}`."
+      ],
+      "explanation": "Les attributs passés dans Twig sont fusionnés avec ceux définis dans la classe de formulaire."
+    },
+    {
+      "id": 5,
+      "question": "Quelle fonction affiche les erreurs globales du formulaire (celles qui ne sont pas liées à un champ précis) ?",
+      "type": "single_choice",
+      "options": [
+        "`form_errors(form)` (sur l'objet racine)",
+        "`form_global_errors(form)`",
+        "`form_row(form)`",
+        "`form_rest(form)`"
+      ],
+      "correct_answers": [
+        "`form_errors(form)` (sur l'objet racine)"
+      ],
+      "explanation": "Il est conseillé de l'appeler en haut du formulaire pour que l'utilisateur voie les problèmes généraux."
+    }
+  ]
+}

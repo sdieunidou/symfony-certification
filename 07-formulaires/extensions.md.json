@@ -1,0 +1,66 @@
+{
+  "source_file": "07-formulaires/extensions.md",
+  "title": "Extensions de Type de Formulaire",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le but d'une Form Type Extension ?",
+      "type": "single_choice",
+      "options": [
+        "Créer un nouveau type de champ.",
+        "Modifier ou étendre un type de formulaire existant (natif ou tiers) sans modifier sa classe d'origine.",
+        "Valider un formulaire.",
+        "Afficher le formulaire."
+      ],
+      "correct_answers": [
+        "Modifier ou étendre un type de formulaire existant (natif ou tiers) sans modifier sa classe d'origine."
+      ],
+      "explanation": "C'est le principe du Décorateur appliqué aux types de formulaires."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode de l'extension permet d'ajouter une nouvelle option à un type existant ?",
+      "type": "single_choice",
+      "options": [
+        "`buildForm`",
+        "`configureOptions`",
+        "`buildView`",
+        "`finishView`"
+      ],
+      "correct_answers": [
+        "`configureOptions`"
+      ],
+      "explanation": "On utilise `$resolver->setDefined()` ou `$resolver->setDefaults()`."
+    },
+    {
+      "id": 3,
+      "question": "Comment passer une variable supplémentaire à la vue Twig pour tous les champs d'un certain type (ex: ajouter une icône à tous les TextType) ?",
+      "type": "single_choice",
+      "options": [
+        "Via `buildForm`.",
+        "Via `buildView` en modifiant `$view->vars`.",
+        "Via le contrôleur.",
+        "C'est impossible."
+      ],
+      "correct_answers": [
+        "Via `buildView` en modifiant `$view->vars`."
+      ],
+      "explanation": "`buildView` est exécuté lors de la création de la `FormView`, juste avant le rendu."
+    },
+    {
+      "id": 4,
+      "question": "Comment indiquer à Symfony quel type de formulaire votre extension doit cibler ?",
+      "type": "single_choice",
+      "options": [
+        "En nommant la classe `TextTypeExtension`.",
+        "En implémentant la méthode statique `getExtendedTypes()`.",
+        "Dans le fichier `services.yaml`.",
+        "Via une annotation."
+      ],
+      "correct_answers": [
+        "En implémentant la méthode statique `getExtendedTypes()`."
+      ],
+      "explanation": "Cette méthode doit retourner un itérable des classes étendues (ex: `[TextType::class]`)."
+    }
+  ]
+}

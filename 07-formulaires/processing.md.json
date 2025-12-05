@@ -1,0 +1,66 @@
+{
+  "source_file": "07-formulaires/processing.md",
+  "title": "Traitement des Formulaires (Processing)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle méthode du formulaire synchronise la requête HTTP avec l'objet formulaire ?",
+      "type": "single_choice",
+      "options": [
+        "`$form->submit($request)`",
+        "`$form->handleRequest($request)`",
+        "`$form->bind($request)`",
+        "`$form->process($request)`"
+      ],
+      "correct_answers": [
+        "`$form->handleRequest($request)`"
+      ],
+      "explanation": "`handleRequest` inspecte la méthode HTTP et extrait les données correspondantes (`$_POST` ou `$_GET` ou body JSON)."
+    },
+    {
+      "id": 2,
+      "question": "Dans quel ordre faut-il vérifier l'état du formulaire après `handleRequest` ?",
+      "type": "single_choice",
+      "options": [
+        "`if ($form->isValid())`",
+        "`if ($form->isSubmitted() && $form->isValid())`",
+        "`if ($form->isValid() && $form->isSubmitted())`",
+        "`if ($form->hasErrors())`"
+      ],
+      "correct_answers": [
+        "`if ($form->isSubmitted() && $form->isValid())`"
+      ],
+      "explanation": "Il faut d'abord s'assurer que le formulaire a été soumis (POST) avant de vérifier s'il est valide."
+    },
+    {
+      "id": 3,
+      "question": "Si vous traitez une API JSON et que le Content-Type est `application/json`, que fait `handleRequest` (Symfony 6.3+) ?",
+      "type": "single_choice",
+      "options": [
+        "Rien, il faut utiliser `submit()` manuellement.",
+        "Il lit automatiquement le contenu JSON du corps de la requête et l'utilise pour remplir le formulaire.",
+        "Il lance une erreur 415.",
+        "Il lit `$_POST`."
+      ],
+      "correct_answers": [
+        "Il lit automatiquement le contenu JSON du corps de la requête et l'utilise pour remplir le formulaire."
+      ],
+      "explanation": "C'est une amélioration récente (RequestHandler natif) qui simplifie les contrôleurs API."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la différence entre `$form->submit($data)` et `$form->submit($data, false)` ?",
+      "type": "single_choice",
+      "options": [
+        "Aucune.",
+        "Le deuxième argument est `clearMissing`. Si `false` (mode PATCH), les champs absents de `$data` ne sont pas mis à null (ils gardent leur valeur existante). Si `true` (défaut/mode PUT), ils sont vidés.",
+        "Le deuxième argument désactive la validation.",
+        "Le deuxième argument désactive le CSRF."
+      ],
+      "correct_answers": [
+        "Le deuxième argument est `clearMissing`. Si `false` (mode PATCH), les champs absents de `$data` ne sont pas mis à null (ils gardent leur valeur existante). Si `true` (défaut/mode PUT), ils sont vidés."
+      ],
+      "explanation": "C'est crucial pour les APIs qui supportent la mise à jour partielle (PATCH)."
+    }
+  ]
+}

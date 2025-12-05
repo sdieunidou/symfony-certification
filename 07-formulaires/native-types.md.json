@@ -1,0 +1,81 @@
+{
+  "source_file": "07-formulaires/native-types.md",
+  "title": "Types de Formulaires Natifs",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel type de champ utiliser pour gérer une relation ManyToOne (sélectionner une entité) ?",
+      "type": "single_choice",
+      "options": [
+        "`ChoiceType`",
+        "`EntityType`",
+        "`RelationType`",
+        "`SelectType`"
+      ],
+      "correct_answers": [
+        "`EntityType`"
+      ],
+      "explanation": "`EntityType` est fourni par le DoctrineBridge et charge les options depuis la base de données."
+    },
+    {
+      "id": 2,
+      "question": "Quelle option de `ChoiceType` permet d'afficher des cases à cocher (checkboxes) au lieu d'un select multiple ?",
+      "type": "single_choice",
+      "options": [
+        "`checkboxes: true`",
+        "`expanded: true, multiple: true`",
+        "`widget: checkboxes`",
+        "`type: check`"
+      ],
+      "correct_answers": [
+        "`expanded: true, multiple: true`"
+      ],
+      "explanation": "`expanded` contrôle l'affichage (liste vs menu déroulant), `multiple` contrôle la sélection."
+    },
+    {
+      "id": 3,
+      "question": "Quel type permet de répéter un champ (ex: Mot de passe et Confirmation) ?",
+      "type": "single_choice",
+      "options": [
+        "`DoubleType`",
+        "`RepeatedType`",
+        "`ConfirmType`",
+        "`PasswordType`"
+      ],
+      "correct_answers": [
+        "`RepeatedType`"
+      ],
+      "explanation": "Il affiche deux champs mais ne retourne qu'une seule valeur validée (si les deux correspondent)."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la particularité de `CheckboxType` concernant sa valeur de retour ?",
+      "type": "single_choice",
+      "options": [
+        "Il retourne 'on' ou 'off'.",
+        "Il retourne un booléen (`true` si coché, `false` sinon).",
+        "Il retourne 1 ou 0.",
+        "Il retourne la valeur de l'attribut value."
+      ],
+      "correct_answers": [
+        "Il retourne un booléen (`true` si coché, `false` sinon)."
+      ],
+      "explanation": "C'est important pour le mapping avec les propriétés booléennes des entités."
+    },
+    {
+      "id": 5,
+      "question": "Quel type permet d'intégrer une liste dynamique de sous-formulaires (ex: Tags d'un Article) ?",
+      "type": "single_choice",
+      "options": [
+        "`ListType`",
+        "`CollectionType`",
+        "`ArrayType`",
+        "`EmbedType`"
+      ],
+      "correct_answers": [
+        "`CollectionType`"
+      ],
+      "explanation": "Il gère un array ou une ArrayCollection d'objets, souvent utilisé avec du JavaScript pour ajouter/supprimer des éléments (prototype)."
+    }
+  ]
+}

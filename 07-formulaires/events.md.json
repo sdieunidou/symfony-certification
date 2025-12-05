@@ -1,0 +1,81 @@
+{
+  "source_file": "07-formulaires/events.md",
+  "title": "Événements de Formulaire",
+  "questions": [
+    {
+      "id": 1,
+      "question": "À quoi servent les événements de formulaire (Form Events) ?",
+      "type": "single_choice",
+      "options": [
+        "À envoyer des emails.",
+        "À modifier dynamiquement le formulaire (ajouter/supprimer des champs) ou les données pendant le cycle de vie (remplissage, soumission).",
+        "À valider le CSRF.",
+        "À logger les erreurs."
+      ],
+      "correct_answers": [
+        "À modifier dynamiquement le formulaire (ajouter/supprimer des champs) ou les données pendant le cycle de vie (remplissage, soumission)."
+      ],
+      "explanation": "C'est indispensable pour les champs dépendants (ex: sélectionner un Pays met à jour la liste des Villes)."
+    },
+    {
+      "id": 2,
+      "question": "Quel événement permet de modifier le formulaire AVANT que les données initiales ne soient injectées (ex: masquer un champ si l'entité a déjà un ID) ?",
+      "type": "single_choice",
+      "options": [
+        "`FormEvents::PRE_SUBMIT`",
+        "`FormEvents::PRE_SET_DATA`",
+        "`FormEvents::POST_SET_DATA`",
+        "`FormEvents::SUBMIT`"
+      ],
+      "correct_answers": [
+        "`FormEvents::PRE_SET_DATA`"
+      ],
+      "explanation": "À ce stade, `$event->getData()` contient votre objet métier (ou null si création)."
+    },
+    {
+      "id": 3,
+      "question": "Quel événement est déclenché dès la réception des données brutes du formulaire (tableau `$_POST`), avant qu'elles ne soient transformées ?",
+      "type": "single_choice",
+      "options": [
+        "`FormEvents::PRE_SET_DATA`",
+        "`FormEvents::PRE_SUBMIT`",
+        "`FormEvents::SUBMIT`",
+        "`FormEvents::POST_SUBMIT`"
+      ],
+      "correct_answers": [
+        "`FormEvents::PRE_SUBMIT`"
+      ],
+      "explanation": "C'est le moment idéal pour modifier le formulaire en fonction de ce que l'utilisateur a saisi (ex: ajouter le champ 'Ville' car l'utilisateur a choisi 'France')."
+    },
+    {
+      "id": 4,
+      "question": "Dans un écouteur d'événement `PRE_SUBMIT`, que contient `$event->getData()` ?",
+      "type": "single_choice",
+      "options": [
+        "L'entité (Objet).",
+        "Les données brutes soumises (Tableau ou String).",
+        "Le formulaire.",
+        "La requête HTTP."
+      ],
+      "correct_answers": [
+        "Les données brutes soumises (Tableau ou String)."
+      ],
+      "explanation": "Attention, ce n'est pas encore l'objet hydraté. C'est ce qui vient de `$_POST`."
+    },
+    {
+      "id": 5,
+      "question": "Peut-on ajouter ou supprimer des champs dans l'événement `POST_SUBMIT` ?",
+      "type": "single_choice",
+      "options": [
+        "Oui.",
+        "Non, la structure du formulaire est figée à ce stade. Il faut utiliser `PRE_SUBMIT` ou `PRE_SET_DATA`.",
+        "Oui, mais seulement des champs cachés.",
+        "Oui, si on utilise `allow_extra_fields`."
+      ],
+      "correct_answers": [
+        "Non, la structure du formulaire est figée à ce stade. Il faut utiliser `PRE_SUBMIT` ou `PRE_SET_DATA`."
+      ],
+      "explanation": "Une fois la soumission traitée, on ne peut plus changer la structure."
+    }
+  ]
+}

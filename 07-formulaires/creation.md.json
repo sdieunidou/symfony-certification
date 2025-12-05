@@ -1,0 +1,66 @@
+{
+  "source_file": "07-formulaires/creation.md",
+  "title": "Création de Formulaires",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle classe de base doit-on étendre pour créer un formulaire réutilisable ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\\Component\\Form\\FormType`",
+        "`Symfony\\Component\\Form\\AbstractType`",
+        "`Symfony\\Component\\Form\\BaseType`",
+        "`App\\Form\\Type`"
+      ],
+      "correct_answers": [
+        "`Symfony\\Component\\Form\\AbstractType`"
+      ],
+      "explanation": "C'est la classe standard pour définir la structure (`buildForm`) et la configuration (`configureOptions`) d'un formulaire."
+    },
+    {
+      "id": 2,
+      "question": "Quelle option permet de lier le formulaire à une classe d'entité (Mapping automatique) ?",
+      "type": "single_choice",
+      "options": [
+        "`entity_class`",
+        "`class`",
+        "`data_class`",
+        "`model`"
+      ],
+      "correct_answers": [
+        "`data_class`"
+      ],
+      "explanation": "L'option `data_class` indique à Symfony quel type d'objet créer et hydrater."
+    },
+    {
+      "id": 3,
+      "question": "Comment créer un formulaire directement dans le contrôleur sans créer de classe dédiée ?",
+      "type": "single_choice",
+      "options": [
+        "Via `$this->createFormBuilder(...)`.",
+        "Via `new Form()`.",
+        "Via `$this->createForm(...)`.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "Via `$this->createFormBuilder(...)`."
+      ],
+      "explanation": "Le FormBuilder permet de définir les champs à la volée. C'est utile pour les formulaires très simples ou uniques (ex: delete button)."
+    },
+    {
+      "id": 4,
+      "question": "Si vous ne spécifiez pas le type de champ (ex: `->add('name')`), que fait Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Il utilise `TextType` par défaut.",
+        "Il essaie de deviner le type (Type Guessing) en analysant les métadonnées de validation et de l'ORM.",
+        "Il lance une erreur.",
+        "Il ignore le champ."
+      ],
+      "correct_answers": [
+        "Il essaie de deviner le type (Type Guessing) en analysant les métadonnées de validation et de l'ORM."
+      ],
+      "explanation": "Si la propriété est un `bool` ou a une annotation `@ORM\Column(type='boolean')`, Symfony utilisera `CheckboxType`."
+    }
+  ]
+}

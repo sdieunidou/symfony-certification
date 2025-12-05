@@ -1,0 +1,66 @@
+{
+  "source_file": "07-formulaires/form-flow.md",
+  "title": "Flux de Formulaires Multi-étapes (Form Flows) - Symfony 7.4+",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle nouveauté de Symfony 7.4 facilite la création de formulaires multi-étapes (wizards) ?",
+      "type": "single_choice",
+      "options": [
+        "Le composant Workflow.",
+        "Le composant Form Flow.",
+        "Le bundle CraueFormFlow.",
+        "Les Live Components."
+      ],
+      "correct_answers": [
+        "Le composant Form Flow."
+      ],
+      "explanation": "C'est une solution native pour gérer l'état et la navigation entre plusieurs formulaires séquentiels."
+    },
+    {
+      "id": 2,
+      "question": "Comment définit-on les étapes d'un flux ?",
+      "type": "single_choice",
+      "options": [
+        "Dans un fichier YAML.",
+        "En créant une classe par étape (FormType) et en les ajoutant au `FormFlow` builder.",
+        "En utilisant des `div` cachées en CSS.",
+        "Avec des `if` dans le contrôleur."
+      ],
+      "correct_answers": [
+        "En créant une classe par étape (FormType) et en les ajoutant au `FormFlow` builder."
+      ],
+      "explanation": "Chaque étape est un FormType standard isolé."
+    },
+    {
+      "id": 3,
+      "question": "Quel type de bouton spécial permet de passer à l'étape suivante en validant l'étape courante ?",
+      "type": "single_choice",
+      "options": [
+        "`SubmitType`",
+        "`NextFlowType`",
+        "`StepType`",
+        "`ContinueType`"
+      ],
+      "correct_answers": [
+        "`NextFlowType`"
+      ],
+      "explanation": "Ce bouton déclenche la transition vers l'étape suivante si la validation passe."
+    },
+    {
+      "id": 4,
+      "question": "Où sont stockées les données intermédiaires du flux par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "En base de données.",
+        "En session.",
+        "Dans l'URL.",
+        "Dans le LocalStorage."
+      ],
+      "correct_answers": [
+        "En session."
+      ],
+      "explanation": "Cela permet de conserver les données saisies même si l'utilisateur rafraîchit la page, jusqu'à la fin du flux."
+    }
+  ]
+}
