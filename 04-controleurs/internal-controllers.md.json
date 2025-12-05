@@ -7,13 +7,13 @@
       "question": "Quel contrôleur interne permet de rendre un template Twig directement depuis `routes.yaml` sans créer de classe PHP ?",
       "type": "single_choice",
       "options": [
-        "`Symfony\\\Bundle\\\FrameworkBundle\\\Controller\\\TemplateController`",
-        "`Symfony\\\Component\\\HttpKernel\\\Controller\\\RenderController`",
-        "`App\\\Controller\\\DefaultController`",
-        "`Symfony\\\Bundle\\\TwigBundle\\\Controller\\\TemplateAction`"
+        "`Symfony\\Bundle\\FrameworkBundle\\Controller\\TemplateController`",
+        "`Symfony\\Component\\HttpKernel\\Controller\\RenderController`",
+        "`App\\Controller\\DefaultController`",
+        "`Symfony\\Bundle\\TwigBundle\\Controller\\TemplateAction`"
       ],
       "correct_answers": [
-        "`Symfony\\\Bundle\\\FrameworkBundle\\\Controller\\\TemplateController`"
+        "`Symfony\\Bundle\\FrameworkBundle\\Controller\\TemplateController`"
       ],
       "explanation": "C'est très utile pour les pages statiques (Homepage, About, Legal)."
     },

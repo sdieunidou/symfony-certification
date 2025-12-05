@@ -9,11 +9,11 @@
       "options": [
         "Un tableau (array).",
         "Une chaîne de caractères (string).",
-        "Un objet héritant de `Symfony\\\Component\\\HttpFoundation\\\Response`.",
+        "Un objet héritant de `Symfony\\Component\\HttpFoundation\\Response`.",
         "Rien (void)."
       ],
       "correct_answers": [
-        "Un objet héritant de `Symfony\\\Component\\\HttpFoundation\\\Response`."
+        "Un objet héritant de `Symfony\\Component\\HttpFoundation\\Response`."
       ],
       "explanation": "Le Kernel attend strictement un objet Response pour pouvoir l'envoyer au client."
     },

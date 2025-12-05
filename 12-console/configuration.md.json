@@ -22,13 +22,13 @@
       "question": "Si vous utilisez l'autoconfiguration (par défaut dans Symfony), quelle classe votre commande doit-elle étendre pour être automatiquement enregistrée ?",
       "type": "single_choice",
       "options": [
-        "Symfony\\\Component\\\Console\\\Command\\\Command",
-        "Symfony\\\Bundle\\\FrameworkBundle\\\Controller\\\AbstractController",
-        "Symfony\\\Component\\\HttpKernel\\\Kernel",
-        "Psr\\\Log\\\LoggerInterface"
+        "Symfony\\Component\\Console\\Command\\Command",
+        "Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
+        "Symfony\\Component\\HttpKernel\\Kernel",
+        "Psr\\Log\\LoggerInterface"
       ],
       "correct_answers": [
-        "Symfony\\\Component\\\Console\\\Command\\\Command"
+        "Symfony\\Component\\Console\\Command\\Command"
       ],
       "explanation": "Toute classe étendant `Command` est automatiquement taguée `console.command` et enregistrée dans l'application console."
     },

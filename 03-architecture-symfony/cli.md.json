@@ -30,7 +30,7 @@
       "correct_answers": [
         "Elle supporte automatiquement HTTPS (TLS) avec génération de certificat local et HTTP/2."
       ],
-      "explanation": "Le support TLS natif permet de développer en HTTPS localement ("no mixed content issues") très facilement."
+      "explanation": "Le support TLS natif permet de développer en HTTPS localement (\"no mixed content issues\") très facilement."
     },
     {
       "id": 3,

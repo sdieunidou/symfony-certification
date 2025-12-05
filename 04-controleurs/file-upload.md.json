@@ -15,7 +15,7 @@
       "correct_answers": [
         "`UploadedFile`"
       ],
-      "explanation": "`Symfony\\\Component\\\HttpFoundation\\\File\\\UploadedFile` étend `SplFileInfo` et ajoute des méthodes spécifiques comme `move()` et `isValid()`."
+      "explanation": "`Symfony\\Component\\HttpFoundation\\File\\UploadedFile` étend `SplFileInfo` et ajoute des méthodes spécifiques comme `move()` et `isValid()`."
     },
     {
       "id": 2,
