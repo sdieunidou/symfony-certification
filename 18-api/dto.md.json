@@ -1,0 +1,66 @@
+{
+  "source_file": "18-api/dto.md",
+  "title": "Data Transfer Objects (DTO)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Qu'est-ce qu'un DTO (Data Transfer Object) ?",
+      "type": "single_choice",
+      "options": [
+        "Une entité Doctrine.",
+        "Un objet simple (POPO) utilisé pour transférer des données entre des sous-systèmes (ex: entre l'API et le Contrôleur), sans logique métier complexe.",
+        "Un service Symfony.",
+        "Une table de base de données."
+      ],
+      "correct_answers": [
+        "Un objet simple (POPO) utilisé pour transférer des données entre des sous-systèmes (ex: entre l'API et le Contrôleur), sans logique métier complexe."
+      ],
+      "explanation": "Le DTO sert de conteneur de données pour structurer l'entrée/sortie de l'API indépendamment du modèle de persistance."
+    },
+    {
+      "id": 2,
+      "question": "Quel attribut Symfony (6.3+) permet de mapper et valider automatiquement le corps JSON d'une requête vers un objet DTO typé ?",
+      "type": "single_choice",
+      "options": [
+        "`#[MapQueryString]`",
+        "`#[MapRequestPayload]`",
+        "`#[RequestBody]`",
+        "`#[MapEntity]`"
+      ],
+      "correct_answers": [
+        "`#[MapRequestPayload]`"
+      ],
+      "explanation": "Cet attribut gère la désérialisation du Body et la validation (via le Validator component) en une seule étape."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi est-il préférable d'utiliser des DTOs plutôt que des Entités directement dans une API ?",
+      "type": "single_choice",
+      "options": [
+        "Pour des raisons de performance uniquement.",
+        "Pour éviter le 'Mass Assignment' (sécurité), découpler l'API de la base de données (stabilité) et gérer les différences de format.",
+        "C'est obligatoire dans Symfony.",
+        "Les entités ne peuvent pas être sérialisées."
+      ],
+      "correct_answers": [
+        "Pour éviter le 'Mass Assignment' (sécurité), découpler l'API de la base de données (stabilité) et gérer les différences de format."
+      ],
+      "explanation": "Le découplage est essentiel pour maintenir une API stable même si le schéma de base de données change."
+    },
+    {
+      "id": 4,
+      "question": "Quelle réponse HTTP Symfony retourne-t-il automatiquement si la validation d'un DTO mappé via `#[MapRequestPayload]` échoue ?",
+      "type": "single_choice",
+      "options": [
+        "400 Bad Request",
+        "422 Unprocessable Entity (avec la liste des erreurs)",
+        "500 Internal Server Error",
+        "403 Forbidden"
+      ],
+      "correct_answers": [
+        "422 Unprocessable Entity (avec la liste des erreurs)"
+      ],
+      "explanation": "Le code 422 est le standard pour indiquer que la syntaxe est correcte mais que le contenu sémantique (validation) est invalide."
+    }
+  ]
+}

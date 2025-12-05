@@ -1,0 +1,66 @@
+{
+  "source_file": "18-api/cors.md",
+  "title": "CORS (Cross-Origin Resource Sharing)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Pourquoi les navigateurs bloquent-ils par défaut les requêtes AJAX vers un domaine différent (Cross-Origin) ?",
+      "type": "single_choice",
+      "options": [
+        "Pour économiser la bande passante.",
+        "Pour des raisons de sécurité (Same-Origin Policy), afin d'empêcher des sites malveillants de voler des données via le navigateur de l'utilisateur.",
+        "Parce que le protocole HTTP l'interdit.",
+        "Pour forcer l'utilisation de HTTPS."
+      ],
+      "correct_answers": [
+        "Pour des raisons de sécurité (Same-Origin Policy), afin d'empêcher des sites malveillants de voler des données via le navigateur de l'utilisateur."
+      ],
+      "explanation": "Sans cela, un site `mal evil.com` pourrait faire une requête vers `votre-banque.com` (où vous êtes connecté) et lire votre solde."
+    },
+    {
+      "id": 2,
+      "question": "Quel en-tête HTTP le serveur doit-il renvoyer pour autoriser un domaine spécifique à accéder à l'API ?",
+      "type": "single_choice",
+      "options": [
+        "`Access-Control-Allow-Origin`",
+        "`X-Allowed-Domain`",
+        "`Origin-Control`",
+        "`CORS-Allow`"
+      ],
+      "correct_answers": [
+        "`Access-Control-Allow-Origin`"
+      ],
+      "explanation": "C'est l'en-tête standard. Il peut contenir `*` ou un domaine précis (`https://mon-app.com`)."
+    },
+    {
+      "id": 3,
+      "question": "Qu'est-ce qu'une requête 'Preflight' ?",
+      "type": "single_choice",
+      "options": [
+        "Une requête envoyée avant le décollage d'un avion.",
+        "Une requête HTTP de type `OPTIONS` envoyée automatiquement par le navigateur avant certaines requêtes 'complexes' pour vérifier les permissions CORS.",
+        "Une requête pour tester la vitesse du réseau.",
+        "Une requête annulée."
+      ],
+      "correct_answers": [
+        "Une requête HTTP de type `OPTIONS` envoyée automatiquement par le navigateur avant certaines requêtes 'complexes' pour vérifier les permissions CORS."
+      ],
+      "explanation": "Si la requête contient des headers personnalisés (ex: `Authorization`) ou un Content-Type `application/json`, le navigateur demande d'abord la permission."
+    },
+    {
+      "id": 4,
+      "question": "Quel bundle Symfony est le standard de facto pour gérer la configuration CORS ?",
+      "type": "single_choice",
+      "options": [
+        "`SensioFrameworkExtraBundle`",
+        "`NelmioCorsBundle`",
+        "`FOSRestBundle`",
+        "`ApiPlatformBundle`"
+      ],
+      "correct_answers": [
+        "`NelmioCorsBundle`"
+      ],
+      "explanation": "Ce bundle intercepte les requêtes et ajoute automatiquement les bons en-têtes selon la configuration."
+    }
+  ]
+}

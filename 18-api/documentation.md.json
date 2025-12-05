@@ -1,0 +1,66 @@
+{
+  "source_file": "18-api/documentation.md",
+  "title": "Documentation API (OpenAPI)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le format standard actuel pour décrire les APIs REST ?",
+      "type": "single_choice",
+      "options": [
+        "WSDL",
+        "SOAP",
+        "OpenAPI (anciennement Swagger)",
+        "RAML"
+      ],
+      "correct_answers": [
+        "OpenAPI (anciennement Swagger)"
+      ],
+      "explanation": "OpenAPI est la spécification standardisée (fichier JSON/YAML) pour décrire la structure d'une API."
+    },
+    {
+      "id": 2,
+      "question": "Quel bundle est couramment utilisé dans l'écosystème Symfony (hors API Platform) pour générer une documentation OpenAPI ?",
+      "type": "single_choice",
+      "options": [
+        "`SymfonyDocBundle`",
+        "`NelmioApiDocBundle`",
+        "`SwaggerBundle`",
+        "`OpenApiBundle`"
+      ],
+      "correct_answers": [
+        "`NelmioApiDocBundle`"
+      ],
+      "explanation": "Ce bundle génère la doc à partir des routes, des types PHP et des attributs/annotations."
+    },
+    {
+      "id": 3,
+      "question": "Qu'est-ce que 'Swagger UI' ?",
+      "type": "single_choice",
+      "options": [
+        "Un outil en ligne de commande.",
+        "Une interface web interactive générée à partir de la spec OpenAPI, permettant de visualiser et tester les endpoints de l'API.",
+        "Un éditeur de code.",
+        "Un outil de test de performance."
+      ],
+      "correct_answers": [
+        "Une interface web interactive générée à partir de la spec OpenAPI, permettant de visualiser et tester les endpoints de l'API."
+      ],
+      "explanation": "C'est l'interface visuelle standard fournie par NelmioApiDocBundle pour explorer l'API."
+    },
+    {
+      "id": 4,
+      "question": "Quelle approche consiste à écrire la spécification OpenAPI (YAML) AVANT d'écrire le code ?",
+      "type": "single_choice",
+      "options": [
+        "Code-First",
+        "Design-First",
+        "Test-First",
+        "Database-First"
+      ],
+      "correct_answers": [
+        "Design-First"
+      ],
+      "explanation": "L'approche Design-First permet de se mettre d'accord sur le contrat d'interface avant de commencer l'implémentation."
+    }
+  ]
+}

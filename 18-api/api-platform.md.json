@@ -1,0 +1,66 @@
+{
+  "source_file": "18-api/api-platform.md",
+  "title": "API Platform",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Qu'est-ce qu'API Platform par rapport à Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Un simple bundle de sérialisation.",
+        "Un framework complet construit au-dessus de Symfony pour créer des APIs REST et GraphQL modernes et standardisées.",
+        "Un remplaçant de Doctrine.",
+        "Un outil de documentation uniquement."
+      ],
+      "correct_answers": [
+        "Un framework complet construit au-dessus de Symfony pour créer des APIs REST et GraphQL modernes et standardisées."
+      ],
+      "explanation": "API Platform utilise les composants Symfony (Kernel, Serializer, Validator, Security) pour fournir une solution clé en main pour les APIs."
+    },
+    {
+      "id": 2,
+      "question": "Quelle annotation (ou attribut) suffit souvent à transformer une entité Doctrine en une API REST complète (CRUD) avec API Platform ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Route]`",
+        "`#[ApiResource]`",
+        "`#[ORM\Entity]`",
+        "`#[REST]`"
+      ],
+      "correct_answers": [
+        "`#[ApiResource]`"
+      ],
+      "explanation": "L'attribut `#[ApiResource]` déclare la classe comme une ressource exposée par l'API, activant automatiquement les opérations par défaut."
+    },
+    {
+      "id": 3,
+      "question": "Dans l'architecture d'API Platform (v3+), quel composant est responsable de récupérer les données (lecture) ?",
+      "type": "single_choice",
+      "options": [
+        "Le State Processor.",
+        "Le State Provider.",
+        "Le Contrôleur.",
+        "Le Repository."
+      ],
+      "correct_answers": [
+        "Le State Provider."
+      ],
+      "explanation": "Les Providers fournissent la ressource (Item ou Collection). Les Processors gèrent les mutations (POST/PUT/DELETE)."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi est-il recommandé d'utiliser des DTOs avec API Platform plutôt que d'exposer directement les entités ?",
+      "type": "single_choice",
+      "options": [
+        "Pour ralentir l'application.",
+        "Pour découpler la ressource API (contrat public) de l'entité Doctrine (stockage interne) et éviter les problèmes de sécurité ou de versioning.",
+        "API Platform ne supporte pas les entités.",
+        "Pour empêcher l'utilisation de GraphQL."
+      ],
+      "correct_answers": [
+        "Pour découpler la ressource API (contrat public) de l'entité Doctrine (stockage interne) et éviter les problèmes de sécurité ou de versioning."
+      ],
+      "explanation": "Cela permet de changer la structure de la base sans casser l'API et de contrôler précisément ce qui est exposé."
+    }
+  ]
+}
