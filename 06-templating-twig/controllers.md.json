@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/controllers.md",
+  "title": "Rendu de Contrôleur (Embedding Controllers)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle fonction Twig permet d'intégrer le rendu d'un autre contrôleur (ex: widget panier, sidebar) dans un template ?",
+      "type": "single_choice",
+      "options": [
+        "`include()`",
+        "`embed()`",
+        "`render(controller(...))`",
+        "`call()`"
+      ],
+      "correct_answers": [
+        "`render(controller(...))`"
+      ],
+      "explanation": "Cette fonction déclenche une sous-requête interne, exécute le contrôleur cible et injecte sa réponse HTML."
+    },
+    {
+      "id": 2,
+      "question": "Quel est l'impact de performance de l'utilisation massive de `render(controller(...))` ?",
+      "type": "single_choice",
+      "options": [
+        "Aucun, c'est très rapide.",
+        "C'est lourd, car chaque appel instancie le Kernel et parcourt tout le cycle de vie Symfony (Events, etc.).",
+        "Cela bloque le serveur.",
+        "C'est plus rapide que `include`."
+      ],
+      "correct_answers": [
+        "C'est lourd, car chaque appel instancie le Kernel et parcourt tout le cycle de vie Symfony (Events, etc.)."
+      ],
+      "explanation": "Il faut l'utiliser avec parcimonie ou avec du cache (ESI)."
+    },
+    {
+      "id": 3,
+      "question": "Si vous utilisez un proxy de cache (Varnish ou Symfony HttpCache), quelle fonction alternative devriez-vous utiliser pour les fragments dynamiques ?",
+      "type": "single_choice",
+      "options": [
+        "`render_esi()`",
+        "`include_cache()`",
+        "`cache()`",
+        "`render_async()`"
+      ],
+      "correct_answers": [
+        "`render_esi()`"
+      ],
+      "explanation": "ESI (Edge Side Includes) permet au proxy d'assembler la page en faisant des requêtes parallèles ou en utilisant des caches différents pour chaque fragment."
+    },
+    {
+      "id": 4,
+      "question": "Comment passer des arguments au contrôleur embarqué ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas possible.",
+        "En deuxième argument de `controller()` : `controller('App...::method', { 'param': 'value' })`.",
+        "Via la variable globale `request`.",
+        "Via la session."
+      ],
+      "correct_answers": [
+        "En deuxième argument de `controller()` : `controller('App...::method', { 'param': 'value' })`."
+      ],
+      "explanation": "Ces arguments seront injectés dans la méthode du contrôleur cible."
+    }
+  ]
+}

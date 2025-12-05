@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/components.md",
+  "title": "Composants Twig (Twig Components)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le but principal des Twig Components ?",
+      "type": "single_choice",
+      "options": [
+        "Remplacer React/Vue par du PHP.",
+        "Créer des éléments d'interface réutilisables couplant un template Twig et une classe PHP pour la logique.",
+        "Accélérer le rendu Twig.",
+        "Gérer la base de données."
+      ],
+      "correct_answers": [
+        "Créer des éléments d'interface réutilisables couplant un template Twig et une classe PHP pour la logique."
+      ],
+      "explanation": "C'est une alternative moderne aux `include` et `macro` pour les éléments complexes (Alert, Card, Menu)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la syntaxe moderne pour appeler un composant Twig nommé `Alert` ?",
+      "type": "single_choice",
+      "options": [
+        "`{{ component('Alert') }}`",
+        "`<twig:Alert />`",
+        "`{% component Alert %}`",
+        "`<Alert />`"
+      ],
+      "correct_answers": [
+        "`<twig:Alert />`"
+      ],
+      "explanation": "Cette syntaxe HTML-like introduite récemment rend le code plus lisible."
+    },
+    {
+      "id": 3,
+      "question": "Quelle est la différence entre un 'Twig Component' et un 'Live Component' ?",
+      "type": "single_choice",
+      "options": [
+        "Aucune.",
+        "Le Twig Component est statique (rendu une fois), le Live Component est dynamique (se met à jour via AJAX sans écrire de JS).",
+        "Le Live Component utilise des WebSockets.",
+        "Le Twig Component est déprécié."
+      ],
+      "correct_answers": [
+        "Le Twig Component est statique (rendu une fois), le Live Component est dynamique (se met à jour via AJAX sans écrire de JS)."
+      ],
+      "explanation": "Les Live Components permettent de créer des interactions riches (recherche temps réel, formulaires) en PHP."
+    },
+    {
+      "id": 4,
+      "question": "Les propriétés publiques de la classe du composant PHP sont-elles accessibles dans le template Twig associé ?",
+      "type": "single_choice",
+      "options": [
+        "Non, il faut les passer via une méthode `render()`.",
+        "Oui, automatiquement.",
+        "Oui, mais seulement si elles sont annotées.",
+        "Uniquement les propriétés statiques."
+      ],
+      "correct_answers": [
+        "Oui, automatiquement."
+      ],
+      "explanation": "Le composant expose son état public directement au template."
+    }
+  ]
+}

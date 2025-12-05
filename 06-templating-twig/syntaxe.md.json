@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/syntaxe.md",
+  "title": "Syntaxe Twig",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quels délimiteurs sont utilisés pour **afficher** le résultat d'une expression (Output) ?",
+      "type": "single_choice",
+      "options": [
+        "`{% ... %}`",
+        "`{{ ... }}`",
+        "`{# ... #}`",
+        "`[[ ... ]]`"
+      ],
+      "correct_answers": [
+        "`{{ ... }}`"
+      ],
+      "explanation": "Les doubles accolades servent à l'interpolation/affichage."
+    },
+    {
+      "id": 2,
+      "question": "Quels délimiteurs sont utilisés pour la **logique** (boucles, conditions, définition de variables) ?",
+      "type": "single_choice",
+      "options": [
+        "`{% ... %}`",
+        "`{{ ... }}`",
+        "`{# ... #}`",
+        "`<% ... %>`"
+      ],
+      "correct_answers": [
+        "`{% ... %}`"
+      ],
+      "explanation": "C'est pour les 'Tags' (`if`, `for`, `set`, `extends`)."
+    },
+    {
+      "id": 3,
+      "question": "Comment écrire un commentaire Twig qui ne sera pas visible dans le code source HTML ?",
+      "type": "single_choice",
+      "options": [
+        "`<!-- ... -->`",
+        "`{# ... #}`",
+        "`/* ... */`",
+        "`// ...`"
+      ],
+      "correct_answers": [
+        "`{# ... #}`"
+      ],
+      "explanation": "Les commentaires Twig sont supprimés à la compilation."
+    },
+    {
+      "id": 4,
+      "question": "Que fait le tiret dans `{{- value -}}` ?",
+      "type": "single_choice",
+      "options": [
+        "Il commente la valeur.",
+        "Il supprime les espaces blancs (whitespace trimming) avant et après le bloc.",
+        "Il inverse la valeur.",
+        "Il échappe la valeur."
+      ],
+      "correct_answers": [
+        "Il supprime les espaces blancs (whitespace trimming) avant et après le bloc."
+      ],
+      "explanation": "C'est le contrôle des espaces blancs (Whitespace Control)."
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "source_file": "06-templating-twig/assets.md",
+  "title": "Gestion des Assets",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la fonction Twig de base pour générer un lien vers un fichier public (image, css, js) ?",
+      "type": "single_choice",
+      "options": [
+        "`path()`",
+        "`url()`",
+        "`asset()`",
+        "`file()`"
+      ],
+      "correct_answers": [
+        "`asset()`"
+      ],
+      "explanation": "La fonction `asset()` gère le versioning et le préfixe du chemin."
+    },
+    {
+      "id": 2,
+      "question": "Quel est l'avantage principal d'utiliser `AssetMapper` par rapport à `Webpack Encore` ?",
+      "type": "single_choice",
+      "options": [
+        "Il est plus rapide à l'exécution.",
+        "Il ne nécessite pas Node.js ni d'étape de build complexe, tout en gérant les modules JS modernes.",
+        "Il supporte Sass nativement.",
+        "Il est compatible IE11."
+      ],
+      "correct_answers": [
+        "Il ne nécessite pas Node.js ni d'étape de build complexe, tout en gérant les modules JS modernes."
+      ],
+      "explanation": "AssetMapper (Symfony 6.3+) simplifie drastiquement la gestion du frontend pour les développeurs PHP."
+    },
+    {
+      "id": 3,
+      "question": "Comment le cache-busting est-il géré par Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Il faut renommer le fichier manuellement.",
+        "Symfony ajoute automatiquement un paramètre de version (hash ou timestamp) à l'URL générée par `asset()`.",
+        "Le cache n'est pas géré.",
+        "Via le fichier `.htaccess`."
+      ],
+      "correct_answers": [
+        "Symfony ajoute automatiquement un paramètre de version (hash ou timestamp) à l'URL générée par `asset()`."
+      ],
+      "explanation": "Cela force le navigateur à re-télécharger le fichier si son contenu a changé."
+    },
+    {
+      "id": 4,
+      "question": "Où sont situés physiquement les fichiers référencés par `asset('logo.png')` ?",
+      "type": "single_choice",
+      "options": [
+        "`assets/logo.png`",
+        "`public/logo.png`",
+        "`templates/logo.png`",
+        "`var/logo.png`"
+      ],
+      "correct_answers": [
+        "`public/logo.png`"
+      ],
+      "explanation": "La fonction `asset()` pointe vers la racine web publique."
+    },
+    {
+      "id": 5,
+      "question": "Si vous utilisez Webpack Encore, quelle fonction Twig remplace `asset()` pour les fichiers compilés ?",
+      "type": "single_choice",
+      "options": [
+        "`encore_asset()`",
+        "`asset()` fonctionne toujours (en pointant vers `public/build/...`), mais `encore_entry_link_tags` et `encore_entry_script_tags` sont utilisés pour charger les entrées.",
+        "`webpack()`",
+        "`build()`"
+      ],
+      "correct_answers": [
+        "`asset()` fonctionne toujours (en pointant vers `public/build/...`), mais `encore_entry_link_tags` et `encore_entry_script_tags` sont utilisés pour charger les entrées."
+      ],
+      "explanation": "Encore génère un `manifest.json` que la fonction `asset()` sait lire si le package `json_manifest_version_strategy` est activé."
+    }
+  ]
+}

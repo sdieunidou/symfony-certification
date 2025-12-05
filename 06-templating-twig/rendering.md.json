@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/rendering.md",
+  "title": "Méthodes de Rendu (Rendering)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle méthode de l'`AbstractController` crée une `Response` HTTP contenant le template rendu ?",
+      "type": "single_choice",
+      "options": [
+        "`renderView()`",
+        "`render()`",
+        "`renderTemplate()`",
+        "`createResponse()`"
+      ],
+      "correct_answers": [
+        "`render()`"
+      ],
+      "explanation": "`render()` est un raccourci qui compile le template et le place dans le corps d'une nouvelle Response."
+    },
+    {
+      "id": 2,
+      "question": "Si vous voulez obtenir le code HTML d'un template sous forme de chaîne (ex: pour un email) sans créer de Response, quelle méthode utiliser ?",
+      "type": "single_choice",
+      "options": [
+        "`render()`",
+        "`renderView()`",
+        "`getHtml()`",
+        "`fetch()`"
+      ],
+      "correct_answers": [
+        "`renderView()`"
+      ],
+      "explanation": "`renderView()` retourne une string. `render()` retourne un objet Response."
+    },
+    {
+      "id": 3,
+      "question": "Quel attribut (Symfony 6.2+) permet de définir le template associé au contrôleur sans appeler `render()` explicitement ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Route]`",
+        "`#[Template]`",
+        "`#[View]`",
+        "`#[Render]`"
+      ],
+      "correct_answers": [
+        "`#[Template]`"
+      ],
+      "explanation": "Si vous utilisez `#[Template('blog/index.html.twig')]`, votre contrôleur peut retourner un simple tableau de données."
+    },
+    {
+      "id": 4,
+      "question": "Quel contrôleur interne utiliser dans `routes.yaml` pour rendre un template statique sans créer de classe PHP ?",
+      "type": "single_choice",
+      "options": [
+        "`TemplateController`",
+        "`StaticController`",
+        "`RedirectController`",
+        "`DefaultController`"
+      ],
+      "correct_answers": [
+        "`TemplateController`"
+      ],
+      "explanation": "Il suffit de définir le paramètre `template` dans les defaults de la route."
+    }
+  ]
+}

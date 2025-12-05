@@ -1,0 +1,51 @@
+{
+  "source_file": "06-templating-twig/namespaces.md",
+  "title": "Espaces de Noms (Namespaces)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "À quoi sert un Namespace Twig (ex: `@admin`) ?",
+      "type": "single_choice",
+      "options": [
+        "À définir des variables globales.",
+        "À créer un alias vers un dossier de templates spécifique.",
+        "À protéger les templates par mot de passe.",
+        "À traduire les templates."
+      ],
+      "correct_answers": [
+        "À créer un alias vers un dossier de templates spécifique."
+      ],
+      "explanation": "Cela permet d'organiser les templates (ex: `@AcmeBlog/index.html.twig`) et de référencer les templates des bundles."
+    },
+    {
+      "id": 2,
+      "question": "Comment inclure un template situé dans le namespace `@partials` ?",
+      "type": "single_choice",
+      "options": [
+        "`{{ include('partials/header.html.twig') }}`",
+        "`{{ include('@partials/header.html.twig') }}`",
+        "`{{ include('partials:header.html.twig') }}`",
+        "`{{ include('#partials/header.html.twig') }}`"
+      ],
+      "correct_answers": [
+        "`{{ include('@partials/header.html.twig') }}`"
+      ],
+      "explanation": "Le préfixe `@` indique l'utilisation d'un namespace."
+    },
+    {
+      "id": 3,
+      "question": "Comment surcharger le template d'un Bundle tiers (ex: `AcmeBlogBundle`) ?",
+      "type": "single_choice",
+      "options": [
+        "En modifiant le fichier dans `vendor/`.",
+        "En créant un fichier avec le même chemin dans `templates/bundles/AcmeBlogBundle/`.",
+        "En créant un namespace `@Override`.",
+        "C'est impossible."
+      ],
+      "correct_answers": [
+        "En créant un fichier avec le même chemin dans `templates/bundles/AcmeBlogBundle/`."
+      ],
+      "explanation": "Symfony configure automatiquement les namespaces des bundles pour regarder d'abord dans `templates/bundles/NomDuBundle/`."
+    }
+  ]
+}

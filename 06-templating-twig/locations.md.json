@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/locations.md",
+  "title": "Création et Organisation des Templates",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Où se situe le dossier par défaut des templates dans une application Symfony moderne ?",
+      "type": "single_choice",
+      "options": [
+        "`app/Resources/views/`",
+        "`src/Resources/views/`",
+        "`templates/`",
+        "`views/`"
+      ],
+      "correct_answers": [
+        "`templates/`"
+      ],
+      "explanation": "C'est la racine standard définie dans `twig.yaml`."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la convention de nommage pour un fichier template Twig générant du HTML ?",
+      "type": "single_choice",
+      "options": [
+        "`fichier.twig`",
+        "`fichier.html`",
+        "`fichier.html.twig`",
+        "`fichier.tpl`"
+      ],
+      "correct_answers": [
+        "`fichier.html.twig`"
+      ],
+      "explanation": "Format `nom.format.moteur`. Le format (`html`) est important pour l'auto-échappement."
+    },
+    {
+      "id": 3,
+      "question": "Comment accéder à une propriété d'objet (`$user->name`) dans Twig ?",
+      "type": "single_choice",
+      "options": [
+        "`user->name`",
+        "`user['name']`",
+        "`user.name`",
+        "`user::name`"
+      ],
+      "correct_answers": [
+        "`user.name`"
+      ],
+      "explanation": "L'opérateur point `.` est magique : il teste les propriétés, les méthodes, les getters (`getName`), les issers, etc."
+    },
+    {
+      "id": 4,
+      "question": "Si vous accédez à une variable qui n'existe pas en environnement de Production, que se passe-t-il ?",
+      "type": "single_choice",
+      "options": [
+        "Une erreur 500 est affichée.",
+        "Rien ne s'affiche (null), aucune erreur n'est levée (sauf si `strict_variables` est true).",
+        "Le texte 'undefined' s'affiche.",
+        "Le template s'arrête."
+      ],
+      "correct_answers": [
+        "Rien ne s'affiche (null), aucune erreur n'est levée (sauf si `strict_variables` est true)."
+      ],
+      "explanation": "En prod, Twig est tolérant. En dev, il est strict et lance une exception."
+    }
+  ]
+}

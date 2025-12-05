@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/filtres-fonctions.md",
+  "title": "Créer une Extension Twig (Custom)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment créer un filtre ou une fonction Twig personnalisé dans Symfony 7 ?",
+      "type": "single_choice",
+      "options": [
+        "En modifiant le code source de Twig.",
+        "En créant une classe PHP avec les attributs `#[AsTwigFilter]` ou `#[AsTwigFunction]` sur les méthodes.",
+        "En écrivant du code C.",
+        "En configurant `twig.yaml`."
+      ],
+      "correct_answers": [
+        "En créant une classe PHP avec les attributs `#[AsTwigFilter]` ou `#[AsTwigFunction]` sur les méthodes."
+      ],
+      "explanation": "L'autoconfiguration détecte ces classes et les enregistre automatiquement comme extensions Twig."
+    },
+    {
+      "id": 2,
+      "question": "Pourquoi utiliser une Runtime Extension (Lazy Loading) pour les filtres complexes ?",
+      "type": "single_choice",
+      "options": [
+        "Pour améliorer la sécurité.",
+        "Pour éviter d'instancier des services lourds (ex: DB, API) si le filtre n'est pas utilisé sur la page courante.",
+        "C'est obligatoire.",
+        "Pour pouvoir utiliser du code asynchrone."
+      ],
+      "correct_answers": [
+        "Pour éviter d'instancier des services lourds (ex: DB, API) si le filtre n'est pas utilisé sur la page courante."
+      ],
+      "explanation": "Twig charge toutes les extensions au démarrage. Séparer la logique dans un Runtime permet de ne charger les dépendances qu'au moment de l'appel du filtre."
+    },
+    {
+      "id": 3,
+      "question": "Quelle option permet à un filtre de retourner du HTML sans qu'il soit échappé automatiquement ?",
+      "type": "single_choice",
+      "options": [
+        "`is_safe: ['html']`",
+        "`raw: true`",
+        "`escape: false`",
+        "`html: true`"
+      ],
+      "correct_answers": [
+        "`is_safe: ['html']`"
+      ],
+      "explanation": "Cela indique à Twig que la sortie de cette fonction est déjà sécurisée et ne doit pas être échappée."
+    },
+    {
+      "id": 4,
+      "question": "Comment accéder à l'objet `Environment` de Twig à l'intérieur d'une fonction personnalisée ?",
+      "type": "single_choice",
+      "options": [
+        "Via `$this->twig`.",
+        "En ajoutant l'option `needs_environment: true` et en typant le premier argument `Environment $env`.",
+        "En utilisant une globale.",
+        "C'est impossible."
+      ],
+      "correct_answers": [
+        "En ajoutant l'option `needs_environment: true` et en typant le premier argument `Environment $env`."
+      ],
+      "explanation": "C'est utile si votre fonction a besoin de rendre un autre template ou d'accéder à la configuration Twig."
+    }
+  ]
+}

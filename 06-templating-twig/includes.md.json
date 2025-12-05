@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/includes.md",
+  "title": "Inclusions et Embeds (Modularité)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence entre `include` et `embed` ?",
+      "type": "single_choice",
+      "options": [
+        "`include` est plus rapide.",
+        "`embed` permet d'inclure un template tout en surchargeant certains de ses blocs (comme un mini-héritage à la volée), `include` insère le contenu tel quel.",
+        "`include` est déprécié.",
+        "`embed` permet de passer des variables."
+      ],
+      "correct_answers": [
+        "`embed` permet d'inclure un template tout en surchargeant certains de ses blocs (comme un mini-héritage à la volée), `include` insère le contenu tel quel."
+      ],
+      "explanation": "`embed` est très puissant pour créer des composants UI (ex: une modale avec un bloc 'body' variable)."
+    },
+    {
+      "id": 2,
+      "question": "Par défaut, un template inclus a-t-il accès aux variables du template courant ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, il hérite du contexte.",
+        "Non, il est isolé.",
+        "Seulement si on utilise `with`.",
+        "Uniquement les globales."
+      ],
+      "correct_answers": [
+        "Oui, il hérite du contexte."
+      ],
+      "explanation": "Pour isoler l'include, il faut utiliser l'option `only` (ex: `include('...', {...}, with_context = false)` en fonction ou `only` en tag)."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert la fonction `render_hinclude` (ou `hinclude`) ?",
+      "type": "single_choice",
+      "options": [
+        "À inclure des fichiers HTML statiques.",
+        "À charger un fragment de page (contrôleur) de manière asynchrone (AJAX) après le chargement initial de la page.",
+        "À inclure du code PHP.",
+        "À compresser le HTML."
+      ],
+      "correct_answers": [
+        "À charger un fragment de page (contrôleur) de manière asynchrone (AJAX) après le chargement initial de la page."
+      ],
+      "explanation": "C'est une technique pour améliorer la performance perçue (ESI côté client) via la bibliothèque `hinclude.js`."
+    },
+    {
+      "id": 4,
+      "question": "Comment passer des variables spécifiques à un template inclus ?",
+      "type": "single_choice",
+      "options": [
+        "`{{ include('template.html.twig', { 'var': 'value' }) }}`",
+        "`{{ include('template.html.twig', 'var=value') }}`",
+        "C'est impossible.",
+        "Via des variables globales."
+      ],
+      "correct_answers": [
+        "`{{ include('template.html.twig', { 'var': 'value' }) }}`"
+      ],
+      "explanation": "Le deuxième argument de `include` est un tableau de variables qui seront disponibles dans le template inclus."
+    }
+  ]
+}

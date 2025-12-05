@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/debug.md",
+  "title": "Débogage Twig",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle fonction Twig permet d'afficher le contenu d'une variable pour le débogage (nécessite `debug-bundle`) ?",
+      "type": "single_choice",
+      "options": [
+        "`var_dump()`",
+        "`print_r()`",
+        "`dump()`",
+        "`debug()`"
+      ],
+      "correct_answers": [
+        "`dump()`"
+      ],
+      "explanation": "`dump()` utilise le VarDumper de Symfony pour un affichage interactif et propre."
+    },
+    {
+      "id": 2,
+      "question": "Quelle commande CLI permet de vérifier la syntaxe de tous les templates Twig ?",
+      "type": "single_choice",
+      "options": [
+        "php bin/console cache:clear",
+        "php bin/console lint:twig templates/",
+        "php bin/console debug:twig",
+        "php bin/console twig:check"
+      ],
+      "correct_answers": [
+        "php bin/console lint:twig templates/"
+      ],
+      "explanation": "Le linter détecte les erreurs de syntaxe (balises non fermées, etc.) sans exécuter le code."
+    },
+    {
+      "id": 3,
+      "question": "Comment écrire un commentaire dans Twig qui ne sera pas visible dans le code source HTML final ?",
+      "type": "single_choice",
+      "options": [
+        "`<!-- Commentaire -->`",
+        "`{# Commentaire #}`",
+        "`/* Commentaire */`",
+        "`{{ 'Commentaire' }}`"
+      ],
+      "correct_answers": [
+        "`{# Commentaire #}`"
+      ],
+      "explanation": "Les commentaires Twig sont retirés lors de la compilation du template en PHP, contrairement aux commentaires HTML."
+    },
+    {
+      "id": 4,
+      "question": "Quelle commande permet de lister toutes les fonctions, filtres et variables globales disponibles dans Twig ?",
+      "type": "single_choice",
+      "options": [
+        "php bin/console debug:twig",
+        "php bin/console debug:container",
+        "php bin/console list",
+        "php bin/console twig:info"
+      ],
+      "correct_answers": [
+        "php bin/console debug:twig"
+      ],
+      "explanation": "C'est très utile pour vérifier si une extension Twig personnalisée est bien chargée."
+    }
+  ]
+}

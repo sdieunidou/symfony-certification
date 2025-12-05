@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/escaping.md",
+  "title": "Échappement Automatique (Auto Escaping)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Que fait Twig par défaut avec les variables affichées via `{{ var }}` ?",
+      "type": "single_choice",
+      "options": [
+        "Il les exécute comme du code PHP.",
+        "Il les échappe automatiquement (Auto Escaping) selon le contexte (HTML, JS) pour éviter les failles XSS.",
+        "Il les affiche brutes.",
+        "Il supprime les balises HTML."
+      ],
+      "correct_answers": [
+        "Il les échappe automatiquement (Auto Escaping) selon le contexte (HTML, JS) pour éviter les failles XSS."
+      ],
+      "explanation": "C'est une sécurité fondamentale. `<script>` devient `&lt;script&gt;`."
+    },
+    {
+      "id": 2,
+      "question": "Quel filtre permet d'afficher une variable sans échappement (HTML brut) ?",
+      "type": "single_choice",
+      "options": [
+        "`|raw`",
+        "`|unescape`",
+        "`|html`",
+        "`|safe`"
+      ],
+      "correct_answers": [
+        "`|raw`"
+      ],
+      "explanation": "Attention, n'utilisez `|raw` que si vous êtes sûr que le contenu est sain (ex: généré par votre application)."
+    },
+    {
+      "id": 3,
+      "question": "Comment échapper une variable pour un contexte JavaScript (ex: injection dans une balise `<script>`) ?",
+      "type": "single_choice",
+      "options": [
+        "`{{ var|e('js') }}`",
+        "`{{ var|json_encode }}`",
+        "`{{ var|escape_js }}`",
+        "`{{ var|raw }}`"
+      ],
+      "correct_answers": [
+        "`{{ var|e('js') }}`"
+      ],
+      "explanation": "L'échappement JS est différent de l'échappement HTML."
+    },
+    {
+      "id": 4,
+      "question": "Quel est l'ordre correct pour combiner `raw` et d'autres filtres ?",
+      "type": "single_choice",
+      "options": [
+        "`{{ var|raw|upper }}`",
+        "`{{ var|upper|raw }}`",
+        "Peu importe.",
+        "`{{ raw(var)|upper }}`"
+      ],
+      "correct_answers": [
+        "`{{ var|upper|raw }}`"
+      ],
+      "explanation": "`raw` doit toujours être le **dernier** filtre de la chaîne pour empêcher l'échappement final."
+    }
+  ]
+}

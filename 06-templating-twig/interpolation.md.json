@@ -1,0 +1,51 @@
+{
+  "source_file": "06-templating-twig/interpolation.md",
+  "title": "Interpolation de Chaînes",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la syntaxe pour interpoler une variable Twig à l'intérieur d'une chaîne de caractères ?",
+      "type": "single_choice",
+      "options": [
+        "`\"Bonjour ${name}\"`",
+        "`\"Bonjour #{name}\"`",
+        "`\"Bonjour {{ name }}\"`",
+        "`\"Bonjour $name\"`"
+      ],
+      "correct_answers": [
+        "`\"Bonjour #{name}\"`"
+      ],
+      "explanation": "La syntaxe `#{...}` permet d'injecter une expression dans une chaîne entourée de guillemets doubles."
+    },
+    {
+      "id": 2,
+      "question": "Quel caractère est utilisé pour la concaténation de chaînes en Twig ?",
+      "type": "single_choice",
+      "options": [
+        "`.` (Point)",
+        "`+` (Plus)",
+        "`~` (Tilde)",
+        "`&` (Esperluette)"
+      ],
+      "correct_answers": [
+        "`~` (Tilde)"
+      ],
+      "explanation": "Contrairement à PHP (point) ou JS (plus), Twig utilise le tilde `~`."
+    },
+    {
+      "id": 3,
+      "question": "L'interpolation fonctionne-t-elle à l'intérieur des balises HTML (hors délimiteurs Twig) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui : `<h1>Titre : #{title}</h1>`.",
+        "Non, elle ne fonctionne qu'à l'intérieur des délimiteurs `{{ ... }}` ou `{% ... %}`.",
+        "Oui, si le mode interpolation est activé.",
+        "Seulement dans les attributs."
+      ],
+      "correct_answers": [
+        "Non, elle ne fonctionne qu'à l'intérieur des délimiteurs `{{ ... }}` ou `{% ... %}`."
+      ],
+      "explanation": "Dans le HTML pur, il faut utiliser `{{ title }}`."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/urls.md",
+  "title": "Génération d'URLs (Twig)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle fonction Twig génère une URL relative vers une route ?",
+      "type": "single_choice",
+      "options": [
+        "`url()`",
+        "`path()`",
+        "`route()`",
+        "`link()`"
+      ],
+      "correct_answers": [
+        "`path()`"
+      ],
+      "explanation": "`path('nom_route')` génère `/mon-chemin`."
+    },
+    {
+      "id": 2,
+      "question": "Quelle fonction Twig génère une URL absolue (avec http://domaine) ?",
+      "type": "single_choice",
+      "options": [
+        "`path()`",
+        "`url()`",
+        "`absolute_url()`",
+        "`asset()`"
+      ],
+      "correct_answers": [
+        "`url()`"
+      ],
+      "explanation": "`url('nom_route')` génère `https://example.com/mon-chemin`. Indispensable pour les emails et le SEO externe."
+    },
+    {
+      "id": 3,
+      "question": "Comment passer des paramètres à une route ?",
+      "type": "single_choice",
+      "options": [
+        "`path('blog_show', 'slug-article')`",
+        "`path('blog_show', { 'slug': 'slug-article' })`",
+        "`path('blog_show?slug=slug-article')`",
+        "`path('blog_show', ['slug-article'])`"
+      ],
+      "correct_answers": [
+        "`path('blog_show', { 'slug': 'slug-article' })`"
+      ],
+      "explanation": "Le deuxième argument est un tableau associatif mappant les noms des paramètres de route aux valeurs."
+    },
+    {
+      "id": 4,
+      "question": "Que se passe-t-il si vous passez des paramètres qui ne sont pas définis dans la route ?",
+      "type": "single_choice",
+      "options": [
+        "Une erreur est levée.",
+        "Ils sont ignorés.",
+        "Ils sont ajoutés à la Query String (`?param=valeur`).",
+        "Ils sont ajoutés au path."
+      ],
+      "correct_answers": [
+        "Ils sont ajoutés à la Query String (`?param=valeur`)."
+      ],
+      "explanation": "C'est le comportement standard pour gérer les filtres et paramètres optionnels."
+    }
+  ]
+}

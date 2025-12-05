@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/heritage.md",
+  "title": "Héritage de Template",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel tag permet à un template d'hériter d'un autre (Layout) ?",
+      "type": "single_choice",
+      "options": [
+        "`{% include %}`",
+        "`{% extends %}`",
+        "`{% use %}`",
+        "`{% parent %}`"
+      ],
+      "correct_answers": [
+        "`{% extends %}`"
+      ],
+      "explanation": "C'est le mécanisme d'héritage vertical."
+    },
+    {
+      "id": 2,
+      "question": "Dans un template enfant, peut-on écrire du HTML en dehors d'un bloc `{% block %}` ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, il sera ajouté à la fin.",
+        "Oui, il sera ajouté au début.",
+        "Non, Twig lancera une erreur de compilation.",
+        "Oui, s'il s'agit de commentaires."
+      ],
+      "correct_answers": [
+        "Non, Twig lancera une erreur de compilation."
+      ],
+      "explanation": "Le template enfant ne peut que remplir les trous (blocs) définis par le parent. Tout contenu orphelin est interdit."
+    },
+    {
+      "id": 3,
+      "question": "Comment afficher le contenu du bloc parent à l'intérieur d'un bloc enfant surchargé (ex: garder les CSS par défaut et en ajouter) ?",
+      "type": "single_choice",
+      "options": [
+        "`{{ parent() }}`",
+        "`{{ super() }}`",
+        "`{% include parent %}`",
+        "`{{ block.parent }}`"
+      ],
+      "correct_answers": [
+        "`{{ parent() }}`"
+      ],
+      "explanation": "La fonction `parent()` retourne le contenu du bloc tel qu'il est défini dans le template parent."
+    },
+    {
+      "id": 4,
+      "question": "Un template peut-il avoir plusieurs parents ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, héritage multiple.",
+        "Non, un seul parent (comme en PHP).",
+        "Oui, via les Traits.",
+        "Seulement en mode strict."
+      ],
+      "correct_answers": [
+        "Non, un seul parent (comme en PHP)."
+      ],
+      "explanation": "`{% extends %}` n'accepte qu'un seul argument (mais on peut utiliser `use` pour l'héritage horizontal de blocs, similaire aux Traits)."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/translations.md",
+  "title": "Traductions et Pluralisation (Twig)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel filtre est utilisé pour traduire une chaîne de caractères dans Twig ?",
+      "type": "single_choice",
+      "options": [
+        "`|translate`",
+        "`|t`",
+        "`|trans`",
+        "`|lang`"
+      ],
+      "correct_answers": [
+        "`|trans`"
+      ],
+      "explanation": "`'message.key'|trans` est la syntaxe standard."
+    },
+    {
+      "id": 2,
+      "question": "Comment passer des paramètres (placeholders) à une traduction ?",
+      "type": "single_choice",
+      "options": [
+        "`'hello %name%'|trans(name: 'Bob')`",
+        "`'hello %name%'|trans({'%name%': 'Bob'})`",
+        "`'hello %name%'|trans(['Bob'])`",
+        "`trans('hello', 'Bob')`"
+      ],
+      "correct_answers": [
+        "`'hello %name%'|trans({'%name%': 'Bob'})`"
+      ],
+      "explanation": "Le filtre `trans` prend un tableau associatif en premier argument."
+    },
+    {
+      "id": 3,
+      "question": "Quel format de message est recommandé pour gérer la pluralisation complexe (Symfony 6+) ?",
+      "type": "single_choice",
+      "options": [
+        "Pipe syntax : `Un article|%count% articles`",
+        "ICU MessageFormat : `{count, plural, =0 {Aucun} one {1 article} other {# articles}}`",
+        "Gettext",
+        "JSON"
+      ],
+      "correct_answers": [
+        "ICU MessageFormat : `{count, plural, =0 {Aucun} one {1 article} other {# articles}}`"
+      ],
+      "explanation": "ICU est le standard moderne et puissant pour l'i18n."
+    },
+    {
+      "id": 4,
+      "question": "Quelle commande permet d'extraire les nouvelles clés de traduction depuis les templates ?",
+      "type": "single_choice",
+      "options": [
+        "php bin/console translation:update",
+        "php bin/console translation:extract",
+        "php bin/console translation:dump",
+        "php bin/console make:translation"
+      ],
+      "correct_answers": [
+        "php bin/console translation:extract"
+      ],
+      "explanation": "Elle parcourt le code et met à jour les fichiers catalogue (YAML/XLIFF)."
+    }
+  ]
+}

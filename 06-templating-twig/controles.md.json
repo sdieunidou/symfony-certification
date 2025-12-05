@@ -1,0 +1,96 @@
+{
+  "source_file": "06-templating-twig/controles.md",
+  "title": "Boucles et Conditions (Contrôles)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle structure permet d'itérer sur une liste dans Twig ?",
+      "type": "single_choice",
+      "options": [
+        "`{% foreach item in list %}`",
+        "`{% for item in list %}`",
+        "`{% loop item in list %}`",
+        "`{% iterate item in list %}`"
+      ],
+      "correct_answers": [
+        "`{% for item in list %}`"
+      ],
+      "explanation": "Twig utilise `for ... in ...`."
+    },
+    {
+      "id": 2,
+      "question": "Comment gérer le cas où la liste est vide dans une boucle `for` ?",
+      "type": "single_choice",
+      "options": [
+        "Avec un `if list is not empty` avant la boucle.",
+        "En utilisant le bloc `{% else %}` à l'intérieur de la boucle `for`.",
+        "Twig lance une erreur.",
+        "Avec un filtre `|default`."
+      ],
+      "correct_answers": [
+        "En utilisant le bloc `{% else %}` à l'intérieur de la boucle `for`."
+      ],
+      "explanation": "Le bloc `else` du `for` est exécuté si la collection est vide ou nulle."
+    },
+    {
+      "id": 3,
+      "question": "Quelle variable spéciale permet d'accéder à l'index courant ou à la taille de la boucle ?",
+      "type": "single_choice",
+      "options": [
+        "`index`",
+        "`iterator`",
+        "`loop`",
+        "`foreach`"
+      ],
+      "correct_answers": [
+        "`loop`"
+      ],
+      "explanation": "`loop.index`, `loop.first`, `loop.length` sont très utiles."
+    },
+    {
+      "id": 4,
+      "question": "Quel opérateur permet de tester si une variable est définie ?",
+      "type": "single_choice",
+      "options": [
+        "`isset(var)`",
+        "`var is defined`",
+        "`var is set`",
+        "`var != null`"
+      ],
+      "correct_answers": [
+        "`var is defined`"
+      ],
+      "explanation": "L'opérateur `is` permet d'utiliser des tests Twig."
+    },
+    {
+      "id": 5,
+      "question": "Comment combiner plusieurs conditions dans un `if` ?",
+      "type": "single_choice",
+      "options": [
+        "`&&` et `||`",
+        "`and` et `or`",
+        "Les deux fonctionnent.",
+        "`&` et `|`"
+      ],
+      "correct_answers": [
+        "`and` et `or`"
+      ],
+      "explanation": "Twig privilégie les mots-clés `and` et `or` pour la lisibilité (bien que les opérateurs symboliques fonctionnent dans certaines versions, la documentation recommande les mots)."
+    },
+    {
+      "id": 6,
+      "question": "Les variables définies dans une boucle (`{% set foo = 1 %}`) sont-elles accessibles après la boucle ?",
+      "type": "single_choice",
+      "options": [
+        "Oui.",
+        "Non, elles sont scopées à la boucle.",
+        "Oui, si on utilise `global`.",
+        "Cela dépend de la configuration."
+      ],
+      "correct_answers": [
+        "Non, elles sont scopées à la boucle."
+      ],
+      "explanation": "Le scope dans Twig est strict pour éviter les effets de bord."
+    }
+  ]
+}

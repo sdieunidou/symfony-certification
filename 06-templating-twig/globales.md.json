@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/globales.md",
+  "title": "Variables Globales",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle variable globale Symfony injecte-t-il automatiquement dans tous les templates ?",
+      "type": "single_choice",
+      "options": [
+        "`symfony`",
+        "`app`",
+        "`global`",
+        "`context`"
+      ],
+      "correct_answers": [
+        "`app`"
+      ],
+      "explanation": "`app` donne accès à l'utilisateur (`app.user`), à la requête (`app.request`), à la session (`app.session`) et à l'environnement (`app.environment`)."
+    },
+    {
+      "id": 2,
+      "question": "Comment définir vos propres variables globales (ex: Google Analytics ID) ?",
+      "type": "single_choice",
+      "options": [
+        "Dans le contrôleur.",
+        "Dans `config/packages/twig.yaml` sous la clé `globals`.",
+        "Dans le fichier `.env` directement.",
+        "Dans `base.html.twig`."
+      ],
+      "correct_answers": [
+        "Dans `config/packages/twig.yaml` sous la clé `globals`."
+      ],
+      "explanation": "Les globales définies ici sont injectées au démarrage de Twig."
+    },
+    {
+      "id": 3,
+      "question": "Est-il recommandé d'injecter des services entiers comme variables globales ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, c'est très pratique.",
+        "Non, car le service sera instancié sur absolument toutes les pages, même s'il n'est pas utilisé (problème de performance).",
+        "Oui, mais seulement en dev.",
+        "Cela ne fonctionne pas."
+      ],
+      "correct_answers": [
+        "Non, car le service sera instancié sur absolument toutes les pages, même s'il n'est pas utilisé (problème de performance)."
+      ],
+      "explanation": "Préférez des extensions Twig (fonctions) qui peuvent être chargées paresseusement (Lazy Loading)."
+    },
+    {
+      "id": 4,
+      "question": "Si vous passez une variable depuis le contrôleur (ex: `user`) qui porte le même nom qu'une variable globale, qui gagne ?",
+      "type": "single_choice",
+      "options": [
+        "La variable globale.",
+        "La variable du contrôleur (elle surcharge la globale).",
+        "Twig lance une erreur de conflit.",
+        "Les deux sont fusionnées."
+      ],
+      "correct_answers": [
+        "La variable du contrôleur (elle surcharge la globale)."
+      ],
+      "explanation": "Le contexte spécifique (Contrôleur) a la priorité sur le contexte global."
+    }
+  ]
+}
