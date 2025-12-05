@@ -17,19 +17,52 @@ Depuis Symfony 6, tout repose sur le système **Authenticator Manager**.
     *   `onAuthenticationSuccess` : Redirection, Génération JWT.
     *   `onAuthenticationFailure` : Affichage erreur, 401.
 
+## Login Programmatique (Manuel)
+Parfois, vous voulez connecter un utilisateur manuellement (ex: après l'inscription, sans qu'il ressaisisse son mot de passe).
+
+```php
+use Symfony\Bundle\SecurityBundle\Security;
+
+public function register(Security $security, User $user): Response
+{
+    // ... création user ...
+    
+    // Connecter l'utilisateur manuellement
+    // login(UserInterface $user, ?string $authenticatorName = null, ?string $firewallName = null)
+    $security->login($user, 'form_login'); 
+    
+    return $this->redirectToRoute('home');
+}
+```
+
+## Logout Programmatique
+```php
+public function someAction(Security $security): Response
+{
+    // Déconnecter l'utilisateur courant
+    $security->logout(false); // false = désactiver la validation CSRF pour cet appel
+}
+```
+
+## Limiter les tentatives de Login (Throttling)
+Pour prévenir les attaques brute-force, Symfony intègre nativement le composant `RateLimiter`.
+
+### Configuration
+```yaml
+# config/packages/security.yaml
+security:
+    firewalls:
+        main:
+            login_throttling:
+                max_attempts: 3          # 3 essais
+                interval: '15 minutes'   # Bloqué pendant 15 min
+```
+Par défaut, cela bloque par IP + Username (5 essais) et par IP (50 essais).
+Vous pouvez personnaliser le limiteur en créant votre propre service `RateLimiter`.
+
 ## Types d'Authentification
 *   **Stateful** (Session) : Classique pour le web (`form_login`). Le token est stocké en session.
 *   **Stateless** (API) : Pas de session. Le token (JWT, Bearer) est envoyé à chaque requête.
-
-## Le TokenStorage
-Une fois authentifié, le token est stocké dans le service `TokenStorageInterface`.
-C'est là que `getUser()` va chercher l'info.
-
-```php
-// Accès manuel
-$token = $tokenStorage->getToken();
-$user = $token?->getUser();
-```
 
 ## 🧠 Concepts Clés
 1.  **Lazy Firewall** : Par défaut, le firewall est "lazy". Il ne démarre la session et ne charge l'utilisateur que si votre code le demande (`is_granted`, `getUser`) ou si une règle `access_control` l'exige.

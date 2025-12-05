@@ -147,6 +147,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Access Control](./10-securite/access-control.md)
 * [Authenticators/Passports](./10-securite/authenticators.md)
 * [Voters](./10-securite/voters.md)
+* [Protection CSRF](./10-securite/csrf.md)
 
 ### [11. Cache (HTTP & Composant)](./11-cache-http/)
 **Cache HTTP (Reverse Proxy)**
@@ -191,11 +192,11 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 
 ### [14. Divers](./14-divers/)
 * [Configuration](./14-divers/configuration.md)
+* [Bonnes Pratiques](./14-divers/best-practices.md)
 * [Gestion erreurs](./14-divers/errors.md)
 * [Débogage](./14-divers/debug.md)
 * [Déploiement](./14-divers/deployment.md)
 * [Déploiement ZDD](./14-divers/zero-downtime.md)
-* [Mime/Mailer](./14-divers/mail.md)
 * [Web Profiler](./14-divers/profiler.md)
 * [Runtime](./14-divers/runtime.md)
 * [Attributs PHP natifs](./14-divers/attributes.md)

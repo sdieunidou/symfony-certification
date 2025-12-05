@@ -62,6 +62,16 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 *   `CsrfTokenBadge($id, $token)` : Vérifie le jeton CSRF.
 *   `RememberMeBadge` : Active le cookie de persistance.
 
+## Événements de Sécurité (Security Events)
+Le processus d'authentification dispatch plusieurs événements auxquels vous pouvez vous abonner :
+
+1.  `CheckPassportEvent` : Après la création du Passport. Pour validations custom (ex: IP ban).
+2.  `AuthenticationTokenCreatedEvent` : Après validation du Passport, quand le Token est créé.
+3.  `AuthenticationSuccessEvent` : Juste avant le succès final.
+4.  `LoginSuccessEvent` : Après succès total. Permet de modifier la Réponse (ex: ajouter un cookie).
+5.  `LoginFailureEvent` : En cas d'erreur.
+6.  `LogoutEvent` : Lors de la déconnexion.
+
 ## 🧠 Concepts Clés
 1.  **AbstractAuthenticator** : Classe de base pour les auth custom (API).
 2.  **InteractiveAuthenticatorInterface** : Interface marqueur. Si implémentée, `INTERACTIVE_LOGIN` est dispatché (pour le login form). Souvent inutile pour les APIs stateless.
