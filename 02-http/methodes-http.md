@@ -12,7 +12,7 @@ Le respect de ces sémantiques est crucial pour l'architecture REST, le cache et
 | **HEAD** | Récupérer (Headers seuls) | ✅ OUI | ✅ OUI | Non | ✅ OUI |
 | **POST** | Traiter / Créer (sous-ressource) | ❌ NON | ❌ NON | Oui | ⚠️ Parfois |
 | **PUT** | Remplacer (Complet) | ❌ NON | ✅ OUI | Oui | ❌ Non |
-| **PATCH** | Modifier (Partiel) | ❌ NON | ❌ NON (théoriquement) | Oui | ❌ Non |
+| **PATCH** | Modifier (Partiel) | ❌ NON | ✅ OUI (théoriquement) | Oui | ❌ Non |
 | **DELETE** | Supprimer | ❌ NON | ✅ OUI | Non | ❌ Non |
 | **OPTIONS**| Capacités (CORS) | ✅ OUI | ✅ OUI | Non | ❌ Non |
 
