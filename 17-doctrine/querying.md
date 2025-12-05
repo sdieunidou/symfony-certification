@@ -32,6 +32,25 @@ DQL comprend votre modèle objet.
 *   SQL : `SELECT * FROM product p JOIN category c ON p.category_id = c.id`
 *   DQL : `SELECT p, c FROM App\Entity\Product p JOIN p.category c` (Doctrine gère les clés étrangères tout seul).
 
+## Fonctions DQL Personnalisées
+Par défaut, DQL supporte les fonctions standards (UPPER, LOWER, CONCAT...).
+Si vous avez besoin de fonctions spécifiques à votre SGBD (ex: `MD5()`, `RAND()`, `LEVENSHTEIN()`), vous devez les enregistrer.
+
+1. Créer la classe de définition DQL (héritant de `FunctionNode`).
+2. Enregistrer dans `doctrine.yaml` :
+
+```yaml
+doctrine:
+    orm:
+        dql:
+            string_functions:
+                MD5: App\Doctrine\DQL\Md5Function
+            numeric_functions:
+                RAND: App\Doctrine\DQL\RandFunction
+```
+
+Vous pouvez aussi utiliser le pack `beberlei/doctrineextensions` qui contient des centaines de fonctions pré-codées pour MySQL, PostgreSQL, etc.
+
 ## Hydratation
 C'est le format de retour des données.
 

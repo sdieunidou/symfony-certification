@@ -228,6 +228,9 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Concurrence & Locking](./17-doctrine/concurrence.md)
 * [Messenger Transport & Transactional](./17-doctrine/messenger-transport.md)
 * [Principe ACID](./17-doctrine/acid.md)
+* [Configuration](./17-doctrine/configuration.md)
+* [Extensions (Gedmo)](./17-doctrine/extensions.md)
+* [Tests et Doctrine](./17-doctrine/testing.md)
 
 ### [18. API & REST](./18-api/)
 * [Concepts REST](./18-api/rest-concepts.md)
