@@ -31,6 +31,33 @@ public function index(ValidatorInterface $validator): Response
 }
 ```
 
+## Cibles de Validation
+
+### 1. Propriétés
+Le cas le plus courant. La propriété peut être `public`, `protected` ou `private`.
+```php
+#[Assert\NotBlank]
+private string $name;
+```
+
+### 2. Getters (Propriétés Virtuelles)
+Très utile pour valider un état calculé ou une donnée qui n'est pas stockée directement.
+```php
+#[Assert\IsTrue(message: "Le mot de passe ne peut pas être le même que le nom d'utilisateur")]
+public function isPasswordSafe(): bool
+{
+    return $this->username !== $this->plainPassword;
+}
+```
+*   **Règle** : Le nom de la méthode doit commencer par `get`, `is` ou `has`. Le validateur considère cela comme une propriété (ex: `isPasswordSafe` -> propriété `passwordSafe`).
+
+### 3. Classes (Class Constraints)
+Pour valider l'objet dans son ensemble (souvent via `Callback` ou contrainte personnalisée).
+```php
+#[Assert\Callback(...)]
+class User { ... }
+```
+
 ## Valider une valeur simple
 On peut valider une valeur scalaire sans créer de classe, en passant les contraintes à la volée.
 

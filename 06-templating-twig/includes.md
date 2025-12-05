@@ -6,7 +6,7 @@ Twig offre plusieurs mécanismes pour réutiliser des fragments de template et �
 ## 1. `include()` (La fonction)
 Insère le contenu d'un autre template. Simple et rapide.
 ```twig
-{{ include('partials/_header.html.twig') }}
+    {{ include('partials/_header.html.twig') }}
 {{ include('partials/_alert.html.twig', { 'message': 'OK' }) }}
 ```
 *   **Contexte** : Hérite des variables par défaut. `with_context = false` pour isoler.

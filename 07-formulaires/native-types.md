@@ -25,6 +25,7 @@ Il est essentiel de connaître le bon type pour le bon usage afin de profiter de
 *   `DateTimeType` : Date + Heure.
 *   `TimeType` : Heure seule.
 *   `BirthdayType` : Comme DateType, mais avec des années par défaut adaptées.
+*   `WeekType` : Input HTML5 week.
 
 ### 4. Champs Choix
 *   `ChoiceType` : Le couteau suisse (Select, Radio, Checkboxes).
@@ -42,6 +43,13 @@ Il est essentiel de connaître le bon type pour le bon usage afin de profiter de
 ### 6. Champs Actions
 *   `SubmitType`, `ButtonType`, `ResetType`.
     *   *Best Practice* : Ne mettez pas les boutons dans la classe FormType (pour la réutilisabilité), ajoutez-les dans le template Twig.
+
+### 7. Champs Workflow (Symfony 7.4+)
+Nouveaux types pour gérer les **Form Flows** (Multi-étapes).
+*   `NextFlowType` : Passe à l'étape suivante (submit + validation).
+*   `PreviousFlowType` : Revient à l'étape précédente.
+*   `FinishFlowType` : Termine le flux.
+*   `ResetFlowType` : Réinitialise le flux.
 
 ## 🧠 Concepts Clés
 1.  **Transformation** : Chaque type vient avec ses DataTransformers. `IntegerType` transforme "12" (string) en `12` (int).

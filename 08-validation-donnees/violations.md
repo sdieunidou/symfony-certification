@@ -92,6 +92,17 @@ $this->context->buildViolation('Il faut au moins {{ limit }} choix.')
     ->addViolation();
 ```
 
+## Traduction des Messages
+Symfony traduit automatiquement les messages de violation.
+*   Par défaut, le domaine de traduction est `validators`.
+*   Les paramètres `{{ value }}` sont remplacés après la traduction.
+*   Vous devez créer un fichier `translations/validators.fr.yaml` pour vos messages personnalisés.
+
+```yaml
+# translations/validators.fr.yaml
+"La valeur {{ value }} est invalide.": "La valeur {{ value }} n'est pas bonne."
+```
+
 ## 🧠 Concepts Clés
 1.  **Naming** : Si la contrainte est `App\Validator\MyRule`, Symfony cherche `App\Validator\MyRuleValidator`.
 2.  **Service** : Le validateur peut injecter d'autres services (Repository, RequestStack) via son constructeur.
@@ -103,3 +114,4 @@ $this->context->buildViolation('Il faut au moins {{ limit }} choix.')
 
 ## Ressources
 *   [Symfony Docs - Custom Constraints](https://symfony.com/doc/current/validation/custom_constraint.html)
+*   [Symfony Docs - Translations](https://symfony.com/doc/current/validation/translations.html)

@@ -88,12 +88,12 @@ class InvoiceGenerator implements LocaleAwareInterface
     {
         $this->locale = $locale;
     }
-
+    
     public function getLocale(): string
     {
         return $this->locale;
     }
-
+    
     public function generate(): void
     {
         // Utilise $this->locale pour formater la facture

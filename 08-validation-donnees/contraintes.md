@@ -20,6 +20,7 @@ Elles s'utilisent via des Attributs PHP 8 (`#[Assert\Name]`).
 *   `#[Assert\Uuid]`, `#[Assert\Ulid]`.
 *   `#[Assert\Ip]`.
 *   `#[Assert\UserPassword]` : Vérifie que la valeur correspond au mot de passe actuel de l'utilisateur (pour changement de MDP).
+*   `#[Assert\NoSuspiciousCharacters]` : Vérifie les caractères invisibles ou homoglyphes (Sécurité).
 
 ### 3. Nombres (Number)
 *   `#[Assert\Positive]`, `#[Assert\PositiveOrZero]`.
@@ -38,14 +39,28 @@ Elles s'utilisent via des Attributs PHP 8 (`#[Assert\Name]`).
 *   `#[Assert\Count(min: 1)]`.
 *   `#[Assert\All([...])]` : Applique une liste de contraintes à **chaque** élément d'un tableau.
     *   `#[Assert\All([new Assert\NotBlank, new Assert\Email])]`
+*   `#[Assert\Collection]` : Valide la structure d'un tableau associatif (présence des clés et validation des valeurs par clé).
+    ```php
+    #[Assert\Collection(
+        fields: [
+            'name' => new Assert\Length(min: 5),
+            'email' => new Assert\Email(),
+        ],
+        allowMissingFields: true
+    )]
+    protected array $profileData;
+    ```
 
 ### 6. Fichiers
 *   `#[Assert\File(maxSize: '10M')]`.
 *   `#[Assert\Image(minWidth: 100)]`.
 
-### 7. Logique
+### 7. Logique & Conditionnel
 *   `#[Assert\IsTrue]` : Utile pour une case "J'accepte les CGU" (qui n'est pas stockée dans l'entité mais doit être vraie).
-*   `#[Assert\AtLeastOneOf]` : L'une des contraintes internes doit passer.
+*   `#[Assert\AtLeastOneOf]`.
+*   `#[Assert\Sequentially]`.
+*   `#[Assert\When]`.
+*   *(Voir le fichier logic.md pour les détails)*
 
 ## 🧠 Concepts Clés
 1.  **Nullabilité** : Par défaut, la plupart des contraintes (Email, Length, Regex) **ignorent** les valeurs `null`. Si vous voulez qu'un champ soit obligatoire, vous **DEVEZ** ajouter `#[Assert\NotBlank]` ou `#[Assert\NotNull]`.

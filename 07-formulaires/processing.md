@@ -36,8 +36,8 @@ public function edit(Request $request, Task $task): Response
 
 ## API vs HTML Forms
 *   **HTML (POST standard)** : `handleRequest` lit `$_POST`.
-*   **API (JSON)** : `handleRequest` ne lit **pas** le JSON body nativement par défaut (avant Symfony 6.3+). Il fallait utiliser `$form->submit($data)`.
-*   **Symfony 6.3+** : Le `RequestHandler` natif sait maintenant lire le JSON payload si configuré ou détecté.
+*   **API (JSON)** : Depuis Symfony 6.3, le `RequestHandler` natif sait lire le JSON payload automatiquement si le Content-Type est `application/json`.
+    *   Avant, il fallait utiliser `$form->submit(json_decode($request->getContent(), true))`.
 
 ## Soumission Manuelle (`submit`)
 Pour les cas avancés (API, tests) :
@@ -54,6 +54,7 @@ $form->submit($dataArray, false);
     *   Initial (non soumis).
     *   Soumis et Valide.
     *   Soumis et Invalide (contient des erreurs).
+3.  **Validité Dynamique** : `$form->isValid()` dépend des groupes de validation actifs. Si vous utilisez des groupes conditionnels (selon le bouton cliqué), la validité peut changer.
 
 ## ⚠️ Points de vigilance (Certification)
 *   **Validation** : `$form->isValid()` ne peut être appelé que si `$form->isSubmitted()` est true.
