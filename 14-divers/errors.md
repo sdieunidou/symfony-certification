@@ -19,16 +19,54 @@ Symfony (TwigBundle) cherche dans `templates/bundles/TwigBundle/Exception/`.
 *   `error500.html.twig` (Erreur critique)
 *   `error.html.twig` (Fallback pour tous les autres codes)
 
-Vous avez accès aux variables `status_code` et `status_text`.
+### Variables disponibles
+Dans ces templates, vous avez accès à :
+*   `status_code` : Le code HTTP (ex: 404).
+*   `status_text` : Le message standard (ex: "Not Found").
+*   `exception` : L'objet exception (attention à ne pas afficher de données sensibles en prod via `exception.message` ou `exception.trace` sans filtrage).
+
+```twig
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Erreur {{ status_code }}</h1>
+    <p>Oups ! {{ status_text }}</p>
+    <a href="{{ path('homepage') }}">Retour à l'accueil</a>
+{% endblock %}
+```
 
 ## Prévisualisation en Dev
-Comme vous ne voyez jamais les pages d'erreur "Prod" en environnement "Dev" (vous voyez la stack trace), Symfony fournit des routes spéciales pour les tester :
+Comme vous ne voyez jamais les pages d'erreur "Prod" en environnement "Dev" (vous voyez la stack trace), Symfony fournit des routes spéciales pour les tester.
+
+Si besoin, configurez la route dans `config/routes/dev/framework.yaml` (automatique avec Flex) :
+```yaml
+when@dev:
+    _errors:
+        resource: '@FrameworkBundle/Resources/config/routing/errors.php'
+        prefix: /_error
+```
+
+URLs de test :
 *   `/_error/404`
 *   `/_error/500`
 *   `/_error/403`
 
+## Pages d'Erreur Statiques (Symfony 7.3+)
+Pour les erreurs critiques (ex: PHP ne démarre pas, Base de données down, Erreur 500 fatale), Symfony ne peut même pas rendre le template Twig.
+La solution est de pré-générer des pages HTML statiques que le serveur Web (Nginx/Apache) servira directement.
+
+**Commande** : `error:dump`
+```bash
+# Génère les pages pour tous les codes d'erreur
+APP_ENV=prod php bin/console error:dump var/cache/prod/error_pages/
+
+# Génère seulement certaines pages
+APP_ENV=prod php bin/console error:dump var/cache/prod/error_pages/ 404 500
+```
+Ensuite, configurez votre serveur web (Nginx/Apache) pour utiliser ces fichiers HTML en cas d'erreur (ErrorDocument).
+
 ## 🧠 Concepts Clés
-1.  **Event** : Le mécanisme repose sur l'événement `kernel.exception` (ou `ExceptionEvent`).
+1.  **Event** : Le mécanisme repose sur l'événement `kernel.exception` (ou `ExceptionEvent`). Vous pouvez écouter cet événement pour loguer l'erreur ou rediriger l'utilisateur avant le rendu de la page d'erreur.
 2.  **JSON** : Si la requête demande du JSON (Accept header), le ErrorHandler essayera de retourner du JSON (sérialisation du problème via `symfony/serializer` si présent).
 
 ## ⚠️ Points de vigilance (Certification)
@@ -37,4 +75,4 @@ Comme vous ne voyez jamais les pages d'erreur "Prod" en environnement "Dev" (vou
 
 ## Ressources
 *   [Symfony Docs - Custom Error Pages](https://symfony.com/doc/current/controller/error_pages.html)
-*   [Symfony - HTTP Exception Attributes](https://symfony.com/blog/new-in-symfony-6-3-http-exception-attributes)
+*   [Symfony Blog - Static Error Pages](https://symfony.com/blog/new-in-symfony-7-3-static-error-pages)
