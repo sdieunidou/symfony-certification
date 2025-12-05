@@ -2,6 +2,8 @@
 
 Ce dépôt contient des fiches de révision complètes pour la certification Symfony 7.0, structurées par catégorie.
 
+Note : Ce contenu a été entièrement généré par une intelligence artificielle sans vérification humaine préalable ; veuillez toujours vous référer à la documentation officielle de Symfony.
+
 ## Table des Matières
 
 ### [1. PHP](./01-php/)
