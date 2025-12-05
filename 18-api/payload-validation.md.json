@@ -1,0 +1,66 @@
+{
+  "source_file": "18-api/payload-validation.md",
+  "title": "Validation des Payloads API",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle contrainte de validation est cruciale pour activer la validation en cascade sur les sous-objets (ex: valider l'objet `Address` imbriqué dans l'objet `User`) ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Assert\Cascade]`",
+        "`#[Assert\Valid]`",
+        "`#[Assert\Recursive]`",
+        "`#[Assert\All]`"
+      ],
+      "correct_answers": [
+        "`#[Assert\Valid]`"
+      ],
+      "explanation": "Sans `#[Assert\Valid]`, le validateur ne descendra pas dans les propriétés objet pour vérifier leurs propres contraintes."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence sémantique entre une erreur HTTP 400 et une erreur HTTP 422 ?",
+      "type": "single_choice",
+      "options": [
+        "400 est pour les erreurs serveur, 422 pour le client.",
+        "400 indique une requête mal formée syntaxiquement (ex: JSON invalide), 422 indique une requête bien formée mais avec des erreurs sémantiques (ex: validation échouée).",
+        "422 est déprécié.",
+        "Il n'y a aucune différence."
+      ],
+      "correct_answers": [
+        "400 indique une requête mal formée syntaxiquement (ex: JSON invalide), 422 indique une requête bien formée mais avec des erreurs sémantiques (ex: validation échouée)."
+      ],
+      "explanation": "Le code 422 (Unprocessable Entity) est le standard pour les erreurs de validation métier."
+    },
+    {
+      "id": 3,
+      "question": "Quel standard RFC est supporté nativement par Symfony pour structurer les réponses d'erreur d'API en JSON ?",
+      "type": "single_choice",
+      "options": [
+        "RFC 7807 (Problem Details for HTTP APIs)",
+        "JSON:API",
+        "GraphQL Error Format",
+        "SOAP Fault"
+      ],
+      "correct_answers": [
+        "RFC 7807 (Problem Details for HTTP APIs)"
+      ],
+      "explanation": "Ce format standardise les champs `type`, `title`, `status`, `detail` pour décrire une erreur."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi utilise-t-on souvent le Validator directement sur des DTOs en API plutôt que de passer par le composant Form ?",
+      "type": "single_choice",
+      "options": [
+        "Le composant Form est payant.",
+        "Le composant Form est orienté HTML et peut être trop lourd/complexe pour une simple désérialisation JSON.",
+        "Le Validator est plus rapide.",
+        "Les DTOs ne supportent pas les Formulaires."
+      ],
+      "correct_answers": [
+        "Le composant Form est orienté HTML et peut être trop lourd/complexe pour une simple désérialisation JSON."
+      ],
+      "explanation": "Bien que Form puisse gérer les APIs, la combinaison Serializer + Validator (ou `MapRequestPayload`) est souvent plus directe et 'API-first'."
+    }
+  ]
+}

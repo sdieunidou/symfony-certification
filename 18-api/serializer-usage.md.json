@@ -1,0 +1,66 @@
+{
+  "source_file": "18-api/serializer-usage.md",
+  "title": "Sérialisation en API",
+  "questions": [
+    {
+      "id": 1,
+      "question": "À quoi servent les 'Groupes de Sérialisation' (`#[Groups]`) dans le composant Serializer ?",
+      "type": "single_choice",
+      "options": [
+        "À grouper les utilisateurs.",
+        "À contrôler précisément quels attributs d'un objet sont exposés lors de la sérialisation (lecture) ou acceptés lors de la désérialisation (écriture).",
+        "À améliorer les performances de la base de données.",
+        "À définir des groupes de validation."
+      ],
+      "correct_answers": [
+        "À contrôler précisément quels attributs d'un objet sont exposés lors de la sérialisation (lecture) ou acceptés lors de la désérialisation (écriture)."
+      ],
+      "explanation": "Sans groupes, le sérialiseur exposerait toutes les propriétés publiques (ou via getters), ce qui risque de fuiter des données sensibles (password) ou de créer des boucles infinies."
+    },
+    {
+      "id": 2,
+      "question": "Quel problème survient fréquemment lors de la sérialisation d'entités avec des relations bidirectionnelles (User <-> Post) et comment le résoudre ?",
+      "type": "single_choice",
+      "options": [
+        "Une erreur SQL. Solution : désactiver Doctrine.",
+        "Une erreur 'Circular Reference' (boucle infinie). Solution : Utiliser des groupes distincts pour ne pas inclure le parent dans l'enfant, ou configurer un `CIRCULAR_REFERENCE_HANDLER`.",
+        "Une erreur 404. Solution : créer la route.",
+        "Une erreur de type. Solution : caster en string."
+      ],
+      "correct_answers": [
+        "Une erreur 'Circular Reference' (boucle infinie). Solution : Utiliser des groupes distincts pour ne pas inclure le parent dans l'enfant, ou configurer un `CIRCULAR_REFERENCE_HANDLER`."
+      ],
+      "explanation": "Le sérialiseur suit les liens. Si A pointe vers B et B vers A, il boucle. Il faut casser ce cycle via la configuration."
+    },
+    {
+      "id": 3,
+      "question": "Quelle est la différence entre un `Normalizer` et un `Encoder` ?",
+      "type": "single_choice",
+      "options": [
+        "Le Normalizer transforme l'objet en tableau (array), l'Encoder transforme le tableau en chaîne (JSON/XML).",
+        "Le Normalizer valide les données, l'Encoder les chiffre.",
+        "C'est la même chose.",
+        "L'Encoder est pour l'entrée, le Normalizer pour la sortie."
+      ],
+      "correct_answers": [
+        "Le Normalizer transforme l'objet en tableau (array), l'Encoder transforme le tableau en chaîne (JSON/XML)."
+      ],
+      "explanation": "Le processus de sérialisation est : Objet -> Normalisation -> Array -> Encodage -> String."
+    },
+    {
+      "id": 4,
+      "question": "Comment ignorer une propriété spécifique lors de la sérialisation sans utiliser de groupes ?",
+      "type": "single_choice",
+      "options": [
+        "Avec l'attribut `#[Ignore]`.",
+        "En la mettant en `private`.",
+        "En supprimant le getter.",
+        "Avec l'attribut `#[Hidden]`."
+      ],
+      "correct_answers": [
+        "Avec l'attribut `#[Ignore]`."
+      ],
+      "explanation": "L'attribut `#[Ignore]` dit explicitement au sérialiseur de ne jamais toucher à cette propriété."
+    }
+  ]
+}

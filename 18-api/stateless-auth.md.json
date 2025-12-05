@@ -1,0 +1,66 @@
+{
+  "source_file": "18-api/stateless-auth.md",
+  "title": "Authentification Stateless & Tokens",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Pourquoi configure-t-on `stateless: true` dans le firewall d'une API ?",
+      "type": "single_choice",
+      "options": [
+        "Pour empêcher l'utilisateur de se connecter.",
+        "Pour dire à Symfony de ne jamais créer de session PHP ni de cookie `PHPSESSID`, forçant une authentification à chaque requête.",
+        "Pour désactiver les logs.",
+        "Pour activer le mode maintenance."
+      ],
+      "correct_answers": [
+        "Pour dire à Symfony de ne jamais créer de session PHP ni de cookie `PHPSESSID`, forçant une authentification à chaque requête."
+      ],
+      "explanation": "C'est la définition d'une API REST Stateless. L'état d'authentification est porté par le client (Token) et non le serveur."
+    },
+    {
+      "id": 2,
+      "question": "Quelle nouveauté de Symfony 6.2 simplifie la gestion des tokens d'API (Opaque tokens, JWT, etc.) ?",
+      "type": "single_choice",
+      "options": [
+        "Le système `AccessToken` authenticator.",
+        "Le bundle LexikJWT.",
+        "Le composant Security.",
+        "L'authentification par formulaire."
+      ],
+      "correct_answers": [
+        "Le système `AccessToken` authenticator."
+      ],
+      "explanation": "Ce système natif extrait automatiquement le token (Bearer header, Query param...) et le passe à un `TokenHandler` que vous implémentez."
+    },
+    {
+      "id": 3,
+      "question": "Quel est l'avantage principal des JSON Web Tokens (JWT) pour une API ?",
+      "type": "single_choice",
+      "options": [
+        "Ils sont cryptés.",
+        "Ils sont 'Self-contained' (auto-suffisants) : le serveur peut vérifier leur validité (signature) et lire les infos utilisateur sans interroger la base de données.",
+        "Ils ne périment jamais.",
+        "Ils sont plus courts que les tokens opaques."
+      ],
+      "correct_answers": [
+        "Ils sont 'Self-contained' (auto-suffisants) : le serveur peut vérifier leur validité (signature) et lire les infos utilisateur sans interroger la base de données."
+      ],
+      "explanation": "Cela améliore les performances en réduisant les appels à la BDD ou au serveur d'auth pour chaque requête."
+    },
+    {
+      "id": 4,
+      "question": "Que doit implémenter votre `ApiTokenHandler` s'il valide le token avec succès ?",
+      "type": "single_choice",
+      "options": [
+        "Retourner `true`.",
+        "Retourner un objet `UserBadge` contenant l'identifiant de l'utilisateur.",
+        "Rediriger vers la page d'accueil.",
+        "Créer une session."
+      ],
+      "correct_answers": [
+        "Retourner un objet `UserBadge` contenant l'identifiant de l'utilisateur."
+      ],
+      "explanation": "Le `UserBadge` est ensuite utilisé par le `UserProvider` pour charger l'objet User complet."
+    }
+  ]
+}

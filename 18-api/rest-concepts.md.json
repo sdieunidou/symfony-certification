@@ -1,0 +1,66 @@
+{
+  "source_file": "18-api/rest-concepts.md",
+  "title": "Concepts REST & API",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Que signifie la contrainte 'Stateless' (Sans état) dans une architecture REST ?",
+      "type": "single_choice",
+      "options": [
+        "Le serveur ne doit pas avoir de base de données.",
+        "Le serveur ne garde aucun contexte client (session) entre deux requêtes. Chaque requête doit contenir toutes les informations nécessaires (ex: Token).",
+        "L'application ne doit pas avoir d'état (State Pattern).",
+        "Le client ne doit pas stocker de cookies."
+      ],
+      "correct_answers": [
+        "Le serveur ne garde aucun contexte client (session) entre deux requêtes. Chaque requête doit contenir toutes les informations nécessaires (ex: Token)."
+      ],
+      "explanation": "C'est fondamental pour la scalabilité : n'importe quel serveur doit pouvoir répondre à n'importe quelle requête sans connaître l'historique."
+    },
+    {
+      "id": 2,
+      "question": "Quel code HTTP doit être retourné après la création réussie d'une ressource (POST) ?",
+      "type": "single_choice",
+      "options": [
+        "200 OK",
+        "201 Created",
+        "204 No Content",
+        "202 Accepted"
+      ],
+      "correct_answers": [
+        "201 Created"
+      ],
+      "explanation": "Le code 201 indique spécifiquement une création. Il est généralement accompagné d'un en-tête `Location` pointant vers la nouvelle ressource."
+    },
+    {
+      "id": 3,
+      "question": "Quel verbe HTTP est idempotent et utilisé pour remplacer intégralement une ressource ?",
+      "type": "single_choice",
+      "options": [
+        "POST",
+        "PATCH",
+        "PUT",
+        "OPTIONS"
+      ],
+      "correct_answers": [
+        "PUT"
+      ],
+      "explanation": "`PUT` remplace la ressource cible par le payload de la requête. `PATCH` est pour la modification partielle."
+    },
+    {
+      "id": 4,
+      "question": "Quel niveau du modèle de maturité de Richardson introduit l'Hypermedia (HATEOAS) ?",
+      "type": "single_choice",
+      "options": [
+        "Niveau 0",
+        "Niveau 1",
+        "Niveau 2",
+        "Niveau 3"
+      ],
+      "correct_answers": [
+        "Niveau 3"
+      ],
+      "explanation": "Le niveau 3 est le stade ultime de REST, où l'API guide le client via des liens hypertextes dans les réponses."
+    }
+  ]
+}
