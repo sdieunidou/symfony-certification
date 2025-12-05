@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/mapping.md",
+  "title": "Mapping ORM (Attributs)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Depuis PHP 8 et les versions récentes de Symfony, quelle est la méthode recommandée pour définir le mapping Doctrine ?",
+      "type": "single_choice",
+      "options": [
+        "Les fichiers XML.",
+        "Les fichiers YAML.",
+        "Les Annotations PHPDoc (`/** @ORM... */`).",
+        "Les Attributs PHP (`#[ORM\...]`)."
+      ],
+      "correct_answers": [
+        "Les Attributs PHP (`#[ORM\...]`)."
+      ],
+      "explanation": "Les Attributs sont natifs au langage, plus performants et offrent une meilleure analyse statique que les annotations."
+    },
+    {
+      "id": 2,
+      "question": "Si vous définissez une propriété `#[ORM\Column] private string $name;`, la colonne en base sera-t-elle nullable ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, par défaut tout est nullable.",
+        "Non, par défaut `nullable` est à `false`.",
+        "Cela dépend de la base de données.",
+        "Oui, si le type PHP est `?string`."
+      ],
+      "correct_answers": [
+        "Non, par défaut `nullable` est à `false`."
+      ],
+      "explanation": "Pour autoriser NULL, il faut explicitement ajouter l'argument `nullable: true` dans l'attribut Column."
+    },
+    {
+      "id": 3,
+      "question": "Quel type Doctrine utiliser pour stocker un tableau PHP associatif sous forme de JSON en base ?",
+      "type": "single_choice",
+      "options": [
+        "`array`",
+        "`object`",
+        "`json`",
+        "`blob`"
+      ],
+      "correct_answers": [
+        "`json`"
+      ],
+      "explanation": "Le type `json` gère automatiquement la sérialisation (`json_encode`) à l'écriture et la désérialisation (`json_decode`) à la lecture."
+    },
+    {
+      "id": 4,
+      "question": "Comment mapper une Enum PHP 8.1 sur une colonne de base de données ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas supporté.",
+        "En utilisant l'option `enumType: MaClasseEnum::class` dans l'attribut `#[ORM\Column]`.",
+        "En créant un Type DBAL personnalisé obligatoirement.",
+        "En convertissant l'enum en string dans les getters/setters."
+      ],
+      "correct_answers": [
+        "En utilisant l'option `enumType: MaClasseEnum::class` dans l'attribut `#[ORM\Column]`."
+      ],
+      "explanation": "Doctrine supporte nativement les Backed Enums via cette option simple."
+    }
+  ]
+}

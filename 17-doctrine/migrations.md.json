@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/migrations.md",
+  "title": "Migrations",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le but principal des Migrations Doctrine ?",
+      "type": "single_choice",
+      "options": [
+        "Migrer les données d'un serveur à un autre.",
+        "Versionner le schéma de la base de données (comme git pour le code) afin de déployer les changements de manière reproductible.",
+        "Optimiser les index.",
+        "Générer des entités à partir de la base."
+      ],
+      "correct_answers": [
+        "Versionner le schéma de la base de données (comme git pour le code) afin de déployer les changements de manière reproductible."
+      ],
+      "explanation": "Les migrations permettent d'appliquer les mêmes modifications de structure (ALTER, CREATE) sur tous les environnements (Dev, Staging, Prod) de façon séquentielle."
+    },
+    {
+      "id": 2,
+      "question": "Quelle commande génère automatiquement une migration en comparant vos entités PHP avec la base de données actuelle ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console doctrine:schema:update`",
+        "`php bin/console make:migration` (ou `doctrine:migrations:diff`)",
+        "`php bin/console doctrine:migrations:generate`",
+        "`php bin/console make:entity`"
+      ],
+      "correct_answers": [
+        "`php bin/console make:migration` (ou `doctrine:migrations:diff`)"
+      ],
+      "explanation": "Cette commande calcule la différence (diff) et génère le SQL nécessaire pour passer de l'état actuel à l'état défini par les entités."
+    },
+    {
+      "id": 3,
+      "question": "Est-il sûr de modifier un fichier de migration après qu'il a été exécuté en production ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, Doctrine recalcule tout.",
+        "Non, jamais. Il faut créer une nouvelle migration pour corriger ou modifier la structure.",
+        "Oui, si on modifie aussi la base manuellement.",
+        "Oui, si on vide la table `doctrine_migration_versions`."
+      ],
+      "correct_answers": [
+        "Non, jamais. Il faut créer une nouvelle migration pour corriger ou modifier la structure."
+      ],
+      "explanation": "Une fois jouée, une migration est considérée comme acquise. La modifier crée une divergence entre le code et l'état réel des bases de production."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi est-il crucial de relire le fichier de migration généré automatiquement avant de l'exécuter ?",
+      "type": "single_choice",
+      "options": [
+        "Pour vérifier l'orthographe.",
+        "Car Doctrine peut parfois mal interpréter un changement (ex: DROP table + CREATE table au lieu de RENAME table), entraînant une perte de données.",
+        "Pour ajouter des commentaires.",
+        "Ce n'est pas nécessaire, Doctrine est infaillible."
+      ],
+      "correct_answers": [
+        "Car Doctrine peut parfois mal interpréter un changement (ex: DROP table + CREATE table au lieu de RENAME table), entraînant une perte de données."
+      ],
+      "explanation": "L'automatisme a ses limites, surtout lors des renommages de colonnes ou de tables. La revue humaine est une sécurité indispensable."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/fixtures.md",
+  "title": "Data Fixtures",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la fonction principale des 'Data Fixtures' dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Réparer les erreurs de base de données.",
+        "Charger un jeu de fausses données (dummy data) pour le développement et les tests.",
+        "Migrer le schéma de base de données.",
+        "Optimiser les requêtes SQL."
+      ],
+      "correct_answers": [
+        "Charger un jeu de fausses données (dummy data) pour le développement et les tests."
+      ],
+      "explanation": "Les fixtures permettent de peupler la base avec des données initiales pour ne pas travailler sur un site vide."
+    },
+    {
+      "id": 2,
+      "question": "Que fait la commande `php bin/console doctrine:fixtures:load` par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "Elle ajoute les nouvelles données à celles existantes.",
+        "Elle purge (vide) la base de données avant de charger les nouvelles données.",
+        "Elle met à jour le schéma de base de données.",
+        "Elle crée une sauvegarde."
+      ],
+      "correct_answers": [
+        "Elle purge (vide) la base de données avant de charger les nouvelles données."
+      ],
+      "explanation": "Attention, c'est une opération destructrice (TRUNCATE/DELETE). Pour ajouter sans supprimer, il faut l'option `--append`."
+    },
+    {
+      "id": 3,
+      "question": "Comment gérer l'ordre de chargement des fixtures (ex: créer les Users avant les Articles) ?",
+      "type": "single_choice",
+      "options": [
+        "En nommant les fichiers par ordre alphabétique (a_User, b_Article).",
+        "En implémentant `DependentFixtureInterface` et en retournant la liste des classes dont on dépend.",
+        "C'est impossible, l'ordre est aléatoire.",
+        "En modifiant le fichier `services.yaml`."
+      ],
+      "correct_answers": [
+        "En implémentant `DependentFixtureInterface` et en retournant la liste des classes dont on dépend."
+      ],
+      "explanation": "Cette interface permet de définir un graphe de dépendances que Doctrine respectera lors du chargement."
+    },
+    {
+      "id": 4,
+      "question": "Comment partager un objet créé dans une fixture (ex: un Admin) pour l'utiliser dans une autre fixture (ex: l'assigner comme auteur d'un Article) ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant une variable globale.",
+        "En utilisant `$this->addReference()` pour le sauvegarder et `$this->getReference()` pour le récupérer.",
+        "En le stockant en session.",
+        "En faisant une requête SQL manuelle."
+      ],
+      "correct_answers": [
+        "En utilisant `$this->addReference()` pour le sauvegarder et `$this->getReference()` pour le récupérer."
+      ],
+      "explanation": "Le système de références permet de passer des objets (souvent sous forme de Proxies) entre les différentes classes de fixtures."
+    }
+  ]
+}

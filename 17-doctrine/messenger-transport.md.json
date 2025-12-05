@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/messenger-transport.md",
+  "title": "Doctrine & Messenger (Architecture Scalable)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est l'avantage d'utiliser le `doctrine_transaction` middleware dans Symfony Messenger ?",
+      "type": "single_choice",
+      "options": [
+        "Il accélère le traitement des messages.",
+        "Il garantit que chaque message est traité dans une transaction unique : le message n'est validé (ack) que si le traitement réussit (commit).",
+        "Il empêche l'utilisation de Doctrine.",
+        "Il chiffre les messages en base."
+      ],
+      "correct_answers": [
+        "Il garantit que chaque message est traité dans une transaction unique : le message n'est validé (ack) que si le traitement réussit (commit)."
+      ],
+      "explanation": "Cela assure l'atomicité et la cohérence : si une erreur survient, la transaction est annulée et le message reste dans la file pour être rejoué."
+    },
+    {
+      "id": 2,
+      "question": "Pourquoi est-il important que vos Handlers de messages soient 'Idempotents' lorsqu'on utilise des stratégies de Retry ?",
+      "type": "single_choice",
+      "options": [
+        "Pour qu'ils soient plus rapides.",
+        "Parce qu'un message peut être délivré/exécuté plusieurs fois (ex: échec de l'ack après succès du traitement), et cela ne doit pas corrompre les données.",
+        "C'est une obligation du protocole AMQP.",
+        "Pour économiser de la mémoire."
+      ],
+      "correct_answers": [
+        "Parce qu'un message peut être délivré/exécuté plusieurs fois (ex: échec de l'ack après succès du traitement), et cela ne doit pas corrompre les données."
+      ],
+      "explanation": "L'idempotence signifie que l'effet de l'exécution est le même, qu'elle ait lieu une ou plusieurs fois."
+    },
+    {
+      "id": 3,
+      "question": "Quelle fonctionnalité SQL permet à plusieurs Workers de consommer la même file d'attente en base de données (Doctrine Transport) sans se marcher dessus ?",
+      "type": "single_choice",
+      "options": [
+        "`SELECT ... FOR SHARE`",
+        "`SELECT ... FOR UPDATE SKIP LOCKED`",
+        "`LOCK TABLE`",
+        "Les transactions SERIALIZABLE"
+      ],
+      "correct_answers": [
+        "`SELECT ... FOR UPDATE SKIP LOCKED`"
+      ],
+      "explanation": "`SKIP LOCKED` permet à chaque worker de ne sélectionner que les messages qui ne sont pas déjà verrouillés par un autre worker."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la recommandation pour gérer les Deadlocks (interblocages) avec Messenger ?",
+      "type": "single_choice",
+      "options": [
+        "Arrêter le serveur.",
+        "Utiliser la stratégie de Retry de Messenger pour rejouer automatiquement le message après un délai.",
+        "Désactiver les transactions.",
+        "Passer en mode lecture seule."
+      ],
+      "correct_answers": [
+        "Utiliser la stratégie de Retry de Messenger pour rejouer automatiquement le message après un délai."
+      ],
+      "explanation": "Les deadlocks sont souvent transitoires. Un retry automatique (avec backoff) résout le problème la plupart du temps sans intervention humaine."
+    }
+  ]
+}
