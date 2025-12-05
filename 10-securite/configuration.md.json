@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/configuration.md",
+  "title": "Configuration de la Sécurité (`security.yaml`)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Dans `security.yaml`, quel est l'ordre d'importance des firewalls ?",
+      "type": "single_choice",
+      "options": [
+        "Le dernier gagne.",
+        "L'ordre n'a pas d'importance.",
+        "Le premier qui matche l'URL (pattern) gagne (First Match Wins).",
+        "Le plus sécurisé gagne."
+      ],
+      "correct_answers": [
+        "Le premier qui matche l'URL (pattern) gagne (First Match Wins)."
+      ],
+      "explanation": "C'est pourquoi on place généralement le firewall `dev` (pattern `^/(_(profiler|wdt)|css|images|js)/`) en premier pour éviter de déclencher la sécurité sur les assets."
+    },
+    {
+      "id": 2,
+      "question": "À quoi sert l'option `security: false` dans un firewall ?",
+      "type": "single_choice",
+      "options": [
+        "À désactiver l'authentification mais garder l'autorisation.",
+        "À désactiver complètement la couche sécurité (pas de session, pas d'utilisateur) pour les URLs matchées.",
+        "À rendre l'URL publique.",
+        "C'est déprécié."
+      ],
+      "correct_answers": [
+        "À désactiver complètement la couche sécurité (pas de session, pas d'utilisateur) pour les URLs matchées."
+      ],
+      "explanation": "C'est une optimisation de performance indispensable pour les routes techniques (Profiler, WDT) et les assets."
+    },
+    {
+      "id": 3,
+      "question": "Si vous avez deux firewalls (ex: `main` et `admin`) et que vous voulez partager la session utilisateur entre eux, quelle option devez-vous configurer ?",
+      "type": "single_choice",
+      "options": [
+        "`shared: true`",
+        "`context: 'my_context_name'` (doit être identique sur les deux firewalls)",
+        "`session: global`",
+        "`provider: same`"
+      ],
+      "correct_answers": [
+        "`context: 'my_context_name'` (doit être identique sur les deux firewalls)"
+      ],
+      "explanation": "Le contexte définit la clé de stockage en session. Si les contextes diffèrent, les sessions sont isolées."
+    },
+    {
+      "id": 4,
+      "question": "Quelle section de `security.yaml` permet de définir la hiérarchie des rôles (ex: `ROLE_ADMIN` hérite de `ROLE_USER`) ?",
+      "type": "single_choice",
+      "options": [
+        "`access_control`",
+        "`role_hierarchy`",
+        "`providers`",
+        "`firewalls`"
+      ],
+      "correct_answers": [
+        "`role_hierarchy`"
+      ],
+      "explanation": "Cela permet de simplifier les règles d'accès en vérifiant uniquement le rôle le plus élevé."
+    }
+  ]
+}

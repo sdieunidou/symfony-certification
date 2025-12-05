@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/roles.md",
+  "title": "Rôles et Hiérarchie",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle convention de nommage est obligatoire pour qu'une chaîne de caractères soit reconnue comme un rôle par le `RoleVoter` ?",
+      "type": "single_choice",
+      "options": [
+        "Elle doit être en majuscules.",
+        "Elle doit commencer par `ROLE_`.",
+        "Elle ne doit pas contenir d'espaces.",
+        "Il n'y a pas de convention."
+      ],
+      "correct_answers": [
+        "Elle doit commencer par `ROLE_`."
+      ],
+      "explanation": "Le `RoleVoter` ignore tout attribut qui ne commence pas par ce préfixe."
+    },
+    {
+      "id": 2,
+      "question": "À quoi sert la configuration `role_hierarchy` ?",
+      "type": "single_choice",
+      "options": [
+        "À définir quels rôles peuvent se connecter.",
+        "À définir l'héritage des permissions (ex: `ROLE_ADMIN` possède automatiquement `ROLE_USER`).",
+        "À trier les utilisateurs.",
+        "À créer de nouveaux rôles."
+      ],
+      "correct_answers": [
+        "À définir l'héritage des permissions (ex: `ROLE_ADMIN` possède automatiquement `ROLE_USER`)."
+      ],
+      "explanation": "Cela évite de devoir assigner manuellement tous les sous-rôles à un utilisateur."
+    },
+    {
+      "id": 3,
+      "question": "Quel rôle virtuel indique qu'un utilisateur est connecté explicitement (pas via 'Se souvenir de moi') ?",
+      "type": "single_choice",
+      "options": [
+        "`IS_AUTHENTICATED_ANONYMOUSLY`",
+        "`IS_AUTHENTICATED_REMEMBERED`",
+        "`IS_AUTHENTICATED_FULLY`",
+        "`ROLE_USER`"
+      ],
+      "correct_answers": [
+        "`IS_AUTHENTICATED_FULLY`"
+      ],
+      "explanation": "C'est le niveau de confiance le plus élevé."
+    },
+    {
+      "id": 4,
+      "question": "Quel rôle virtuel est possédé par tout le monde, y compris les utilisateurs anonymes ?",
+      "type": "single_choice",
+      "options": [
+        "`IS_ANONYMOUS`",
+        "`PUBLIC_ACCESS`",
+        "`ROLE_GUEST`",
+        "`ALL`"
+      ],
+      "correct_answers": [
+        "`PUBLIC_ACCESS`"
+      ],
+      "explanation": "C'est un attribut spécial utilisé dans `access_control` pour ouvrir une route."
+    }
+  ]
+}

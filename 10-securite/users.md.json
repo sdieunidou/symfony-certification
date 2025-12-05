@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/users.md",
+  "title": "Utilisateurs (UserInterface)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle interface un objet doit-il implémenter pour être utilisé comme utilisateur dans le système de sécurité ?",
+      "type": "single_choice",
+      "options": [
+        "`UserInterface`",
+        "`SecurityUser`",
+        "`Authenticatable`",
+        "`Person`"
+      ],
+      "correct_answers": [
+        "`UserInterface`"
+      ],
+      "explanation": "C'est le contrat de base (`getRoles`, `getUserIdentifier`, `eraseCredentials`)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode remplace `getUsername()` depuis Symfony 5.3 ?",
+      "type": "single_choice",
+      "options": [
+        "`getLogin()`",
+        "`getUserIdentifier()`",
+        "`getEmail()`",
+        "`getId()`"
+      ],
+      "correct_answers": [
+        "`getUserIdentifier()`"
+      ],
+      "explanation": "Le terme 'username' était trop spécifique. 'Identifier' est plus générique (email, api key, uuid)."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert la méthode `eraseCredentials()` ?",
+      "type": "single_choice",
+      "options": [
+        "À supprimer l'utilisateur de la base de données.",
+        "À nettoyer les données sensibles temporaires (comme le mot de passe en clair) après l'authentification.",
+        "À déconnecter l'utilisateur.",
+        "À supprimer les rôles."
+      ],
+      "correct_answers": [
+        "À nettoyer les données sensibles temporaires (comme le mot de passe en clair) après l'authentification."
+      ],
+      "explanation": "Pour éviter de garder le mot de passe en clair en mémoire."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi est-il important d'implémenter `__serialize` (ou d'éviter de sérialiser tout l'objet) sur l'entité User ?",
+      "type": "single_choice",
+      "options": [
+        "Pour économiser de la place en base de données.",
+        "Pour éviter de stocker des données sensibles (mot de passe) ou des relations lourdes (Doctrine Proxy) dans la session PHP.",
+        "C'est obligatoire pour Doctrine.",
+        "Pour le format JSON."
+      ],
+      "correct_answers": [
+        "Pour éviter de stocker des données sensibles (mot de passe) ou des relations lourdes (Doctrine Proxy) dans la session PHP."
+      ],
+      "explanation": "L'objet User est sérialisé dans la session. Il doit être léger et sûr."
+    }
+  ]
+}

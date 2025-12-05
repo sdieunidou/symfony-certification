@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/voters.md",
+  "title": "Voters (Système de Vote)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le rôle d'un Voter ?",
+      "type": "single_choice",
+      "options": [
+        "Voter pour les élections.",
+        "Prendre une décision granulaire sur l'autorisation d'accès à une ressource (Logique métier).",
+        "Authentifier l'utilisateur.",
+        "Gérer les rôles."
+      ],
+      "correct_answers": [
+        "Prendre une décision granulaire sur l'autorisation d'accès à une ressource (Logique métier)."
+      ],
+      "explanation": "Il répond à la question : \"Est-ce que cet utilisateur peut faire cette action sur cet objet ?\"."
+    },
+    {
+      "id": 2,
+      "question": "Quelles sont les trois réponses possibles d'un Voter ?",
+      "type": "single_choice",
+      "options": [
+        "True, False, Null",
+        "Granted, Denied, Abstain",
+        "Yes, No, Maybe",
+        "Allow, Block, Pass"
+      ],
+      "correct_answers": [
+        "Granted, Denied, Abstain"
+      ],
+      "explanation": "Abstain signifie que le voter n'est pas concerné par l'attribut ou l'objet demandé."
+    },
+    {
+      "id": 3,
+      "question": "Quelle méthode du Voter détermine s'il doit voter ou s'abstenir ?",
+      "type": "single_choice",
+      "options": [
+        "`vote()`",
+        "`supports(string \$attribute, mixed \$subject)`",
+        "`canVote()`",
+        "`decide()`"
+      ],
+      "correct_answers": [
+        "`supports(string \$attribute, mixed \$subject)`"
+      ],
+      "explanation": "Si `supports` retourne false, le voter retourne `ACCESS_ABSTAIN`."
+    },
+    {
+      "id": 4,
+      "question": "Si la stratégie de l'`AccessDecisionManager` est `affirmative` (défaut), que se passe-t-il si un voter accorde l'accès et un autre le refuse ?",
+      "type": "single_choice",
+      "options": [
+        "L'accès est refusé.",
+        "L'accès est accordé (Dès qu'un voter dit Oui, c'est gagné).",
+        "Une exception est levée.",
+        "Cela dépend de l'ordre."
+      ],
+      "correct_answers": [
+        "L'accès est accordé (Dès qu'un voter dit Oui, c'est gagné)."
+      ],
+      "explanation": "Pour une sécurité plus stricte, on peut utiliser la stratégie `unanimous`."
+    }
+  ]
+}

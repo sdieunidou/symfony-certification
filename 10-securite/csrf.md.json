@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/csrf.md",
+  "title": "Protection CSRF (Cross-Site Request Forgery)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment le mécanisme CSRF de Symfony protège-t-il contre les attaques ?",
+      "type": "single_choice",
+      "options": [
+        "En vérifiant l'adresse IP.",
+        "En utilisant un jeton (token) secret unique généré côté serveur, stocké en session, et vérifié lors de la soumission du formulaire.",
+        "En chiffrant le formulaire.",
+        "En bloquant les requêtes POST."
+      ],
+      "correct_answers": [
+        "En utilisant un jeton (token) secret unique généré côté serveur, stocké en session, et vérifié lors de la soumission du formulaire."
+      ],
+      "explanation": "L'attaquant ne peut pas connaître ce token, donc sa fausse requête sera rejetée."
+    },
+    {
+      "id": 2,
+      "question": "Si vous créez un formulaire HTML manuellement (sans `form_end`), comment inclure le token CSRF ?",
+      "type": "single_choice",
+      "options": [
+        "C'est automatique.",
+        "En utilisant la fonction Twig `csrf_token('id_du_token')` dans un champ hidden.",
+        "En utilisant `{{ token }}`.",
+        "Ce n'est pas nécessaire."
+      ],
+      "correct_answers": [
+        "En utilisant la fonction Twig `csrf_token('id_du_token')` dans un champ hidden."
+      ],
+      "explanation": "Il faut s'assurer que l'ID du token correspond à celui attendu par le contrôleur (`isCsrfTokenValid`)."
+    },
+    {
+      "id": 3,
+      "question": "Quel attribut PHP (Symfony 7.1+) permet de valider automatiquement le token CSRF d'une action de contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "`#[CsrfCheck]`",
+        "`#[IsCsrfTokenValid('id_du_token')]`",
+        "`#[Secure]`",
+        "`#[ValidateToken]`"
+      ],
+      "correct_answers": [
+        "`#[IsCsrfTokenValid('id_du_token')]`"
+      ],
+      "explanation": "Cela simplifie le code en retirant la logique de vérification du corps de la méthode."
+    },
+    {
+      "id": 4,
+      "question": "Quelle nouveauté de Symfony 7.2 permet d'utiliser la protection CSRF dans des applications Stateless (sans session) ?",
+      "type": "single_choice",
+      "options": [
+        "Le Stateless CSRF (basé sur les headers Origin/Referer et des cookies signés).",
+        "Le JWT CSRF.",
+        "La désactivation du CSRF.",
+        "Le token IP."
+      ],
+      "correct_answers": [
+        "Le Stateless CSRF (basé sur les headers Origin/Referer et des cookies signés)."
+      ],
+      "explanation": "Cela résout le problème de compatibilité entre la sécurité CSRF et les architectures purement stateless ou le cache HTTP public."
+    }
+  ]
+}

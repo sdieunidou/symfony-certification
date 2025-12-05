@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/access-control.md",
+  "title": "Règles de Contrôle d'Accès (Access Control)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle règle fondamentale s'applique à la liste `access_control` dans `security.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "Toutes les règles sont vérifiées et cumulées.",
+        "First Match Wins (La première règle qui correspond à l'URL gagne et arrête la recherche).",
+        "La règle la plus spécifique gagne.",
+        "Last Match Wins."
+      ],
+      "correct_answers": [
+        "First Match Wins (La première règle qui correspond à l'URL gagne et arrête la recherche)."
+      ],
+      "explanation": "L'ordre des règles est donc critique. Les règles spécifiques doivent être placées avant les règles génériques."
+    },
+    {
+      "id": 2,
+      "question": "Quel attribut permet d'autoriser l'accès à tout le monde (même non connecté) pour une URL spécifique ?",
+      "type": "single_choice",
+      "options": [
+        "`PUBLIC_ACCESS`",
+        "`IS_ANONYMOUS`",
+        "`ROLE_USER`",
+        "`ALL`"
+      ],
+      "correct_answers": [
+        "`PUBLIC_ACCESS`"
+      ],
+      "explanation": "C'est un attribut spécial utilisé dans la clé `roles` pour désactiver la sécurité sur un path."
+    },
+    {
+      "id": 3,
+      "question": "Quelle est la différence entre `IS_AUTHENTICATED_FULLY` et `IS_AUTHENTICATED_REMEMBERED` ?",
+      "type": "single_choice",
+      "options": [
+        "`FULLY` signifie que l'utilisateur est admin.",
+        "`FULLY` signifie connecté via la session courante (login explicite), `REMEMBERED` inclut aussi les utilisateurs reconnus via un cookie 'Se souvenir de moi'.",
+        "`REMEMBERED` est plus sécurisé.",
+        "C'est la même chose."
+      ],
+      "correct_answers": [
+        "`FULLY` signifie connecté via la session courante (login explicite), `REMEMBERED` inclut aussi les utilisateurs reconnus via un cookie 'Se souvenir de moi'."
+      ],
+      "explanation": "Pour les actions sensibles (changement de mot de passe, paiement), on exige souvent `IS_AUTHENTICATED_FULLY`."
+    },
+    {
+      "id": 4,
+      "question": "Peut-on restreindre l'accès par adresse IP dans `access_control` ?",
+      "type": "single_choice",
+      "options": [
+        "Non, il faut un firewall.",
+        "Oui, via l'option `ips` (ex: `ips: [127.0.0.1]`).",
+        "Oui, via l'option `host`.",
+        "Seulement en production."
+      ],
+      "correct_answers": [
+        "Oui, via l'option `ips` (ex: `ips: [127.0.0.1]`)."
+      ],
+      "explanation": "C'est utile pour sécuriser une zone d'administration ou des outils internes."
+    }
+  ]
+}

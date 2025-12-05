@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/authenticators.md",
+  "title": "Authenticators, Passports et Badges",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel objet retourne la méthode `authenticate()` d'un Authenticator (Symfony 6+) ?",
+      "type": "single_choice",
+      "options": [
+        "Un `UserInterface`",
+        "Un `Passport`",
+        "Un `booléen`",
+        "Un `Token`"
+      ],
+      "correct_answers": [
+        "Un `Passport`"
+      ],
+      "explanation": "Le Passport encapsule les credentials et les badges (User, Password, CSRF, RememberMe)."
+    },
+    {
+      "id": 2,
+      "question": "À quoi sert le `UserBadge` dans un Passport ?",
+      "type": "single_choice",
+      "options": [
+        "À vérifier le mot de passe.",
+        "À définir l'identifiant de l'utilisateur (email, username) pour que Symfony le charge via le UserProvider.",
+        "À stocker les rôles.",
+        "À valider le token CSRF."
+      ],
+      "correct_answers": [
+        "À définir l'identifiant de l'utilisateur (email, username) pour que Symfony le charge via le UserProvider."
+      ],
+      "explanation": "C'est le lien entre l'authenticator et le UserProvider."
+    },
+    {
+      "id": 3,
+      "question": "Si vous créez un Authenticator pour une API (Token Header) qui ne nécessite pas de vérifier un mot de passe, quel type de Passport utiliser ?",
+      "type": "single_choice",
+      "options": [
+        "`Passport`",
+        "`SelfValidatingPassport`",
+        "`ApiPassport`",
+        "`AnonymousPassport`"
+      ],
+      "correct_answers": [
+        "`SelfValidatingPassport`"
+      ],
+      "explanation": "`SelfValidatingPassport` n'attend pas de badge `PasswordCredentials`."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode de l'Authenticator permet de vérifier si celui-ci doit s'activer pour la requête courante ?",
+      "type": "single_choice",
+      "options": [
+        "`authenticate()`",
+        "`supports(Request $request)`",
+        "`onAuthenticationSuccess()`",
+        "`start()`"
+      ],
+      "correct_answers": [
+        "`supports(Request $request)`"
+      ],
+      "explanation": "Si `supports` retourne `false`, l'authenticator est ignoré."
+    }
+  ]
+}

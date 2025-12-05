@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/authentication.md",
+  "title": "Authentification (AuthN)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Qu'est-ce que l'authentification (AuthN) ?",
+      "type": "single_choice",
+      "options": [
+        "Vérifier si l'utilisateur a le droit d'accéder à une ressource.",
+        "Vérifier l'identité de l'utilisateur (Qui est-ce ?).",
+        "Chiffrer le mot de passe.",
+        "Créer un compte."
+      ],
+      "correct_answers": [
+        "Vérifier l'identité de l'utilisateur (Qui est-ce ?)."
+      ],
+      "explanation": "Ne pas confondre avec l'autorisation (AuthZ) qui gère les permissions."
+    },
+    {
+      "id": 2,
+      "question": "Comment connecter un utilisateur manuellement (programmatically) dans un contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "En mettant l'utilisateur en session.",
+        "En utilisant `$security->login($user)` (Service `Security` helper).",
+        "En créant un token manuellement.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "En utilisant `$security->login($user)` (Service `Security` helper)."
+      ],
+      "explanation": "Le helper `Security` (Symfony 6.2+) simplifie grandement cette tâche qui nécessitait avant de manipuler le TokenStorage."
+    },
+    {
+      "id": 3,
+      "question": "Quel composant natif Symfony permet de limiter les tentatives de login (Brute Force) ?",
+      "type": "single_choice",
+      "options": [
+        "`LoginThrottler`",
+        "`RateLimiter` (config `login_throttling`)",
+        "`Firewall`",
+        "`AntiSpam`"
+      ],
+      "correct_answers": [
+        "`RateLimiter` (config `login_throttling`)"
+      ],
+      "explanation": "Il se configure directement dans le firewall (`login_throttling: { max_attempts: 3 }`)."
+    },
+    {
+      "id": 4,
+      "question": "Qu'est-ce qu'un Entry Point dans le contexte de la sécurité ?",
+      "type": "single_choice",
+      "options": [
+        "La page d'accueil.",
+        "Le mécanisme qui décide quoi faire (commencer l'auth) quand un utilisateur anonyme essaie d'accéder à une ressource protégée (ex: Redirection Login).",
+        "Le formulaire de connexion.",
+        "Le premier firewall."
+      ],
+      "correct_answers": [
+        "Le mécanisme qui décide quoi faire (commencer l'auth) quand un utilisateur anonyme essaie d'accéder à une ressource protégée (ex: Redirection Login)."
+      ],
+      "explanation": "Chaque firewall a un point d'entrée par défaut (souvent `form_login` -> redirect login)."
+    }
+  ]
+}

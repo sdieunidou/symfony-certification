@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/providers.md",
+  "title": "User Providers (Fournisseurs d'utilisateurs)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la responsabilité unique d'un `UserProvider` ?",
+      "type": "single_choice",
+      "options": [
+        "Vérifier le mot de passe.",
+        "Charger un objet `User` à partir d'un identifiant (email, username).",
+        "Gérer l'authentification.",
+        "Stocker la session."
+      ],
+      "correct_answers": [
+        "Charger un objet `User` à partir d'un identifiant (email, username)."
+      ],
+      "explanation": "Le Provider est en lecture seule. Il ne sait pas si le mot de passe est bon ou mauvais."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode du UserProvider est appelée à chaque requête pour recharger l'utilisateur depuis la session ?",
+      "type": "single_choice",
+      "options": [
+        "`loadUserByIdentifier()`",
+        "`refreshUser()`",
+        "`reloadUser()`",
+        "`checkUser()`"
+      ],
+      "correct_answers": [
+        "`refreshUser()`"
+      ],
+      "explanation": "Cela garantit que les données de l'utilisateur (rôles, mot de passe) sont toujours à jour. Si les données ont changé, l'utilisateur est déconnecté par sécurité."
+    },
+    {
+      "id": 3,
+      "question": "Quel type de Provider permet de chaîner plusieurs sources (ex: chercher d'abord en mémoire, puis en base de données) ?",
+      "type": "single_choice",
+      "options": [
+        "`EntityUserProvider`",
+        "`ChainUserProvider`",
+        "`MemoryUserProvider`",
+        "`LdapUserProvider`"
+      ],
+      "correct_answers": [
+        "`ChainUserProvider`"
+      ],
+      "explanation": "Il itère sur une liste de providers et s'arrête au premier qui trouve l'utilisateur."
+    },
+    {
+      "id": 4,
+      "question": "Pour utiliser une Entité Doctrine comme utilisateur, quel type de provider configurer ?",
+      "type": "single_choice",
+      "options": [
+        "`memory`",
+        "`entity`",
+        "`database`",
+        "`orm`"
+      ],
+      "correct_answers": [
+        "`entity`"
+      ],
+      "explanation": "On spécifie la classe de l'entité et la propriété à utiliser comme identifiant (ex: email)."
+    }
+  ]
+}

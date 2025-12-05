@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/firewalls.md",
+  "title": "Firewalls (Pare-feu)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Que signifie l'option `stateless: true` dans un firewall ?",
+      "type": "single_choice",
+      "options": [
+        "Que le firewall est désactivé.",
+        "Que Symfony ne va pas essayer de lire ou créer une session PHP pour stocker l'utilisateur. L'authentification doit être fournie à chaque requête.",
+        "Que l'état est stocké en base de données.",
+        "Que l'utilisateur est anonyme."
+      ],
+      "correct_answers": [
+        "Que Symfony ne va pas essayer de lire ou créer une session PHP pour stocker l'utilisateur. L'authentification doit être fournie à chaque requête."
+      ],
+      "explanation": "C'est la configuration typique pour une API REST sécurisée par Token (JWT)."
+    },
+    {
+      "id": 2,
+      "question": "À quoi sert l'option `lazy: true` ?",
+      "type": "single_choice",
+      "options": [
+        "À charger le firewall plus tard.",
+        "À ne démarrer la session et charger l'utilisateur que si l'application en a réellement besoin (ex: `is_granted`).",
+        "À rendre le site plus lent.",
+        "À désactiver le firewall."
+      ],
+      "correct_answers": [
+        "À ne démarrer la session et charger l'utilisateur que si l'application en a réellement besoin (ex: `is_granted`)."
+      ],
+      "explanation": "Cela permet de rendre les pages publiques cachables et plus rapides, car aucune session n'est démarrée inutilement."
+    },
+    {
+      "id": 3,
+      "question": "Quelle fonctionnalité permet à un administrateur de se connecter en tant qu'un autre utilisateur ?",
+      "type": "single_choice",
+      "options": [
+        "`impersonate_user`",
+        "`switch_user`",
+        "`login_as`",
+        "`sudo_mode`"
+      ],
+      "correct_answers": [
+        "`switch_user`"
+      ],
+      "explanation": "On l'active dans le firewall et on utilise un paramètre d'URL spécial (ex: `?_switch_user=username`)."
+    },
+    {
+      "id": 4,
+      "question": "Un pare-feu (`security.yaml`) gère-t-il l'Autorisation (qui a accès à quoi) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, via l'option `access_control` intégrée.",
+        "Non, le pare-feu gère l'Authentification (qui est connecté). L'Autorisation est gérée par `access_control` (global) ou les Voters.",
+        "Oui, si on met `security: true`.",
+        "Seulement pour l'admin."
+      ],
+      "correct_answers": [
+        "Non, le pare-feu gère l'Authentification (qui est connecté). L'Autorisation est gérée par `access_control` (global) ou les Voters."
+      ],
+      "explanation": "C'est une distinction fondamentale. Le firewall établit l'identité, l'Access Control restreint l'accès."
+    }
+  ]
+}

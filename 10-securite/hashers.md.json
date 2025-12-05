@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/hashers.md",
+  "title": "Hacheurs de Mots de Passe (Password Hashers)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel algorithme Symfony choisit-il par défaut avec la configuration `algorithm: auto` ?",
+      "type": "single_choice",
+      "options": [
+        "MD5",
+        "SHA-256",
+        "Le meilleur disponible sur le système (Sodium/Argon2id ou Bcrypt).",
+        "Plaintext"
+      ],
+      "correct_answers": [
+        "Le meilleur disponible sur le système (Sodium/Argon2id ou Bcrypt)."
+      ],
+      "explanation": "Cela garantit l'utilisation des standards de sécurité les plus récents sans changer la config."
+    },
+    {
+      "id": 2,
+      "question": "Faut-il gérer le sel (salt) manuellement avec les algorithmes modernes (Bcrypt, Sodium) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, il faut une colonne `salt` en base de données.",
+        "Non, le sel est généré aléatoirement et inclus dans le hash résultant. La méthode `getSalt()` est inutile.",
+        "Oui, mais seulement pour les admins.",
+        "Ça dépend de la version de PHP."
+      ],
+      "correct_answers": [
+        "Non, le sel est généré aléatoirement et inclus dans le hash résultant. La méthode `getSalt()` est inutile."
+      ],
+      "explanation": "Les algos modernes sont 'auto-salted'."
+    },
+    {
+      "id": 3,
+      "question": "Quelle interface permet de mettre à jour automatiquement le hash d'un utilisateur si l'algorithme change (Password Migration) ?",
+      "type": "single_choice",
+      "options": [
+        "`PasswordAuthenticatedUserInterface`",
+        "`PasswordUpgraderInterface` (implémentée par le UserProvider/Repository).",
+        "`UserInterface`",
+        "`HasherInterface`"
+      ],
+      "correct_answers": [
+        "`PasswordUpgraderInterface` (implémentée par le UserProvider/Repository)."
+      ],
+      "explanation": "Lorsqu'un utilisateur se connecte avec un vieux hash (ex: md5), Symfony détecte qu'il peut être amélioré, re-hache le mot de passe (qu'il a en clair à ce moment précis) et appelle `upgradePassword`."
+    },
+    {
+      "id": 4,
+      "question": "Quelle interface de service utiliser pour hacher un mot de passe dans un contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "`UserPasswordHasherInterface`",
+        "`EncoderInterface` (Déprécié)",
+        "`HashInterface`",
+        "`Security`"
+      ],
+      "correct_answers": [
+        "`UserPasswordHasherInterface`"
+      ],
+      "explanation": "La méthode `hashPassword($user, $plainPassword)` gère tout."
+    }
+  ]
+}

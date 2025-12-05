@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/authorization.md",
+  "title": "Autorisation (AuthZ)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel composant est responsable de la prise de décision finale d'accès (Voter) ?",
+      "type": "single_choice",
+      "options": [
+        "Authenticator",
+        "AccessDecisionManager",
+        "Firewall",
+        "UserProvider"
+      ],
+      "correct_answers": [
+        "AccessDecisionManager"
+      ],
+      "explanation": "Il interroge tous les Voters et applique une stratégie (affirmative, consensus, unanimous)."
+    },
+    {
+      "id": 2,
+      "question": "Comment vérifier une permission dans un contrôleur (`AbstractController`) ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->canAccess('ROLE')`",
+        "`$this->isGranted('ROLE')` ou `$this->denyAccessUnlessGranted('ROLE')`",
+        "`$this->checkAccess('ROLE')`",
+        "`$this->authorize('ROLE')`"
+      ],
+      "correct_answers": [
+        "`$this->isGranted('ROLE')` ou `$this->denyAccessUnlessGranted('ROLE')`"
+      ],
+      "explanation": "`isGranted` retourne un booléen, `denyAccessUnlessGranted` lance une exception 403 si faux."
+    },
+    {
+      "id": 3,
+      "question": "Quel attribut PHP permet de sécuriser une classe ou une méthode de contrôleur de manière déclarative ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Route]`",
+        "`#[IsGranted('ROLE_ADMIN')]`",
+        "`#[Secure]`",
+        "`#[Auth]`"
+      ],
+      "correct_answers": [
+        "`#[IsGranted('ROLE_ADMIN')]`"
+      ],
+      "explanation": "C'est la méthode moderne recommandée."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la stratégie par défaut de l'`AccessDecisionManager` ?",
+      "type": "single_choice",
+      "options": [
+        "Unanimous (Tous les voters doivent dire oui).",
+        "Affirmative (Dès qu'un voter dit oui, l'accès est accordé).",
+        "Consensus (Majorité).",
+        "Priority."
+      ],
+      "correct_answers": [
+        "Affirmative (Dès qu'un voter dit oui, l'accès est accordé)."
+      ],
+      "explanation": "Cela signifie que si un seul voter (ex: RoleVoter) accorde l'accès, c'est validé, même si les autres s'abstiennent."
+    }
+  ]
+}
