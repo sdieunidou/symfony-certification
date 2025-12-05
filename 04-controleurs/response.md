@@ -36,6 +36,26 @@ return $this->stream(function () {
 // Crée une StreamedResponse.
 ```
 
+### 5. Early Hints (`sendEarlyHints`)
+Indique au navigateur de commencer à télécharger des ressources (CSS, JS, Fonts) **avant** même que le contrôleur ait fini de générer la page. Améliore la performance perçue (LCP).
+
+```php
+use Symfony\Component\WebLink\Link;
+
+public function index(): Response
+{
+    $response = $this->sendEarlyHints([
+        (new Link(href: '/style.css'))->withAttribute('as', 'style'),
+        new Link(rel: 'preconnect', href: 'https://fonts.google.com'),
+    ]);
+
+    // ... traitement long (DB calls, rendering) ...
+
+    return $this->render('index.html.twig', response: $response);
+}
+```
+*Note : Nécessite un serveur compatible (ex: FrankenPHP) ou un proxy supportant le status HTTP 103.*
+
 ## Modification de la Réponse
 Parfois, il faut créer la réponse, la modifier, puis la retourner.
 

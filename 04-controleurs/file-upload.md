@@ -4,21 +4,46 @@
 Le traitement des fichiers uploadés (`multipart/form-data`) est une tâche courante mais risquée (sécurité).
 Symfony encapsule le fichier PHP natif (`$_FILES`) dans un objet `Symfony\Component\HttpFoundation\File\UploadedFile` qui offre des méthodes orientées objet sécurisées.
 
-## Flux de Traitement Standard
+## Méthode Moderne : Attribut `#[MapUploadedFile]` (Symfony 7.1+)
+C'est la façon recommandée depuis Symfony 7.1. Elle permet d'injecter et de valider le fichier directement dans l'argument du contrôleur, sans passer par `$request->files`.
 
-1.  **Récupération** : Via `$request->files` ou un formulaire (`FileType`).
-2.  **Validation** : Vérifier le type MIME, la taille, l'extension.
-3.  **Nommage** : Générer un nom unique et sûr (safe filename).
-4.  **Déplacement** : `move()` vers le dossier final.
+```php
+use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-## Exemple Sans Composant Form (Raw Controller)
+public function upload(
+    #[MapUploadedFile([
+        new Assert\File(
+            maxSize: '2M',
+            mimeTypes: ['application/pdf', 'image/jpeg']
+        )
+    ])] UploadedFile $file
+): Response
+{
+    // Si on arrive ici, le fichier est valide !
+    
+    // 1. Générer un nom sûr
+    $newFilename = uniqid().'.'.$file->guessExtension();
+
+    // 2. Déplacer
+    $file->move(
+        $this->getParameter('uploads_directory'), 
+        $newFilename
+    );
+
+    return $this->json(['file' => $newFilename]);
+}
+```
+
+## Méthode Manuelle (Raw Controller)
+Si vous n'utilisez pas l'attribut (versions antérieures ou besoin spécifique), voici la méthode manuelle.
 
 ```php
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
-public function upload(Request $request, SluggerInterface $slugger): Response
+public function manualUpload(Request $request, SluggerInterface $slugger): Response
 {
     /** @var UploadedFile $file */
     $file = $request->files->get('document'); // 'document' est le name de l'input
@@ -32,33 +57,19 @@ public function upload(Request $request, SluggerInterface $slugger): Response
         // 2. Déplacement
         try {
             $file->move(
-                $this->getParameter('uploads_directory'), // Configuré dans services.yaml
+                $this->getParameter('uploads_directory'),
                 $newFilename
             );
         } catch (FileException $e) {
-            // Gestion erreur (disque plein, permissions...)
+            // Gestion erreur
         }
-        
-        // 3. Sauvegarde du chemin en DB...
     }
 }
 ```
 
-## Validation (Constraints)
-Si vous n'utilisez pas le composant Form, validez manuellement via le service `Validator`.
-
-```php
-use Symfony\Component\Validator\Constraints\File;
-
-// ...
-$errors = $validator->validate($file, [
-    new File([
-        'maxSize' => '1024k',
-        'mimeTypes' => ['application/pdf', 'image/jpeg'],
-        'mimeTypesMessage' => 'Please upload a valid PDF or JPEG',
-    ])
-]);
-```
+## Validation
+*   **Avec Attribut** : Les contraintes sont passées directement dans `#[MapUploadedFile]`.
+*   **Sans Attribut** : Utilisez le service `ValidatorInterface` manuellement.
 
 ## 🧠 Concepts Clés
 1.  **guessExtension()** : Ne jamais utiliser `$file->getClientOriginalExtension()` (fourni par l'utilisateur, donc falsifiable genre `virus.exe` renommé `virus.jpg`). `guessExtension()` inspecte le contenu binaire du fichier (Magic Bytes) pour déduire la vraie extension.

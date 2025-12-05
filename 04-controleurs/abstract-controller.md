@@ -20,6 +20,7 @@ Cela signifie qu'il utilise un **Service Locator** (mini-conteneur) contenant un
 *   `json($data, int $status = 200, array $headers = [], array $context = []): JsonResponse` : Sérialise et retourne du JSON.
 *   `file($file, $fileName = null, ...): BinaryFileResponse` : Sert un fichier en téléchargement.
 *   `stream(callable $callback, ...): StreamedResponse` : Sert une réponse streamée.
+*   `sendEarlyHints(iterable $links): Response` : Envoie les headers HTTP 103 Early Hints.
 
 ### Routing & Redirection
 *   `redirectToRoute(string $route, array $parameters = [], int $status = 302): RedirectResponse`
@@ -42,28 +43,52 @@ Cela signifie qu'il utilise un **Service Locator** (mini-conteneur) contenant un
 *   `getParameter(string $name): mixed` : Récupère un paramètre de `services.yaml`.
 *   `createForm(string $type, $data = null, array $options = []): FormInterface`
 
+## Injection Avancée avec `#[Autowire]`
+Parfois, vous avez besoin d'un service spécifique ou d'un paramètre scalaire sans passer par le constructeur global.
+
+```php
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
+public function index(
+    // Injecter un paramètre (string, int, bool)
+    #[Autowire('%kernel.project_dir%')] string $projectDir,
+
+    // Injecter un service spécifique par son ID (quand il y a des alias ou conflits)
+    #[Autowire(service: 'monolog.logger.request')] LoggerInterface $logger
+): Response
+```
+
+## Découplage complet (Symfony 7.4+)
+Si vous ne souhaitez pas hériter de `AbstractController` (pour respecter une Clean Architecture stricte), vous pouvez utiliser `ControllerHelper` et l'attribut `#[AutowireMethodOf]`.
+Cela permet d'injecter *uniquement* les helpers dont vous avez besoin.
+
+```php
+use Symfony\Bundle\FrameworkBundle\Controller\ControllerHelper;
+use Symfony\Component\DependencyInjection\Attribute\AutowireMethodOf;
+
+class MyController
+{
+    // Pas d'héritage !
+    public function __construct(
+        #[AutowireMethodOf(ControllerHelper::class)]
+        private \Closure $render,
+        
+        #[AutowireMethodOf(ControllerHelper::class)]
+        private \Closure $redirectToRoute
+    ) {}
+
+    public function show(): Response
+    {
+        return ($this->render)('page.html.twig');
+    }
+}
+```
+
 ## Bonnes Pratiques d'Architecture
 
 ### 1. Injection Constructeur vs Helpers
 Pour vos propres services, préférez toujours l'**Injection Constructeur**.
 Pour les services "Framework" (Router, Twig, AuthorizationChecker), utilisez les méthodes de l'`AbstractController` pour alléger le code.
-
-```php
-class BlogController extends AbstractController
-{
-    public function __construct(
-        private BlogManager $manager // Mon service métier -> Constructeur
-    ) {}
-
-    public function index(): Response
-    {
-        // Service Framework -> Helper
-        if (!$this->isGranted('ROLE_USER')) { ... }
-        
-        return $this->render(...);
-    }
-}
-```
 
 ### 2. Controller déprécié
 Avant Symfony 4, on utilisait la classe `Controller`. Elle est dépréciée et retirée. Elle injectait tout le conteneur public. `AbstractController` est plus strict et performant.

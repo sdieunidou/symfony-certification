@@ -22,38 +22,79 @@ public function show(
 *   **Auto** : Souvent, `public function show(Post $post)` suffit (mapping implicite `{id}` ou `{post_id}`).
 *   **404** : Lance automatiquement une 404 si non trouvé (sauf si l'argument est nullable `?Post $post`).
 
-### 2. `#[MapRequestPayload]` (DTOs & Validation)
-Désérialise le corps de la requête (JSON, XML, Form) vers un objet typé (DTO) et le **valide**.
+### 2. `#[MapRequestPayload]` (Body -> DTO)
+Désérialise le corps de la requête (JSON, XML, Form) vers un objet typé (DTO) et le **valide**. Idéal pour les APIs (POST/PUT).
 
 ```php
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 
 public function create(
-    #[MapRequestPayload] CreatePostDto $dto
+    #[MapRequestPayload(
+        acceptFormat: 'json',
+        validationGroups: ['strict', 'create'],
+        serializationContext: ['groups' => 'write']
+    )] CreatePostDto $dto
 ): Response
 {
-    // Ici, $dto est hydraté ET validé.
-    // Si validation échoue -> 422 Unprocessable Entity automatique.
-    
-    $this->handler->handle($dto);
+    // $dto est hydraté ET validé.
+    // Echec validation -> 422 Unprocessable Entity.
     return $this->json($dto);
 }
 ```
 
-### 3. `#[MapQueryParameter]`
-Injecte et valide un paramètre de l'URL (Query String `?filter=...`).
+**Nouveauté Symfony 7.1 (Tableaux)** :
+Pour mapper une liste d'objets (ex: `[{}, {}]`), utilisez l'option `type` :
+```php
+public function createBatch(
+    #[MapRequestPayload(type: CreatePostDto::class)] array $posts
+): Response
+```
+
+### 3. `#[MapQueryParameter]` (Paramètre URL individuel)
+Injecte et valide un paramètre spécifique de l'URL (Query String `?filter=...`).
 
 ```php
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 
 public function list(
+    // ?filter=active
     #[MapQueryParameter] string $filter = 'all',
+    
+    // ?page=2
     #[MapQueryParameter] int $page = 1,
+    
+    // Validation avancée avec filter_var (ex: email)
     #[MapQueryParameter(filter: \FILTER_VALIDATE_EMAIL)] ?string $searchEmail = null
 ): Response
 ```
 
-### 4. `#[CurrentUser]`
+### 4. `#[MapQueryString]` (Query String -> DTO)
+Mappe l'intégralité (ou une partie) de la Query String vers un objet DTO validé. Utile pour les filtres de recherche complexes.
+
+```php
+use Symfony\Component\HttpKernel\Attribute\MapQueryString;
+
+public function search(
+    #[MapQueryString(validationFailedStatusCode: 404)] SearchFilterDto $filters
+): Response
+```
+*   **Option `key` (Symfony 7.3)** : Si vos filtres sont imbriqués (ex: `?search[term]=foo&search[page]=1`), utilisez `#[MapQueryString(key: 'search')]`.
+
+### 5. `#[MapUploadedFile]` (Symfony 7.1+)
+Injecte directement un fichier uploadé (`UploadedFile`) en le validant via des contraintes.
+
+```php
+use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
+use Symfony\Component\Validator\Constraints as Assert;
+
+public function upload(
+    #[MapUploadedFile([
+        new Assert\File(mimeTypes: ['application/pdf'], maxSize: '2M')
+    ])] UploadedFile $file
+): Response
+```
+
+### 6. `#[CurrentUser]`
 Injecte l'utilisateur connecté.
 
 ```php
@@ -93,7 +134,7 @@ class UserIpResolver implements ValueResolverInterface
 
 ## ⚠️ Points de vigilance (Certification)
 *   **ParamConverter** : Le terme "ParamConverter" réfère historiquement à la librairie `SensioFrameworkExtraBundle`. Dans Symfony 7, on parle de `ValueResolver` et d'attributs natifs (`MapEntity`). Savoir que `Sensio` est déprécié est un point bonus.
-*   **Validation** : `#[MapRequestPayload]` déclenche la validation (Constraints Validator). Si l'objet DTO contient des contraintes (`#[Assert\NotBlank]`), elles sont vérifiées. En cas d'échec, une `UnprocessableEntityHttpException` (422) est lancée.
+*   **Validation** : `#[MapRequestPayload]`, `#[MapQueryString]` et `#[MapUploadedFile]` déclenchent la validation (Constraints Validator). Si l'objet DTO contient des contraintes (`#[Assert\NotBlank]`), elles sont vérifiées. En cas d'échec, une exception HTTP est lancée (404 ou 422 selon l'attribut).
 
 ## Ressources
 *   [Symfony Docs - Controller Arguments](https://symfony.com/doc/current/controller/argument_value_resolver.html)
