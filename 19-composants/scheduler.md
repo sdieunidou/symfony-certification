@@ -35,6 +35,8 @@ use Symfony\Contracts\Cache\CacheInterface;
 #[AsSchedule('default')] // Le nom du schedule
 class MainSchedule implements ScheduleProviderInterface
 {
+    public function __construct(private CacheInterface $cache) {}
+
     public function getSchedule(): Schedule
     {
         return (new Schedule())
@@ -42,8 +44,8 @@ class MainSchedule implements ScheduleProviderInterface
                 // Syntaxe textuelle simple
                 RecurringMessage::every('1 day', new CleanupDbMessage()),
                 
-                // Syntaxe Cron standard
-                RecurringMessage::cron('0 12 * * 1', new WeeklyReportMessage()),
+                // Syntaxe Cron standard (avec Timezone)
+                RecurringMessage::cron('0 12 * * 1', new WeeklyReportMessage(), new \DateTimeZone('Europe/Paris')),
                 
                 // Avec objet Trigger spécifique
                 RecurringMessage::trigger(
@@ -51,7 +53,7 @@ class MainSchedule implements ScheduleProviderInterface
                     new MonthlyInvoiceMessage()
                 )
             )
-            // Optionnel : Gestion d'état (lock) pour éviter les doublons en cas de redémarrage
+            // Gestion d'état (lock) pour éviter les doublons en cas de redémarrage
             ->stateful($this->cache) 
         ;
     }
@@ -59,7 +61,8 @@ class MainSchedule implements ScheduleProviderInterface
 ```
 
 ### Consommation
-Puisque ce sont des messages Messenger, on utilise la commande standard :
+Le Scheduler crée un transport virtuel. On lance un worker Messenger classique :
+
 ```bash
 php bin/console messenger:consume scheduler_default
 ```
@@ -71,13 +74,18 @@ Cette commande va "dormir" jusqu'à la prochaine échéance, dispatcher le messa
 
 ### Statefulness (Verrouillage)
 Par défaut, le scheduler est "stateless" (en mémoire). Si vous redémarrez le worker, il risque de relancer une tâche qui venait de s'exécuter il y a 1 minute si la fréquence le permet.
-Pour éviter cela, on rend le schedule **stateful** via un Cache (Redis/Database). Il mémorisera la dernière exécution.
+Pour éviter cela, on rend le schedule **stateful** via un Cache (Redis/Database). Il mémorisera la dernière exécution de chaque message.
 
-### Triggers Complexes
-Le composant supporte des triggers avancés :
-*   `PeriodicalTrigger` : Tous les X temps (intervalle fixe).
-*   `CronExpressionTrigger` : Basé sur la syntaxe cron.
-*   `Jitter` : Ajouter de l'aléatoire (`every('1 day', jitter: 60)`) pour éviter que tous les workers ne se réveillent à la milliseconde près (thundering herd problem).
+### Triggers et Jitter
+Pour éviter que tous les workers ne se réveillent à la milliseconde près (thundering herd problem), vous pouvez ajouter du **Jitter** (aléatoire).
+
+```php
+// Exécuter toutes les 10s, avec +/- 5s d'aléatoire
+RecurringMessage::every('10 seconds', new PingMessage(), jitter: 5)
+```
+
+### Modification à la volée
+Il est possible de modifier le schedule dynamiquement (ex: charger les tâches depuis une base de données) car `getSchedule()` est appelée régulièrement par le worker.
 
 ---
 
@@ -87,4 +95,4 @@ Le composant supporte des triggers avancés :
     *   **Cron** : Lance un nouveau processus PHP à chaque fois. Lourd au démarrage, mais isolation totale.
     *   **Scheduler** : Processus longue durée (Daemon). Rapide, mémoire partagée (attention aux fuites mémoire).
 *   **Intégration Messenger** : Les messages dispatchés par le Scheduler suivent le routing Messenger classique. Ils peuvent donc être traités par le worker scheduler lui-même (sync) OU envoyés dans une queue RabbitMQ pour être traités par d'autres workers (async).
-*   **Commandes** : `debug:scheduler` pour visualiser les prochaines exécutions.
+*   **Débogage** : Utilisez `php bin/console debug:scheduler` pour visualiser les prochaines exécutions prévues.
