@@ -1,0 +1,66 @@
+{
+  "source_file": "20-frontend/web-link.md",
+  "title": "WebLink & Performance Frontend",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est l'objectif principal du composant `WebLink` (PSR-13) ?",
+      "type": "single_choice",
+      "options": [
+        "Gérer les liens hypertextes `<a>`.",
+        "Gérer les en-têtes HTTP `Link` pour optimiser le chargement des ressources (Preload, Prefetch) par le navigateur.",
+        "Gérer le référencement (SEO).",
+        "Gérer les redirections."
+      ],
+      "correct_answers": [
+        "Gérer les en-têtes HTTP `Link` pour optimiser le chargement des ressources (Preload, Prefetch) par le navigateur."
+      ],
+      "explanation": "Ces en-têtes indiquent au navigateur les ressources critiques à charger en priorité."
+    },
+    {
+      "id": 2,
+      "question": "Que fait la fonction Twig `preload()` ?",
+      "type": "single_choice",
+      "options": [
+        "Elle télécharge le fichier sur le serveur.",
+        "Elle ajoute un en-tête HTTP `Link: <...>; rel=preload` à la réponse, indiquant au navigateur de télécharger la ressource immédiatement.",
+        "Elle affiche une barre de chargement.",
+        "Elle met le fichier en cache."
+      ],
+      "correct_answers": [
+        "Elle ajoute un en-tête HTTP `Link: <...>; rel=preload` à la réponse, indiquant au navigateur de télécharger la ressource immédiatement."
+      ],
+      "explanation": "C'est la méthode recommandée pour les assets critiques (polices, CSS principal)."
+    },
+    {
+      "id": 3,
+      "question": "Qu'est-ce qu'une réponse HTTP '103 Early Hints' ?",
+      "type": "single_choice",
+      "options": [
+        "Une erreur serveur.",
+        "Une réponse intermédiaire envoyée PENDANT que le serveur calcule la réponse finale, contenant des indices (Link headers) pour que le navigateur commence à télécharger les assets.",
+        "Une redirection.",
+        "Un code de succès."
+      ],
+      "correct_answers": [
+        "Une réponse intermédiaire envoyée PENDANT que le serveur calcule la réponse finale, contenant des indices (Link headers) pour que le navigateur commence à télécharger les assets."
+      ],
+      "explanation": "Cela permet de paralléliser le temps de réflexion du serveur (Backend) avec le temps de téléchargement du navigateur (Frontend)."
+    },
+    {
+      "id": 4,
+      "question": "Comment AssetMapper utilise-t-il le preloading ?",
+      "type": "single_choice",
+      "options": [
+        "Il ne l'utilise pas.",
+        "Il génère automatiquement des balises `<link rel=\"modulepreload\">` pour tous les modules JavaScript nécessaires au démarrage de l'application.",
+        "Il force le HTTP/1.1.",
+        "Il compresse les fichiers."
+      ],
+      "correct_answers": [
+        "Il génère automatiquement des balises `<link rel=\"modulepreload\">` pour tous les modules JavaScript nécessaires au démarrage de l'application."
+      ],
+      "explanation": "Cela évite l'effet de cascade (waterfall) où le navigateur découvre les imports séquentiellement."
+    }
+  ]
+}

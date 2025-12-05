@@ -1,0 +1,66 @@
+{
+  "source_file": "20-frontend/assets-processing.md",
+  "title": "Traitement des Assets (Sass, Tailwind, TypeScript)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la méthode recommandée pour compiler Sass ou Tailwind avec AssetMapper (approche 'No-Node') ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `npm run build`.",
+        "Utiliser les bundles Symfony wrapper de binaires (ex: `symfony/sass-bundle`, `symfony/tailwind-bundle`) qui téléchargent et exécutent les binaires autonomes.",
+        "Utiliser un service en ligne.",
+        "Ce n'est pas possible sans Webpack."
+      ],
+      "correct_answers": [
+        "Utiliser les bundles Symfony wrapper de binaires (ex: `symfony/sass-bundle`, `symfony/tailwind-bundle`) qui téléchargent et exécutent les binaires autonomes."
+      ],
+      "explanation": "Ces bundles permettent de compiler les assets modernes sans avoir besoin d'installer Node.js sur le serveur ou la machine de dev."
+    },
+    {
+      "id": 2,
+      "question": "Si vous développez une Single Page Application (SPA) complexe avec React ou Vue, quel outil de build est généralement le plus adapté ?",
+      "type": "single_choice",
+      "options": [
+        "AssetMapper.",
+        "Webpack Encore (ou Vite via bundle).",
+        "Assetic.",
+        "Un script PHP maison."
+      ],
+      "correct_answers": [
+        "Webpack Encore (ou Vite via bundle)."
+      ],
+      "explanation": "Pour les frameworks JS lourds nécessitant une compilation complexe (JSX, .vue) et du HMR, un bundler JS dédié reste la solution la plus robuste."
+    },
+    {
+      "id": 3,
+      "question": "Avec Webpack Encore, comment active-t-on le support de Sass ?",
+      "type": "single_choice",
+      "options": [
+        "C'est activé par défaut.",
+        "En appelant `.enableSassLoader()` dans `webpack.config.js` et en installant les dépendances (`sass-loader`, `sass`).",
+        "En renommant le fichier en `.scss`.",
+        "En utilisant AssetMapper."
+      ],
+      "correct_answers": [
+        "En appelant `.enableSassLoader()` dans `webpack.config.js` et en installant les dépendances (`sass-loader`, `sass`)."
+      ],
+      "explanation": "Webpack nécessite une configuration explicite des loaders."
+    },
+    {
+      "id": 4,
+      "question": "Comment gérer les images (ex: logo) dans le CSS avec Webpack Encore ?",
+      "type": "single_choice",
+      "options": [
+        "Il faut utiliser des URLs absolues.",
+        "Webpack réécrit automatiquement les URLs relatives (`url('../images/logo.png')`), copie les fichiers dans le dossier de build et ajoute un hash de versioning.",
+        "Il faut copier les images manuellement.",
+        "Webpack ne gère pas les images."
+      ],
+      "correct_answers": [
+        "Webpack réécrit automatiquement les URLs relatives (`url('../images/logo.png')`), copie les fichiers dans le dossier de build et ajoute un hash de versioning."
+      ],
+      "explanation": "C'est géré par `file-loader` ou les Asset Modules de Webpack, garantissant que les chemins sont toujours corrects après le build."
+    }
+  ]
+}

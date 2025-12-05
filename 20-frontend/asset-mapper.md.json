@@ -1,0 +1,66 @@
+{
+  "source_file": "20-frontend/asset-mapper.md",
+  "title": "Le Composant AssetMapper",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la principale différence d'approche entre AssetMapper et Webpack Encore ?",
+      "type": "single_choice",
+      "options": [
+        "AssetMapper est plus lent.",
+        "AssetMapper utilise une approche 'No-Build' (pas de Node.js/npm, utilisation des standards Import Maps), tandis que Webpack Encore nécessite une étape de compilation/bundling.",
+        "AssetMapper ne gère pas le CSS.",
+        "Webpack Encore est déprécié."
+      ],
+      "correct_answers": [
+        "AssetMapper utilise une approche 'No-Build' (pas de Node.js/npm, utilisation des standards Import Maps), tandis que Webpack Encore nécessite une étape de compilation/bundling."
+      ],
+      "explanation": "AssetMapper vise la simplicité en servant les fichiers JS tels quels au navigateur, profitant des capacités modernes (ES Modules, HTTP/2)."
+    },
+    {
+      "id": 2,
+      "question": "Qu'est-ce qu'une 'Import Map' ?",
+      "type": "single_choice",
+      "options": [
+        "Une carte géographique.",
+        "Un fichier JSON inclus dans le HTML qui indique au navigateur comment résoudre les imports de modules JavaScript (ex: mapper 'bootstrap' vers '/assets/vendor/bootstrap.js').",
+        "Un fichier de configuration PHP.",
+        "Une liste de fichiers CSS."
+      ],
+      "correct_answers": [
+        "Un fichier JSON inclus dans le HTML qui indique au navigateur comment résoudre les imports de modules JavaScript (ex: mapper 'bootstrap' vers '/assets/vendor/bootstrap.js')."
+      ],
+      "explanation": "C'est un standard web qui permet d'utiliser `import 'bootstrap'` dans le navigateur sans bundler."
+    },
+    {
+      "id": 3,
+      "question": "Comment installer une nouvelle librairie JavaScript (ex: bootstrap) avec AssetMapper ?",
+      "type": "single_choice",
+      "options": [
+        "`npm install bootstrap`",
+        "`php bin/console importmap:require bootstrap`",
+        "`composer require bootstrap`",
+        "`yarn add bootstrap`"
+      ],
+      "correct_answers": [
+        "`php bin/console importmap:require bootstrap`"
+      ],
+      "explanation": "Cette commande télécharge le fichier JS depuis un CDN (ex: JSDelivr) dans `assets/vendor/` et met à jour `importmap.php`."
+    },
+    {
+      "id": 4,
+      "question": "En production, quelle commande faut-il exécuter pour que les assets soient servis efficacement par le serveur web ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console assets:install`",
+        "`npm run build`",
+        "`php bin/console asset-map:compile`",
+        "`php bin/console cache:clear`"
+      ],
+      "correct_answers": [
+        "`php bin/console asset-map:compile`"
+      ],
+      "explanation": "Cette commande copie les fichiers depuis `assets/` vers `public/assets/` en ajoutant le hash de versioning au nom du fichier."
+    }
+  ]
+}

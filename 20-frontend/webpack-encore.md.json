@@ -1,0 +1,66 @@
+{
+  "source_file": "20-frontend/webpack-encore.md",
+  "title": "Webpack Encore",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Qu'est-ce que Webpack Encore ?",
+      "type": "single_choice",
+      "options": [
+        "Un nouveau framework JS.",
+        "Une bibliothèque (wrapper) qui simplifie la configuration de Webpack pour les applications Symfony.",
+        "Un remplaçant de PHP.",
+        "Un outil de base de données."
+      ],
+      "correct_answers": [
+        "Une bibliothèque (wrapper) qui simplifie la configuration de Webpack pour les applications Symfony."
+      ],
+      "explanation": "Webpack est complexe. Encore fournit une API fluide (`.addEntry()`, `.enableSassLoader()`) pour générer la config Webpack."
+    },
+    {
+      "id": 2,
+      "question": "À quoi servent les fonctions Twig `encore_entry_link_tags()` et `encore_entry_script_tags()` ?",
+      "type": "single_choice",
+      "options": [
+        "À écrire du JS dans Twig.",
+        "À générer les balises HTML (`<link>`, `<script>`) pointant vers les fichiers CSS/JS compilés (et versionnés) pour une entrée donnée.",
+        "À installer Webpack.",
+        "À déboguer le build."
+      ],
+      "correct_answers": [
+        "À générer les balises HTML (`<link>`, `<script>`) pointant vers les fichiers CSS/JS compilés (et versionnés) pour une entrée donnée."
+      ],
+      "explanation": "Elles lisent le fichier `entrypoints.json` généré par Encore pour trouver le bon chemin du fichier."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi utiliser `.enableVersioning()` en production ?",
+      "type": "single_choice",
+      "options": [
+        "Pour connaître la version de Webpack.",
+        "Pour ajouter un hash unique au nom du fichier (ex: `app.a3f1.js`), ce qui permet de forcer le navigateur à retélécharger le fichier (Cache Busting) s'il a changé.",
+        "C'est obligatoire.",
+        "Pour la sécurité."
+      ],
+      "correct_answers": [
+        "Pour ajouter un hash unique au nom du fichier (ex: `app.a3f1.js`), ce qui permet de forcer le navigateur à retélécharger le fichier (Cache Busting) s'il a changé."
+      ],
+      "explanation": "Cela permet de configurer des caches longs (Long Term Caching) sur le serveur web sans risque de servir du vieux code."
+    },
+    {
+      "id": 4,
+      "question": "Quelle commande npm doit-on lancer pour compiler les assets en mode production (minifiés) ?",
+      "type": "single_choice",
+      "options": [
+        "`npm run dev`",
+        "`npm run watch`",
+        "`npm run build`",
+        "`npm start`"
+      ],
+      "correct_answers": [
+        "`npm run build`"
+      ],
+      "explanation": "Cette commande déclenche le build optimisé (minification, tree-shaking, versioning)."
+    }
+  ]
+}

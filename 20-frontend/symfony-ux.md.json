@@ -1,0 +1,66 @@
+{
+  "source_file": "20-frontend/symfony-ux.md",
+  "title": "Symfony UX & Stimulus",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel framework JavaScript est au cœur de l'initiative Symfony UX ?",
+      "type": "single_choice",
+      "options": [
+        "React",
+        "Vue.js",
+        "Stimulus",
+        "Angular"
+      ],
+      "correct_answers": [
+        "Stimulus"
+      ],
+      "explanation": "Stimulus a été choisi pour sa légèreté et sa capacité à enrichir le HTML existant (rendu serveur) plutôt que de le remplacer."
+    },
+    {
+      "id": 2,
+      "question": "Comment lie-t-on un contrôleur Stimulus à un élément HTML ?",
+      "type": "single_choice",
+      "options": [
+        "Avec un ID spécifique.",
+        "Avec l'attribut `data-controller=\"nom-du-controleur\"`.",
+        "Avec une classe CSS.",
+        "Avec une balise `<script>`."
+      ],
+      "correct_answers": [
+        "Avec l'attribut `data-controller=\"nom-du-controleur\"`."
+      ],
+      "explanation": "C'est le mécanisme de base de Stimulus. Dès que cet attribut apparaît dans le DOM, le contrôleur JS est instancié."
+    },
+    {
+      "id": 3,
+      "question": "Quel composant Symfony UX permet de transformer la navigation classique en expérience SPA (Single Page App) sans rechargement complet ?",
+      "type": "single_choice",
+      "options": [
+        "UX Chart.js",
+        "UX Turbo (basé sur Turbo Drive).",
+        "UX Live Component.",
+        "UX React."
+      ],
+      "correct_answers": [
+        "UX Turbo (basé sur Turbo Drive)."
+      ],
+      "explanation": "Turbo intercepte les clics et les formulaires pour mettre à jour le `<body>` via Ajax, conservant l'état des scripts et du CSS."
+    },
+    {
+      "id": 4,
+      "question": "Quel est l'avantage d'utiliser un composant comme `symfony/ux-chartjs` plutôt que d'utiliser Chart.js directement ?",
+      "type": "single_choice",
+      "options": [
+        "C'est gratuit.",
+        "Il permet de configurer le graphique entièrement en PHP (via un Builder) et de le rendre en une ligne Twig, tout en gérant l'initialisation JS automatiquement.",
+        "Il est plus rapide.",
+        "Il n'y en a pas."
+      ],
+      "correct_answers": [
+        "Il permet de configurer le graphique entièrement en PHP (via un Builder) et de le rendre en une ligne Twig, tout en gérant l'initialisation JS automatiquement."
+      ],
+      "explanation": "Cela permet au développeur Backend de créer des interfaces riches sans écrire de JavaScript."
+    }
+  ]
+}
