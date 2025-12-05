@@ -1,0 +1,129 @@
+{
+  "source_file": "01-php/closures.md",
+  "title": "Fonctions anonymes et Fermetures (Closures)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence fondamentale entre une fonction anonyme simple et une Closure qui capture le contexte ?",
+      "type": "single_choice",
+      "options": [
+        "Il n'y en a aucune, en PHP toutes les fonctions anonymes sont des instances de la classe Closure.",
+        "Une fonction anonyme a un nom généré aléatoirement, pas la Closure.",
+        "La Closure ne peut pas accepter d'arguments.",
+        "La fonction anonyme ne peut pas retourner de valeur."
+      ],
+      "correct_answers": [
+        "Il n'y en a aucune, en PHP toutes les fonctions anonymes sont des instances de la classe Closure."
+      ],
+      "explanation": "En PHP, le terme 'fonction anonyme' désigne l'implémentation, qui est techniquement représentée par un objet de la classe interne 'Closure'."
+    },
+    {
+      "id": 2,
+      "question": "Comment une closure classique (syntaxe `function() { ... }`) peut-elle accéder à une variable définie dans le scope parent ?",
+      "type": "single_choice",
+      "options": [
+        "Automatiquement, sans mot-clé particulier.",
+        "En utilisant le mot-clé `global`.",
+        "En utilisant le mot-clé `use`.",
+        "En passant la variable en premier argument obligatoirement."
+      ],
+      "correct_answers": [
+        "En utilisant le mot-clé `use`."
+      ],
+      "explanation": "La syntaxe classique nécessite d'importer explicitement les variables externes via `use ($variable)`."
+    },
+    {
+      "id": 3,
+      "question": "Quelle est la particularité des Arrow Functions (`fn() => ...`) introduites en PHP 7.4 ?",
+      "type": "multiple_choice",
+      "options": [
+        "Elles capturent automatiquement les variables du scope parent par valeur.",
+        "Elles permettent de modifier directement les variables du parent sans référence.",
+        "Elles ne peuvent contenir qu'une seule expression (le return est implicite).",
+        "Elles remplacent totalement les classes anonymes."
+      ],
+      "correct_answers": [
+        "Elles capturent automatiquement les variables du scope parent par valeur.",
+        "Elles ne peuvent contenir qu'une seule expression (le return est implicite)."
+      ],
+      "explanation": "Les Arrow Functions sont concises : capture automatique par valeur et expression unique retournée automatiquement."
+    },
+    {
+      "id": 4,
+      "question": "Comment modifier une variable du scope parent à l'intérieur d'une Closure classique ?",
+      "type": "single_choice",
+      "options": [
+        "En la déclarant `static`.",
+        "En la passant par référence dans le `use` (ex: `use (&$total)`).",
+        "Ce n'est pas possible en PHP.",
+        "En utilisant `$this->variable`."
+      ],
+      "correct_answers": [
+        "En la passant par référence dans le `use` (ex: `use (&$total)`)."
+      ],
+      "explanation": "Le passage par référence (&) dans la clause `use` permet à la closure de modifier la variable d'origine."
+    },
+    {
+      "id": 5,
+      "question": "Qu'est-ce que la syntaxe First-class Callable introduite en PHP 8.1 (`$this->method(...)`) ?",
+      "type": "single_choice",
+      "options": [
+        "Un moyen d'exécuter une méthode immédiatement.",
+        "Une syntaxe pour créer proprement une instance de Closure à partir d'une méthode sans utiliser de tableau ou de chaîne.",
+        "Une façon de déclarer des arguments variadiques.",
+        "Une méthode pour appeler le constructeur parent."
+      ],
+      "correct_answers": [
+        "Une syntaxe pour créer proprement une instance de Closure à partir d'une méthode sans utiliser de tableau ou de chaîne."
+      ],
+      "explanation": "La syntaxe `...` permet de récupérer une référence appelable (Callable) vers une méthode de manière propre et typée."
+    },
+    {
+      "id": 6,
+      "question": "Quel est l'effet de déclarer une closure comme `static` (ex: `static function() { ... }`) ?",
+      "type": "single_choice",
+      "options": [
+        "Elle ne peut être appelée qu'une seule fois.",
+        "Elle empêche la liaison automatique de `$this` à la closure, même si elle est définie dans une classe.",
+        "Elle rend la closure visible globalement dans tout le projet.",
+        "Elle force la closure à ne retourner que des valeurs statiques."
+      ],
+      "correct_answers": [
+        "Elle empêche la liaison automatique de `$this` à la closure, même si elle est définie dans une classe."
+      ],
+      "explanation": "Les Static Closures n'ont pas accès à `$this`, ce qui peut éviter des cycles de référence mémoire et améliorer légèrement les performances si le contexte objet n'est pas nécessaire."
+    },
+    {
+      "id": 7,
+      "question": "À quoi sert la méthode `Closure::bindTo` ?",
+      "type": "single_choice",
+      "options": [
+        "À lier deux fonctions ensemble pour les exécuter en série.",
+        "À forcer le typage des arguments de la closure.",
+        "À changer l'objet auquel `$this` fait référence à l'intérieur de la closure, ainsi que sa portée de visibilité.",
+        "À empêcher la closure d'être appelée depuis l'extérieur."
+      ],
+      "correct_answers": [
+        "À changer l'objet auquel `$this` fait référence à l'intérieur de la closure, ainsi que sa portée de visibilité."
+      ],
+      "explanation": "`bindTo` permet de dupliquer la closure avec un nouveau `$this` et un nouveau scope de classe, permettant parfois d'accéder à des membres privés d'un objet."
+    },
+    {
+      "id": 8,
+      "question": "Dans Symfony, où sont fréquemment utilisées les closures ?",
+      "type": "multiple_choice",
+      "options": [
+        "Dans le fichier .env.",
+        "Pour définir des Listeners rapides dans l'EventDispatcher.",
+        "Dans les options de formulaires (ex: choice_label).",
+        "Pour manipuler des collections avec array_map/array_filter."
+      ],
+      "correct_answers": [
+        "Pour définir des Listeners rapides dans l'EventDispatcher.",
+        "Dans les options de formulaires (ex: choice_label).",
+        "Pour manipuler des collections avec array_map/array_filter."
+      ],
+      "explanation": "Symfony et PHP utilisent les closures pour les callbacks, les traitements de listes et la configuration flexible de composants."
+    }
+  ]
+}

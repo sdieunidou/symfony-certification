@@ -1,0 +1,160 @@
+{
+  "source_file": "01-php/api-php.md",
+  "title": "API PHP (jusqu'à 8.2)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle version minimale de PHP est requise pour utiliser Symfony 7.0 ?",
+      "type": "single_choice",
+      "options": [
+        "PHP 8.0",
+        "PHP 8.1",
+        "PHP 8.2",
+        "PHP 8.3"
+      ],
+      "correct_answers": [
+        "PHP 8.2"
+      ],
+      "explanation": "Symfony 7.0 nécessite au minimum PHP 8.2 pour fonctionner correctement et tirer parti des dernières fonctionnalités."
+    },
+    {
+      "id": 2,
+      "question": "Quelle fonctionnalité introduite en PHP 8.0 remplace les annotations PHPDoc pour la configuration (Routing, ORM, etc.) ?",
+      "type": "single_choice",
+      "options": [
+        "Les attributs (Attributes)",
+        "Les énumérations (Enums)",
+        "Les types d'union",
+        "Les propriétés en lecture seule"
+      ],
+      "correct_answers": [
+        "Les attributs (Attributes)"
+      ],
+      "explanation": "Les attributs (Attributes) introduits en PHP 8.0 remplacent les annotations PHPDoc et sont essentiels pour la configuration dans Symfony 7."
+    },
+    {
+      "id": 3,
+      "question": "Quelles sont les fonctionnalités introduites spécifiquement en PHP 8.1 ?",
+      "type": "multiple_choice",
+      "options": [
+        "Enums (Énumérations)",
+        "Constructor Property Promotion",
+        "Intersection types",
+        "Readonly properties",
+        "Match expression"
+      ],
+      "correct_answers": [
+        "Enums (Énumérations)",
+        "Intersection types",
+        "Readonly properties"
+      ],
+      "explanation": "PHP 8.1 a introduit les Enums, les Intersection types et les Readonly properties. Le Constructor Property Promotion et le Match expression datent de PHP 8.0."
+    },
+    {
+      "id": 4,
+      "question": "En PHP 8.2, que fait une 'readonly class' ?",
+      "type": "single_choice",
+      "options": [
+        "Elle empêche l'héritage de la classe.",
+        "Elle rend toutes les propriétés de la classe 'readonly' automatiquement.",
+        "Elle rend la classe invisible pour l'autoloader.",
+        "Elle interdit l'ajout de méthodes statiques."
+      ],
+      "correct_answers": [
+        "Elle rend toutes les propriétés de la classe 'readonly' automatiquement."
+      ],
+      "explanation": "Une 'readonly class' (PHP 8.2) applique implicitement le modificateur 'readonly' à toutes ses propriétés."
+    },
+    {
+      "id": 5,
+      "question": "Qu'est-ce qu'un type DNF (Disjunctive Normal Form) introduit en PHP 8.2 ?",
+      "type": "single_choice",
+      "options": [
+        "Un type qui combine Union et Intersection, ex: (A&B)|null",
+        "Un type réservé aux bases de données",
+        "Une nouvelle forme de tableau associatif",
+        "Un type permettant de mixer des objets et des scalaires sans restriction"
+      ],
+      "correct_answers": [
+        "Un type qui combine Union et Intersection, ex: (A&B)|null"
+      ],
+      "explanation": "Les types DNF permettent de combiner des types d'intersection et d'union, comme dans `(A&B)|null`."
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert l'attribut #[SensitiveParameter] introduit en PHP 8.2 ?",
+      "type": "single_choice",
+      "options": [
+        "À chiffrer automatiquement le paramètre en base de données.",
+        "À valider que le paramètre respecte une complexité de mot de passe.",
+        "À masquer la valeur du paramètre dans les traces d'erreur (stack traces).",
+        "À empêcher le passage de valeurs nulles."
+      ],
+      "correct_answers": [
+        "À masquer la valeur du paramètre dans les traces d'erreur (stack traces)."
+      ],
+      "explanation": "Cet attribut permet d'éviter que des données sensibles (mots de passe, clés API) n'apparaissent en clair dans les logs d'erreur."
+    },
+    {
+      "id": 7,
+      "question": "Quelle est la différence entre l'opérateur 'match' et 'switch' ?",
+      "type": "multiple_choice",
+      "options": [
+        "'match' effectue une comparaison stricte (===) alors que 'switch' fait une comparaison faible (==).",
+        "'match' retourne une valeur, contrairement à 'switch'.",
+        "'match' nécessite une instruction 'break' pour éviter le fallthrough.",
+        "'match' ne supporte pas le cas 'default'."
+      ],
+      "correct_answers": [
+        "'match' effectue une comparaison stricte (===) alors que 'switch' fait une comparaison faible (==).",
+        "'match' retourne une valeur, contrairement à 'switch'."
+      ],
+      "explanation": "L'expression 'match' est plus stricte, retourne une valeur directement et ne nécessite pas de 'break'."
+    },
+    {
+      "id": 8,
+      "question": "Que permet le 'Constructor Property Promotion' (PHP 8.0) ?",
+      "type": "single_choice",
+      "options": [
+        "D'initialiser des propriétés statiques dans le constructeur.",
+        "De déclarer et initialiser les propriétés de classe directement dans la signature du constructeur.",
+        "De promouvoir une méthode privée en publique via le constructeur.",
+        "D'injecter des dépendances sans constructeur."
+      ],
+      "correct_answers": [
+        "De déclarer et initialiser les propriétés de classe directement dans la signature du constructeur."
+      ],
+      "explanation": "Cela réduit le code répétitif (boilerplate) en combinant la déclaration de la propriété et son affectation dans les arguments du constructeur."
+    },
+    {
+      "id": 9,
+      "question": "Quel comportement concernant les propriétés dynamiques a changé en PHP 8.2 ?",
+      "type": "single_choice",
+      "options": [
+        "Elles sont désormais typées par défaut.",
+        "Leur création est dépréciée, sauf si la classe utilise l'attribut #[AllowDynamicProperties] ou hérite de stdClass.",
+        "Elles sont automatiquement converties en tableau.",
+        "Il n'y a aucun changement."
+      ],
+      "correct_answers": [
+        "Leur création est dépréciée, sauf si la classe utilise l'attribut #[AllowDynamicProperties] ou hérite de stdClass."
+      ],
+      "explanation": "PHP 8.2 déprécie la création de propriétés non déclarées explicitement dans la classe pour éviter les fautes de frappe et améliorer la robustesse."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi est-il recommandé d'utiliser 'declare(strict_types=1);' au début des fichiers PHP ?",
+      "type": "single_choice",
+      "options": [
+        "Pour activer les fonctionnalités expérimentales.",
+        "Pour transformer les erreurs de type (coercition silencieuse) en TypeError (Exception).",
+        "Pour améliorer la vitesse de compilation du script.",
+        "Pour permettre l'utilisation de variables non initialisées."
+      ],
+      "correct_answers": [
+        "Pour transformer les erreurs de type (coercition silencieuse) en TypeError (Exception)."
+      ],
+      "explanation": "Le mode strict empêche PHP de convertir automatiquement les types (ex: string '10' en int 10) et lance une erreur si le type attendu ne correspond pas exactement."
+    }
+  ]
+}

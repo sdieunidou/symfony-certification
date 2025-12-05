@@ -1,0 +1,128 @@
+{
+  "source_file": "01-php/classes-abstraites.md",
+  "title": "Classes Abstraites",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la caractéristique principale d'une classe abstraite ?",
+      "type": "single_choice",
+      "options": [
+        "Elle ne peut contenir que des méthodes statiques.",
+        "Elle ne peut pas être instanciée directement.",
+        "Elle doit obligatoirement implémenter toutes ses méthodes.",
+        "Elle ne peut pas avoir de propriétés."
+      ],
+      "correct_answers": [
+        "Elle ne peut pas être instanciée directement."
+      ],
+      "explanation": "Une classe abstraite sert de modèle et ne peut pas être instanciée avec 'new'. Elle doit être héritée par une classe concrète."
+    },
+    {
+      "id": 2,
+      "question": "Qu'est-ce qui distingue une classe abstraite d'une interface ?",
+      "type": "multiple_choice",
+      "options": [
+        "Une classe abstraite peut contenir du code concret (implémentation), pas une interface.",
+        "Une classe peut étendre plusieurs classes abstraites mais n'implémenter qu'une seule interface.",
+        "Une classe abstraite peut avoir des propriétés (avec état), contrairement à une interface.",
+        "Les interfaces permettent de définir des constantes, pas les classes abstraites."
+      ],
+      "correct_answers": [
+        "Une classe abstraite peut contenir du code concret (implémentation), pas une interface.",
+        "Une classe abstraite peut avoir des propriétés (avec état), contrairement à une interface."
+      ],
+      "explanation": "Les interfaces définissent uniquement des signatures (contrats), alors que les classes abstraites peuvent fournir une implémentation partielle et posséder des propriétés."
+    },
+    {
+      "id": 3,
+      "question": "Quel Design Pattern s'appuie fortement sur les classes abstraites pour définir un algorithme global tout en déléguant certaines étapes aux enfants ?",
+      "type": "single_choice",
+      "options": [
+        "Singleton Pattern",
+        "Factory Pattern",
+        "Template Method Pattern",
+        "Observer Pattern"
+      ],
+      "correct_answers": [
+        "Template Method Pattern"
+      ],
+      "explanation": "Le Template Method Pattern définit le squelette d'un algorithme dans une méthode (souvent finale) de la classe abstraite et laisse les sous-classes redéfinir certaines étapes spécifiques."
+    },
+    {
+      "id": 4,
+      "question": "Si une classe contient au moins une méthode abstraite, comment doit-elle être déclarée ?",
+      "type": "single_choice",
+      "options": [
+        "Comme une interface.",
+        "Comme une classe finale.",
+        "Elle doit obligatoirement être déclarée 'abstract'.",
+        "Cela n'a pas d'importance tant qu'elle n'est pas instanciée."
+      ],
+      "correct_answers": [
+        "Elle doit obligatoirement être déclarée 'abstract'."
+      ],
+      "explanation": "La présence d'une seule méthode abstraite impose que la classe elle-même soit déclarée abstraite."
+    },
+    {
+      "id": 5,
+      "question": "Dans Symfony, quel est un exemple courant d'utilisation de classe abstraite ?",
+      "type": "single_choice",
+      "options": [
+        "Kernel",
+        "AbstractController",
+        "Request",
+        "Response"
+      ],
+      "correct_answers": [
+        "AbstractController"
+      ],
+      "explanation": "AbstractController est une classe de base fournie par Symfony qui offre des méthodes utilitaires (render, json, etc.) aux contrôleurs qui l'étendent."
+    },
+    {
+      "id": 6,
+      "question": "Lors de l'héritage d'une méthode abstraite, quelle règle de visibilité s'applique ?",
+      "type": "single_choice",
+      "options": [
+        "La visibilité doit être strictement identique.",
+        "La visibilité peut être plus restrictive (ex: public -> protected).",
+        "La visibilité doit être égale ou plus permissive (ex: protected -> public).",
+        "La méthode doit obligatoirement devenir privée."
+      ],
+      "correct_answers": [
+        "La visibilité doit être égale ou plus permissive (ex: protected -> public)."
+      ],
+      "explanation": "Une classe enfant ne peut pas restreindre la visibilité définie par le parent, mais peut l'élargir."
+    },
+    {
+      "id": 7,
+      "question": "Est-il possible de définir une méthode abstraite statique ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, c'est possible.",
+        "Non, cela génère une erreur fatale.",
+        "Uniquement depuis PHP 8.2.",
+        "Oui, mais uniquement dans les traits."
+      ],
+      "correct_answers": [
+        "Oui, c'est possible."
+      ],
+      "explanation": "PHP autorise la déclaration de méthodes abstraites statiques (ex: `abstract public static function name();`)."
+    },
+    {
+      "id": 8,
+      "question": "Comment peut-on tester facilement une classe abstraite avec PHPUnit sans créer de classe enfant dédiée ?",
+      "type": "multiple_choice",
+      "options": [
+        "En utilisant `getMockForAbstractClass()`.",
+        "En utilisant une classe anonyme (`new class extends AbstractClass ...`).",
+        "En instanciant directement la classe abstraite.",
+        "Ce n'est pas possible, il faut toujours créer un fichier de classe concret séparé."
+      ],
+      "correct_answers": [
+        "En utilisant `getMockForAbstractClass()`.",
+        "En utilisant une classe anonyme (`new class extends AbstractClass ...`)."
+      ],
+      "explanation": "Les classes anonymes ou les méthodes de mock de PHPUnit permettent de tester concrètement une classe abstraite."
+    }
+  ]
+}
