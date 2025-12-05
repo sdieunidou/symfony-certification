@@ -183,6 +183,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Runtime](./14-divers/runtime.md)
 * [Attributs PHP natifs](./14-divers/attributes.md)
 * [Symfony Contracts](./14-divers/contracts.md)
+* [Création de Bundle](./14-divers/bundles.md)
 
 ### [15. Design Patterns](./15-design-patterns/)
 * [Principes SOLID](./15-design-patterns/solid.md)
