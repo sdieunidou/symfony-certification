@@ -51,9 +51,13 @@ composer require --dev dama/doctrine-test-bundle
 ```
 
 ```xml
-<!-- phpunit.xml.dist -->
+<!-- phpunit.dist.xml -->
 <extensions>
-    <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension" />
+    <!-- PHPUnit 10+ -->
+    <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
+    
+    <!-- Legacy (PHPUnit < 10) -->
+    <!-- <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/> -->
 </extensions>
 ```
 

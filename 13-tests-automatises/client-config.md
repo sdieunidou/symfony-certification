@@ -15,6 +15,26 @@ $client = static::createClient([], [
 ]);
 ```
 
+## Configuration de l'Environnement
+
+### Fichiers .env
+En environnement de test, Symfony charge les fichiers dans cet ordre spécifique (le dernier écrase le précédent) :
+1.  `.env` (Défauts globaux)
+2.  `.env.test` (Spécifique aux tests, commité)
+3.  `.env.test.local` (Spécifique à la machine, non commité)
+
+⚠️ **Attention** : Le fichier `.env.local` est **ignoré** en test pour garantir la cohérence des résultats entre machines.
+
+### Options de Boot
+Lors du démarrage du kernel (via `bootKernel` ou `createClient`), vous pouvez surcharger l'environnement et le mode debug :
+
+```php
+self::bootKernel([
+    'environment' => 'my_test_env',
+    'debug'       => false, // Recommandé pour la performance (désactive le cache clearing auto)
+]);
+```
+
 ## Configuration du Comportement
 
 ### 1. Redirections (`followRedirects`)

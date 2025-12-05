@@ -1,5 +1,14 @@
 # Tests Unitaires (PHPUnit)
 
+## Installation
+
+Avant tout, la méthode recommandée pour installer l'outillage de test complet dans Symfony est d'utiliser le pack de test :
+
+```bash
+composer require --dev symfony/test-pack
+```
+Cela installe `phpunit/phpunit`, `symfony/test-pack` et génère les fichiers de configuration (`phpunit.dist.xml`, `tests/bootstrap.php`).
+
 ## Concept clé
 Les tests unitaires vérifient la logique d'une classe en isolation totale.
 *   Pas de base de données.

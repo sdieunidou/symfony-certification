@@ -40,6 +40,15 @@ $user = $userRepository->findOneByEmail('admin@test.com');
 $client->loginUser($user);
 ```
 
+Vous pouvez aussi utiliser un utilisateur en mémoire (sans base de données) si configuré dans `security.yaml` :
+
+```php
+use Symfony\Component\Security\Core\User\InMemoryUser;
+
+$testUser = new InMemoryUser('admin', 'password', ['ROLE_ADMIN']);
+$client->loginUser($testUser);
+```
+
 ### 4. AJAX (`xmlHttpRequest`)
 Raccourci pour `request()` avec le header `X-Requested-With: XMLHttpRequest`.
 
@@ -51,6 +60,15 @@ $client->xmlHttpRequest('GET', '/api/search');
 *   `$client->back()` : Retour page précédente.
 *   `$client->forward()` : Page suivante.
 *   `$client->reload()` : Rafraîchir.
+
+## Gestion du Kernel (Reboot)
+Par défaut, le client **reboote le kernel** entre chaque requête (`request()`). Cela garantit l'isolation (nouveaux services).
+Conséquence : les entités Doctrine sont détachées.
+
+Si vous avez besoin de persister des états en mémoire (non recommandé mais parfois utile), vous pouvez désactiver le reboot :
+```php
+$client->disableReboot();
+```
 
 ## 🧠 Concepts Clés
 1.  **Interne** : Le client ne fait **pas** de vraies requêtes HTTP réseau (pas de cURL). Il instancie le Kernel et appelle `handle()`. C'est très rapide.

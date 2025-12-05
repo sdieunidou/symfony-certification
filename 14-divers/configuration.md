@@ -1,19 +1,42 @@
 # Configuration & Environnements
 
-## Vue d'ensemble
-La configuration d'une application Symfony se divise en trois catégories distinctes. Savoir choisir la bonne est crucial pour la sécurité et la maintenabilité.
+Ce document couvre les concepts clés de la [documentation officielle de configuration](https://symfony.com/doc/7.4/configuration.html).
+
+## 1. Vue d'ensemble & Formats
+
+La configuration dans Symfony peut être définie en **YAML** (recommandé), **XML**, ou **PHP**.
+Elle se situe principalement dans le dossier `config/`.
 
 | Type | Usage | Stockage | Exemple |
 | :--- | :--- | :--- | :--- |
 | **Infrastructure** | Identifiants, IPs, Clés API | Variables d'Env (`.env`, Secrets) | `DATABASE_URL`, `STRIPE_KEY` |
-| **Comportement** | Règles métier globales | Paramètres (`parameters:`) | `app.default_tax_rate`, `app.admin_email` |
-| **Interne** | Structure du code, Services | Configuration (`config/*.yaml`) | Routing, Security, Services |
+| **Comportement** | Règles métier globales | Paramètres (`parameters:`) | `app.admin_email` |
+| **Services & Bundles** | Structure du code, Services | Configuration (`config/*.yaml`) | `framework.yaml`, `security.yaml` |
 
 ---
 
-## 1. Infrastructure : Variables d'Environnement (`.env`)
+## 2. Environnements de Configuration
 
-Symfony utilise le composant **Dotenv** pour charger des variables. C'est le standard moderne (Factor 12 App).
+Symfony charge la configuration en fonction de l'environnement (`APP_ENV`: `dev`, `prod`, `test`).
+
+### Structure de chargement
+L'ordre de chargement des fichiers dans `config/packages/` est précis :
+
+1.  `config/packages/*.yaml` (Configuration globale commune)
+2.  `config/packages/{env}/*.yaml` (Surcharges spécifiques à l'environnement)
+
+**Exemple :**
+*   `config/packages/monolog.yaml` : Configure les logs de base.
+*   `config/packages/dev/monolog.yaml` : Ajoute la sortie dans la console pour le dév.
+*   `config/packages/prod/monolog.yaml` : Configure l'envoi d'emails d'erreur (FingersCrossed).
+
+> **Note :** `services.yaml` suit la même logique (`services_test.yaml` est chargé en environnement de test).
+
+---
+
+## 3. Infrastructure : Variables d'Environnement (`.env`)
+
+Symfony utilise le composant **Dotenv** pour charger des variables, respectant le principe "The Twelve-Factor App".
 
 ### Hiérarchie de chargement
 L'ordre de priorité (le dernier gagne) :
@@ -25,93 +48,116 @@ L'ordre de priorité (le dernier gagne) :
 6.  `.env` (Valeurs par défaut, **committé**).
 
 ### Processeurs de Variables
-Symfony permet de transformer les variables d'environnement à la volée dans le YAML.
-*   `%env(int:MAX_ITEMS)%` : Cast en entier.
-*   `%env(bool:DEBUG)%` : Cast en booléen.
-*   `%env(json:PAGES)%` : Décode du JSON.
-*   `%env(file:SECRET_FILE)%` : Lit le contenu du fichier dont le chemin est dans la var (utile pour Docker Secrets).
-*   `%env(base64:KEY)%` : Décode du base64.
-*   `%env(trim:VAR)%` : Supprime les espaces.
-*   `%env(require:VAR)%` : Plante si la variable n'existe pas.
+Symfony permet de transformer les variables d'environnement à la volée dans le YAML avec la syntaxe `%env(processor:VAR)%`.
+
+| Processeur | Description | Exemple |
+| :--- | :--- | :--- |
+| `int`, `float`, `bool` | Cast le type | `%env(bool:DEBUG)%` |
+| `string` | Force en chaîne | `%env(string:PORT)%` |
+| `trim` | Supprime les espaces | `%env(trim:KEY)%` |
+| `base64` | Décode du base64 | `%env(base64:KEY)%` |
+| `json` | Décode du JSON (devient un array) | `%env(json:ROLES)%` |
+| `csv` | Décode une liste séparée par virgules | `%env(csv:EMAILS)%` |
+| `url` | Extrait une partie d'URL (host, scheme...) | `%env(key:host:url:DATABASE_URL)%` |
+| `file` | Lit le contenu d'un fichier (Docker Secrets) | `%env(file:DATABASE_PASSWORD_FILE)%` |
+| `resolve` | Remplace les params `%...%` dans la valeur | `%env(resolve:MY_VAR)%` |
+| `default` | Valeur de repli si inexistant | `%env(default:fallback_val:MY_VAR)%` |
+| `require` | Plante si la variable n'existe pas | `%env(require:CRITICAL_VAR)%` |
 
 ---
 
-## 2. Secrets Management (Vault)
+## 4. Paramètres & Accès à la Configuration
 
-Pour stocker des données sensibles (clés API, certificats) de manière sécurisée **dans le dépôt Git**.
-Au lieu de `.env` en clair, on utilise le **Secrets Vault**.
-
-### Fonctionnement
-1.  Symfony génère une paire de clés cryptographiques (`config/secrets/prod/prod.encrypt.public.php` et `prod.decrypt.private.php`).
-2.  La clé publique est committée. La clé privée reste sur le serveur de prod (ou chez le lead dev).
-3.  Les valeurs sont chiffrées et stockées dans le dépôt.
-
-### Commandes
-```bash
-# Générer les clés
-php bin/console secrets:generate-keys
-
-# Ajouter un secret (Interactif)
-php bin/console secrets:set DATABASE_PASSWORD
-
-# Lister les secrets
-php bin/console secrets:list --reveal
-```
-
-Ensuite, on l'utilise comme une variable d'env normale : `%env(DATABASE_PASSWORD)%`. Symfony déchiffre automatiquement si la variable système n'existe pas déjà.
-
----
-
-## 3. Paramètres d'Application (`parameters`)
-
-Ce sont des constantes de configuration **propres à l'application**, qui ne changent pas selon l'infrastructure (dev/prod/test), mais qui doivent être centralisées.
+### Paramètres (`parameters`)
+Valeurs statiques centralisées dans `config/services.yaml`.
 
 ```yaml
-# config/services.yaml
 parameters:
     app.admin_email: 'admin@example.com'
-    app.supported_locales: ['en', 'fr', 'es']
+    # Peut référencer une variable d'env
+    app.secret: '%env(APP_SECRET)%'
 ```
 
-### Quand les utiliser ?
-*   Pour des valeurs utilisées à plusieurs endroits (DRY).
-*   Pour des valeurs métier (Taux de TVA, Email de contact).
-*   **MAIS** : Ne pas y mettre de secrets ou d'IPs (sauf si vous injectez une variable d'env dedans : `app.db_url: '%env(DATABASE_URL)%'`).
+### Accéder aux valeurs
+Il existe trois méthodes principales pour récupérer la configuration dans vos services :
 
----
-
-## 4. Constantes de Classe PHP
-
-Parfois, la configuration YAML est "overkill". Si une valeur est :
-1.  Immuable.
-2.  Propre à une seule classe.
-3.  Ne changera jamais sans que le code ne change aussi.
-
-Utilisez une **Constante PHP**.
-
+#### A. Injection explicite (Autowiring avec Attribut)
+C'est la méthode recommandée depuis Symfony 6.3+.
 ```php
-class InvoiceGenerator
-{
-    // Bonne pratique : C'est une règle métier interne, pas besoin de config externe
-    private const MAX_ITEMS_PER_PAGE = 50;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+
+public function __construct(
+    #[Autowire('%app.admin_email%')] private string $adminEmail,
+    #[Autowire(env: 'json:MY_FLAGS')] private array $flags
+) {}
+```
+
+#### B. Global Binding (`bind`)
+Pour définir des arguments communs à tous les services dans `services.yaml`.
+```yaml
+services:
+    _defaults:
+        bind:
+            $adminEmail: '%app.admin_email%'
+            $projectDir: '%kernel.project_dir%'
+```
+*Dans le PHP, nommez simplement votre argument `$adminEmail` et il sera injecté automatiquement.*
+
+#### C. ContainerBagInterface
+Pour un accès programmatique (moins performant que l'injection directe, mais utile parfois).
+```php
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
+
+public function __construct(private ContainerBagInterface $params) {
+    $email = $this->params->get('app.admin_email');
 }
 ```
 
 ---
 
-## Bonnes Pratiques (Résumé)
+## 5. Configuration des Bundles (Semantic Configuration)
 
-1.  **Secrets** : Toujours dans des variables d'environnement (réelles ou Vault). Jamais en dur, jamais dans `parameters` en clair.
-2.  **Performance** : En production, lancez `composer dump-env prod` pour compiler le `.env` en PHP. Cela évite le parsing coûteux à chaque requête.
-3.  **Type** : Utilisez les processeurs (`%env(int:...)%`) pour typer vos injections.
-4.  **Autowiring** : Injectez vos params via l'attribut `#[Autowire]`.
-    ```php
-    public function __construct(
-        #[Autowire('%app.admin_email%')] private string $adminEmail,
-        #[Autowire(env: 'STRIPE_KEY')] private string $stripeKey
-    ) {}
+Les fichiers dans `config/packages/` configurent les bundles installés (FrameworkBundle, SecurityBundle, etc.).
+
+### Déboguer la configuration
+Deux commandes essentielles pour comprendre comment un bundle est configuré :
+
+1.  **Voir la configuration actuelle (résolue) :**
+    Affiche la configuration finale utilisée par Symfony (après merge des fichiers).
+    ```bash
+    php bin/console debug:config framework
     ```
 
-## Ressources
-*   [Symfony Docs - Configuration](https://symfony.com/doc/current/configuration.html)
-*   [Symfony Docs - Secrets](https://symfony.com/doc/current/configuration/secrets.html)
+2.  **Voir la configuration par défaut (Référence) :**
+    Affiche toutes les options disponibles pour un bundle avec leurs valeurs par défaut et types. **Indispensable** pour découvrir des options sans aller sur le web.
+    ```bash
+    php bin/console config:dump-reference framework
+    ```
+
+---
+
+## 6. Secrets Management (Vault)
+
+Pour stocker des données sensibles chiffrées dans le dépôt Git.
+
+### Commandes
+```bash
+# 1. Générer les clés (config/secrets/prod/...)
+php bin/console secrets:generate-keys
+
+# 2. Ajouter un secret
+php bin/console secrets:set DATABASE_PASSWORD
+
+# 3. Lister les secrets
+php bin/console secrets:list --reveal
+```
+Usage transparent : `%env(DATABASE_PASSWORD)%` (Symfony décrypte automatiquement).
+
+---
+
+## Bonnes Pratiques
+
+1.  **Ne définissez pas de paramètres pour tout** : Utilisez des constantes de classe (`const MAX_ITEMS = 10;`) si la valeur est interne à la logique d'une seule classe.
+2.  **Performance** : En production, `composer dump-env prod` génère un fichier PHP optimisé.
+3.  **Typez vos variables** : Utilisez les processeurs d'env (`int:`, `bool:`) pour éviter les erreurs de type dans vos services.
+4.  **Utilisez `bind`** pour les paramètres très fréquents (ex: un répertoire d'upload).
