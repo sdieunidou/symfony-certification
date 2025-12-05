@@ -1,6 +1,6 @@
 # Le Composant Notifier
 
-Le composant **Notifier** (introduit dans Symfony 5.0) fournit une interface unifiée pour envoyer des notifications aux utilisateurs via différents canaux (**SMS**, **Email**, **Chat**, **Browser Push**).
+Le composant **Notifier** (introduit dans Symfony 5.0) fournit une interface unifiée pour envoyer des notifications aux utilisateurs via différents canaux (**SMS**, **Email**, **Chat**, **Browser Push**, **Desktop**).
 
 Il repose sur une architecture similaire à Mailer (Message + Transport), mais ajoute la notion d'**Importance** et de **Recipient**.
 
@@ -10,7 +10,7 @@ Il repose sur une architecture similaire à Mailer (Message + Transport), mais a
 
 1.  **Notification** : Le message à envoyer (Sujet, Contenu, Importance).
 2.  **Recipient** : Le destinataire (User), qui doit fournir ses coordonnées (email, téléphone) via une interface.
-3.  **Channel** : Le médium de communication (SMS, Email, Chat, Browser).
+3.  **Channel** : Le médium de communication (SMS, Email, Chat, Push, Browser).
 4.  **Transport** : Le service technique (Twilio, Slack, Firebase, Telegram, etc.).
 
 ---
@@ -71,13 +71,11 @@ framework:
             low: ['email']
 ```
 
-Si vous envoyez une notification `URGENT`, elle partira sur tous les canaux configurés.
-
 ---
 
 ## 4. Les Types de Messages Spécialisés
 
-Le composant distingue deux grandes familles de messages sous le capot :
+Le composant distingue plusieurs familles de messages sous le capot :
 
 ### Texter (SMS)
 Pour les messages courts (SMS).
@@ -91,22 +89,18 @@ Pour les messages riches vers des messageries instantanées.
 *   Classe : `ChatMessage`
 *   Transports : Slack, Discord, Telegram, Google Chat, Microsoft Teams.
 
-On peut injecter spécifiquement `TexterInterface` ou `ChatterInterface` si on ne veut pas utiliser la logique générique de Notification.
+### Push (Mobile/Web)
+Pour les notifications push natives.
+*   Interface : `PushMessage`
+*   Transports : Firebase (FCM), Apple (APN), Mercure, Expo.
+
+### Desktop (CLI)
+Pour afficher des notifications sur le bureau (Mac/Windows/Linux) lors de l'exécution de scripts CLI.
+*   Utilise la librairie `jolicode/jolinotif` via le pont `fake-chat` ou autre.
 
 ---
 
-## 5. Personnalisation (Semantic HTML)
-
-Comme pour les Emails, les Notifications utilisent des thèmes pour le rendu (notamment pour le canal Email).
-Le contenu de la notification supporte un subset de Markdown simple.
-
-```php
-$notification->content('Hello *World*! Voici un [lien](https://symfony.com).');
-```
-
----
-
-## 6. Points de vigilance pour la Certification
+## 5. Points de vigilance pour la Certification
 
 *   **Admin Recipient** : On peut configurer des destinataires "Admin" globaux pour recevoir les notifications système (ex: exceptions critiques).
     ```yaml
