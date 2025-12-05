@@ -182,6 +182,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Web Profiler](./14-divers/profiler.md)
 * [Runtime](./14-divers/runtime.md)
 * [Attributs PHP natifs](./14-divers/attributes.md)
+* [Symfony Contracts](./14-divers/contracts.md)
 
 ### [15. Design Patterns](./15-design-patterns/)
 * [Principes SOLID](./15-design-patterns/solid.md)
