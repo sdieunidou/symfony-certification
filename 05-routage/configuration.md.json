@@ -1,0 +1,96 @@
+{
+  "source_file": "05-routage/configuration.md",
+  "title": "Configuration du Routage",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la méthode recommandée dans Symfony 7 pour définir les routes des contrôleurs ?",
+      "type": "single_choice",
+      "options": [
+        "YAML (`routes.yaml`)",
+        "XML",
+        "Attributs PHP (`#[Route]`)",
+        "Annotations (`@Route`)"
+      ],
+      "correct_answers": [
+        "Attributs PHP (`#[Route]`)"
+      ],
+      "explanation": "Les attributs natifs de PHP 8 ont remplacé les annotations. Ils gardent la définition de la route proche du code (localité)."
+    },
+    {
+      "id": 2,
+      "question": "Quel format de configuration de routage est officiellement déprécié en Symfony 7.4 ?",
+      "type": "single_choice",
+      "options": [
+        "YAML",
+        "PHP",
+        "XML",
+        "Attributs"
+      ],
+      "correct_answers": [
+        "XML"
+      ],
+      "explanation": "Le format XML est jugé trop verbeux et peu utilisé pour le routage."
+    },
+    {
+      "id": 3,
+      "question": "Comment donner un alias à une route (lui donner un deuxième nom) ?",
+      "type": "single_choice",
+      "options": [
+        "En dupliquant la méthode du contrôleur.",
+        "En utilisant l'option `alias` dans l'attribut `#[Route]` (Symfony 7.3+).",
+        "En créant un RedirectController.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "En utilisant l'option `alias` dans l'attribut `#[Route]` (Symfony 7.3+)."
+      ],
+      "explanation": "Les alias permettent la rétrocompatibilité lors du renommage d'une route (ex: `product_show` aliasé vers `product_detail`)."
+    },
+    {
+      "id": 4,
+      "question": "Si deux routes matchent la même URL (ex: `/blog/{slug}` et `/blog/new`), laquelle est choisie ?",
+      "type": "single_choice",
+      "options": [
+        "La plus spécifique.",
+        "La première définie/chargée (First Match Wins).",
+        "La dernière définie.",
+        "Une erreur est levée."
+      ],
+      "correct_answers": [
+        "La première définie/chargée (First Match Wins)."
+      ],
+      "explanation": "L'ordre est crucial. Les routes statiques (`/blog/new`) doivent être placées AVANT les routes dynamiques (`/blog/{slug}`)."
+    },
+    {
+      "id": 5,
+      "question": "Y a-t-il une différence de performance en production entre les routes définies en YAML et celles en Attributs ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, le YAML est plus rapide.",
+        "Oui, les Attributs sont plus rapides.",
+        "Non, car tout est compilé en un seul fichier PHP optimisé (UrlMatcher) dans le cache de prod.",
+        "Ça dépend de la version de PHP."
+      ],
+      "correct_answers": [
+        "Non, car tout est compilé en un seul fichier PHP optimisé (UrlMatcher) dans le cache de prod."
+      ],
+      "explanation": "Le choix du format est une préférence développeur (DX), pas une contrainte de performance."
+    },
+    {
+      "id": 6,
+      "question": "Peut-on définir un préfixe d'URL (ex: `/admin`) pour toutes les routes d'un contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "Non, il faut le répéter sur chaque méthode.",
+        "Oui, en plaçant un attribut `#[Route('/admin')]` sur la classe du contrôleur.",
+        "Oui, mais uniquement via `routes.yaml`.",
+        "Uniquement si le contrôleur est abstrait."
+      ],
+      "correct_answers": [
+        "Oui, en plaçant un attribut `#[Route('/admin')]` sur la classe du contrôleur."
+      ],
+      "explanation": "Les routes des méthodes seront concaténées à ce préfixe."
+    }
+  ]
+}

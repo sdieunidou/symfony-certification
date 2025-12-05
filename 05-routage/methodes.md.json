@@ -1,0 +1,66 @@
+{
+  "source_file": "05-routage/methodes.md",
+  "title": "Restriction de Méthodes HTTP",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Par défaut, quels verbes HTTP une route accepte-t-elle ?",
+      "type": "single_choice",
+      "options": [
+        "Seulement GET.",
+        "GET et POST.",
+        "Tous les verbes.",
+        "Aucun."
+      ],
+      "correct_answers": [
+        "Tous les verbes."
+      ],
+      "explanation": "Si l'option `methods` n'est pas définie, aucune restriction n'est appliquée."
+    },
+    {
+      "id": 2,
+      "question": "Comment restreindre une route à la méthode POST uniquement (ex: soumission de formulaire) ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Route('/submit', methods: ['POST'])]`",
+        "`#[Post('/submit')]` (si on utilise un alias custom, mais standard = Route)",
+        "`#[Route('/submit', method: 'POST')]`",
+        "En vérifiant `$request->isMethod('POST')` dans le contrôleur."
+      ],
+      "correct_answers": [
+        "`#[Route('/submit', methods: ['POST'])]`"
+      ],
+      "explanation": "La restriction au niveau du routage est plus propre et renvoie automatiquement une erreur 405 si la méthode est incorrecte."
+    },
+    {
+      "id": 3,
+      "question": "Quel code HTTP est retourné si l'URL existe mais que la méthode HTTP utilisée n'est pas autorisée (ex: GET sur une route POST-only) ?",
+      "type": "single_choice",
+      "options": [
+        "404 Not Found",
+        "403 Forbidden",
+        "405 Method Not Allowed",
+        "500 Error"
+      ],
+      "correct_answers": [
+        "405 Method Not Allowed"
+      ],
+      "explanation": "Le routeur identifie que le path matche mais pas la méthode."
+    },
+    {
+      "id": 4,
+      "question": "Peut-on définir deux routes avec le même chemin (path) mais des méthodes différentes ?",
+      "type": "single_choice",
+      "options": [
+        "Non, le path doit être unique.",
+        "Oui, c'est une pratique courante (ex: GET `/api/users` pour la liste, POST `/api/users` pour la création).",
+        "Oui, mais uniquement en YAML.",
+        "Non, cela crée une boucle infinie."
+      ],
+      "correct_answers": [
+        "Oui, c'est une pratique courante (ex: GET `/api/users` pour la liste, POST `/api/users` pour la création)."
+      ],
+      "explanation": "Symfony testera les routes dans l'ordre. La restriction de méthode agit comme un filtre sélectif."
+    }
+  ]
+}

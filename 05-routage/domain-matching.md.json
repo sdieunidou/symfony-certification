@@ -1,0 +1,66 @@
+{
+  "source_file": "05-routage/domain-matching.md",
+  "title": "Correspondance de Nom de Domaine (Host Matching)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Peut-on restreindre une route à un nom de domaine spécifique (ex: `api.example.com`) ?",
+      "type": "single_choice",
+      "options": [
+        "Non, le routage ne gère que le chemin (path).",
+        "Oui, avec l'option `host` dans la définition de la route.",
+        "Oui, mais uniquement via la configuration du serveur web (Nginx/Apache).",
+        "Seulement en production."
+      ],
+      "correct_answers": [
+        "Oui, avec l'option `host` dans la définition de la route."
+      ],
+      "explanation": "L'option `host` permet de matcher le domaine, et même de capturer des sous-domaines dynamiques."
+    },
+    {
+      "id": 2,
+      "question": "Dans une route avec `host: '{user}.monsite.com'`, comment récupérer la valeur du sous-domaine `{user}` ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas possible.",
+        "Comme un argument classique de contrôleur (`$user`).",
+        "Via `$_SERVER['HTTP_HOST']`.",
+        "Via un service spécial."
+      ],
+      "correct_answers": [
+        "Comme un argument classique de contrôleur (`$user`)."
+      ],
+      "explanation": "Les placeholders du host sont traités exactement comme ceux du path. Ils sont injectés dans les attributs de la requête."
+    },
+    {
+      "id": 3,
+      "question": "Comment générer une URL vers une route qui a une contrainte de `host` ?",
+      "type": "single_choice",
+      "options": [
+        "Cela génère toujours une URL relative.",
+        "Si le host cible est différent du host actuel, Symfony génère automatiquement une URL absolue.",
+        "Il faut forcer le mode absolu manuellement.",
+        "On ne peut pas générer d'URL vers un autre domaine."
+      ],
+      "correct_answers": [
+        "Si le host cible est différent du host actuel, Symfony génère automatiquement une URL absolue."
+      ],
+      "explanation": "Le générateur d'URL est intelligent et bascule en mode absolu si le domaine change."
+    },
+    {
+      "id": 4,
+      "question": "Quelle option permet de forcer le protocole HTTPS pour une route ?",
+      "type": "single_choice",
+      "options": [
+        "`secure: true`",
+        "`schemes: ['https']`",
+        "`protocol: https`",
+        "`https: true`"
+      ],
+      "correct_answers": [
+        "`schemes: ['https']`"
+      ],
+      "explanation": "Cette option force le schéma. Si l'utilisateur arrive en HTTP, Symfony le redirigera vers HTTPS (bien qu'il soit préférable de gérer cela au niveau serveur web)."
+    }
+  ]
+}

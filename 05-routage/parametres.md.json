@@ -1,0 +1,66 @@
+{
+  "source_file": "05-routage/parametres.md",
+  "title": "Paramètres d'URL et Prérequis (Requirements)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la syntaxe inline recommandée pour définir un prérequis (regex) sur un paramètre de route ?",
+      "type": "single_choice",
+      "options": [
+        "`/blog/{id}`, requirements={'id': '\d+'}`",
+        "`/blog/{id<\d+>}`",
+        "`/blog/{id:\d+}`",
+        "`/blog/{id}` (Symfony devine tout seul)"
+      ],
+      "correct_answers": [
+        "`/blog/{id<\d+>}`"
+      ],
+      "explanation": "La syntaxe `<regex>` directement dans le placeholder est plus concise et lisible."
+    },
+    {
+      "id": 2,
+      "question": "Si l'URL ne correspond pas à la regex d'un paramètre (ex: `/blog/abc` alors que `id` attend des chiffres), que se passe-t-il ?",
+      "type": "single_choice",
+      "options": [
+        "Une erreur 500 est levée.",
+        "Le paramètre vaut 0.",
+        "La route ne matche pas. Le routeur continue de chercher une autre route correspondante. Si aucune n'est trouvée, c'est une 404.",
+        "Le contrôleur est appelé avec la valeur 'abc'."
+      ],
+      "correct_answers": [
+        "La route ne matche pas. Le routeur continue de chercher une autre route correspondante. Si aucune n'est trouvée, c'est une 404."
+      ],
+      "explanation": "Les requirements sont des critères de matching stricts."
+    },
+    {
+      "id": 3,
+      "question": "Quelle regex permet de capturer une chaîne contenant des `/` (slashes) dans un paramètre de route (Wildcard) ?",
+      "type": "single_choice",
+      "options": [
+        "`.*`",
+        "`.+`",
+        "`\w+`",
+        "`/`"
+      ],
+      "correct_answers": [
+        "`.+`"
+      ],
+      "explanation": "Par défaut, le matching s'arrête au premier slash. La regex `.+` permet de consommer tout le reste de l'URL (ex: `/file/{path<.+>}`)."
+    },
+    {
+      "id": 4,
+      "question": "Quelle classe Enum (Symfony 6.4+) fournit des regex courantes pour éviter de les réécrire ?",
+      "type": "single_choice",
+      "options": [
+        "`Regex`",
+        "`Requirement`",
+        "`Pattern`",
+        "`Rule`"
+      ],
+      "correct_answers": [
+        "`Requirement`"
+      ],
+      "explanation": "Exemple : `Requirement::DIGITS`, `Requirement::ASCII_SLUG`, `Requirement::DATE_YMD`."
+    }
+  ]
+}

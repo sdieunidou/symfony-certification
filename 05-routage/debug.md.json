@@ -1,0 +1,66 @@
+{
+  "source_file": "05-routage/debug.md",
+  "title": "Débogage du Routeur",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle commande permet de lister toutes les routes de l'application ?",
+      "type": "single_choice",
+      "options": [
+        "php bin/console route:list",
+        "php bin/console debug:router",
+        "php bin/console router:show",
+        "php bin/console list:routes"
+      ],
+      "correct_answers": [
+        "php bin/console debug:router"
+      ],
+      "explanation": "C'est la commande standard pour voir la table de routage."
+    },
+    {
+      "id": 2,
+      "question": "Quelle commande permet de simuler une URL pour voir quelle route va matcher ?",
+      "type": "single_choice",
+      "options": [
+        "php bin/console router:match /mon-url",
+        "php bin/console debug:router /mon-url",
+        "php bin/console route:test /mon-url",
+        "php bin/console test:url /mon-url"
+      ],
+      "correct_answers": [
+        "php bin/console router:match /mon-url"
+      ],
+      "explanation": "Cette commande est essentielle pour diagnostiquer pourquoi une URL renvoie une 404 ou ne matche pas la bonne route."
+    },
+    {
+      "id": 3,
+      "question": "Par défaut, la commande `router:match` teste avec la méthode GET. Comment tester une route POST ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas possible.",
+        "En ajoutant l'option `--method=POST`.",
+        "En écrivant `POST /mon-url`.",
+        "En utilisant `router:match-post`."
+      ],
+      "correct_answers": [
+        "En ajoutant l'option `--method=POST`."
+      ],
+      "explanation": "Cela permet de vérifier les restrictions de méthode (Method Not Allowed)."
+    },
+    {
+      "id": 4,
+      "question": "Si `debug:router` affiche votre route mais que `router:match` en trouve une autre pour la même URL, quel est le problème probable ?",
+      "type": "single_choice",
+      "options": [
+        "Le cache n'est pas à jour.",
+        "Un problème d'ordre (priorité) : une route plus générique définie avant intercepte l'URL.",
+        "La route est désactivée.",
+        "Le contrôleur n'existe pas."
+      ],
+      "correct_answers": [
+        "Un problème d'ordre (priorité) : une route plus générique définie avant intercepte l'URL."
+      ],
+      "explanation": "Le routeur s'arrête au premier match. L'ordre de déclaration est donc vital."
+    }
+  ]
+}

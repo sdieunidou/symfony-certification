@@ -1,0 +1,66 @@
+{
+  "source_file": "05-routage/special-attributes.md",
+  "title": "Attributs de Routage Spéciaux",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel attribut de requête est défini par le routeur pour indiquer quel contrôleur exécuter ?",
+      "type": "single_choice",
+      "options": [
+        "`_route`",
+        "`_controller`",
+        "`_action`",
+        "`_function`"
+      ],
+      "correct_answers": [
+        "`_controller`"
+      ],
+      "explanation": "C'est le résultat principal du processus de routage : mapper une URL vers un `_controller`."
+    },
+    {
+      "id": 2,
+      "question": "Quel paramètre permet de forcer le format de la requête (et donc le Content-Type de la réponse) ?",
+      "type": "single_choice",
+      "options": [
+        "`_type`",
+        "`_format`",
+        "`_content_type`",
+        "`_mime`"
+      ],
+      "correct_answers": [
+        "`_format`"
+      ],
+      "explanation": "Définir `defaults: { _format: 'json' }` force la réponse en JSON."
+    },
+    {
+      "id": 3,
+      "question": "Si vous nommez un paramètre de route `_route`, que se passe-t-il ?",
+      "type": "single_choice",
+      "options": [
+        "Cela écrase le nom de la route interne.",
+        "C'est interdit/réservé. Symfony utilise `_route` pour stocker le nom de la route matchée.",
+        "Cela fonctionne comme un paramètre normal.",
+        "Cela génère une erreur 500."
+      ],
+      "correct_answers": [
+        "C'est interdit/réservé. Symfony utilise `_route` pour stocker le nom de la route matchée."
+      ],
+      "explanation": "Tous les attributs commençant par `_` sont réservés au système."
+    },
+    {
+      "id": 4,
+      "question": "Quel attribut permet d'indiquer qu'une route doit être 'Stateless' (pas de session) ?",
+      "type": "single_choice",
+      "options": [
+        "`_no_session`",
+        "`_stateless`",
+        "`_api`",
+        "`_anonymous`"
+      ],
+      "correct_answers": [
+        "`_stateless`"
+      ],
+      "explanation": "Si `_stateless` est à true, Symfony n'enverra pas de cookie de session et alertera si la session est utilisée."
+    }
+  ]
+}

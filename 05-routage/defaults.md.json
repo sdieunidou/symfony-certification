@@ -1,0 +1,66 @@
+{
+  "source_file": "05-routage/defaults.md",
+  "title": "Valeurs par Défaut (Defaults)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment rendre un paramètre de route optionnel (ex: `/blog/{page}`) ?",
+      "type": "single_choice",
+      "options": [
+        "En ajoutant un `?` dans la route : `/blog/{page?}`.",
+        "En lui donnant une valeur par défaut (via l'argument PHP `$page = 1` ou l'option `defaults`).",
+        "Ce n'est pas possible, tous les paramètres sont obligatoires.",
+        "En utilisant une regex."
+      ],
+      "correct_answers": [
+        "En lui donnant une valeur par défaut (via l'argument PHP `$page = 1` ou l'option `defaults`)."
+      ],
+      "explanation": "Dès qu'un paramètre a une valeur par défaut, il devient optionnel pour le matching."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la contrainte de position pour un paramètre optionnel ?",
+      "type": "single_choice",
+      "options": [
+        "Il doit être au début de l'URL.",
+        "Il doit être à la fin de l'URL (ou suivi uniquement d'autres paramètres optionnels).",
+        "Il peut être n'importe où.",
+        "Il doit être entouré de parenthèses."
+      ],
+      "correct_answers": [
+        "Il doit être à la fin de l'URL (ou suivi uniquement d'autres paramètres optionnels)."
+      ],
+      "explanation": "Symfony ne peut pas deviner qu'un paramètre manquant est au milieu de l'URL (`/blog//details` est invalide)."
+    },
+    {
+      "id": 3,
+      "question": "Si un paramètre a une valeur par défaut (ex: `page=1`), que fait le générateur d'URL (`generateUrl`) si on lui passe cette valeur ?",
+      "type": "single_choice",
+      "options": [
+        "Il l'inclut toujours dans l'URL (`/blog/1`).",
+        "Il l'omet pour générer l'URL canonique la plus courte (`/blog`).",
+        "Il lance une erreur.",
+        "Il ajoute un query string `?page=1`."
+      ],
+      "correct_answers": [
+        "Il l'omet pour générer l'URL canonique la plus courte (`/blog`)."
+      ],
+      "explanation": "C'est le comportement standard pour garder des URLs propres."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la syntaxe recommandée avec les Attributs pour définir un défaut ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Route('/blog/{page}', defaults: ['page' => 1])]`",
+        "Utiliser la valeur par défaut de l'argument de la méthode PHP : `public function index(int $page = 1)`.",
+        "Les deux fonctionnent, mais la valeur par défaut PHP est plus concise.",
+        "Aucune."
+      ],
+      "correct_answers": [
+        "Utiliser la valeur par défaut de l'argument de la méthode PHP : `public function index(int $page = 1)`."
+      ],
+      "explanation": "Symfony inspecte la signature de la méthode et applique automatiquement le défaut au routeur."
+    }
+  ]
+}

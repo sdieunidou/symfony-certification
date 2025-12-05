@@ -1,0 +1,66 @@
+{
+  "source_file": "05-routage/locale.md",
+  "title": "Internationalisation (i18n) du Routage",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la méthode recommandée pour gérer la locale dans les URLs ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser un paramètre GET `?lang=fr`.",
+        "Préfixer toutes les routes avec `/{_locale}` (ex: `/fr/blog`).",
+        "Utiliser des sous-domaines (`fr.example.com`).",
+        "Utiliser la session."
+      ],
+      "correct_answers": [
+        "Préfixer toutes les routes avec `/{_locale}` (ex: `/fr/blog`)."
+      ],
+      "explanation": "C'est la méthode la plus SEO-friendly et la plus simple à configurer globalement dans Symfony."
+    },
+    {
+      "id": 2,
+      "question": "Si une route contient le paramètre spécial `{_locale}`, que fait Symfony automatiquement ?",
+      "type": "single_choice",
+      "options": [
+        "Rien.",
+        "Il définit la locale de la requête (`$request->setLocale()`), ce qui configure le traducteur.",
+        "Il traduit le contenu de la page.",
+        "Il redirige vers la version anglaise."
+      ],
+      "correct_answers": [
+        "Il définit la locale de la requête (`$request->setLocale()`), ce qui configure le traducteur."
+      ],
+      "explanation": "C'est un automatisme du `LocaleListener` lié au routage."
+    },
+    {
+      "id": 3,
+      "question": "Comment traduire l'URL elle-même (ex: `/en/about` et `/fr/a-propos`) ?",
+      "type": "single_choice",
+      "options": [
+        "En créant deux contrôleurs différents.",
+        "En utilisant la fonctionnalité de 'Localized Paths' : passer un tableau de paths indexé par locale à l'attribut `#[Route]`.",
+        "En utilisant un fichier `routes.fr.yaml`.",
+        "C'est impossible nativement."
+      ],
+      "correct_answers": [
+        "En utilisant la fonctionnalité de 'Localized Paths' : passer un tableau de paths indexé par locale à l'attribut `#[Route]`."
+      ],
+      "explanation": "Cela permet de garder une seule route logique (`about`) qui pointe vers le même contrôleur, mais avec des URLs différentes selon la langue."
+    },
+    {
+      "id": 4,
+      "question": "Qu'est-ce que le comportement 'Sticky Locale' lors de la génération d'URL ?",
+      "type": "single_choice",
+      "options": [
+        "La locale est collée dans un cookie.",
+        "Si la requête courante a une locale (ex: `fr`), le générateur d'URL l'utilise par défaut pour les liens générés, sans qu'on ait besoin de la spécifier.",
+        "La locale ne peut pas être changée.",
+        "C'est un bug."
+      ],
+      "correct_answers": [
+        "Si la requête courante a une locale (ex: `fr`), le générateur d'URL l'utilise par défaut pour les liens générés, sans qu'on ait besoin de la spécifier."
+      ],
+      "explanation": "Cela évite d'avoir à écrire `path('route', {'_locale': app.request.locale})` partout."
+    }
+  ]
+}

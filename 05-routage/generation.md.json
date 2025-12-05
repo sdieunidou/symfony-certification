@@ -1,0 +1,81 @@
+{
+  "source_file": "05-routage/generation.md",
+  "title": "Génération d'URLs",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Pourquoi est-il critique de ne jamais concaténer les URLs manuellement (`/blog/` . $slug) mais d'utiliser le générateur ?",
+      "type": "single_choice",
+      "options": [
+        "Pour des raisons de performance.",
+        "Pour garantir que si la configuration de la route change (path), toutes les URLs du site se mettent à jour automatiquement.",
+        "Parce que PHP ne sait pas concaténer des chaînes.",
+        "Pour le SEO."
+      ],
+      "correct_answers": [
+        "Pour garantir que si la configuration de la route change (path), toutes les URLs du site se mettent à jour automatiquement."
+      ],
+      "explanation": "Le routage bidirectionnel est une force majeure de Symfony. L'URL est générée à partir du nom logique de la route."
+    },
+    {
+      "id": 2,
+      "question": "Comment générer une URL absolue (avec le domaine) dans un contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->generateUrl('route', [], true)`",
+        "`$this->generateUrl('route', [], UrlGeneratorInterface::ABSOLUTE_URL)`",
+        "`$this->generateAbsoluteUrl('route')`",
+        "Ce n'est pas possible, il faut ajouter `https://...` à la main."
+      ],
+      "correct_answers": [
+        "`$this->generateUrl('route', [], UrlGeneratorInterface::ABSOLUTE_URL)`"
+      ],
+      "explanation": "C'est indispensable pour les liens dans les emails ou les redirections vers des sites de paiement."
+    },
+    {
+      "id": 3,
+      "question": "Que se passe-t-il si vous passez des paramètres supplémentaires à `generateUrl` qui ne sont pas définis dans la route ?",
+      "type": "single_choice",
+      "options": [
+        "Ils sont ignorés.",
+        "Une erreur est levée.",
+        "Ils sont ajoutés en Query String (`?param=valeur`).",
+        "Ils sont ajoutés comme segments de path supplémentaires."
+      ],
+      "correct_answers": [
+        "Ils sont ajoutés en Query String (`?param=valeur`)."
+      ],
+      "explanation": "Cela permet de gérer facilement les filtres, tris et tokens UTM."
+    },
+    {
+      "id": 4,
+      "question": "Comment générer une URL en JavaScript (dans un template Twig) de manière sécurisée ?",
+      "type": "single_choice",
+      "options": [
+        "En écrivant l'URL en dur dans le JS.",
+        "En utilisant `path()` dans un attribut data (ex: `data-url=\"{{ path(...) }}\"`) ou en injectant la variable.",
+        "En utilisant FOSJsRoutingBundle (bien que moins standard aujourd'hui).",
+        "En faisant une requête AJAX pour demander l'URL."
+      ],
+      "correct_answers": [
+        "En utilisant `path()` dans un attribut data (ex: `data-url=\"{{ path(...) }}\"`) ou en injectant la variable."
+      ],
+      "explanation": "Injecter l'URL générée par Symfony dans le DOM est la méthode la plus simple et robuste."
+    },
+    {
+      "id": 5,
+      "question": "Pour générer des URLs absolues en ligne de commande (CLI / Console), que faut-il configurer ?",
+      "type": "single_choice",
+      "options": [
+        "Rien, Symfony devine le domaine.",
+        "L'option `router.request_context.host` et `scheme` (ou `default_uri`) dans `config/packages/routing.yaml`.",
+        "Le fichier `/etc/hosts`.",
+        "La variable `$_SERVER['HTTP_HOST']`."
+      ],
+      "correct_answers": [
+        "L'option `router.request_context.host` et `scheme` (ou `default_uri`) dans `config/packages/routing.yaml`."
+      ],
+      "explanation": "En CLI, il n'y a pas de requête HTTP, donc pas de contexte (host/scheme) automatique. Il faut le définir pour que les emails contiennent les bons liens."
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "source_file": "05-routage/conditions.md",
+  "title": "Correspondance de Requête Conditionnelle (Conditions)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle option de l'attribut `#[Route]` permet de matcher une route selon une logique arbitraire complexe (ex: User-Agent, Header, IP) ?",
+      "type": "single_choice",
+      "options": [
+        "`requirements`",
+        "`condition`",
+        "`logic`",
+        "`if`"
+      ],
+      "correct_answers": [
+        "`condition`"
+      ],
+      "explanation": "L'option `condition` accepte une expression en langage Symfony ExpressionLanguage qui doit retourner true."
+    },
+    {
+      "id": 2,
+      "question": "Quelles variables sont disponibles dans l'expression de la condition ?",
+      "type": "multiple_choice",
+      "options": [
+        "`request` (l'objet Request complet)",
+        "`context` (le Routing Context)",
+        "`params` (les paramètres de route déjà matchés)",
+        "`container` (le conteneur de services)"
+      ],
+      "correct_answers": [
+        "`request` (l'objet Request complet)",
+        "`context` (le Routing Context)",
+        "`params` (les paramètres de route déjà matchés)"
+      ],
+      "explanation": "Le conteneur n'est pas directement accessible, mais on peut utiliser la fonction `service()` pour appeler un service tagué."
+    },
+    {
+      "id": 3,
+      "question": "Quand la condition est-elle évaluée par le routeur ?",
+      "type": "single_choice",
+      "options": [
+        "Au tout début.",
+        "Après le matching de l'URL (path), de la méthode et du host.",
+        "Après l'exécution du contrôleur.",
+        "Au moment de la compilation."
+      ],
+      "correct_answers": [
+        "Après le matching de l'URL (path), de la méthode et du host."
+      ],
+      "explanation": "C'est le dernier filtre avant de valider la route. Si l'expression est fausse, le routeur continue de chercher."
+    },
+    {
+      "id": 4,
+      "question": "Peut-on utiliser un service personnalisé dans une condition de routage ?",
+      "type": "single_choice",
+      "options": [
+        "Non.",
+        "Oui, en utilisant la fonction `service('mon_service')` dans l'expression.",
+        "Oui, en injectant le service dans le constructeur de la route.",
+        "Uniquement les services Symfony natifs."
+      ],
+      "correct_answers": [
+        "Oui, en utilisant la fonction `service('mon_service')` dans l'expression."
+      ],
+      "explanation": "Le service doit être tagué `routing.condition_service` ou utiliser l'attribut `#[AsRoutingConditionService]`."
+    },
+    {
+      "id": 5,
+      "question": "Les conditions sont-elles prises en compte lors de la génération d'URL (`generateUrl`) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, Symfony vérifie si la condition est vraie pour le contexte actuel.",
+        "Non, jamais. Si deux routes ont le même nom et des conditions différentes, la première est toujours choisie.",
+        "Oui, si on passe l'option `check_conditions`.",
+        "Seulement en environnement de prod."
+      ],
+      "correct_answers": [
+        "Non, jamais. Si deux routes ont le même nom et des conditions différentes, la première est toujours choisie."
+      ],
+      "explanation": "Les conditions servent au matching (entrante), pas à la génération (sortante)."
+    }
+  ]
+}

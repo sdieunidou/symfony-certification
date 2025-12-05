@@ -1,0 +1,66 @@
+{
+  "source_file": "05-routage/redirections.md",
+  "title": "Redirections dans le Routage",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment configurer une redirection simple (ex: `/v1` -> `/v2`) directement dans `routes.yaml` sans créer de classe PHP ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `type: redirect`.",
+        "Utiliser le `RedirectController` fourni par le FrameworkBundle.",
+        "Utiliser un fichier `.htaccess`.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "Utiliser le `RedirectController` fourni par le FrameworkBundle."
+      ],
+      "explanation": "Le contrôleur générique `Symfony\Bundle\FrameworkBundle\Controller\RedirectController` est fait pour ça."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence entre `urlRedirectAction` et `redirectAction` dans le `RedirectController` ?",
+      "type": "single_choice",
+      "options": [
+        "`urlRedirectAction` redirige vers un path/URL statique, `redirectAction` redirige vers le nom d'une route interne.",
+        "C'est la même chose.",
+        "`urlRedirectAction` est pour les liens externes, `redirectAction` pour les liens internes.",
+        "`redirectAction` est déprécié."
+      ],
+      "correct_answers": [
+        "`urlRedirectAction` redirige vers un path/URL statique, `redirectAction` redirige vers le nom d'une route interne."
+      ],
+      "explanation": "La redirection vers une route nommée est plus robuste car elle résiste aux changements d'URL."
+    },
+    {
+      "id": 3,
+      "question": "Que se passe-t-il avec les 'Trailing Slashes' (Slash de fin) dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Symfony ignore les slashes de fin.",
+        "Symfony considère `/foo` et `/foo/` comme identiques.",
+        "Symfony redirige automatiquement (301) les requêtes GET avec slash vers sans slash (ou l'inverse) pour correspondre à la route définie.",
+        "Symfony renvoie une 404 si le slash ne correspond pas exactement."
+      ],
+      "correct_answers": [
+        "Symfony redirige automatiquement (301) les requêtes GET avec slash vers sans slash (ou l'inverse) pour correspondre à la route définie."
+      ],
+      "explanation": "C'est un comportement par défaut pour normaliser les URLs et éviter le Duplicate Content."
+    },
+    {
+      "id": 4,
+      "question": "Quelle option de `defaults` permet de forcer une redirection permanente (301) ?",
+      "type": "single_choice",
+      "options": [
+        "`code: 301`",
+        "`permanent: true`",
+        "`type: permanent`",
+        "`status: 301`"
+      ],
+      "correct_answers": [
+        "`permanent: true`"
+      ],
+      "explanation": "L'option `permanent` contrôle le code de statut (301 vs 302)."
+    }
+  ]
+}
