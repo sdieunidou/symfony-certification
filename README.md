@@ -151,7 +151,6 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Protection CSRF](./10-securite/csrf.md)
 
 ### [11. Cache (HTTP & Composant)](./11-cache/)
-**Cache HTTP (Reverse Proxy)**
 * [Types de cache](./11-cache/http-types.md)
 * [Expiration](./11-cache/http-expiration.md)
 * [Validation](./11-cache/http-validation.md)
@@ -159,8 +158,6 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Server-side](./11-cache/http-server-side.md)
 * [ESI](./11-cache/http-esi.md)
 * [Sessions](./11-cache/http-sessions.md)
-
-**Composant Cache (PSR-6/16)**
 * [Vue d'ensemble & Adapters](./11-cache/component-overview.md)
 * [Pools & Namespaces](./11-cache/component-pools.md)
 * [Fonctionnalités (Tags, Chain, Encryption)](./11-cache/component-features.md)
