@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/uid.md",
+  "title": "Composant UID",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence principale entre un UUID v4 et un UUID v7 ?",
+      "type": "single_choice",
+      "options": [
+        "La longueur.",
+        "Le v4 est totalement aléatoire, le v7 est basé sur le temps (Time-ordered) et donc triable.",
+        "Le v7 est moins sécurisé.",
+        "Le v4 contient l'adresse MAC."
+      ],
+      "correct_answers": [
+        "Le v4 est totalement aléatoire, le v7 est basé sur le temps (Time-ordered) et donc triable."
+      ],
+      "explanation": "Le caractère séquentiel du v7 (ou v6) est bien meilleur pour les performances d'indexation en base de données que le v4 aléatoire."
+    },
+    {
+      "id": 2,
+      "question": "Qu'est-ce qu'un ULID ?",
+      "type": "single_choice",
+      "options": [
+        "Un UUID compressé.",
+        "Un identifiant unique de 128 bits, triable lexicographiquement, représenté en base 32 (URL safe, pas de tirets).",
+        "Un identifiant Linux.",
+        "Un ancien format déprécié."
+      ],
+      "correct_answers": [
+        "Un identifiant unique de 128 bits, triable lexicographiquement, représenté en base 32 (URL safe, pas de tirets)."
+      ],
+      "explanation": "ULID combine les avantages des UUIDs (unicité distribuée) et des auto-incréments (triable), avec une représentation plus compacte et lisible."
+    },
+    {
+      "id": 3,
+      "question": "Comment stocker un UUID/ULID de manière optimisée dans une base de données MySQL/MariaDB avec Doctrine ?",
+      "type": "single_choice",
+      "options": [
+        "En `VARCHAR(36)`.",
+        "En `TEXT`.",
+        "En `BINARY(16)` (via le type doctrine `uuid` ou `ulid`).",
+        "En `INTEGER`."
+      ],
+      "correct_answers": [
+        "En `BINARY(16)` (via le type doctrine `uuid` ou `ulid`)."
+      ],
+      "explanation": "Le stockage binaire prend 16 octets contre 36 pour la chaîne, ce qui économise de l'espace et de la RAM pour les index."
+    },
+    {
+      "id": 4,
+      "question": "Quelle commande permet de générer un UUID v4 depuis la console ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console uuid:generate`",
+        "`php bin/console make:uuid`",
+        "`php bin/console doctrine:uuid`",
+        "`php bin/console uid:create`"
+      ],
+      "correct_answers": [
+        "`php bin/console uuid:generate`"
+      ],
+      "explanation": "Par défaut, `uuid:generate` crée un v4. On peut demander d'autres versions avec des options."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/webhook.md",
+  "title": "Composant Webhook",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le rôle principal du composant `Webhook` ?",
+      "type": "single_choice",
+      "options": [
+        "Envoyer des requêtes HTTP.",
+        "Recevoir et traiter des notifications HTTP entrantes (webhooks) de services tiers (ex: Mailgun, Stripe) de manière sécurisée.",
+        "Gérer les formulaires.",
+        "Créer des sockets."
+      ],
+      "correct_answers": [
+        "Recevoir et traiter des notifications HTTP entrantes (webhooks) de services tiers (ex: Mailgun, Stripe) de manière sécurisée."
+      ],
+      "explanation": "Il valide la signature, parse la requête et la transforme en événement `RemoteEvent` consommable."
+    },
+    {
+      "id": 2,
+      "question": "Comment sécuriser un endpoint de webhook avec ce composant ?",
+      "type": "single_choice",
+      "options": [
+        "Avec un firewall IP.",
+        "Le composant valide automatiquement la signature cryptographique envoyée par le service tiers en utilisant un secret partagé configuré.",
+        "Avec un htaccess.",
+        "Il n'y a pas de sécurité."
+      ],
+      "correct_answers": [
+        "Le composant valide automatiquement la signature cryptographique envoyée par le service tiers en utilisant un secret partagé configuré."
+      ],
+      "explanation": "C'est la fonction critique : s'assurer que la requête vient bien de Stripe/Mailgun et n'a pas été falsifiée."
+    },
+    {
+      "id": 3,
+      "question": "Quel attribut doit-on utiliser sur une classe pour qu'elle traite les événements d'un webhook spécifique (ex: `mailer_mailgun`) ?",
+      "type": "single_choice",
+      "options": [
+        "`#[AsEventListener]`",
+        "`#[AsRemoteEventConsumer('nom_du_webhook')]`",
+        "`#[WebhookHandler]`",
+        "`#[Route]`"
+      ],
+      "correct_answers": [
+        "`#[AsRemoteEventConsumer('nom_du_webhook')]`"
+      ],
+      "explanation": "Cet attribut enregistre la classe comme consommateur (`ConsumerInterface`) pour ce type de webhook."
+    },
+    {
+      "id": 4,
+      "question": "Avec quel autre composant Symfony le composant Webhook s'intègre-t-il naturellement pour traiter les événements asynchrones (RemoteEvent) ?",
+      "type": "single_choice",
+      "options": [
+        "Mailer",
+        "Messenger",
+        "Twig",
+        "AssetMapper"
+      ],
+      "correct_answers": [
+        "Messenger"
+      ],
+      "explanation": "Les `RemoteEvent` peuvent être envoyés dans le bus Messenger pour un traitement asynchrone."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/string.md",
+  "title": "Composant String",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle classe du composant String est recommandée pour manipuler du texte humain contenant potentiellement des emojis ou des caractères internationaux ?",
+      "type": "single_choice",
+      "options": [
+        "`ByteString`",
+        "`UnicodeString`",
+        "`CodePointString`",
+        "`AsciiString`"
+      ],
+      "correct_answers": [
+        "`UnicodeString`"
+      ],
+      "explanation": "`UnicodeString` gère correctement les graphèmes complexes (emojis, accents composés), là où les fonctions PHP natives échouent souvent."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode permet de générer un slug d'URL sécurisé (translittération des accents, minuscules) ?",
+      "type": "single_choice",
+      "options": [
+        "`u($string)->slug()`",
+        "`$slugger->slug($string)`",
+        "`str_slug($string)`",
+        "`urlencode($string)`"
+      ],
+      "correct_answers": [
+        "`$slugger->slug($string)`"
+      ],
+      "explanation": "Le service `SluggerInterface` (implémenté par `AsciiSlugger`) est dédié à cette tâche."
+    },
+    {
+      "id": 3,
+      "question": "Les objets `UnicodeString` et `ByteString` sont-ils mutables ou immutables ?",
+      "type": "single_choice",
+      "options": [
+        "Mutables (on modifie l'objet lui-même).",
+        "Immutables (chaque opération retourne une nouvelle instance).",
+        "Cela dépend de la configuration.",
+        "Mutables en mode debug."
+      ],
+      "correct_answers": [
+        "Immutables (chaque opération retourne une nouvelle instance)."
+      ],
+      "explanation": "L'immutabilité évite les effets de bord. `$u->append('a')` ne modifie pas `$u` mais retourne un nouvel objet."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la différence entre `ByteString` et `UnicodeString` ?",
+      "type": "single_choice",
+      "options": [
+        "`ByteString` traite la chaîne comme une suite d'octets (binaire/ASCII), `UnicodeString` comme une suite de graphèmes (UTF-8).",
+        "`ByteString` est plus lent.",
+        "`UnicodeString` ne supporte pas les emojis.",
+        "Il n'y en a aucune."
+      ],
+      "correct_answers": [
+        "`ByteString` traite la chaîne comme une suite d'octets (binaire/ASCII), `UnicodeString` comme une suite de graphèmes (UTF-8)."
+      ],
+      "explanation": "Utilisez `ByteString` pour des tokens aléatoires ou des données binaires, et `UnicodeString` pour du texte."
+    }
+  ]
+}

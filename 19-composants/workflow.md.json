@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/workflow.md",
+  "title": "Composant Workflow",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence principale entre un type `state_machine` et un type `workflow` dans la configuration ?",
+      "type": "single_choice",
+      "options": [
+        "Il n'y en a pas.",
+        "Dans une `state_machine`, l'objet ne peut être que dans UN seul état à la fois. Dans un `workflow`, il peut être dans plusieurs places simultanément (parallélisme).",
+        "La `state_machine` est dépréciée.",
+        "Le `workflow` ne supporte pas les événements."
+      ],
+      "correct_answers": [
+        "Dans une `state_machine`, l'objet ne peut être que dans UN seul état à la fois. Dans un `workflow`, il peut être dans plusieurs places simultanément (parallélisme)."
+      ],
+      "explanation": "Une commande e-commerce est typiquement une State Machine (Panier -> Payée). Un processus de publication complexe peut être un Workflow."
+    },
+    {
+      "id": 2,
+      "question": "Comment appliquer une transition (ex: 'publish') sur un objet via le service Workflow ?",
+      "type": "single_choice",
+      "options": [
+        "`$workflow->transition($subject, 'publish')`",
+        "`$workflow->apply($subject, 'publish')`",
+        "`$workflow->changeState($subject, 'publish')`",
+        "`$workflow->do($subject, 'publish')`"
+      ],
+      "correct_answers": [
+        "`$workflow->apply($subject, 'publish')`"
+      ],
+      "explanation": "`apply()` tente d'effectuer la transition et lance une exception si elle n'est pas valide."
+    },
+    {
+      "id": 3,
+      "question": "Quel événement permet de bloquer conditionnellement une transition (Validation métier, 'Guard') ?",
+      "type": "single_choice",
+      "options": [
+        "`workflow.enter`",
+        "`workflow.guard` (ex: `workflow.blog_publishing.guard.publish`)",
+        "`workflow.completed`",
+        "`workflow.leave`"
+      ],
+      "correct_answers": [
+        "`workflow.guard` (ex: `workflow.blog_publishing.guard.publish`)"
+      ],
+      "explanation": "Les écouteurs sur `guard` peuvent appeler `$event->setBlocked(true)` pour empêcher la transition même si elle est valide structurellement."
+    },
+    {
+      "id": 4,
+      "question": "Quelle commande permet de visualiser graphiquement (Graphviz/PNG) votre workflow configuré ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console debug:workflow`",
+        "`php bin/console workflow:dump nom_workflow`",
+        "`php bin/console workflow:visualize`",
+        "`php bin/console make:workflow`"
+      ],
+      "correct_answers": [
+        "`php bin/console workflow:dump nom_workflow`"
+      ],
+      "explanation": "Cette commande génère le code DOT pour Graphviz, permettant de créer des diagrammes clairs du processus."
+    }
+  ]
+}

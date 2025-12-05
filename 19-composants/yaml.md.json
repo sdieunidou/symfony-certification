@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/yaml.md",
+  "title": "Composant YAML",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la règle stricte concernant l'indentation dans les fichiers YAML avec Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Les tabulations sont obligatoires.",
+        "Les tabulations sont interdites, il faut utiliser des espaces (généralement 2 ou 4).",
+        "Peu importe, tant que c'est aligné.",
+        "Il ne faut pas indenter."
+      ],
+      "correct_answers": [
+        "Les tabulations sont interdites, il faut utiliser des espaces (généralement 2 ou 4)."
+      ],
+      "explanation": "La spécification YAML interdit les tabulations pour l'indentation pour éviter les ambiguïtés visuelles."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode permet de transformer un tableau PHP en chaîne YAML ?",
+      "type": "single_choice",
+      "options": [
+        "`Yaml::parse()`",
+        "`Yaml::dump()`",
+        "`Yaml::serialize()`",
+        "`Yaml::stringify()`"
+      ],
+      "correct_answers": [
+        "`Yaml::dump()`"
+      ],
+      "explanation": "`dump()` est l'équivalent de `json_encode`, tandis que `parse()` est l'équivalent de `json_decode`."
+    },
+    {
+      "id": 3,
+      "question": "À quoi correspond le symbole `~` (tilde) en YAML standard ?",
+      "type": "single_choice",
+      "options": [
+        "À une chaîne vide.",
+        "À la valeur `null`.",
+        "À l'infini.",
+        "À un commentaire."
+      ],
+      "correct_answers": [
+        "À la valeur `null`."
+      ],
+      "explanation": "Dans Symfony et YAML, `~` est analysé comme `null`."
+    },
+    {
+      "id": 4,
+      "question": "Quelle commande permet de valider la syntaxe de vos fichiers YAML de configuration ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console cache:clear`",
+        "`php bin/console lint:yaml config/`",
+        "`php bin/console check:yaml`",
+        "`php bin/console validate:config`"
+      ],
+      "correct_answers": [
+        "`php bin/console lint:yaml config/`"
+      ],
+      "explanation": "Le linter parse les fichiers et signale les erreurs de syntaxe avant l'exécution."
+    }
+  ]
+}

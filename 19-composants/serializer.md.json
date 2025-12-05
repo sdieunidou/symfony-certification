@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/serializer.md",
+  "title": "Le Composant Serializer",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelles sont les deux étapes du processus de sérialisation dans le composant Serializer de Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Parsing et Dumping.",
+        "Hydratation et Persistance.",
+        "Normalization (Objet vers Array) et Encoding (Array vers String JSON/XML).",
+        "Validation et Transformation."
+      ],
+      "correct_answers": [
+        "Normalization (Objet vers Array) et Encoding (Array vers String JSON/XML)."
+      ],
+      "explanation": "Le sérialiseur orchestre des Normalizers (qui gèrent les objets) et des Encoders (qui gèrent le format)."
+    },
+    {
+      "id": 2,
+      "question": "Comment contrôler quels champs d'un objet sont exposés lors de la sérialisation ?",
+      "type": "single_choice",
+      "options": [
+        "En mettant les propriétés en `private`.",
+        "En utilisant l'attribut `#[Groups(['nom_groupe'])]` sur les propriétés et en passant le contexte `groups` à la méthode `serialize`.",
+        "En supprimant les getters.",
+        "Ce n'est pas possible, tout est exposé."
+      ],
+      "correct_answers": [
+        "En utilisant l'attribut `#[Groups(['nom_groupe'])]` sur les propriétés et en passant le contexte `groups` à la méthode `serialize`."
+      ],
+      "explanation": "Les groupes de sérialisation sont le mécanisme principal pour filtrer les données (ex: ne pas exposer le mot de passe)."
+    },
+    {
+      "id": 3,
+      "question": "Quel attribut permet de renommer une clé dans le JSON généré (ex: `firstName` devient `first_name`) ?",
+      "type": "single_choice",
+      "options": [
+        "`#[SerializedName('first_name')]`",
+        "`#[Rename('first_name')]`",
+        "`#[Alias('first_name')]`",
+        "`#[JsonKey('first_name')]`"
+      ],
+      "correct_answers": [
+        "`#[SerializedName('first_name')]`"
+      ],
+      "explanation": "`SerializedName` permet de découpler le nom de la propriété PHP du nom de la clé dans le flux de sortie."
+    },
+    {
+      "id": 4,
+      "question": "Comment gérer les références circulaires (A contient B qui contient A) pour éviter une boucle infinie lors de la sérialisation ?",
+      "type": "single_choice",
+      "options": [
+        "Le sérialiseur s'arrête automatiquement.",
+        "En utilisant l'option `AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER` (callback) ou en configurant les `Groups` pour casser la boucle.",
+        "En augmentant la mémoire PHP.",
+        "En utilisant XML."
+      ],
+      "correct_answers": [
+        "En utilisant l'option `AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER` (callback) ou en configurant les `Groups` pour casser la boucle."
+      ],
+      "explanation": "Si une boucle est détectée, le handler est appelé (ex: pour retourner l'ID au lieu de l'objet complet)."
+    }
+  ]
+}
