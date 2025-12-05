@@ -1,0 +1,100 @@
+{
+  "source_file": "02-http/negociation-contenu.md",
+  "title": "Négociation de Contenu (Content Negotiation)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quels sont les axes principaux de la négociation de contenu HTTP ?",
+      "type": "multiple_choice",
+      "options": [
+        "Type de média (Accept)",
+        "Langue (Accept-Language)",
+        "Encodage (Accept-Encoding)",
+        "Jeu de caractères (Accept-Charset)",
+        "Système d'exploitation (User-Agent)"
+      ],
+      "correct_answers": [
+        "Type de média (Accept)",
+        "Langue (Accept-Language)",
+        "Encodage (Accept-Encoding)",
+        "Jeu de caractères (Accept-Charset)"
+      ],
+      "explanation": "Le User-Agent sert à l'identification du client, pas à la négociation du format de la ressource."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode Symfony recommande-t-il en priorité pour déterminer le format de la réponse (JSON, HTML, etc.) ?",
+      "type": "single_choice",
+      "options": [
+        "Le header `Accept`.",
+        "L'extension de l'URL (attribut de requête `_format`).",
+        "Un paramètre GET `?format=json`.",
+        "Le Session Storage."
+      ],
+      "correct_answers": [
+        "L'extension de l'URL (attribut de requête `_format`)."
+      ],
+      "explanation": "L'utilisation de l'URL (ex: `/api/users.json`) est plus explicite, plus simple à tester et facilite la gestion du cache."
+    },
+    {
+      "id": 3,
+      "question": "Si un client demande un format non supporté par le serveur via le header `Accept`, quel code d'erreur devrait théoriquement être retourné ?",
+      "type": "single_choice",
+      "options": [
+        "400 Bad Request",
+        "404 Not Found",
+        "406 Not Acceptable",
+        "415 Unsupported Media Type"
+      ],
+      "correct_answers": [
+        "406 Not Acceptable"
+      ],
+      "explanation": "Le code 406 indique que le serveur ne peut pas produire de réponse correspondant à la liste des types acceptables définis dans les headers proactifs."
+    },
+    {
+      "id": 4,
+      "question": "À quoi sert le composant Serializer dans le contexte de la négociation de contenu ?",
+      "type": "single_choice",
+      "options": [
+        "À choisir le format.",
+        "À transformer les données (Objets) en chaîne de caractères au format choisi (JSON, XML, CSV).",
+        "À compresser la réponse.",
+        "À valider les données."
+      ],
+      "correct_answers": [
+        "À transformer les données (Objets) en chaîne de caractères au format choisi (JSON, XML, CSV)."
+      ],
+      "explanation": "La négociation choisit le format (le 'Quoi'), le Serializer effectue la transformation (le 'Comment')."
+    },
+    {
+      "id": 5,
+      "question": "Comment définir le format par défaut d'une route si aucune extension n'est fournie ?",
+      "type": "single_choice",
+      "options": [
+        "Dans le contrôleur.",
+        "Dans le fichier `services.yaml`.",
+        "Dans la définition de la route avec `defaults: { _format: json }`.",
+        "C'est impossible, il faut toujours une extension."
+      ],
+      "correct_answers": [
+        "Dans la définition de la route avec `defaults: { _format: json }`."
+      ],
+      "explanation": "Cela permet de rendre l'extension optionnelle (`/api/users` renverra du JSON par défaut)."
+    },
+    {
+      "id": 6,
+      "question": "Que signifie `q=0.9` dans un header `Accept: application/json;q=1.0, text/html;q=0.9` ?",
+      "type": "single_choice",
+      "options": [
+        "La quantité de données.",
+        "Le facteur de qualité (priorité). Le client préfère JSON (1.0) à HTML (0.9).",
+        "La version du format.",
+        "Le niveau de compression."
+      ],
+      "correct_answers": [
+        "Le facteur de qualité (priorité). Le client préfère JSON (1.0) à HTML (0.9)."
+      ],
+      "explanation": "Les q-values permettent au client d'exprimer ses préférences relatives."
+    }
+  ]
+}

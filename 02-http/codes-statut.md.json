@@ -1,0 +1,126 @@
+{
+  "source_file": "02-http/codes-statut.md",
+  "title": "Codes de Statut HTTP",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel code HTTP indique que la ressource a été créée avec succès (suite à un POST) ?",
+      "type": "single_choice",
+      "options": [
+        "200 OK",
+        "201 Created",
+        "204 No Content",
+        "202 Accepted"
+      ],
+      "correct_answers": [
+        "201 Created"
+      ],
+      "explanation": "Le code 201 doit idéalement être accompagné d'un header `Location` pointant vers la nouvelle ressource."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence entre une erreur 401 et 403 ?",
+      "type": "single_choice",
+      "options": [
+        "401 = Serveur cassé, 403 = Page introuvable.",
+        "401 = Non Authentifié (Qui êtes-vous ?), 403 = Non Autorisé (Droits insuffisants).",
+        "401 = Droits insuffisants, 403 = Non Authentifié.",
+        "Il n'y a pas de différence."
+      ],
+      "correct_answers": [
+        "401 = Non Authentifié (Qui êtes-vous ?), 403 = Non Autorisé (Droits insuffisants)."
+      ],
+      "explanation": "Le 401 demande une authentification (Login), le 403 refuse l'accès à une personne déjà identifiée (Permissions)."
+    },
+    {
+      "id": 3,
+      "question": "Quel code utiliser pour une redirection permanente (SEO Friendly) ?",
+      "type": "single_choice",
+      "options": [
+        "301 Moved Permanently",
+        "302 Found",
+        "307 Temporary Redirect",
+        "304 Not Modified"
+      ],
+      "correct_answers": [
+        "301 Moved Permanently"
+      ],
+      "explanation": "Le 301 indique aux moteurs de recherche de mettre à jour leur index avec la nouvelle URL."
+    },
+    {
+      "id": 4,
+      "question": "Quel code indique une erreur de validation sémantique (ex: format email invalide) dans une API moderne ?",
+      "type": "single_choice",
+      "options": [
+        "400 Bad Request",
+        "406 Not Acceptable",
+        "422 Unprocessable Entity",
+        "500 Internal Server Error"
+      ],
+      "correct_answers": [
+        "422 Unprocessable Entity"
+      ],
+      "explanation": "Bien que le 400 soit parfois utilisé, le 422 est plus précis : la syntaxe de la requête est bonne (JSON valide), mais les instructions ne peuvent être traitées (données invalides)."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la particularité du code 307 par rapport au 302 ?",
+      "type": "single_choice",
+      "options": [
+        "Il est permanent.",
+        "Il garantit que la méthode HTTP (POST) ne sera pas changée en GET lors de la redirection.",
+        "Il ne fonctionne que sur HTTPS.",
+        "Il est déprécié."
+      ],
+      "correct_answers": [
+        "Il garantit que la méthode HTTP (POST) ne sera pas changée en GET lors de la redirection."
+      ],
+      "explanation": "Historiquement, les navigateurs transformaient les POST en GET sur une 302. La 307 interdit ce changement de méthode."
+    },
+    {
+      "id": 6,
+      "question": "Comment mapper une Exception PHP personnalisée vers un code HTTP spécifique dans Symfony 6.3+ ?",
+      "type": "single_choice",
+      "options": [
+        "Uniquement via `framework.yaml`.",
+        "En implémentant `HttpExceptionInterface`.",
+        "En utilisant l'attribut `#[WithHttpStatus(Code)]` sur la classe d'exception.",
+        "Ce n'est pas possible, toutes les exceptions renvoient 500."
+      ],
+      "correct_answers": [
+        "En utilisant l'attribut `#[WithHttpStatus(Code)]` sur la classe d'exception."
+      ],
+      "explanation": "C'est la méthode moderne et décentralisée pour gérer les statuts d'erreur."
+    },
+    {
+      "id": 7,
+      "question": "Quel code correspond à 'Service Unavailable' (Maintenance ou surcharge) ?",
+      "type": "single_choice",
+      "options": [
+        "500",
+        "502",
+        "503",
+        "504"
+      ],
+      "correct_answers": [
+        "503"
+      ],
+      "explanation": "Le 503 indique une indisponibilité temporaire. Il peut inclure un header `Retry-After`."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi ne faut-il jamais renvoyer une 500 avec stack trace en production ?",
+      "type": "single_choice",
+      "options": [
+        "Pour des raisons de performance.",
+        "Pour éviter de divulguer des informations sensibles sur l'infrastructure (Faille de sécurité).",
+        "Parce que les navigateurs ne savent pas lire les 500.",
+        "C'est une limitation de PHP."
+      ],
+      "correct_answers": [
+        "Pour éviter de divulguer des informations sensibles sur l'infrastructure (Faille de sécurité)."
+      ],
+      "explanation": "La stack trace expose les chemins de fichiers, versions de lib, et parfois des extraits de code."
+    }
+  ]
+}

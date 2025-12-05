@@ -1,0 +1,126 @@
+{
+  "source_file": "03-architecture-symfony/composants.md",
+  "title": "Composants (Components)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Qu'est-ce qu'un Composant Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Un plugin WordPress.",
+        "Une librairie PHP découplée et autonome, utilisable hors du framework Symfony.",
+        "Un fichier de configuration.",
+        "Une extension C++."
+      ],
+      "correct_answers": [
+        "Une librairie PHP découplée et autonome, utilisable hors du framework Symfony."
+      ],
+      "explanation": "Des projets comme Laravel, Drupal ou PrestaShop utilisent des composants Symfony (ex: Console, HttpFoundation) sans utiliser tout le framework."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence entre un Composant et un Bundle ?",
+      "type": "single_choice",
+      "options": [
+        "Il n'y en a pas.",
+        "Un Composant est une librairie PHP pure (Library), un Bundle est un plugin d'intégration dans le framework Symfony (Config, Services).",
+        "Un Bundle est plus petit qu'un Composant.",
+        "Les Bundles sont dépréciés."
+      ],
+      "correct_answers": [
+        "Un Composant est une librairie PHP pure (Library), un Bundle est un plugin d'intégration dans le framework Symfony (Config, Services)."
+      ],
+      "explanation": "Le composant fournit la logique (ex: Security), le bundle fournit l'intégration (ex: SecurityBundle configure les firewalls dans le kernel)."
+    },
+    {
+      "id": 3,
+      "question": "Quel composant est responsable de la gestion du cycle Request -> Response ?",
+      "type": "single_choice",
+      "options": [
+        "Routing",
+        "HttpKernel",
+        "BrowserKit",
+        "Process"
+      ],
+      "correct_answers": [
+        "HttpKernel"
+      ],
+      "explanation": "HttpKernel est le cœur du système qui orchestre les événements pour transformer la requête en réponse."
+    },
+    {
+      "id": 4,
+      "question": "Quel composant utiliseriez-vous pour manipuler le système de fichiers de manière orientée objet ?",
+      "type": "single_choice",
+      "options": [
+        "Stream",
+        "Filesystem",
+        "Finder",
+        "IoC"
+      ],
+      "correct_answers": [
+        "Filesystem"
+      ],
+      "explanation": "Le composant Filesystem fournit des méthodes comme `mkdir`, `touch`, `copy`, `remove` de manière portable."
+    },
+    {
+      "id": 5,
+      "question": "Quel composant sert à créer des commandes en ligne de commande (`bin/console`) ?",
+      "type": "single_choice",
+      "options": [
+        "Terminal",
+        "Console",
+        "Shell",
+        "Cli"
+      ],
+      "correct_answers": [
+        "Console"
+      ],
+      "explanation": "Le composant Console est l'un des plus populaires et utilisés en dehors de Symfony."
+    },
+    {
+      "id": 6,
+      "question": "Quel composant permet de transformer des objets en JSON/XML et inversement ?",
+      "type": "single_choice",
+      "options": [
+        "Transformer",
+        "Serializer",
+        "Encoder",
+        "Mapper"
+      ],
+      "correct_answers": [
+        "Serializer"
+      ],
+      "explanation": "Le Serializer gère la Normalisation (Objet -> Array) et l'Encodage (Array -> Format)."
+    },
+    {
+      "id": 7,
+      "question": "Pour valider qu'un email est correct, quel composant utiliser ?",
+      "type": "single_choice",
+      "options": [
+        "Check",
+        "Validator",
+        "Security",
+        "Form"
+      ],
+      "correct_answers": [
+        "Validator"
+      ],
+      "explanation": "Le composant Validator fournit un moteur de validation robuste basé sur des contraintes."
+    },
+    {
+      "id": 8,
+      "question": "Que contiennent les paquets `symfony/contracts` ?",
+      "type": "single_choice",
+      "options": [
+        "Des contrats légaux.",
+        "Uniquement des Interfaces et des Traits pour garantir l'interopérabilité et le faible couplage.",
+        "Des classes abstraites lourdes.",
+        "Des fichiers de configuration."
+      ],
+      "correct_answers": [
+        "Uniquement des Interfaces et des Traits pour garantir l'interopérabilité et le faible couplage."
+      ],
+      "explanation": "Cela permet de dépendre d'abstractions légères (`HttpClientInterface`) plutôt que d'implémentations complètes."
+    }
+  ]
+}

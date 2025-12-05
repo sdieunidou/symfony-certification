@@ -1,0 +1,112 @@
+{
+  "source_file": "02-http/reponse-http.md",
+  "title": "Réponse HTTP (Response)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel objet doit impérativement retourner un contrôleur Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Un tableau (array).",
+        "Une chaîne de caractères (string).",
+        "Un objet héritant de `Symfony\\Component\\HttpFoundation\\Response`.",
+        "Rien (void)."
+      ],
+      "correct_answers": [
+        "Un objet héritant de `Symfony\\Component\\HttpFoundation\\Response`."
+      ],
+      "explanation": "Le Kernel attend strictement un objet Response pour pouvoir l'envoyer au client."
+    },
+    {
+      "id": 2,
+      "question": "Quelle classe de réponse utiliser pour envoyer un gros fichier (ex: vidéo, export CSV de 1Go) sans saturer la mémoire RAM ?",
+      "type": "multiple_choice",
+      "options": [
+        "Response",
+        "JsonResponse",
+        "StreamedResponse",
+        "BinaryFileResponse"
+      ],
+      "correct_answers": [
+        "StreamedResponse",
+        "BinaryFileResponse"
+      ],
+      "explanation": "`BinaryFileResponse` est optimisé pour les fichiers statiques existants. `StreamedResponse` est idéal pour le contenu généré à la volée."
+    },
+    {
+      "id": 3,
+      "question": "Que fait la méthode `send()` de l'objet Response ?",
+      "type": "single_choice",
+      "options": [
+        "Elle prépare les headers.",
+        "Elle envoie physiquement les headers HTTP et le contenu au navigateur, terminant l'interaction.",
+        "Elle sauvegarde la réponse en base de données.",
+        "Elle valide le contenu HTML."
+      ],
+      "correct_answers": [
+        "Elle envoie physiquement les headers HTTP et le contenu au navigateur, terminant l'interaction."
+      ],
+      "explanation": "C'est l'étape finale. Après `send()`, on ne peut plus modifier les headers car ils sont partis sur le réseau."
+    },
+    {
+      "id": 4,
+      "question": "Quelle classe de réponse encode automatiquement vos données en JSON et fixe le bon Content-Type ?",
+      "type": "single_choice",
+      "options": [
+        "ApiResponse",
+        "JsonResponse",
+        "XmlResponse",
+        "DataResponse"
+      ],
+      "correct_answers": [
+        "JsonResponse"
+      ],
+      "explanation": "`JsonResponse` simplifie la création d'APIs en gérant `json_encode` et les headers."
+    },
+    {
+      "id": 5,
+      "question": "Quel header de sécurité permet d'empêcher l'affichage de votre site dans une iFrame (Clickjacking) ?",
+      "type": "single_choice",
+      "options": [
+        "X-XSS-Protection",
+        "Content-Security-Policy",
+        "X-Frame-Options",
+        "Strict-Transport-Security"
+      ],
+      "correct_answers": [
+        "X-Frame-Options"
+      ],
+      "explanation": "La valeur `DENY` ou `SAMEORIGIN` bloque l'intégration en iframe."
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert la fonctionnalité HTTP/103 Early Hints supportée par Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "À envoyer une réponse partielle.",
+        "À envoyer des headers 'Link' au client pour qu'il précharge des assets (CSS/JS) PENDANT que le serveur calcule encore la réponse principale.",
+        "À annuler la requête.",
+        "À compresser les headers."
+      ],
+      "correct_answers": [
+        "À envoyer des headers 'Link' au client pour qu'il précharge des assets (CSS/JS) PENDANT que le serveur calcule encore la réponse principale."
+      ],
+      "explanation": "Cela améliore la performance perçue (LCP) en parallélisant le chargement des ressources front et le traitement back."
+    },
+    {
+      "id": 7,
+      "question": "Que se passe-t-il si on essaie de modifier un header après l'appel à `send()` ?",
+      "type": "single_choice",
+      "options": [
+        "La modification est prise en compte.",
+        "PHP lance une erreur 'Headers already sent'.",
+        "Rien, la modification est ignorée silencieusement.",
+        "Le navigateur reçoit le header en double."
+      ],
+      "correct_answers": [
+        "PHP lance une erreur 'Headers already sent'."
+      ],
+      "explanation": "Le protocole HTTP impose d'envoyer les headers avant le corps. Une fois le corps commencé (echo), les headers sont verrouillés."
+    }
+  ]
+}

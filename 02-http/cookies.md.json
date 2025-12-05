@@ -1,0 +1,126 @@
+{
+  "source_file": "02-http/cookies.md",
+  "title": "Cookies",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Où sont stockés les cookies ?",
+      "type": "single_choice",
+      "options": [
+        "Sur le serveur.",
+        "Dans la base de données.",
+        "Côté client (Navigateur).",
+        "Dans le cache DNS."
+      ],
+      "correct_answers": [
+        "Côté client (Navigateur)."
+      ],
+      "explanation": "Le cookie est un petit fichier texte stocké par le navigateur et renvoyé au serveur à chaque requête."
+    },
+    {
+      "id": 2,
+      "question": "Que fait le flag `HttpOnly` sur un cookie ?",
+      "type": "single_choice",
+      "options": [
+        "Il rend le cookie accessible uniquement via HTTPS.",
+        "Il empêche le code JavaScript côté client d'accéder au cookie (protection XSS).",
+        "Il force le cookie à être supprimé à la fermeture du navigateur.",
+        "Il chiffre le contenu du cookie."
+      ],
+      "correct_answers": [
+        "Il empêche le code JavaScript côté client d'accéder au cookie (protection XSS)."
+      ],
+      "explanation": "C'est une mesure de sécurité essentielle pour protéger les identifiants de session contre le vol via XSS."
+    },
+    {
+      "id": 3,
+      "question": "Que fait le flag `SameSite=Lax` (valeur par défaut recommandée) ?",
+      "type": "single_choice",
+      "options": [
+        "Il interdit tout envoi du cookie.",
+        "Il envoie le cookie uniquement pour les requêtes du même site, et lors de la navigation Top-Level (clic sur un lien), mais pas pour les appels tiers (images, iframes, AJAX cross-site).",
+        "Il autorise l'envoi du cookie partout.",
+        "Il force le mode Strict."
+      ],
+      "correct_answers": [
+        "Il envoie le cookie uniquement pour les requêtes du même site, et lors de la navigation Top-Level (clic sur un lien), mais pas pour les appels tiers (images, iframes, AJAX cross-site)."
+      ],
+      "explanation": "Cela offre un bon équilibre entre sécurité (protection CSRF) et ergonomie utilisateur."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la différence majeure entre un Cookie et une Session ?",
+      "type": "single_choice",
+      "options": [
+        "La Session est stockée côté serveur (plus sûre, plus grande capacité), le Cookie est stocké côté client (limité à 4KB, modifiable).",
+        "La Session utilise du JSON, le Cookie du XML.",
+        "Le Cookie est plus sécurisé que la Session.",
+        "Il n'y en a aucune, ce sont des synonymes."
+      ],
+      "correct_answers": [
+        "La Session est stockée côté serveur (plus sûre, plus grande capacité), le Cookie est stocké côté client (limité à 4KB, modifiable)."
+      ],
+      "explanation": "Généralement, un petit cookie de session contient juste l'ID qui permet de retrouver les données complètes stockées côté serveur."
+    },
+    {
+      "id": 5,
+      "question": "Comment supprimer un cookie proprement ?",
+      "type": "single_choice",
+      "options": [
+        "On utilise la méthode `delete()`.",
+        "On définit un nouveau cookie avec le même nom mais une date d'expiration dans le passé.",
+        "On vide sa valeur.",
+        "Le serveur envoie une commande DELETE au navigateur."
+      ],
+      "correct_answers": [
+        "On définit un nouveau cookie avec le même nom mais une date d'expiration dans le passé."
+      ],
+      "explanation": "Le protocole HTTP ne prévoit pas de commande de suppression explicite. On écrase le cookie par une version périmée."
+    },
+    {
+      "id": 6,
+      "question": "Par défaut, Symfony chiffre-t-il le contenu des cookies que vous créez ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, ils sont envoyés en clair (mais URL-encoded), sauf si on utilise un Marshaller explicite.",
+        "Uniquement en production.",
+        "Oui, mais seulement le cookie de session."
+      ],
+      "correct_answers": [
+        "Non, ils sont envoyés en clair (mais URL-encoded), sauf si on utilise un Marshaller explicite."
+      ],
+      "explanation": "Attention à ne pas stocker de données sensibles en clair dans les cookies personnalisés. Le cookie de session, lui, est signé (pas chiffré) par défaut."
+    },
+    {
+      "id": 7,
+      "question": "Quelle est la limite de taille approximative d'un cookie ?",
+      "type": "single_choice",
+      "options": [
+        "1 MB",
+        "4 KB",
+        "10 KB",
+        "Illimité"
+      ],
+      "correct_answers": [
+        "4 KB"
+      ],
+      "explanation": "Cette contrainte force à utiliser la Session ou le LocalStorage pour les données volumineuses."
+    },
+    {
+      "id": 8,
+      "question": "Si vous configurez `SameSite=None` pour autoriser l'usage dans une iframe tierce, quel autre flag est OBLIGATOIRE ?",
+      "type": "single_choice",
+      "options": [
+        "HttpOnly",
+        "Secure",
+        "Raw",
+        "Expires"
+      ],
+      "correct_answers": [
+        "Secure"
+      ],
+      "explanation": "Les navigateurs modernes rejettent `SameSite=None` si le cookie n'est pas marqué `Secure` (HTTPS uniquement)."
+    }
+  ]
+}

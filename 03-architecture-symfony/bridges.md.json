@@ -1,0 +1,98 @@
+{
+  "source_file": "03-architecture-symfony/bridges.md",
+  "title": "Bridges (Ponts)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la fonction principale d'un Bridge dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Connecter deux bases de données entre elles.",
+        "Servir de glu pour intégrer une librairie tierce (ex: Twig, Doctrine, Monolog) nativement dans l'écosystème Symfony (Conteneur, Events).",
+        "Remplacer le contrôleur frontal.",
+        "Créer des ponts réseaux entre micro-services."
+      ],
+      "correct_answers": [
+        "Servir de glu pour intégrer une librairie tierce (ex: Twig, Doctrine, Monolog) nativement dans l'écosystème Symfony (Conteneur, Events)."
+      ],
+      "explanation": "Symfony favorise le découplage. Les bridges permettent d'utiliser des bibliothèques externes comme si elles faisaient partie du framework."
+    },
+    {
+      "id": 2,
+      "question": "Qui fournit la fonction `path()` ou `url()` à l'intérieur des templates Twig ?",
+      "type": "single_choice",
+      "options": [
+        "La librairie Twig elle-même.",
+        "Le composant Routing.",
+        "Le TwigBridge (via RoutingExtension).",
+        "Le contrôleur."
+      ],
+      "correct_answers": [
+        "Le TwigBridge (via RoutingExtension)."
+      ],
+      "explanation": "Twig est un moteur de template agnostique qui ne connaît pas le routing de Symfony. C'est le Bridge qui injecte cette capacité."
+    },
+    {
+      "id": 3,
+      "question": "Que permet de faire le `symfony/phpunit-bridge` ?",
+      "type": "multiple_choice",
+      "options": [
+        "Détecter et rapporter les dépréciations déclenchées pendant les tests.",
+        "Installer des Polyfills PHP si nécessaire.",
+        "Exécuter les tests en parallèle sur plusieurs serveurs.",
+        "Gérer différentes versions de PHPUnit (Namespaced)."
+      ],
+      "correct_answers": [
+        "Détecter et rapporter les dépréciations déclenchées pendant les tests.",
+        "Installer des Polyfills PHP si nécessaire.",
+        "Gérer différentes versions de PHPUnit (Namespaced)."
+      ],
+      "explanation": "C'est un outil essentiel pour garantir la qualité du code et préparer les migrations futures (Deprecation Helper)."
+    },
+    {
+      "id": 4,
+      "question": "Quel bridge est responsable de l'intégration de la validation `UniqueEntity` ?",
+      "type": "single_choice",
+      "options": [
+        "ValidatorBridge",
+        "DoctrineBridge",
+        "SecurityBridge",
+        "EntityBridge"
+      ],
+      "correct_answers": [
+        "DoctrineBridge"
+      ],
+      "explanation": "La contrainte `UniqueEntity` nécessite d'interroger la base de données via Doctrine pour vérifier l'unicité, d'où son emplacement dans le DoctrineBridge."
+    },
+    {
+      "id": 5,
+      "question": "Est-ce que l'installation d'un Bridge (ex: `twig-bridge`) installe automatiquement la librairie tierce (ex: `twig/twig`) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, ce sont des paquets distincts, mais Composer et Symfony Flex gèrent souvent ces dépendances ensemble.",
+        "Non, il faut compiler la librairie manuellement.",
+        "Le bridge contient déjà tout le code de la librairie."
+      ],
+      "correct_answers": [
+        "Non, ce sont des paquets distincts, mais Composer et Symfony Flex gèrent souvent ces dépendances ensemble."
+      ],
+      "explanation": "Le bridge dépend généralement de la librairie, donc Composer l'installe, mais conceptuellement ce sont deux entités séparées."
+    },
+    {
+      "id": 6,
+      "question": "Quel Bridge connecte les logs du système à la librairie de logging standard de Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "LoggerBridge",
+        "PsrLogBridge",
+        "MonologBridge",
+        "SystemBridge"
+      ],
+      "correct_answers": [
+        "MonologBridge"
+      ],
+      "explanation": "MonologBridge fait le lien entre le `LoggerInterface` (PSR-3) utilisé par Symfony et la librairie Monolog."
+    }
+  ]
+}

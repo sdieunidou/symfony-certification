@@ -1,0 +1,126 @@
+{
+  "source_file": "03-architecture-symfony/event-dispatcher.md",
+  "title": "Event Dispatcher et Événements du Noyau",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel design pattern implémente le composant EventDispatcher ?",
+      "type": "single_choice",
+      "options": [
+        "Singleton",
+        "Mediator / Observer",
+        "Factory",
+        "Adapter"
+      ],
+      "correct_answers": [
+        "Mediator / Observer"
+      ],
+      "explanation": "Le Dispatcher agit comme médiateur entre les émetteurs d'événements et les écouteurs (Observers), découplant les deux parties."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence principale entre un Event Listener et un Event Subscriber ?",
+      "type": "single_choice",
+      "options": [
+        "Le Listener est plus rapide.",
+        "Le Subscriber connaît les événements qu'il écoute (via `getSubscribedEvents`), le Listener doit être configuré explicitement (tags/attributs).",
+        "Le Listener ne peut écouter qu'un seul événement.",
+        "Le Subscriber est déprécié."
+      ],
+      "correct_answers": [
+        "Le Subscriber connaît les événements qu'il écoute (via `getSubscribedEvents`), le Listener doit être configuré explicitement (tags/attributs)."
+      ],
+      "explanation": "Les Subscribers sont plus autonomes et faciles à réutiliser car ils portent leur propre configuration."
+    },
+    {
+      "id": 3,
+      "question": "Quel événement du Kernel survient en tout premier (avant même le routing) ?",
+      "type": "single_choice",
+      "options": [
+        "kernel.controller",
+        "kernel.request",
+        "kernel.view",
+        "kernel.response"
+      ],
+      "correct_answers": [
+        "kernel.request"
+      ],
+      "explanation": "C'est le point d'entrée pour gérer les firewalls, la locale, ou les redirections globales."
+    },
+    {
+      "id": 4,
+      "question": "Si un Listener sur `kernel.request` définit une Réponse (`$event->setResponse($response)`), que se passe-t-il ?",
+      "type": "single_choice",
+      "options": [
+        "Rien de spécial.",
+        "La propagation continue normalement.",
+        "Le traitement s'arrête, les étapes suivantes (Controller, View) sont sautées, et on passe directement à `kernel.response`.",
+        "Une exception est levée."
+      ],
+      "correct_answers": [
+        "Le traitement s'arrête, les étapes suivantes (Controller, View) sont sautées, et on passe directement à `kernel.response`."
+      ],
+      "explanation": "Cela permet de court-circuiter l'application (ex: Cache hit, Access Denied, Maintenance)."
+    },
+    {
+      "id": 5,
+      "question": "À quel moment est déclenché l'événement `kernel.view` ?",
+      "type": "single_choice",
+      "options": [
+        "Toujours après le contrôleur.",
+        "Uniquement si le contrôleur retourne une valeur qui N'EST PAS une Response (ex: tableau, null, objet).",
+        "Avant le rendu Twig.",
+        "En cas d'erreur 404."
+      ],
+      "correct_answers": [
+        "Uniquement si le contrôleur retourne une valeur qui N'EST PAS une Response (ex: tableau, null, objet)."
+      ],
+      "explanation": "Son but est de transformer cette valeur brute en objet Response (ex: ViewListener de FOSRestBundle ou API Platform)."
+    },
+    {
+      "id": 6,
+      "question": "Quel événement permet d'effectuer des tâches lourdes après que la réponse a été envoyée à l'utilisateur ?",
+      "type": "single_choice",
+      "options": [
+        "kernel.finish_request",
+        "kernel.terminate",
+        "kernel.response",
+        "kernel.shutdown"
+      ],
+      "correct_answers": [
+        "kernel.terminate"
+      ],
+      "explanation": "`kernel.terminate` survient après `$response->send()`. L'utilisateur a déjà sa page, le serveur peut finir son travail (emails, logs) sans le faire attendre."
+    },
+    {
+      "id": 7,
+      "question": "Comment arrêter la propagation d'un événement aux autres listeners ?",
+      "type": "single_choice",
+      "options": [
+        "return false;",
+        "throw new StopEventException();",
+        "$event->stopPropagation();",
+        "C'est impossible."
+      ],
+      "correct_answers": [
+        "$event->stopPropagation();"
+      ],
+      "explanation": "Cela empêche les listeners ayant une priorité inférieure d'être exécutés."
+    },
+    {
+      "id": 8,
+      "question": "Que représente la priorité d'un listener ?",
+      "type": "single_choice",
+      "options": [
+        "Un entier. Plus il est élevé, plus le listener est exécuté tôt.",
+        "Un entier. Plus il est bas, plus le listener est exécuté tôt.",
+        "Une chaîne de caractères alphabétique.",
+        "Un booléen."
+      ],
+      "correct_answers": [
+        "Un entier. Plus il est élevé, plus le listener est exécuté tôt."
+      ],
+      "explanation": "Le défaut est 0. Un listener avec priorité 10 passera avant un listener avec priorité 0."
+    }
+  ]
+}

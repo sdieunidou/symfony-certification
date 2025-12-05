@@ -1,0 +1,96 @@
+{
+  "source_file": "03-architecture-symfony/cli.md",
+  "title": "Symfony CLI",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence fondamentale entre `symfony` (CLI) et `bin/console` ?",
+      "type": "single_choice",
+      "options": [
+        "C'est la même chose.",
+        "`symfony` est un binaire global (écrit en Go) pour gérer l'écosystème et le serveur local, `bin/console` est un script PHP interne à chaque projet.",
+        "`symfony` est pour la prod, `bin/console` pour le dev.",
+        "`bin/console` est déprécié."
+      ],
+      "correct_answers": [
+        "`symfony` est un binaire global (écrit en Go) pour gérer l'écosystème et le serveur local, `bin/console` est un script PHP interne à chaque projet."
+      ],
+      "explanation": "Le CLI Symfony s'installe sur la machine et aide à gérer plusieurs projets, les tunnels, le déploiement, etc."
+    },
+    {
+      "id": 2,
+      "question": "Quel avantage majeur offre la commande `symfony server:start` par rapport au serveur PHP natif (`php -S`) ?",
+      "type": "single_choice",
+      "options": [
+        "Elle est plus lente mais plus sûre.",
+        "Elle supporte automatiquement HTTPS (TLS) avec génération de certificat local et HTTP/2.",
+        "Elle utilise Apache en arrière-plan.",
+        "Elle ne nécessite pas PHP installé."
+      ],
+      "correct_answers": [
+        "Elle supporte automatiquement HTTPS (TLS) avec génération de certificat local et HTTP/2."
+      ],
+      "explanation": "Le support TLS natif permet de développer en HTTPS localement ("no mixed content issues") très facilement."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert la commande `symfony check:security` ?",
+      "type": "single_choice",
+      "options": [
+        "À vérifier les permissions des fichiers.",
+        "À scanner le code pour trouver des failles XSS.",
+        "À analyser le `composer.lock` pour détecter des dépendances ayant des failles de sécurité connues.",
+        "À configurer le pare-feu."
+      ],
+      "correct_answers": [
+        "À analyser le `composer.lock` pour détecter des dépendances ayant des failles de sécurité connues."
+      ],
+      "explanation": "Elle compare vos versions de paquets avec la Security Advisories Database de Symfony."
+    },
+    {
+      "id": 4,
+      "question": "Comment créer un nouveau projet Web complet avec le CLI ?",
+      "type": "single_choice",
+      "options": [
+        "symfony new my_project",
+        "symfony init my_project",
+        "symfony new my_project --webapp",
+        "symfony create my_project"
+      ],
+      "correct_answers": [
+        "symfony new my_project --webapp"
+      ],
+      "explanation": "L'option `--webapp` installe tout le pack nécessaire (Twig, Profiler, etc.), contrairement à la commande simple qui crée un squelette micro-service."
+    },
+    {
+      "id": 5,
+      "question": "Pourquoi est-il recommandé d'utiliser `symfony composer` ou `symfony php` au lieu de `composer` ou `php` directement ?",
+      "type": "single_choice",
+      "options": [
+        "C'est plus joli.",
+        "Le CLI agit comme un proxy qui configure automatiquement l'environnement (php.ini, version PHP) pour qu'il matche celui du serveur web local.",
+        "Les commandes standards ne fonctionnent pas dans un projet Symfony.",
+        "Cela accélère le téléchargement."
+      ],
+      "correct_answers": [
+        "Le CLI agit comme un proxy qui configure automatiquement l'environnement (php.ini, version PHP) pour qu'il matche celui du serveur web local."
+      ],
+      "explanation": "Cela évite les incohérences de version de PHP entre la CLI et le serveur web."
+    },
+    {
+      "id": 6,
+      "question": "Le CLI Symfony est-il obligatoire pour développer une application Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, absolument.",
+        "Non, c'est un outil de productivité optionnel. On peut utiliser Apache, Nginx ou Docker.",
+        "Oui, depuis Symfony 6.",
+        "Seulement sous Windows."
+      ],
+      "correct_answers": [
+        "Non, c'est un outil de productivité optionnel. On peut utiliser Apache, Nginx ou Docker."
+      ],
+      "explanation": "Symfony est un framework PHP standard qui tourne sur n'importe quelle stack compatible."
+    }
+  ]
+}

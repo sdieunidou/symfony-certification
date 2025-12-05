@@ -1,0 +1,96 @@
+{
+  "source_file": "02-http/detection-langue.md",
+  "title": "Détection de la Langue (Locale)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la meilleure pratique pour définir la langue (Locale) dans une URL (SEO Friendly) ?",
+      "type": "single_choice",
+      "options": [
+        "Via un paramètre de requête : `?lang=fr`",
+        "Via une variable de session.",
+        "Via un préfixe d'URL : `/fr/accueil`",
+        "Via le header `Accept-Language`."
+      ],
+      "correct_answers": [
+        "Via un préfixe d'URL : `/fr/accueil`"
+      ],
+      "explanation": "C'est la seule méthode qui permet aux moteurs de recherche d'indexer chaque version linguistique séparément et correctement."
+    },
+    {
+      "id": 2,
+      "question": "Quel est le rôle de l'interface `LocaleAwareInterface` ?",
+      "type": "single_choice",
+      "options": [
+        "Permettre à un contrôleur de changer la langue.",
+        "Permettre à un service (hors requête) d'être notifié automatiquement quand la locale change (via le tag `kernel.locale_aware`).",
+        "Obliger l'utilisateur à choisir une langue.",
+        "Traduire les erreurs PHP."
+      ],
+      "correct_answers": [
+        "Permettre à un service (hors requête) d'être notifié automatiquement quand la locale change (via le tag `kernel.locale_aware`)."
+      ],
+      "explanation": "Cela évite d'injecter la RequestStack dans les services métier, tout en leur permettant de réagir aux changements de contexte linguistique."
+    },
+    {
+      "id": 3,
+      "question": "Qu'est-ce que le concept de 'Sticky Locale' dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "La locale est stockée dans un cookie persistant.",
+        "Une fois la locale détectée dans l'URL (paramètre `_locale`), le générateur d'URL l'utilise automatiquement pour tous les liens suivants.",
+        "L'utilisateur ne peut pas changer de langue.",
+        "La locale est collée en dur dans le fichier .env."
+      ],
+      "correct_answers": [
+        "Une fois la locale détectée dans l'URL (paramètre `_locale`), le générateur d'URL l'utilise automatiquement pour tous les liens suivants."
+      ],
+      "explanation": "Cela évite d'avoir à repasser le paramètre `['_locale' => 'fr']` à chaque appel de la fonction `path()` ou `url()`."
+    },
+    {
+      "id": 4,
+      "question": "Si vous utilisez la session pour stocker la locale, quel problème majeur rencontrez-vous avec le cache HTTP ?",
+      "type": "single_choice",
+      "options": [
+        "La session expire trop vite.",
+        "Il faut ajouter le header `Vary: Cookie`, ce qui rend le cache quasi-inefficace (une version par utilisateur).",
+        "Le cache ne fonctionne plus du tout.",
+        "Les moteurs de recherche vous pénalisent."
+      ],
+      "correct_answers": [
+        "Il faut ajouter le header `Vary: Cookie`, ce qui rend le cache quasi-inefficace (une version par utilisateur)."
+      ],
+      "explanation": "Si l'URL est identique (`/accueil`) pour l'anglais et le français, le cache doit varier sur le cookie de session, ce qui est très coûteux."
+    },
+    {
+      "id": 5,
+      "question": "Dans quelle propriété de l'objet `Request` est stockée la locale ?",
+      "type": "single_choice",
+      "options": [
+        "`$request->query`",
+        "`$request->attributes`",
+        "Ce n'est pas une propriété publique, on y accède via `$request->getLocale()`.",
+        "`$request->server`"
+      ],
+      "correct_answers": [
+        "Ce n'est pas une propriété publique, on y accède via `$request->getLocale()`."
+      ],
+      "explanation": "Bien qu'elle soit stockée en interne dans `attributes` sous la clé `_locale`, l'accesseur officiel est `getLocale()`."
+    },
+    {
+      "id": 6,
+      "question": "Comment Symfony gère-t-il les codes langues régionaux (ex: `fr_CA`) si seule la traduction `fr` existe ?",
+      "type": "single_choice",
+      "options": [
+        "Il affiche une erreur 404.",
+        "Il utilise un mécanisme de fallback automatique vers `fr`.",
+        "Il affiche le texte en anglais (langue par défaut).",
+        "Il affiche les clés de traduction."
+      ],
+      "correct_answers": [
+        "Il utilise un mécanisme de fallback automatique vers `fr`."
+      ],
+      "explanation": "Symfony tente de trouver la meilleure correspondance possible en dégradant gracieusement la spécificité régionale."
+    }
+  ]
+}

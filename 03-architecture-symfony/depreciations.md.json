@@ -1,0 +1,96 @@
+{
+  "source_file": "03-architecture-symfony/depreciations.md",
+  "title": "Bonnes pratiques concernant les dépréciations",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le but d'une dépréciation dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Indiquer que le code est bogué.",
+        "Signaler qu'une fonctionnalité sera supprimée dans la prochaine version majeure et encourager la migration.",
+        "Ralentir l'application.",
+        "Interdire l'utilisation immédiate d'une fonction."
+      ],
+      "correct_answers": [
+        "Signaler qu'une fonctionnalité sera supprimée dans la prochaine version majeure et encourager la migration."
+      ],
+      "explanation": "C'est le mécanisme clé du 'Continuous Upgrade Path' qui permet des mises à jour douces sans casser l'application."
+    },
+    {
+      "id": 2,
+      "question": "Quelle fonction PHP standard Symfony utilise-t-il pour émettre des dépréciations (depuis 5.1) ?",
+      "type": "single_choice",
+      "options": [
+        "trigger_error()",
+        "trigger_deprecation()",
+        "throw new DeprecationException()",
+        "deprecate()"
+      ],
+      "correct_answers": [
+        "trigger_deprecation()"
+      ],
+      "explanation": "Cette fonction encapsule la logique et génère une erreur de niveau `E_USER_DEPRECATED`."
+    },
+    {
+      "id": 3,
+      "question": "En environnement de production, comment doivent être gérées les dépréciations ?",
+      "type": "single_choice",
+      "options": [
+        "Elles doivent être affichées à l'utilisateur pour transparence.",
+        "Elles doivent être totalement ignorées.",
+        "Elles ne doivent jamais être affichées à l'écran, mais idéalement loggées pour préparer les mises à jour.",
+        "Elles arrêtent le script."
+      ],
+      "correct_answers": [
+        "Elles ne doivent jamais être affichées à l'écran, mais idéalement loggées pour préparer les mises à jour."
+      ],
+      "explanation": "L'affichage de warnings en prod est une mauvaise pratique (sécurité/UX), mais le logging est utile pour la maintenance."
+    },
+    {
+      "id": 4,
+      "question": "Comment le PHPUnit Bridge aide-t-il à gérer les dépréciations ?",
+      "type": "single_choice",
+      "options": [
+        "Il les supprime automatiquement du code.",
+        "Il affiche un rapport complet en fin de suite de tests, listant les dépréciations directes et indirectes.",
+        "Il fait échouer le test immédiatement dès la première dépréciation.",
+        "Il ne fait rien."
+      ],
+      "correct_answers": [
+        "Il affiche un rapport complet en fin de suite de tests, listant les dépréciations directes et indirectes."
+      ],
+      "explanation": "Cela permet de voir quelles parties du code ou quelles librairies doivent être mises à jour."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert la variable d'environnement `SYMFONY_DEPRECATIONS_HELPER=max[self]=0` ?",
+      "type": "single_choice",
+      "options": [
+        "À désactiver l'helper.",
+        "À faire échouer les tests si VOTRE code (self) génère la moindre dépréciation, tout en tolérant celles des vendors.",
+        "À accepter toutes les dépréciations.",
+        "À supprimer les fichiers dépréciés."
+      ],
+      "correct_answers": [
+        "À faire échouer les tests si VOTRE code (self) génère la moindre dépréciation, tout en tolérant celles des vendors."
+      ],
+      "explanation": "C'est une configuration pragmatique : soyez strict avec votre code, mais indulgent avec les librairies tierces que vous ne contrôlez pas."
+    },
+    {
+      "id": 6,
+      "question": "Qu'est-ce qu'une dépréciation 'Indirecte' ?",
+      "type": "single_choice",
+      "options": [
+        "Une dépréciation déclenchée par une librairie tierce (vendor) que vous utilisez.",
+        "Une dépréciation cachée.",
+        "Une dépréciation qui ne se produit qu'une fois sur deux.",
+        "Une dépréciation dans votre propre code."
+      ],
+      "correct_answers": [
+        "Une dépréciation déclenchée par une librairie tierce (vendor) que vous utilisez."
+      ],
+      "explanation": "Vous ne pouvez généralement pas corriger une dépréciation indirecte autrement qu'en mettant à jour la librairie concernée."
+    }
+  ]
+}

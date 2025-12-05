@@ -1,0 +1,111 @@
+{
+  "source_file": "02-http/methodes-http.md",
+  "title": "Méthodes HTTP (Verbes)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle méthode HTTP est considérée comme 'Safe' (sûre) ?",
+      "type": "single_choice",
+      "options": [
+        "POST",
+        "DELETE",
+        "GET",
+        "PATCH"
+      ],
+      "correct_answers": [
+        "GET"
+      ],
+      "explanation": "Une méthode Safe (GET, HEAD, OPTIONS) ne modifie jamais l'état du serveur (lecture seule)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence conceptuelle majeure entre PUT et PATCH ?",
+      "type": "single_choice",
+      "options": [
+        "PUT met à jour partiellement, PATCH remplace tout.",
+        "PUT remplace l'intégralité de la ressource (les champs manquants sont effacés), PATCH ne modifie que les champs fournis.",
+        "PUT crée, PATCH met à jour.",
+        "Aucune, c'est pareil."
+      ],
+      "correct_answers": [
+        "PUT remplace l'intégralité de la ressource (les champs manquants sont effacés), PATCH ne modifie que les champs fournis."
+      ],
+      "explanation": "PUT est idempotent et complet. PATCH est partiel."
+    },
+    {
+      "id": 3,
+      "question": "Qu'est-ce qu'une méthode Idempotente ?",
+      "type": "single_choice",
+      "options": [
+        "Une méthode qui échoue si on l'appelle deux fois.",
+        "Une méthode dont l'appel multiple (N fois) produit le même état final sur le serveur qu'un seul appel.",
+        "Une méthode qui ne renvoie rien.",
+        "Une méthode réservée aux administrateurs."
+      ],
+      "correct_answers": [
+        "Une méthode dont l'appel multiple (N fois) produit le même état final sur le serveur qu'un seul appel."
+      ],
+      "explanation": "DELETE et PUT sont idempotents. POST ne l'est pas (crée des doublons)."
+    },
+    {
+      "id": 4,
+      "question": "Comment simuler une méthode DELETE depuis un formulaire HTML classique ?",
+      "type": "single_choice",
+      "options": [
+        "En mettant `method='DELETE'` dans la balise form.",
+        "En envoyant un POST avec un champ caché `_method` valant 'DELETE'.",
+        "Ce n'est pas possible.",
+        "En utilisant du JavaScript obligatoirement."
+      ],
+      "correct_answers": [
+        "En envoyant un POST avec un champ caché `_method` valant 'DELETE'."
+      ],
+      "explanation": "Les navigateurs ne supportent que GET et POST. Symfony intercepte le paramètre `_method` pour émuler les autres verbes."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert la méthode OPTIONS ?",
+      "type": "single_choice",
+      "options": [
+        "À lister les fichiers du serveur.",
+        "À configurer le serveur.",
+        "À demander au serveur quelles méthodes sont supportées par une URL (utilisé pour le CORS 'Preflight').",
+        "À récupérer les options du formulaire."
+      ],
+      "correct_answers": [
+        "À demander au serveur quelles méthodes sont supportées par une URL (utilisé pour le CORS 'Preflight')."
+      ],
+      "explanation": "Le navigateur envoie OPTIONS avant une requête cross-origin (CORS) complexe pour vérifier si le serveur l'autorise."
+    },
+    {
+      "id": 6,
+      "question": "Si une requête arrive avec la méthode PUT sur une route définie uniquement pour POST, quel code HTTP renvoie Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "404 Not Found",
+        "405 Method Not Allowed",
+        "500 Internal Server Error",
+        "400 Bad Request"
+      ],
+      "correct_answers": [
+        "405 Method Not Allowed"
+      ],
+      "explanation": "Symfony détecte que l'URL existe mais que la méthode n'est pas autorisée. Il renvoie 405 avec la liste des méthodes permises dans le header `Allow`."
+    },
+    {
+      "id": 7,
+      "question": "La méthode HEAD est-elle safe ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, elle est identique à GET mais ne renvoie pas de corps de réponse.",
+        "Non, elle modifie le serveur.",
+        "Oui, mais elle ne renvoie pas de headers.",
+        "Non, car elle est dépréciée."
+      ],
+      "correct_answers": [
+        "Oui, elle est identique à GET mais ne renvoie pas de corps de réponse."
+      ],
+      "explanation": "HEAD est utile pour vérifier la validité d'un lien ou la date de modification sans télécharger le contenu."
+    }
+  ]
+}

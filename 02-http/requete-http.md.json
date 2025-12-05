@@ -1,0 +1,126 @@
+{
+  "source_file": "02-http/requete-http.md",
+  "title": "Requête HTTP (Request)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Pourquoi est-il déconseillé d'utiliser les superglobales (`$_GET`, `$_POST`) directement dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'elles sont plus lentes.",
+        "Parce que l'objet `Request` fournit une couche d'abstraction orientée objet, sécurisée, et testable (mockable).",
+        "Parce que PHP va supprimer les superglobales.",
+        "C'est une question de goût."
+      ],
+      "correct_answers": [
+        "Parce que l'objet `Request` fournit une couche d'abstraction orientée objet, sécurisée, et testable (mockable)."
+      ],
+      "explanation": "L'objet Request encapsule l'état et permet de simuler des requêtes dans les tests fonctionnels sans polluer l'environnement global."
+    },
+    {
+      "id": 2,
+      "question": "Dans quelle propriété de l'objet `Request` trouve-t-on les paramètres de route (ex: `{id}`) ?",
+      "type": "single_choice",
+      "options": [
+        "`$request->query`",
+        "`$request->request`",
+        "`$request->attributes`",
+        "`$request->params`"
+      ],
+      "correct_answers": [
+        "`$request->attributes`"
+      ],
+      "explanation": "`attributes` est le sac spécifique à Symfony pour stocker le résultat du matching de route, les objets déserialisés, etc."
+    },
+    {
+      "id": 3,
+      "question": "À quoi correspond `$request->query` ?",
+      "type": "single_choice",
+      "options": [
+        "Aux paramètres POST.",
+        "Aux paramètres d'URL (Query String / $_GET).",
+        "Aux headers.",
+        "Aux cookies."
+      ],
+      "correct_answers": [
+        "Aux paramètres d'URL (Query String / $_GET)."
+      ],
+      "explanation": "Le nom `query` vient de Query String."
+    },
+    {
+      "id": 4,
+      "question": "Si votre application est derrière un Load Balancer ou un Proxy, que devez-vous configurer impérativement ?",
+      "type": "single_choice",
+      "options": [
+        "Le firewall.",
+        "Les Trusted Proxies.",
+        "La base de données.",
+        "Le cache."
+      ],
+      "correct_answers": [
+        "Les Trusted Proxies."
+      ],
+      "explanation": "Sans configurer `trusted_proxies`, `$request->getClientIp()` retournera l'IP interne du Load Balancer au lieu de celle du client, et HTTPS ne sera pas détecté."
+    },
+    {
+      "id": 5,
+      "question": "Depuis Symfony 5/6, comment récupérer un paramètre GET typé en entier de manière sûre ?",
+      "type": "single_choice",
+      "options": [
+        "`(int) $request->query->get('page')`",
+        "`$request->query->getInt('page', 1)`",
+        "`$request->query['page']`",
+        "`intval($_GET['page'])`"
+      ],
+      "correct_answers": [
+        "`$request->query->getInt('page', 1)`"
+      ],
+      "explanation": "La méthode `getInt` gère le transtypage et la valeur par défaut proprement."
+    },
+    {
+      "id": 6,
+      "question": "Comment récupérer le corps (body) d'une requête JSON brute ?",
+      "type": "single_choice",
+      "options": [
+        "`$request->request->all()`",
+        "`$request->getContent()` ou `$request->toArray()`",
+        "`$_POST`",
+        "`$request->getBody()`"
+      ],
+      "correct_answers": [
+        "`$request->getContent()` ou `$request->toArray()`"
+      ],
+      "explanation": "Pour les API JSON, les données ne sont pas dans `$_POST` (qui ne gère que `application/x-www-form-urlencoded`). Il faut lire le flux d'entrée brut."
+    },
+    {
+      "id": 7,
+      "question": "L'objet Request est-il immuable ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, totalement.",
+        "Non, il est mutable (on peut modifier ses propriétés), mais il est recommandé de le considérer comme immuable.",
+        "Oui, depuis PHP 8.2.",
+        "Non, il change à chaque seconde."
+      ],
+      "correct_answers": [
+        "Non, il est mutable (on peut modifier ses propriétés), mais il est recommandé de le considérer comme immuable."
+      ],
+      "explanation": "Bien que techniquement modifiable (ex: ajouter un attribut), modifier l'état de la requête en cours de route peut rendre le code difficile à suivre."
+    },
+    {
+      "id": 8,
+      "question": "Comment accéder à la session depuis la requête ?",
+      "type": "single_choice",
+      "options": [
+        "`$request->session`",
+        "`$request->getSession()`",
+        "`$_SESSION`",
+        "Impossible, il faut injecter le service Session."
+      ],
+      "correct_answers": [
+        "`$request->getSession()`"
+      ],
+      "explanation": "Attention, appeler `getSession()` démarre la session si elle n'existe pas encore."
+    }
+  ]
+}

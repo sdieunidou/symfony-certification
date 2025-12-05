@@ -1,0 +1,97 @@
+{
+  "source_file": "03-architecture-symfony/exception-handling.md",
+  "title": "Gestion des Exceptions (Architecture)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel événement du Kernel est déclenché lorsqu'une exception n'est pas attrapée ?",
+      "type": "single_choice",
+      "options": [
+        "kernel.error",
+        "kernel.exception",
+        "kernel.crash",
+        "kernel.view"
+      ],
+      "correct_answers": [
+        "kernel.exception"
+      ],
+      "explanation": "Cet événement permet d'intercepter l'exception et de la convertir en une réponse HTTP propre (page d'erreur)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle classe d'exception correspond au code HTTP 404 (Not Found) ?",
+      "type": "single_choice",
+      "options": [
+        "ResourceNotFoundException",
+        "NotFoundHttpException",
+        "NoRouteFoundException",
+        "MissingException"
+      ],
+      "correct_answers": [
+        "NotFoundHttpException"
+      ],
+      "explanation": "`NotFoundHttpException` implémente `HttpExceptionInterface` et indique explicitement un statut 404."
+    },
+    {
+      "id": 3,
+      "question": "Comment personnaliser la page d'erreur 404 dans une application Symfony standard (avec Twig) ?",
+      "type": "single_choice",
+      "options": [
+        "Modifier le fichier index.php.",
+        "Créer un fichier `templates/bundles/TwigBundle/Exception/error404.html.twig`.",
+        "Créer un contrôleur ErrorController qui écrase celui de Symfony.",
+        "Configurer le fichier routing.yaml."
+      ],
+      "correct_answers": [
+        "Créer un fichier `templates/bundles/TwigBundle/Exception/error404.html.twig`."
+      ],
+      "explanation": "Symfony utilise une convention de nommage des templates dans TwigBundle pour surcharger les pages d'erreur par défaut."
+    },
+    {
+      "id": 4,
+      "question": "En environnement de production, que voit l'utilisateur si une erreur 500 survient ?",
+      "type": "single_choice",
+      "options": [
+        "La stack trace complète avec les lignes de code.",
+        "Une page blanche.",
+        "Une page d'erreur générique 'Oops! An Error Occurred' (ou votre template error500.html.twig).",
+        "Le code source du contrôleur."
+      ],
+      "correct_answers": [
+        "Une page d'erreur générique 'Oops! An Error Occurred' (ou votre template error500.html.twig)."
+      ],
+      "explanation": "Pour des raisons de sécurité, les détails techniques (Stack Trace) sont masqués en production."
+    },
+    {
+      "id": 5,
+      "question": "Comment associer une exception personnalisée (ex: `UserBannedException`) à un code HTTP spécifique (ex: 403) sans écrire de listener ?",
+      "type": "multiple_choice",
+      "options": [
+        "Via la configuration `framework.exceptions` dans `framework.yaml`.",
+        "En utilisant l'attribut `#[WithHttpStatus(403)]` sur la classe d'exception.",
+        "En nommant l'exception `UserBannedHttpException`.",
+        "C'est impossible, il faut un listener."
+      ],
+      "correct_answers": [
+        "Via la configuration `framework.exceptions` dans `framework.yaml`.",
+        "En utilisant l'attribut `#[WithHttpStatus(403)]` sur la classe d'exception."
+      ],
+      "explanation": "Symfony offre plusieurs moyens déclaratifs pour mapper les exceptions aux codes HTTP."
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert l'objet `FlattenException` ?",
+      "type": "single_choice",
+      "options": [
+        "À aplatir la base de données.",
+        "À simplifier l'objet Exception PHP (qui est complexe et récursif) en un objet simple utilisable dans les templates Twig.",
+        "À supprimer l'exception.",
+        "À logger l'erreur."
+      ],
+      "correct_answers": [
+        "À simplifier l'objet Exception PHP (qui est complexe et récursif) en un objet simple utilisable dans les templates Twig."
+      ],
+      "explanation": "L'objet Exception natif de PHP contient la stack trace complète et des références d'objets qui peuvent causer des soucis de rendu ou de sécurité. FlattenException est une version DTO sûre."
+    }
+  ]
+}

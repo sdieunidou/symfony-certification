@@ -1,0 +1,126 @@
+{
+  "source_file": "02-http/client-serveur.md",
+  "title": "Interaction Client / Serveur & Cycle de Vie",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle architecture fondamentale définit le fonctionnement du Web HTTP ?",
+      "type": "single_choice",
+      "options": [
+        "Peer-to-Peer",
+        "Client-Serveur (Request-Response)",
+        "Publish-Subscribe",
+        "Master-Slave"
+      ],
+      "correct_answers": [
+        "Client-Serveur (Request-Response)"
+      ],
+      "explanation": "Le client initie une requête, le serveur la traite et renvoie une réponse. Le protocole est sans état (Stateless)."
+    },
+    {
+      "id": 2,
+      "question": "Dans le modèle classique PHP-FPM, que se passe-t-il au niveau de la mémoire à la fin d'une requête ?",
+      "type": "single_choice",
+      "options": [
+        "La mémoire est conservée pour la requête suivante.",
+        "La mémoire est partagée entre les requêtes.",
+        "Le processus meurt et la mémoire est libérée (Shared-Nothing architecture).",
+        "Seules les variables statiques sont conservées."
+      ],
+      "correct_answers": [
+        "Le processus meurt et la mémoire est libérée (Shared-Nothing architecture)."
+      ],
+      "explanation": "C'est ce qui rend PHP très robuste aux fuites de mémoire, contrairement aux serveurs d'application Java ou Node.js."
+    },
+    {
+      "id": 3,
+      "question": "Quel objet est retourné par la méthode `handle()` du `HttpKernel` ?",
+      "type": "single_choice",
+      "options": [
+        "Un string (HTML).",
+        "Un objet `Request`.",
+        "Un objet `Response`.",
+        "Un tableau de données."
+      ],
+      "correct_answers": [
+        "Un objet `Response`."
+      ],
+      "explanation": "La mission fondamentale du Kernel est de transformer une `Request` en `Response`."
+    },
+    {
+      "id": 4,
+      "question": "Dans le cycle de vie Symfony, quel événement permet d'intercepter la requête très tôt (ex: pour gérer la sécurité ou la locale) avant même de déterminer le contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "kernel.response",
+        "kernel.controller",
+        "kernel.request",
+        "kernel.view"
+      ],
+      "correct_answers": [
+        "kernel.request"
+      ],
+      "explanation": "C'est le premier événement déclenché par `HttpKernel::handle()`. S'il renvoie une réponse, le reste du cycle est court-circuité."
+    },
+    {
+      "id": 5,
+      "question": "À quel moment l'événement `kernel.view` est-il déclenché ?",
+      "type": "single_choice",
+      "options": [
+        "Systématiquement après chaque contrôleur.",
+        "Uniquement si le contrôleur ne retourne PAS un objet `Response` (ex: null, array, objet métier).",
+        "Juste avant l'envoi de la réponse au client.",
+        "En cas d'exception."
+      ],
+      "correct_answers": [
+        "Uniquement si le contrôleur ne retourne PAS un objet `Response` (ex: null, array, objet métier)."
+      ],
+      "explanation": "Il sert à transformer la valeur de retour brute du contrôleur en `Response` (ex: sérialisation JSON automatique)."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi ne faut-il jamais utiliser `die()` ou `exit()` dans une application Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que c'est une fonction dépréciée en PHP 8.",
+        "Parce que cela coupe brutalement l'exécution, empêchant l'envoi correct des headers et l'exécution des événements de terminaison (`kernel.terminate`).",
+        "Parce que cela affiche une page blanche.",
+        "C'est autorisé pour le débogage uniquement."
+      ],
+      "correct_answers": [
+        "Parce que cela coupe brutalement l'exécution, empêchant l'envoi correct des headers et l'exécution des événements de terminaison (`kernel.terminate`)."
+      ],
+      "explanation": "Il faut toujours retourner une `Response` pour respecter le cycle de vie du framework."
+    },
+    {
+      "id": 7,
+      "question": "Quel pattern architectural utilise Symfony pour centraliser l'entrée de toutes les requêtes via `index.php` ?",
+      "type": "single_choice",
+      "options": [
+        "MVC Pattern",
+        "Front Controller Pattern",
+        "Singleton Pattern",
+        "Observer Pattern"
+      ],
+      "correct_answers": [
+        "Front Controller Pattern"
+      ],
+      "explanation": "Le Front Controller centralise la gestion des requêtes, la configuration et la sécurité, évitant la duplication de code d'initialisation."
+    },
+    {
+      "id": 8,
+      "question": "Quelle est la particularité des 'Sous-requêtes' (Sub-requests) dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Elles sont effectuées via une requête HTTP curl externe.",
+        "Elles relancent un cycle Kernel complet en interne sans faire d'appel réseau.",
+        "Elles ne déclenchent aucun événement.",
+        "Elles sont interdites pour des raisons de performance."
+      ],
+      "correct_answers": [
+        "Elles relancent un cycle Kernel complet en interne sans faire d'appel réseau."
+      ],
+      "explanation": "C'est utilisé par exemple pour le rendu de fragments de page (`{{ render(controller(...)) }}`). Elles sont identifiées par le type `HttpKernelInterface::SUB_REQUEST`."
+    }
+  ]
+}
