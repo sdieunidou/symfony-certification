@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/finder.md",
+  "title": "Composant Finder",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Le composant `Finder` exécute-t-il la recherche sur le disque dès que vous appelez les méthodes de configuration (`in()`, `name()`) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, immédiatement.",
+        "Non, le Finder est 'Lazy'. La recherche ne commence que lorsque vous itérez sur l'objet (ex: `foreach`).",
+        "Cela dépend des options.",
+        "Uniquement si on appelle `execute()`."
+      ],
+      "correct_answers": [
+        "Non, le Finder est 'Lazy'. La recherche ne commence que lorsque vous itérez sur l'objet (ex: `foreach`)."
+      ],
+      "explanation": "Le Finder construit un itérateur. Rien ne se passe tant qu'on ne le consomme pas."
+    },
+    {
+      "id": 2,
+      "question": "Quel type d'objet est retourné lors de l'itération sur un Finder ?",
+      "type": "single_choice",
+      "options": [
+        "Des chaînes de caractères (chemins).",
+        "Des objets `SplFileInfo`.",
+        "Des objets `File`.",
+        "Des tableaux."
+      ],
+      "correct_answers": [
+        "Des objets `SplFileInfo`."
+      ],
+      "explanation": "Symfony retourne des instances de `SplFileInfo` (ou une sous-classe) qui permettent d'accéder aux métadonnées du fichier (taille, date, chemin...)."
+    },
+    {
+      "id": 3,
+      "question": "Comment filtrer les fichiers par contenu (rechercher un texte à l'intérieur du fichier) avec le Finder ?",
+      "type": "single_choice",
+      "options": [
+        "`->content('texte')`",
+        "`->contains('texte')`",
+        "`->grep('texte')`",
+        "`->search('texte')`"
+      ],
+      "correct_answers": [
+        "`->contains('texte')`"
+      ],
+      "explanation": "La méthode `contains` permet de filtrer les fichiers qui contiennent une chaîne ou une expression régulière."
+    },
+    {
+      "id": 4,
+      "question": "Les méthodes du Finder (comme `files()`, `in()`, `name()`) peuvent-elles être chaînées (Fluent Interface) ?",
+      "type": "single_choice",
+      "options": [
+        "Non.",
+        "Oui, elles retournent toutes l'instance du Finder (`$this`).",
+        "Uniquement `in()`.",
+        "Seulement dans Symfony 5."
+      ],
+      "correct_answers": [
+        "Oui, elles retournent toutes l'instance du Finder (`$this`)."
+      ],
+      "explanation": "Cela permet une syntaxe très lisible : `$finder->files()->in(__DIR__)->name('*.php');`."
+    }
+  ]
+}

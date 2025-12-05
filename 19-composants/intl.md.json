@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/intl.md",
+  "title": "Internationalisation (Composant Intl)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le rôle principal du composant `Intl` ?",
+      "type": "single_choice",
+      "options": [
+        "Traduire les messages de l'application.",
+        "Fournir l'accès aux données de localisation standardisées (Noms de pays, Langues, Devises) et aux formateurs ICU.",
+        "Gérer les routes multilingues.",
+        "Détecter la langue du navigateur."
+      ],
+      "correct_answers": [
+        "Fournir l'accès aux données de localisation standardisées (Noms de pays, Langues, Devises) et aux formateurs ICU."
+      ],
+      "explanation": "Contrairement au composant `Translation` (qui gère vos textes), `Intl` gère les données standards mondiales."
+    },
+    {
+      "id": 2,
+      "question": "Quelle classe permet d'obtenir la liste des noms de pays traduits dans une langue donnée ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\Component\Intl\Countries`",
+        "`Symfony\Component\Intl\Region`",
+        "`Locale::getDisplayCountries()`",
+        "`IntlDateFormatter`"
+      ],
+      "correct_answers": [
+        "`Symfony\Component\Intl\Countries`"
+      ],
+      "explanation": "`Countries::getNames('fr')` retourne la liste des pays en français."
+    },
+    {
+      "id": 3,
+      "question": "Quelle extension PHP est recommandée pour les performances du composant Intl ?",
+      "type": "single_choice",
+      "options": [
+        "`mbstring`",
+        "`intl` (ICU)",
+        "`iconv`",
+        "`gd`"
+      ],
+      "correct_answers": [
+        "`intl` (ICU)"
+      ],
+      "explanation": "Bien que Symfony fournisse un polyfill (données PHP), l'extension native C (ICU) est beaucoup plus rapide et complète."
+    },
+    {
+      "id": 4,
+      "question": "Le composant Intl gère-t-il les traductions de vos fichiers `messages.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "Oui.",
+        "Non, c'est le rôle du composant `Translation`.",
+        "Seulement pour les dates.",
+        "Oui, si configuré."
+      ],
+      "correct_answers": [
+        "Non, c'est le rôle du composant `Translation`."
+      ],
+      "explanation": "Il ne faut pas confondre Internationalisation (Intl - Données/Formats) et Traduction (Translation - Vos textes)."
+    }
+  ]
+}

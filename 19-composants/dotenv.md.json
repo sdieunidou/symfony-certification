@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/dotenv.md",
+  "title": "Composant Dotenv",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le fichier de configuration d'environnement qui doit être commité dans Git et contenir les valeurs par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "`.env.local`",
+        "`.env`",
+        "`.env.prod`",
+        "`.env.dist`"
+      ],
+      "correct_answers": [
+        "`.env`"
+      ],
+      "explanation": "Le fichier `.env` définit l'interface des variables attendues. `.env.local` contient les surcharges locales et est ignoré par Git."
+    },
+    {
+      "id": 2,
+      "question": "Si une vraie variable d'environnement système (définie via `export` ou Docker) existe, que fait le composant Dotenv ?",
+      "type": "single_choice",
+      "options": [
+        "Il l'écrase avec la valeur du fichier `.env`.",
+        "Il ne l'écrase pas (la variable système a la priorité).",
+        "Il lance une erreur.",
+        "Il concatène les deux valeurs."
+      ],
+      "correct_answers": [
+        "Il ne l'écrase pas (la variable système a la priorité)."
+      ],
+      "explanation": "C'est le principe fondamental : l'infrastructure (serveur) a toujours raison sur le code."
+    },
+    {
+      "id": 3,
+      "question": "Comment accéder à une variable chargée par Dotenv en PHP ?",
+      "type": "single_choice",
+      "options": [
+        "Via `$this->getParameter()`.",
+        "Via `$_ENV['NOM_VAR']` ou `$_SERVER['NOM_VAR']`.",
+        "Via `Dotenv::get('NOM_VAR')`.",
+        "Via `config('NOM_VAR')`."
+      ],
+      "correct_answers": [
+        "Via `$_ENV['NOM_VAR']` ou `$_SERVER['NOM_VAR']`."
+      ],
+      "explanation": "Dotenv peuple les superglobales PHP standard."
+    },
+    {
+      "id": 4,
+      "question": "Est-il possible de référencer une variable dans une autre à l'intérieur d'un fichier .env (ex: `URL=$HOST/api`) ?",
+      "type": "single_choice",
+      "options": [
+        "Non, ce n'est pas supporté.",
+        "Oui, le composant Dotenv résout les références (ex: `$HOST`).",
+        "Uniquement en utilisant `Putenv`.",
+        "Uniquement en environnement de dev."
+      ],
+      "correct_answers": [
+        "Oui, le composant Dotenv résout les références (ex: `$HOST`)."
+      ],
+      "explanation": "Dotenv supporte l'interpolation de variables."
+    }
+  ]
+}

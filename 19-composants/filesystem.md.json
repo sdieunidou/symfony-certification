@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/filesystem.md",
+  "title": "Composant Filesystem",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle méthode du composant `Filesystem` permet d'écrire le contenu d'un fichier de manière atomique (via un fichier temporaire) pour éviter la corruption en cas de crash ?",
+      "type": "single_choice",
+      "options": [
+        "`file_put_contents()`",
+        "`write()`",
+        "`dumpFile()`",
+        "`save()`"
+      ],
+      "correct_answers": [
+        "`dumpFile()`"
+      ],
+      "explanation": "`dumpFile()` écrit d'abord dans un fichier temporaire, puis le renomme. Si le script plante pendant l'écriture, le fichier original n'est pas corrompu."
+    },
+    {
+      "id": 2,
+      "question": "Comment copier un DOSSIER entier avec le composant `Filesystem` ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `$filesystem->copy()`.",
+        "Avec `$filesystem->mirror()`.",
+        "Ce n'est pas possible.",
+        "Avec `$filesystem->clone()`."
+      ],
+      "correct_answers": [
+        "Avec `$filesystem->mirror()`."
+      ],
+      "explanation": "`copy()` est réservé aux fichiers. `mirror()` copie récursivement un répertoire."
+    },
+    {
+      "id": 3,
+      "question": "Quelle classe utilitaire permet de manipuler les chemins de manière multiplateforme (Windows/Linux) et de gérer les chemins relatifs/absolus ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\Component\Filesystem\Path`",
+        "`Symfony\Component\Filesystem\Url`",
+        "`DirectoryIterator`",
+        "`SplFileInfo`"
+      ],
+      "correct_answers": [
+        "`Symfony\Component\Filesystem\Path`"
+      ],
+      "explanation": "La classe `Path` (introduite récemment) fournit des méthodes statiques comme `join`, `makeAbsolute`, `normalize`..."
+    },
+    {
+      "id": 4,
+      "question": "Quelle exception spécifique le composant lance-t-il en cas d'erreur (ex: permission refusée) ?",
+      "type": "single_choice",
+      "options": [
+        "`\Exception`",
+        "`\RuntimeException`",
+        "`Symfony\Component\Filesystem\Exception\IOException`",
+        "`\Error`"
+      ],
+      "correct_answers": [
+        "`Symfony\Component\Filesystem\Exception\IOException`"
+      ],
+      "explanation": "Contrairement aux fonctions natives PHP qui émettent des Warnings, le composant utilise des Exceptions typées pour une gestion d'erreur propre."
+    }
+  ]
+}

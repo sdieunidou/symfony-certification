@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/config.md",
+  "title": "Le Composant Config",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Dans le cycle de vie de la configuration d'un Bundle, à quoi sert la classe `TreeBuilder` ?",
+      "type": "single_choice",
+      "options": [
+        "À charger les fichiers YAML.",
+        "À définir la structure (schéma) de la configuration autorisée, à définir les valeurs par défaut et à valider les données.",
+        "À mettre en cache la configuration.",
+        "À fusionner les fichiers."
+      ],
+      "correct_answers": [
+        "À définir la structure (schéma) de la configuration autorisée, à définir les valeurs par défaut et à valider les données."
+      ],
+      "explanation": "Le TreeBuilder permet de dire : 'J'attends une clé `api_key` qui est une string obligatoire, et une clé `timeout` qui est un entier avec 30 par défaut'."
+    },
+    {
+      "id": 2,
+      "question": "Quel mécanisme permet à un Bundle de modifier la configuration d'un AUTRE Bundle avant qu'elle ne soit traitée (ex: DoctrineBundle configure Twig) ?",
+      "type": "single_choice",
+      "options": [
+        "L'héritage de Bundle.",
+        "L'interface `PrependExtensionInterface` implémentée par l'Extension du Bundle.",
+        "Le Compiler Pass.",
+        "Le fichier `services.yaml`."
+      ],
+      "correct_answers": [
+        "L'interface `PrependExtensionInterface` implémentée par l'Extension du Bundle."
+      ],
+      "explanation": "C'est le seul moyen pour un bundle d'injecter de la config dans un autre sans demander à l'utilisateur de le faire manuellement."
+    },
+    {
+      "id": 3,
+      "question": "Dans une définition `TreeBuilder`, à quoi sert `prototype('scalar')` (ou `scalarPrototype()`) ?",
+      "type": "single_choice",
+      "options": [
+        "À définir une seule valeur scalaire.",
+        "À définir un tableau (liste) dont on ne connaît pas le nombre d'éléments à l'avance, mais où chaque élément doit être un scalaire (string/int/bool).",
+        "À cloner l'objet.",
+        "À définir un prototype de service."
+      ],
+      "correct_answers": [
+        "À définir un tableau (liste) dont on ne connaît pas le nombre d'éléments à l'avance, mais où chaque élément doit être un scalaire (string/int/bool)."
+      ],
+      "explanation": "Cela permet de valider des structures comme `servers: ['s1', 's2', 's3']`."
+    },
+    {
+      "id": 4,
+      "question": "Si une clé de configuration est définie à la fois dans `config.yaml` et dans `config_prod.yaml`, laquelle est utilisée en environnement de production ?",
+      "type": "single_choice",
+      "options": [
+        "Celle de `config.yaml`.",
+        "Celle de `config_prod.yaml` (le dernier fichier chargé écrase les valeurs précédentes).",
+        "Les deux sont fusionnées en un tableau.",
+        "Symfony lance une erreur de conflit."
+      ],
+      "correct_answers": [
+        "Celle de `config_prod.yaml` (le dernier fichier chargé écrase les valeurs précédentes)."
+      ],
+      "explanation": "La configuration fonctionne par remplacement (merge) : les fichiers spécifiques à l'environnement surchargent la configuration globale."
+    }
+  ]
+}

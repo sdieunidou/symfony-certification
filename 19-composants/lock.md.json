@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/lock.md",
+  "title": "Composant Lock",
+  "questions": [
+    {
+      "id": 1,
+      "question": "À quoi sert le composant `Lock` ?",
+      "type": "single_choice",
+      "options": [
+        "À crypter des données.",
+        "À gérer des verrous (Mutex/Sémaphores) pour empêcher l'exécution simultanée de code critique (Race Condition).",
+        "À bloquer les utilisateurs bannis.",
+        "À sécuriser les routes."
+      ],
+      "correct_answers": [
+        "À gérer des verrous (Mutex/Sémaphores) pour empêcher l'exécution simultanée de code critique (Race Condition)."
+      ],
+      "explanation": "Il permet de s'assurer qu'une seule instance d'un script (ex: génération de PDF, CRON) s'exécute à la fois."
+    },
+    {
+      "id": 2,
+      "question": "Que se passe-t-il si vous appelez `$lock->acquire(true)` (mode bloquant) alors que le verrou est déjà pris ?",
+      "type": "single_choice",
+      "options": [
+        "La méthode retourne `false` immédiatement.",
+        "Le script se met en pause et attend indéfiniment (ou jusqu'au timeout) que le verrou se libère.",
+        "Une exception est lancée.",
+        "Le script s'arrête."
+      ],
+      "correct_answers": [
+        "Le script se met en pause et attend indéfiniment (ou jusqu'au timeout) que le verrou se libère."
+      ],
+      "explanation": "C'est le principe du verrou bloquant : on attend son tour."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi définir un TTL (Time To Live) sur un verrou ?",
+      "type": "single_choice",
+      "options": [
+        "Pour qu'il soit plus rapide.",
+        "Pour s'assurer que le verrou expire automatiquement si le processus qui l'a acquis crashe sans le relâcher (évitant un blocage infini).",
+        "Pour le partager entre serveurs.",
+        "C'est obligatoire."
+      ],
+      "correct_answers": [
+        "Pour s'assurer que le verrou expire automatiquement si le processus qui l'a acquis crashe sans le relâcher (évitant un blocage infini)."
+      ],
+      "explanation": "Sans TTL, un `kill -9` sur un worker pourrait laisser un verrou actif pour toujours dans Redis ou en base."
+    },
+    {
+      "id": 4,
+      "question": "Quel type de Store est recommandé pour gérer des verrous dans un environnement distribué (plusieurs serveurs web) ?",
+      "type": "single_choice",
+      "options": [
+        "`FlockStore` (Fichiers locaux).",
+        "`SemaphoreStore` (Kernel local).",
+        "`RedisStore`, `MemcachedStore` ou `PdoStore` (Base de données/Cache centralisé).",
+        "`ArrayStore` (Mémoire PHP)."
+      ],
+      "correct_answers": [
+        "`RedisStore`, `MemcachedStore` ou `PdoStore` (Base de données/Cache centralisé)."
+      ],
+      "explanation": "Les stores locaux ne fonctionnent que sur une seule machine. En cluster, il faut un store central partagé."
+    }
+  ]
+}

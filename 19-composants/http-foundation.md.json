@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/http-foundation.md",
+  "title": "Le Composant HttpFoundation",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le rôle principal du composant `HttpFoundation` ?",
+      "type": "single_choice",
+      "options": [
+        "Gérer la base de données.",
+        "Fournir une couche d'abstraction orientée objet pour la spécification HTTP (Request/Response), remplaçant les superglobales PHP.",
+        "Gérer le routing.",
+        "Fournir un serveur web."
+      ],
+      "correct_answers": [
+        "Fournir une couche d'abstraction orientée objet pour la spécification HTTP (Request/Response), remplaçant les superglobales PHP."
+      ],
+      "explanation": "Il encapsule `$_GET`, `$_POST` etc. dans des objets `Request` et permet de construire des objets `Response`."
+    },
+    {
+      "id": 2,
+      "question": "Comment accéder à un paramètre d'URL (Query String, équivalent à `$_GET['page']`) via l'objet Request ?",
+      "type": "single_choice",
+      "options": [
+        "`$request->get('page')`",
+        "`$request->query->get('page')`",
+        "`$request->request->get('page')`",
+        "`$request->attributes->get('page')`"
+      ],
+      "correct_answers": [
+        "`$request->query->get('page')`"
+      ],
+      "explanation": "La propriété `query` est un `ParameterBag` contenant les paramètres GET."
+    },
+    {
+      "id": 3,
+      "question": "Quelle classe de Réponse est optimisée pour envoyer des fichiers volumineux (supportant `Range`, `X-Sendfile`) ?",
+      "type": "single_choice",
+      "options": [
+        "`Response`",
+        "`StreamedResponse`",
+        "`BinaryFileResponse`",
+        "`FileResponse`"
+      ],
+      "correct_answers": [
+        "`BinaryFileResponse`"
+      ],
+      "explanation": "`BinaryFileResponse` gère automatiquement les en-têtes pour le téléchargement de fichiers et supporte la reprise de téléchargement."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi faut-il configurer les 'Trusted Proxies' si votre application est derrière un Load Balancer ?",
+      "type": "single_choice",
+      "options": [
+        "Pour des raisons de performance.",
+        "Pour que `$request->getClientIp()` retourne la véritable IP du client (via `X-Forwarded-For`) et non celle du Load Balancer.",
+        "Pour activer le HTTPS.",
+        "Pour empêcher le DDoS."
+      ],
+      "correct_answers": [
+        "Pour que `$request->getClientIp()` retourne la véritable IP du client (via `X-Forwarded-For`) et non celle du Load Balancer."
+      ],
+      "explanation": "Sans cela, l'application croit que toutes les requêtes viennent de l'IP interne du proxy."
+    }
+  ]
+}

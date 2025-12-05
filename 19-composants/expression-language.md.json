@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/expression-language.md",
+  "title": "Composant ExpressionLanguage",
+  "questions": [
+    {
+      "id": 1,
+      "question": "À quoi sert principalement le composant `ExpressionLanguage` ?",
+      "type": "single_choice",
+      "options": [
+        "À traduire l'application.",
+        "À exécuter des expressions logiques dynamiques ('one-liners') de manière sécurisée, souvent utilisées dans la configuration (sécurité, validation, routing).",
+        "À écrire des expressions régulières.",
+        "À compiler du code PHP."
+      ],
+      "correct_answers": [
+        "À exécuter des expressions logiques dynamiques ('one-liners') de manière sécurisée, souvent utilisées dans la configuration (sécurité, validation, routing)."
+      ],
+      "explanation": "Il permet d'avoir de la logique (ex: `user.isAdmin() and object.price < 100`) sans écrire de PHP complet."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence entre `evaluate()` et `compile()` ?",
+      "type": "single_choice",
+      "options": [
+        "`evaluate` exécute l'expression et retourne le résultat, `compile` transforme l'expression en code PHP pour être mis en cache.",
+        "`evaluate` est pour les maths, `compile` pour les chaînes.",
+        "`compile` est plus lent que `evaluate`.",
+        "Il n'y en a aucune."
+      ],
+      "correct_answers": [
+        "`evaluate` exécute l'expression et retourne le résultat, `compile` transforme l'expression en code PHP pour être mis en cache."
+      ],
+      "explanation": "La compilation est utilisée par Symfony (ex: conteneur de services, routeur) pour la performance en production."
+    },
+    {
+      "id": 3,
+      "question": "Par défaut, le langage d'expression a-t-il accès aux fonctions PHP natives (comme `exec` ou `file_get_contents`) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toutes.",
+        "Non, il est sandboxé. Seules les fonctions explicitement enregistrées sont disponibles.",
+        "Oui, mais seulement en mode debug.",
+        "Oui, si l'utilisateur est admin."
+      ],
+      "correct_answers": [
+        "Non, il est sandboxé. Seules les fonctions explicitement enregistrées sont disponibles."
+      ],
+      "explanation": "C'est ce qui le rend plus sûr que `eval()` : on contrôle strictement ce qui est accessible."
+    },
+    {
+      "id": 4,
+      "question": "Quelle syntaxe permet de tester si une valeur est présente dans un tableau ?",
+      "type": "single_choice",
+      "options": [
+        "`value in [1, 2, 3]`",
+        "`in_array(value, [1, 2, 3])`",
+        "`[1, 2, 3].contains(value)`",
+        "`exists(value, [1, 2, 3])`"
+      ],
+      "correct_answers": [
+        "`value in [1, 2, 3]`"
+      ],
+      "explanation": "L'opérateur `in` est natif au langage d'expression."
+    }
+  ]
+}

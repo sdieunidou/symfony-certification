@@ -1,0 +1,66 @@
+{
+  "source_file": "19-composants/clock.md",
+  "title": "Composant Clock (Horloge)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est l'avantage principal d'utiliser le composant `Clock` (et l'interface `ClockInterface`) plutôt que `new \DateTime()` directement dans votre code ?",
+      "type": "single_choice",
+      "options": [
+        "C'est plus rapide.",
+        "Cela permet de mocker le temps dans les tests (ex: avancer d'une heure instantanément) sans dépendre de l'horloge système.",
+        "Cela corrige automatiquement les fuseaux horaires.",
+        "Cela formate automatiquement la date."
+      ],
+      "correct_answers": [
+        "Cela permet de mocker le temps dans les tests (ex: avancer d'une heure instantanément) sans dépendre de l'horloge système."
+      ],
+      "explanation": "Le couplage à l'horloge système (`time()`) rend les tests temporels (expiration de token, délais) fragiles ou lents (sleep réel)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle classe du composant Clock doit-on utiliser dans les tests pour contrôler le temps ?",
+      "type": "single_choice",
+      "options": [
+        "`NativeClock`",
+        "`MockClock`",
+        "`SystemClock`",
+        "`TestClock`"
+      ],
+      "correct_answers": [
+        "`MockClock`"
+      ],
+      "explanation": "`MockClock` permet d'initialiser l'heure à une valeur fixe et de la faire avancer manuellement (`sleep()`) sans attente réelle."
+    },
+    {
+      "id": 3,
+      "question": "Quelle interface standardisée (PSR-20) le composant Clock implémente-t-il ?",
+      "type": "single_choice",
+      "options": [
+        "`Psr\Log\LoggerInterface`",
+        "`Psr\Clock\ClockInterface`",
+        "`Psr\Date\DateInterface`",
+        "`Psr\Time\TimeInterface`"
+      ],
+      "correct_answers": [
+        "`Psr\Clock\ClockInterface`"
+      ],
+      "explanation": "Symfony 7 adopte le standard PSR-20 pour l'interopérabilité des horloges."
+    },
+    {
+      "id": 4,
+      "question": "Que retourne la méthode `now()` de l'interface `ClockInterface` ?",
+      "type": "single_choice",
+      "options": [
+        "Un timestamp (int).",
+        "Un objet `DateTimeImmutable`.",
+        "Un objet `DateTime` (mutable).",
+        "Une chaîne de caractères (string)."
+      ],
+      "correct_answers": [
+        "Un objet `DateTimeImmutable`."
+      ],
+      "explanation": "L'immutabilité est une bonne pratique pour éviter les effets de bord lors de la manipulation de dates."
+    }
+  ]
+}
