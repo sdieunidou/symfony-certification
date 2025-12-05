@@ -1,55 +1,66 @@
-# Accès aux Objets du Framework (Services)
+# Accès aux Objets du Framework (Intégration)
 
 ## Concept clé
-Dans les tests d'intégration (`KernelTestCase`) ou fonctionnels (`WebTestCase`), vous avez besoin d'accéder aux services de l'application (EntityManager, Router, MonService).
+Dans les tests d'intégration (`KernelTestCase`) ou fonctionnels, vous interagissez avec le Kernel Symfony, le conteneur de services et l'environnement.
 
-## `static::getContainer()`
-C'est la méthode magique. Elle retourne une instance spéciale du conteneur de test (`TestContainer`).
+## Configuration de l'Environnement de Test
 
-```php
-public function testService(): void
-{
-    self::bootKernel();
-    $container = static::getContainer();
-
-    // Accès à un service (même privé !)
-    $myService = $container->get(MyService::class);
-    $result = $myService->complexCalculation();
-
-    $this->assertEquals(42, $result);
-}
-```
-
-## Pourquoi un Conteneur de Test ?
-En production, les services sont privés (inaccessibles via `get()`).
-Le `TestContainer` rend **tous** les services publics pour faciliter les tests.
-
-## Mocker un Service
-Parfois, on veut remplacer un vrai service (ex: StripeClient) par un faux dans le conteneur pour les tests fonctionnels.
+### BootKernel
+La méthode `bootKernel()` démarre l'application. Elle est appelée automatiquement par `WebTestCase::createClient()`.
+Vous pouvez passer des options pour surcharger l'environnement :
 
 ```php
-public function testPayment(): void
-{
-    $client = static::createClient();
-    
-    // Créer un mock
-    $mockStripe = $this->createMock(StripeClient::class);
-    $mockStripe->method('charge')->willReturn(true);
-
-    // Remplacer le service dans le conteneur
-    // Note: Cela ne marche que si le service n'a pas encore été utilisé/instancié
-    self::getContainer()->set(StripeClient::class, $mockStripe);
-
-    $client->request('POST', '/pay');
-}
+self::bootKernel([
+    'environment' => 'my_test_env',
+    'debug'       => false, // Désactive le mode debug (plus rapide, pas de cache rebuild)
+]);
 ```
 
-## 🧠 Concepts Clés
-1.  **Client Container** : `$client->getContainer()` existe aussi mais est déprécié ou limité. Préférez toujours `static::getContainer()`.
-2.  **Persistance** : Le conteneur est recréé à chaque `request()` du client. Si vous remplacez un service (`set`), il sera perdu à la prochaine requête.
+*Astuce : En CI, il est recommandé de lancer les tests avec `debug => false` pour la performance.*
+
+### Variables d'Environnement
+Les tests utilisent le fichier `.env.test` (et `.env.test.local`).
+Hiérarchie :
+1.  `.env`
+2.  `.env.test` (surcharge pour les tests)
+3.  `.env.test.local` (spécifique machine)
+
+Note : `.env.local` est **ignoré** en environnement de test pour assurer la cohérence.
+
+### Configuration Spécifique
+Le kernel de test charge la configuration depuis `config/packages/test/`.
+Exemple : `config/packages/test/web_profiler.yaml` pour activer le profiler uniquement en test.
+
+## Accès aux Services (`static::getContainer()`)
+Une fois le kernel booté, on accède au **Test Container**.
+
+```php
+self::bootKernel();
+$container = static::getContainer();
+$service = $container->get(MyService::class);
+```
+
+### Services Privés
+Le conteneur de test rend **tous** les services publics par défaut (non-removed).
+Si un service privé a été supprimé (car inutilisé), vous devez le rendre public explicitement dans `config/services_test.yaml` pour le tester.
+
+## Mocker des Dépendances
+Pour remplacer un service réel par un Mock dans le conteneur :
+
+```php
+$mock = $this->createMock(NewsRepositoryInterface::class);
+$mock->method('findRecent')->willReturn([...]);
+
+self::bootKernel();
+$container = static::getContainer();
+
+// Injection du mock dans le conteneur
+$container->set(NewsRepositoryInterface::class, $mock);
+
+// Le service qui dépend de NewsRepositoryInterface utilisera le mock
+$generator = $container->get(NewsletterGenerator::class);
+```
 
 ## ⚠️ Points de vigilance (Certification)
-*   **Boot** : Il faut impérativement que le kernel soit booté (`self::bootKernel()` ou `createClient()`) avant de demander le conteneur.
-
-## Ressources
-*   [Symfony Docs - Container in Tests](https://symfony.com/doc/current/testing.html#accessing-the-container)
+*   **Set** : `$container->set()` ne fonctionne que sur le conteneur de test.
+*   **Reset** : Le conteneur est réinitialisé à chaque requête dans un `WebTestCase`. Si vous settez un mock, il est perdu à la requête suivante (sauf si vous utilisez `disableReboot()`).

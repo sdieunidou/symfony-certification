@@ -1,60 +1,96 @@
 # Objet Crawler (DomCrawler)
 
 ## Concept clé
-Le `Crawler` est une librairie puissante pour naviguer dans le DOM HTML/XML retourné par une réponse.
-Il permet de "scraper" la page pour vérifier son contenu ou extraire des éléments (liens, formulaires).
+Le `Crawler` permet de naviguer dans le DOM HTML/XML retourné par une réponse, de filtrer les éléments et d'extraire des données.
 
 ## Filtrage (Sélection)
-Méthodes inspirées de jQuery.
 
 ```php
 $crawler = $client->request('GET', '/blog');
 
-// CSS Selector (nécessite le paquet css-selector)
+// CSS Selector (nécessite css-selector component)
 $title = $crawler->filter('h1.title');
 
-// XPath (Natif)
+// XPath
 $title = $crawler->filterXPath('//h1[@class="title"]');
 
-// Filtrage avancé
-$crawler->filter('div')->eq(0); // Premier div
+// Traversée
+$crawler->filter('div')->eq(0);
 $crawler->filter('div')->first();
-$crawler->filter('div')->last();
-$crawler->filter('div')->siblings();
 $crawler->filter('div')->children();
 ```
 
 ## Extraction de Données
-Une fois le nœud trouvé :
 
 ```php
-$text = $crawler->filter('h1')->text(); // Contenu texte nettoyé
-$html = $crawler->filter('body')->html(); // Contenu HTML
-$attr = $crawler->filter('img')->attr('src'); // Attribut
-$texts = $crawler->filter('li')->each(fn ($node) => $node->text()); // Tableau de textes
+$text = $crawler->filter('h1')->text();
+$html = $crawler->filter('body')->html();
+$src  = $crawler->filter('img')->attr('src');
+
+// Boucler sur des résultats
+$titles = $crawler->filter('h2')->each(function ($node, $i) {
+    return $node->text();
+});
 ```
 
-## Interaction (Liens et Formulaires)
-Le Crawler est le seul moyen d'obtenir les objets spéciaux `Link` et `Form` pour le client.
+## Interaction : Liens
+Pour cliquer, il faut d'abord obtenir un objet `Link`.
 
 ```php
-// Trouver un lien par son texte
+// Via le texte du lien (ou alt d'une image)
 $link = $crawler->selectLink('Se connecter')->link();
-$client->click($link);
 
-// Trouver un bouton par son texte (submit)
-$form = $crawler->selectButton('Envoyer')->form();
-// On peut pré-remplir des valeurs ici
-$form['name'] = 'Fabien';
+// Accès aux infos
+$uri = $link->getUri();
+
+// Clic
+$client->click($link);
+```
+
+*Raccourci client : `$client->clickLink('Se connecter');`*
+
+## Interaction : Formulaires
+Pour soumettre, il faut obtenir un objet `Form` via un bouton (submit).
+
+```php
+// Sélectionner le bouton par son texte, id ou value
+$buttonCrawlerNode = $crawler->selectButton('Envoyer');
+$form = $buttonCrawlerNode->form();
+
+// Remplir les champs
+// Notation tableau (nom du champ HTML)
+$form['my_form[name]'] = 'Fabien';
+$form['my_form[subject]'] = 'Symfony rocks!';
+
+// Cocher une case
+$form['my_form[terms]']->tick();
+
+// Sélectionner une option (select/radio)
+$form['my_form[country]']->select('France');
+
+// Uploader un fichier
+$form['my_form[photo]']->upload('/path/to/photo.jpg');
+// Upload multiple
+$form['my_form[gallery][0]']->upload('/path/1.jpg');
+
+// Soumettre
 $client->submit($form);
 ```
 
-## 🧠 Concepts Clés
-1.  **Exception** : Si un filtre ne trouve rien, il retourne un Crawler vide. Mais si vous appelez `text()` ou `attr()` sur un Crawler vide, une exception est lancée.
-2.  **Contexte** : Le Crawler peut être initialisé avec du HTML brut ou une URL. Dans les tests fonctionnels, il est initialisé avec la `Response`.
+*Raccourci client : `$client->submitForm('Envoyer', ['my_form[name]' => 'Fabien']);`*
+
+## Récupérer les valeurs
+Vous pouvez inspecter ce que contient le formulaire avant envoi :
+
+```php
+// Valeurs brutes
+$values = $form->getValues();
+
+// Valeurs formatées PHP (tableaux associatifs)
+$phpValues = $form->getPhpValues();
+$files = $form->getFiles();
+```
 
 ## ⚠️ Points de vigilance (Certification)
-*   **Bouton** : `selectButton` trouve un bouton `<button>` ou un `<input type="submit">` par son texte (value) ou son `id` ou son `alt` (pour les images).
-
-## Ressources
-*   [Symfony Docs - DomCrawler](https://symfony.com/doc/current/components/dom_crawler.html)
+*   **Sélection** : On sélectionne toujours le **bouton** de soumission (`selectButton`), jamais la balise `<form>` directement.
+*   **Scope** : Si vous utilisez `$crawler->filter('#my-form')->selectButton(...)`, la recherche du bouton est limitée à la partie filtrée.

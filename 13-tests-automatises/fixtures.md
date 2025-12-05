@@ -1,92 +1,67 @@
-# Fixtures & Données de Test
+# Fixtures & Base de Données
 
-## Concept Clé
-Pour tester efficacement, il faut des données prédictibles en base de données.
-Symfony utilise le **DoctrineFixturesBundle** pour charger des jeux de données (Fixtures).
+## Configuration de la Base de Test
+Les tests doivent utiliser une base de données séparée pour ne pas écraser les données de développement.
 
-## Création de Fixtures
+1.  Créer un fichier `.env.test.local` :
+    ```env
+    DATABASE_URL="mysql://user:pass@127.0.0.1:3306/db_name_test"
+    ```
+2.  Créer la base et le schéma :
+    ```bash
+    php bin/console --env=test doctrine:database:create
+    php bin/console --env=test doctrine:schema:create
+    ```
 
+*Astuce : Convention de nommage `nom_projet_test`.*
+
+## Chargement des Fixtures
+Utilisation de `DoctrineFixturesBundle` pour créer des données initiales.
+
+### Création
 ```php
-// src/DataFixtures/AppFixtures.php
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
-
-class AppFixtures extends Fixture
+// src/DataFixtures/ProductFixture.php
+class ProductFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // Créer 10 produits
-        for ($i = 0; $i < 10; $i++) {
-            $product = new Product();
-            $product->setName('Produit ' . $i);
-            $product->setPrice(mt_rand(10, 100));
-            $manager->persist($product);
-        }
-
+        $product = new Product();
+        $product->setName('Widget');
+        $manager->persist($product);
         $manager->flush();
     }
 }
 ```
 
-## Utilisation dans les Tests
+### Chargement Manuel
+Pour charger les fixtures dans la base de test :
+```bash
+php bin/console --env=test doctrine:fixtures:load
+```
 
-### Problème
-Si vous chargez les fixtures avant chaque test, c'est très lent (`bin/console doctrine:fixtures:load`).
-Si vous ne les chargez pas, les tests sont dépendants de l'état précédent (Flaky tests).
+## Isolation des Tests (`DAMADoctrineTestBundle`)
+Pour éviter de recharger les fixtures à chaque test (lent) ou d'avoir des tests interdépendants (flaky), utilisez ce bundle.
+Il enveloppe chaque test dans une **transaction** base de données et fait un **rollback** à la fin.
 
-### Solution : `DAMADoctrineTestBundle`
-C'est le standard pour les tests Symfony.
-Il utilise des **transactions imbriquées** (Database Transactions) pour isoler chaque test.
-
-1.  **Début du test** : `BEGIN TRANSACTION`
-2.  **Exécution** : Le test écrit en base.
-3.  **Fin du test** : `ROLLBACK`
-
-La base revient instantanément à l'état initial sans avoir besoin de recharger les fixtures.
-
-### Installation & Config
-
+### Installation
 ```bash
 composer require --dev dama/doctrine-test-bundle
 ```
 
+### Configuration (PHPUnit)
+Activer l'extension dans `phpunit.dist.xml` :
 ```xml
-<!-- phpunit.dist.xml -->
 <extensions>
-    <!-- PHPUnit 10+ -->
     <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
-    
-    <!-- Legacy (PHPUnit < 10) -->
-    <!-- <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/> -->
 </extensions>
 ```
 
-### Stratégie de Chargement
-Souvent, on charge les fixtures **une seule fois** au début de la suite de tests (ou via un bootstrap), et DAMA s'occupe de resetter les modifs.
+Ainsi, les modifications faites par un test (création, suppression) sont annulées automatiquement.
 
-## LiperTestFixtures (Alternative)
-Pour des besoins plus complexes, la librairie `liip/test-fixtures-bundle` permet de charger des fixtures spécifiques *dans* le test.
-
-```php
-$this->loadFixtures([
-    UserFixtures::class,
-    ProductFixtures::class
-]);
-```
-
-## Factories (ZenstruckFoundry)
-Une approche moderne (type Laravel Factory) qui remplace souvent les fixtures classiques.
-
-```php
-// Dans le test
-ProductFactory::createMany(5); // Crée 5 produits
-UserFactory::createOne(['email' => 'admin@test.com']);
-```
+## 🧠 Concepts Clés
+1.  **Tests Fonctionnels** : Ils écrivent réellement en base. Sans isolation, le test B échouera car le test A a modifié les données.
+2.  **SQLite** : Pour des tests simples, on peut utiliser SQLite en mémoire (`DATABASE_URL="sqlite:///:memory:"`), ce qui est très rapide mais peut différer de la prod (MySQL/PG).
 
 ## ⚠️ Points de vigilance (Certification)
-*   **Environnement** : Les fixtures ne doivent être chargées que sur la base de test (`APP_ENV=test`). Attention à ne pas écraser la prod !
-*   **Dépendances** : Utilisez `DependentFixtureInterface` pour gérer l'ordre de chargement (ex: Users avant Commandes).
-
-## Ressources
-*   [Doctrine Fixtures Documentation](https://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html)
-*   [DAMA Doctrine Test Bundle](https://github.com/dmaicher/doctrine-test-bundle)
+*   **Make Fixtures** : `php bin/console make:fixtures` génère la classe.
+*   **Ordre** : Si les fixtures dépendent les unes des autres, implémentez `DependentFixtureInterface`.
