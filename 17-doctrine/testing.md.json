@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/testing.md",
+  "title": "Tests & Doctrine",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le principal problème des tests fonctionnels qui modifient la base de données ?",
+      "type": "single_choice",
+      "options": [
+        "Ils coûtent cher en licence.",
+        "Les 'Side Effects' : les modifications d'un test (INSERT, DELETE) polluent la base pour les tests suivants, brisant l'isolation.",
+        "Ils ne peuvent pas être exécutés en parallèle.",
+        "Ils nécessitent une connexion internet."
+      ],
+      "correct_answers": [
+        "Les 'Side Effects' : les modifications d'un test (INSERT, DELETE) polluent la base pour les tests suivants, brisant l'isolation."
+      ],
+      "explanation": "L'isolation est clé. Chaque test doit partir d'un état connu."
+    },
+    {
+      "id": 2,
+      "question": "Comment le bundle `dama/doctrine-test-bundle` résout-il le problème d'isolation des tests de manière performante ?",
+      "type": "single_choice",
+      "options": [
+        "Il supprime et recrée la base de données à chaque test.",
+        "Il utilise des transactions imbriquées : il commence une transaction au début du test et fait un ROLLBACK à la fin, annulant instantanément toutes les modifications.",
+        "Il utilise une base de données SQLite en mémoire.",
+        "Il désactive l'écriture en base."
+      ],
+      "correct_answers": [
+        "Il utilise des transactions imbriquées : il commence une transaction au début du test et fait un ROLLBACK à la fin, annulant instantanément toutes les modifications."
+      ],
+      "explanation": "C'est la méthode la plus efficace car elle évite le coût prohibitif de purger/recharger les données."
+    },
+    {
+      "id": 3,
+      "question": "Quelle classe de test Symfony permet de tester un Repository Doctrine en accédant au conteneur de services ?",
+      "type": "single_choice",
+      "options": [
+        "`PHPUnit\Framework\TestCase`",
+        "`Symfony\Bundle\FrameworkBundle\Test\KernelTestCase`",
+        "`Symfony\Component\Panther\PantherTestCase`",
+        "`Doctrine\Test\OrmTestCase`"
+      ],
+      "correct_answers": [
+        "`Symfony\Bundle\FrameworkBundle\Test\KernelTestCase`"
+      ],
+      "explanation": "`KernelTestCase` permet de booter le kernel et d'accéder au vrai service Repository connecté à la base de test."
+    },
+    {
+      "id": 4,
+      "question": "Comment Symfony sépare-t-il la base de données de production de celle de test ?",
+      "type": "single_choice",
+      "options": [
+        "Il ne le fait pas, c'est dangereux.",
+        "Via la variable d'environnement `DATABASE_URL` définie spécifiquement dans le fichier `.env.test` (souvent suffixée par `_test`).",
+        "En utilisant un autre port.",
+        "En changeant de driver."
+      ],
+      "correct_answers": [
+        "Via la variable d'environnement `DATABASE_URL` définie spécifiquement dans le fichier `.env.test` (souvent suffixée par `_test`)."
+      ],
+      "explanation": "Cela garantit que les tests ne touchent jamais aux données de dev ou de prod."
+    }
+  ]
+}

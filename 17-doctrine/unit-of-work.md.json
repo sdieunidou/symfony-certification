@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/unit-of-work.md",
+  "title": "Unit of Work & Cycle de vie",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le rôle de la méthode `persist($entity)` ?",
+      "type": "single_choice",
+      "options": [
+        "Elle exécute immédiatement l'INSERT SQL.",
+        "Elle dit à l'EntityManager de commencer à gérer ('Manage') cette entité. Si elle est nouvelle, elle sera insérée au prochain flush.",
+        "Elle sauvegarde l'entité en session.",
+        "Elle valide les données."
+      ],
+      "correct_answers": [
+        "Elle dit à l'EntityManager de commencer à gérer ('Manage') cette entité. Si elle est nouvelle, elle sera insérée au prochain flush."
+      ],
+      "explanation": "`persist` ne génère pas de SQL. Il enregistre juste l'objet dans le UnitOfWork."
+    },
+    {
+      "id": 2,
+      "question": "Que fait la méthode `flush()` ?",
+      "type": "single_choice",
+      "options": [
+        "Elle vide la base de données.",
+        "Elle vide le cache.",
+        "Elle calcule tous les changements (Dirty Checking) sur les entités gérées et exécute les requêtes SQL (INSERT/UPDATE/DELETE) nécessaires en une seule transaction.",
+        "Elle ferme la connexion."
+      ],
+      "correct_answers": [
+        "Elle calcule tous les changements (Dirty Checking) sur les entités gérées et exécute les requêtes SQL (INSERT/UPDATE/DELETE) nécessaires en une seule transaction."
+      ],
+      "explanation": "C'est le point de synchronisation. C'est là que la magie opère."
+    },
+    {
+      "id": 3,
+      "question": "Si vous modifiez une entité déjà gérée (récupérée via `find`), devez-vous appeler `persist()` avant le `flush()` ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, ce n'est pas nécessaire car l'entité est déjà 'Managed'. Doctrine détectera les changements automatiquement.",
+        "Oui, sinon Doctrine ne voit pas la modification.",
+        "Seulement si on change l'ID."
+      ],
+      "correct_answers": [
+        "Non, ce n'est pas nécessaire car l'entité est déjà 'Managed'. Doctrine détectera les changements automatiquement."
+      ],
+      "explanation": "Le `persist` est inutile pour les objets déjà gérés, bien que l'appeler ne provoque pas d'erreur."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi faut-il utiliser `$em->clear()` lors des traitements par lots (Batch Processing) de milliers d'entités ?",
+      "type": "single_choice",
+      "options": [
+        "Pour vider la table SQL.",
+        "Pour détacher toutes les entités de l'EntityManager et libérer la mémoire PHP, évitant ainsi les fuites de mémoire (Memory Leaks).",
+        "Pour valider la transaction.",
+        "Pour accélérer le disque dur."
+      ],
+      "correct_answers": [
+        "Pour détacher toutes les entités de l'EntityManager et libérer la mémoire PHP, évitant ainsi les fuites de mémoire (Memory Leaks)."
+      ],
+      "explanation": "L'EntityManager garde une référence à tous les objets gérés. Sans `clear`, la mémoire ne fait que grossir jusqu'au crash."
+    }
+  ]
+}

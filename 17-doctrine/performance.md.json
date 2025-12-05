@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/performance.md",
+  "title": "Performance & Optimisation",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Qu'est-ce que le problème 'N+1' avec Doctrine ?",
+      "type": "single_choice",
+      "options": [
+        "Une erreur mathématique dans les calculs.",
+        "Le fait d'exécuter 1 requête pour récupérer une liste de N objets, puis N requêtes supplémentaires pour récupérer une relation (Lazy Loading) pour chaque objet dans une boucle.",
+        "Un bug de Doctrine qui ajoute 1 à tous les IDs.",
+        "Une limitation du nombre de connexions."
+      ],
+      "correct_answers": [
+        "Le fait d'exécuter 1 requête pour récupérer une liste de N objets, puis N requêtes supplémentaires pour récupérer une relation (Lazy Loading) pour chaque objet dans une boucle."
+      ],
+      "explanation": "C'est le problème de performance le plus courant. Il se résout en faisant une jointure (Eager Loading) dans la requête initiale."
+    },
+    {
+      "id": 2,
+      "question": "Comment résoudre le problème N+1 lors de la récupération d'une liste d'entités avec leurs relations ?",
+      "type": "single_choice",
+      "options": [
+        "En désactivant le cache.",
+        "En utilisant `$qb->leftJoin('p.category', 'c')->addSelect('c')` pour charger les données liées en une seule requête SQL.",
+        "En augmentant la mémoire de PHP.",
+        "En utilisant des boucles `while`."
+      ],
+      "correct_answers": [
+        "En utilisant `$qb->leftJoin('p.category', 'c')->addSelect('c')` pour charger les données liées en une seule requête SQL."
+      ],
+      "explanation": "L'`addSelect` est crucial : il dit à Doctrine de peupler l'objet relation (`c`) avec les données retournées par la jointure, évitant ainsi le lazy loading ultérieur."
+    },
+    {
+      "id": 3,
+      "question": "Qu'est-ce qu'un 'Proxy' dans Doctrine ?",
+      "type": "single_choice",
+      "options": [
+        "Un serveur intermédiaire.",
+        "Une sous-classe générée par Doctrine qui remplace l'entité réelle pour permettre le Lazy Loading (la requête SQL n'est faite que lorsqu'on appelle une méthode du proxy).",
+        "Une erreur de configuration.",
+        "Un service de cache."
+      ],
+      "correct_answers": [
+        "Une sous-classe générée par Doctrine qui remplace l'entité réelle pour permettre le Lazy Loading (la requête SQL n'est faite que lorsqu'on appelle une méthode du proxy)."
+      ],
+      "explanation": "Le proxy ressemble à l'entité (héritage) mais intercepte les appels de méthode pour charger les données à la volée si nécessaire."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi est-il risqué d'utiliser des 'Partial Objects' (sélectionner seulement quelques champs d'une entité `select p.id, p.name`) ?",
+      "type": "single_choice",
+      "options": [
+        "C'est plus lent.",
+        "Si vous modifiez et sauvegardez (`flush`) cet objet partiel, Doctrine risque d'écraser les champs non chargés avec `NULL` en base de données.",
+        "Cela n'est pas supporté par MySQL.",
+        "Cela désactive les events."
+      ],
+      "correct_answers": [
+        "Si vous modifiez et sauvegardez (`flush`) cet objet partiel, Doctrine risque d'écraser les champs non chargés avec `NULL` en base de données."
+      ],
+      "explanation": "Doctrine gère des objets complets. Pour de la lecture partielle, préférez l'hydratation en tableau (`getArrayResult`) ou en DTO."
+    }
+  ]
+}

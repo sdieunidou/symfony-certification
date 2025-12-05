@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/querying.md",
+  "title": "Querying (DQL & QueryBuilder)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle méthode de l'EntityManager permet de récupérer une entité par sa clé primaire ?",
+      "type": "single_choice",
+      "options": [
+        "`get($id)`",
+        "`find(Entity::class, $id)`",
+        "`search($id)`",
+        "`query($id)`"
+      ],
+      "correct_answers": [
+        "`find(Entity::class, $id)`"
+      ],
+      "explanation": "`find()` est la méthode de base. Elle utilise l'Identity Map pour ne pas refaire de requête si l'objet est déjà en mémoire."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence fondamentale entre DQL (Doctrine Query Language) et SQL ?",
+      "type": "single_choice",
+      "options": [
+        "DQL est plus lent.",
+        "DQL manipule des objets (Classes et Propriétés) alors que SQL manipule des relations (Tables et Colonnes).",
+        "DQL ne supporte pas les jointures.",
+        "DQL s'écrit en XML."
+      ],
+      "correct_answers": [
+        "DQL manipule des objets (Classes et Propriétés) alors que SQL manipule des relations (Tables et Colonnes)."
+      ],
+      "explanation": "DQL permet de faire abstraction du schéma physique. `SELECT p FROM App\Entity\Product p` fonctionne quelle que soit la table sous-jacente."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi devez-vous toujours utiliser `setParameter()` dans le QueryBuilder ?",
+      "type": "single_choice",
+      "options": [
+        "Pour améliorer la lisibilité.",
+        "Pour prévenir les attaques par Injection SQL en échappant correctement les valeurs.",
+        "Parce que la concaténation est interdite en PHP.",
+        "Pour le typage fort."
+      ],
+      "correct_answers": [
+        "Pour prévenir les attaques par Injection SQL en échappant correctement les valeurs."
+      ],
+      "explanation": "Concaténer des variables utilisateur directement dans la chaîne de requête est la faille de sécurité #1 (SQL Injection)."
+    },
+    {
+      "id": 4,
+      "question": "Quel mode d'hydratation est le plus performant pour de l'affichage simple en lecture seule ?",
+      "type": "single_choice",
+      "options": [
+        "`getResult()` (Object Hydration)",
+        "`getArrayResult()` (Array Hydration)",
+        "`getScalarResult()`",
+        "`getOneOrNullResult()`"
+      ],
+      "correct_answers": [
+        "`getArrayResult()` (Array Hydration)"
+      ],
+      "explanation": "L'hydratation objet (`getResult`) est coûteuse (instanciation, tracking). L'hydratation tableau (`getArrayResult`) retourne des données brutes, beaucoup plus légères."
+    }
+  ]
+}
