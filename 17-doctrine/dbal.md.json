@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/dbal.md",
+  "title": "DBAL (Database Abstraction Layer)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence principale entre l'ORM et le DBAL ?",
+      "type": "single_choice",
+      "options": [
+        "L'ORM est plus rapide que le DBAL.",
+        "Le DBAL manipule des objets PHP (Entités), l'ORM manipule du SQL.",
+        "L'ORM est une couche haute qui gère les Entités et le cycle de vie, le DBAL est une couche basse (surcouche PDO) qui permet d'exécuter du SQL brut.",
+        "Le DBAL ne supporte pas les transactions."
+      ],
+      "correct_answers": [
+        "L'ORM est une couche haute qui gère les Entités et le cycle de vie, le DBAL est une couche basse (surcouche PDO) qui permet d'exécuter du SQL brut."
+      ],
+      "explanation": "Le DBAL est utile pour les opérations complexes ou massives où l'ORM ajouterait trop d'overhead."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode de l'objet `Connection` (DBAL) permet d'exécuter une requête `SELECT` et de récupérer un résultat itérable ?",
+      "type": "single_choice",
+      "options": [
+        "`executeStatement($sql)`",
+        "`executeQuery($sql)`",
+        "`query($sql)`",
+        "`exec($sql)`"
+      ],
+      "correct_answers": [
+        "`executeQuery($sql)`"
+      ],
+      "explanation": "`executeQuery` retourne un objet `Result` sur lequel on peut boucler (fetch), tandis que `executeStatement` retourne le nombre de lignes affectées (int)."
+    },
+    {
+      "id": 3,
+      "question": "Comment ajouter le support d'un type de colonne SQL non standard (ex: `geometry` de PostGIS) dans Doctrine ?",
+      "type": "single_choice",
+      "options": [
+        "C'est impossible.",
+        "En créant une classe étendant `Doctrine\DBAL\Types\Type` et en l'enregistrant dans la config `dbal.types`.",
+        "En modifiant le code source de Doctrine.",
+        "En utilisant le type `string`."
+      ],
+      "correct_answers": [
+        "En créant une classe étendant `Doctrine\DBAL\Types\Type` et en l'enregistrant dans la config `dbal.types`."
+      ],
+      "explanation": "Doctrine est extensible et permet de mapper n'importe quel type SQL vers un type PHP via des Types personnalisés."
+    },
+    {
+      "id": 4,
+      "question": "Si vous utilisez le DBAL directement, bénéficiez-vous du UnitOfWork et du flush automatique ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, vous manipulez directement la base de données, c'est à vous de gérer les INSERT/UPDATE.",
+        "Oui, mais seulement pour les SELECT.",
+        "Cela dépend du driver."
+      ],
+      "correct_answers": [
+        "Non, vous manipulez directement la base de données, c'est à vous de gérer les INSERT/UPDATE."
+      ],
+      "explanation": "Le UnitOfWork est une fonctionnalité exclusive de l'ORM. En DBAL, vous êtes 'proche du métal' (SQL)."
+    }
+  ]
+}

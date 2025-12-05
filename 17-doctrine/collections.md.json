@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/collections.md",
+  "title": "Collections & Criteria",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment doit-on initialiser une propriété de type Collection dans le constructeur d'une entité ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `new PersistentCollection()`.",
+        "Avec `new ArrayCollection()`.",
+        "Avec un tableau vide `[]`.",
+        "Avec `null`."
+      ],
+      "correct_answers": [
+        "Avec `new ArrayCollection()`."
+      ],
+      "explanation": "`ArrayCollection` est l'implémentation PHP standard utilisée avant que Doctrine ne la remplace par sa propre implémentation persistante lors du chargement."
+    },
+    {
+      "id": 2,
+      "question": "Quel est l'avantage principal de l'option `fetch: 'EXTRA_LAZY'` sur une collection ?",
+      "type": "single_choice",
+      "options": [
+        "Elle charge toute la collection dès l'accès à l'entité parente.",
+        "Elle permet d'effectuer des opérations comme `count()` ou `contains()` sans charger toute la collection en mémoire (via des requêtes SQL optimisées).",
+        "Elle désactive le chargement de la relation.",
+        "Elle force l'utilisation de EAGER loading."
+      ],
+      "correct_answers": [
+        "Elle permet d'effectuer des opérations comme `count()` ou `contains()` sans charger toute la collection en mémoire (via des requêtes SQL optimisées)."
+      ],
+      "explanation": "C'est crucial pour les grosses collections (ex: les 10 000 commentaires d'un article) pour éviter les problèmes de mémoire."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert l'objet `Criteria` de Doctrine ?",
+      "type": "single_choice",
+      "options": [
+        "À valider les données avant insertion.",
+        "À filtrer une collection de manière efficace (SQL si non chargée, PHP si chargée) sans écrire de DQL.",
+        "À définir les critères de jointure.",
+        "À trier les résultats de `findAll()`."
+      ],
+      "correct_answers": [
+        "À filtrer une collection de manière efficace (SQL si non chargée, PHP si chargée) sans écrire de DQL."
+      ],
+      "explanation": "`Criteria` offre une API fluide (`Criteria::create()->where(...)`) pour filtrer les collections de manière agnostique (mémoire ou base)."
+    },
+    {
+      "id": 4,
+      "question": "Que se passe-t-il si vous appelez la méthode `matching($criteria)` sur une collection qui est déjà entièrement chargée en mémoire ?",
+      "type": "single_choice",
+      "options": [
+        "Doctrine exécute une nouvelle requête SQL.",
+        "Doctrine filtre la collection en mémoire via PHP (array_filter), sans requête SQL.",
+        "Doctrine lance une exception.",
+        "Doctrine vide la collection et la recharge."
+      ],
+      "correct_answers": [
+        "Doctrine filtre la collection en mémoire via PHP (array_filter), sans requête SQL."
+      ],
+      "explanation": "C'est la force des Criteria : ils s'adaptent intelligemment à l'état de la collection."
+    }
+  ]
+}

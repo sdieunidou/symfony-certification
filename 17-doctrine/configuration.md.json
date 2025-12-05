@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/configuration.md",
+  "title": "Configuration Doctrine (Symfony)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Dans quel fichier de configuration définit-on principalement les paramètres de Doctrine (URL BDD, mapping ORM) ?",
+      "type": "single_choice",
+      "options": [
+        "`config/services.yaml`",
+        "`config/packages/doctrine.yaml`",
+        "`config/routes.yaml`",
+        "`src/Entity/Configuration.php`"
+      ],
+      "correct_answers": [
+        "`config/packages/doctrine.yaml`"
+      ],
+      "explanation": "Ce fichier contient les clés `dbal` (connexion) et `orm` (mapping)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle syntaxe permet d'utiliser une variable d'environnement pour l'URL de la base de données tout en résolvant les caractères spéciaux éventuels ?",
+      "type": "single_choice",
+      "options": [
+        "`'%env(DATABASE_URL)%`",
+        "`'%env(resolve:DATABASE_URL)%`",
+        "`$DATABASE_URL`",
+        "`@DATABASE_URL`"
+      ],
+      "correct_answers": [
+        "`'%env(resolve:DATABASE_URL)%`"
+      ],
+      "explanation": "Le processeur `resolve:` est important pour que l'URL encodée soit correctement interprétée par Doctrine."
+    },
+    {
+      "id": 3,
+      "question": "Est-il possible de configurer plusieurs connexions à des bases de données différentes dans une même application Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Non, Doctrine ne supporte qu'une seule base de données.",
+        "Oui, en définissant plusieurs connexions dans `dbal` et plusieurs entity managers dans `orm`.",
+        "Oui, mais seulement si elles sont du même type (ex: toutes MySQL).",
+        "Uniquement avec Microservices."
+      ],
+      "correct_answers": [
+        "Oui, en définissant plusieurs connexions dans `dbal` et plusieurs entity managers dans `orm`."
+      ],
+      "explanation": "Symfony gère parfaitement le multi-database via le `ManagerRegistry` et des services nommés."
+    },
+    {
+      "id": 4,
+      "question": "Qu'est-ce qu'un 'Lazy Ghost Object' (activé par `enable_lazy_ghost_objects: true`) ?",
+      "type": "single_choice",
+      "options": [
+        "Un fantôme qui hante le serveur.",
+        "Une nouvelle implémentation technique des Proxies Doctrine (depuis Symfony 6.2) plus performante et transparente.",
+        "Une entité supprimée (Soft Delete).",
+        "Un objet non persisté."
+      ],
+      "correct_answers": [
+        "Une nouvelle implémentation technique des Proxies Doctrine (depuis Symfony 6.2) plus performante et transparente."
+      ],
+      "explanation": "Cette fonctionnalité remplace progressivement les anciens proxies basés sur l'héritage pour gérer le Lazy Loading."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/acid.md",
+  "title": "Principe ACID (Transactions)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Que signifie l'Atomicité (A) dans l'acronyme ACID ?",
+      "type": "single_choice",
+      "options": [
+        "Les données sont atomiques (insécables).",
+        "La transaction est 'Tout ou rien' : si une partie échoue, rien n'est appliqué (Rollback).",
+        "Les transactions sont exécutées les unes après les autres.",
+        "Les données sont stockées sur un disque atomique."
+      ],
+      "correct_answers": [
+        "La transaction est 'Tout ou rien' : si une partie échoue, rien n'est appliqué (Rollback)."
+      ],
+      "explanation": "L'atomicité garantit qu'une série d'opérations est traitée comme une unité indivisible."
+    },
+    {
+      "id": 2,
+      "question": "Avec la méthode `$em->transactional(callable $func)`, quand le `flush()` est-il exécuté ?",
+      "type": "single_choice",
+      "options": [
+        "Jamais, il faut l'appeler manuellement dans la fonction.",
+        "Automatiquement à la fin de la fonction si aucune exception n'est lancée.",
+        "Au début de la transaction.",
+        "À chaque appel de `persist()`."
+      ],
+      "correct_answers": [
+        "Automatiquement à la fin de la fonction si aucune exception n'est lancée."
+      ],
+      "explanation": "`transactional()` est une méthode de commodité qui gère l'ouverture, le commit/flush et le rollback automatique en cas d'erreur."
+    },
+    {
+      "id": 3,
+      "question": "Quelle est la différence principale entre `$em->transactional()` et `$em->wrapInTransaction()` ?",
+      "type": "single_choice",
+      "options": [
+        "Aucune, c'est un alias.",
+        "`wrapInTransaction()` ne fait PAS de flush automatique, donnant plus de contrôle (ex: flush intermédiaires).",
+        "`transactional()` est déprécié.",
+        "`wrapInTransaction()` ne gère pas le rollback."
+      ],
+      "correct_answers": [
+        "`wrapInTransaction()` ne fait PAS de flush automatique, donnant plus de contrôle (ex: flush intermédiaires)."
+      ],
+      "explanation": "`wrapInTransaction` encadre simplement le code d'un begin/commit/rollback mais laisse la responsabilité du `flush` (synchronisation DB) au développeur."
+    },
+    {
+      "id": 4,
+      "question": "Quel niveau d'isolation SQL est le plus strict (garantit une sérialisation parfaite) mais le plus lent ?",
+      "type": "single_choice",
+      "options": [
+        "READ UNCOMMITTED",
+        "READ COMMITTED",
+        "REPEATABLE READ",
+        "SERIALIZABLE"
+      ],
+      "correct_answers": [
+        "SERIALIZABLE"
+      ],
+      "explanation": "SERIALIZABLE assure que le résultat de transactions concurrentes est identique à celui qu'on obtiendrait en les exécutant l'une après l'autre."
+    }
+  ]
+}

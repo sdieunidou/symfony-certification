@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/extensions.md",
+  "title": "Extensions Doctrine (Gedmo / Stof)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel bundle est couramment utilisé pour intégrer les extensions Doctrine (Gedmo) comme Timestampable ou Sluggable dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "`sensio/framework-extra-bundle`",
+        "`stof/doctrine-extensions-bundle`",
+        "`doctrine/doctrine-bundle`",
+        "`friendsofsymfony/user-bundle`"
+      ],
+      "correct_answers": [
+        "`stof/doctrine-extensions-bundle`"
+      ],
+      "explanation": "Ce bundle configure les listeners nécessaires pour activer les extensions Gedmo."
+    },
+    {
+      "id": 2,
+      "question": "Que fait l'extension `Timestampable` ?",
+      "type": "single_choice",
+      "options": [
+        "Elle convertit les dates en timestamp Unix.",
+        "Elle met à jour automatiquement les champs de date de création (`on: 'create'`) et de modification (`on: 'update'`).",
+        "Elle empêche la modification des dates.",
+        "Elle synchronise l'heure avec le serveur NTP."
+      ],
+      "correct_answers": [
+        "Elle met à jour automatiquement les champs de date de création (`on: 'create'`) et de modification (`on: 'update'`)."
+      ],
+      "explanation": "C'est un gain de temps considérable pour gérer les métadonnées temporelles standards."
+    },
+    {
+      "id": 3,
+      "question": "Comment configure-t-on le champ source pour générer un slug avec l'extension Sluggable via des attributs ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Gedmo\Slug(fields: ['name'])]`",
+        "`#[Slug(source: 'name')]`",
+        "`#[ORM\Slug(target: 'name')]`",
+        "`@Gedmo:Slug(on='name')`"
+      ],
+      "correct_answers": [
+        "`#[Gedmo\Slug(fields: ['name'])]`"
+      ],
+      "explanation": "L'attribut `#[Gedmo\Slug]` permet de définir quels champs sont utilisés pour construire la chaîne URL-friendly."
+    },
+    {
+      "id": 4,
+      "question": "Quel est un inconvénient potentiel de l'extension `Loggable` (Historique des modifications) ?",
+      "type": "single_choice",
+      "options": [
+        "Elle ne fonctionne qu'avec MySQL.",
+        "Elle peut générer un volume important de données et de requêtes supplémentaires, impactant les performances.",
+        "Elle supprime les anciennes données.",
+        "Elle désactive le cache Doctrine."
+      ],
+      "correct_answers": [
+        "Elle peut générer un volume important de données et de requêtes supplémentaires, impactant les performances."
+      ],
+      "explanation": "Chaque modification entraîne une insertion dans une table de logs (`ext_log_entries`), ce qui peut être lourd à grande échelle."
+    }
+  ]
+}

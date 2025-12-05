@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/associations.md",
+  "title": "Associations (Relations)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Dans une relation bidirectionnelle (ex: Product <-> Category), quel côté est le 'Owning Side' (Propriétaire) qui déclenche la mise à jour en base ?",
+      "type": "single_choice",
+      "options": [
+        "Le côté qui a l'attribut `mappedBy`.",
+        "Le côté qui contient la colonne de clé étrangère (Foreign Key) et l'attribut `inversedBy`.",
+        "Les deux côtés mettent à jour la base.",
+        "Le côté 'One'."
+      ],
+      "correct_answers": [
+        "Le côté qui contient la colonne de clé étrangère (Foreign Key) et l'attribut `inversedBy`."
+      ],
+      "explanation": "Doctrine ne regarde QUE le côté propriétaire pour persister les changements. Modifier la collection du côté inverse (`mappedBy`) sans mettre à jour le propriétaire ne fait rien."
+    },
+    {
+      "id": 2,
+      "question": "Si vous avez une relation OneToMany `$category->products`, que se passe-t-il si vous activez `orphanRemoval: true` et que vous retirez un produit de la collection ?",
+      "type": "single_choice",
+      "options": [
+        "La clé étrangère du produit est mise à NULL.",
+        "Le produit est supprimé de la base de données (DELETE).",
+        "Rien ne se passe.",
+        "Doctrine lance une erreur."
+      ],
+      "correct_answers": [
+        "Le produit est supprimé de la base de données (DELETE)."
+      ],
+      "explanation": "`orphanRemoval: true` indique que si un enfant n'est plus lié à son parent, il doit être détruit (il ne peut pas exister sans parent)."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi est-il recommandé d'avoir des méthodes synchronisées (ex: `addProduct`) qui mettent à jour les deux côtés de la relation ?",
+      "type": "single_choice",
+      "options": [
+        "Pour des raisons de performance SQL.",
+        "Pour garantir la cohérence de l'objet en mémoire (si je fais `$cat->addProduct($p)`, `$p->getCategory()` doit retourner `$cat`).",
+        "C'est obligatoire pour que Doctrine fonctionne.",
+        "Pour activer le Lazy Loading."
+      ],
+      "correct_answers": [
+        "Pour garantir la cohérence de l'objet en mémoire (si je fais `$cat->addProduct($p)`, `$p->getCategory()` doit retourner `$cat`)."
+      ],
+      "explanation": "Sans cela, votre graphe d'objets en mémoire est incohérent jusqu'au prochain rechargement depuis la base."
+    },
+    {
+      "id": 4,
+      "question": "Quelle option de `cascade` permet de sauvegarder automatiquement une nouvelle entité liée sans appeler `persist()` dessus explicitement ?",
+      "type": "single_choice",
+      "options": [
+        "`cascade: ['remove']`",
+        "`cascade: ['persist']`",
+        "`cascade: ['detach']`",
+        "`orphanRemoval: true`"
+      ],
+      "correct_answers": [
+        "`cascade: ['persist']`"
+      ],
+      "explanation": "Si `Category` a `cascade: ['persist']` sur `products`, persister la catégorie persistera aussi tous les nouveaux produits ajoutés à sa collection."
+    }
+  ]
+}

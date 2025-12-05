@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/events.md",
+  "title": "Événements Doctrine",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel événement est le plus approprié pour initialiser la date de création (`createdAt`) d'une entité juste avant qu'elle ne soit insérée en base ?",
+      "type": "single_choice",
+      "options": [
+        "`postPersist`",
+        "`prePersist`",
+        "`preUpdate`",
+        "`onFlush`"
+      ],
+      "correct_answers": [
+        "`prePersist`"
+      ],
+      "explanation": "`prePersist` est déclenché avant l'exécution de l'INSERT SQL."
+    },
+    {
+      "id": 2,
+      "question": "Si vous avez besoin d'injecter un service (ex: `SluggerInterface`) pour traiter une entité lors d'un événement, quelle méthode devez-vous utiliser ?",
+      "type": "single_choice",
+      "options": [
+        "Les Lifecycle Callbacks (méthodes internes à l'entité).",
+        "Un Entity Listener (classe externe définie comme service).",
+        "Une fonction globale.",
+        "Le constructeur de l'entité."
+      ],
+      "correct_answers": [
+        "Un Entity Listener (classe externe définie comme service)."
+      ],
+      "explanation": "Les Lifecycle Callbacks (dans l'entité) ne peuvent pas recevoir de services. Les Entity Listeners sont des services Symfony et supportent l'injection de dépendances."
+    },
+    {
+      "id": 3,
+      "question": "Est-il recommandé d'appeler `$em->flush()` à l'intérieur d'un écouteur d'événement Doctrine (ex: `postUpdate`) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, c'est nécessaire pour sauvegarder les changements.",
+        "Non, c'est dangereux et déconseillé car cela peut provoquer des boucles infinies.",
+        "Oui, mais uniquement dans `preRemove`.",
+        "Cela n'a aucun effet."
+      ],
+      "correct_answers": [
+        "Non, c'est dangereux et déconseillé car cela peut provoquer des boucles infinies."
+      ],
+      "explanation": "Le système d'événements est déclenché par le flush. Rappeler flush dedans relance le processus."
+    },
+    {
+      "id": 4,
+      "question": "L'événement `preUpdate` est-il déclenché si vous faites un `persist()` sur une entité existante mais que vous n'avez modifié aucune propriété ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, Doctrine ne déclenche `preUpdate` (et la requête SQL) que s'il détecte un changement réel de données (Change Tracking).",
+        "Oui, si le cache est vidé.",
+        "Cela dépend de la base de données."
+      ],
+      "correct_answers": [
+        "Non, Doctrine ne déclenche `preUpdate` (et la requête SQL) que s'il détecte un changement réel de données (Change Tracking)."
+      ],
+      "explanation": "C'est une optimisation de Doctrine pour éviter des UPDATE inutiles."
+    }
+  ]
+}

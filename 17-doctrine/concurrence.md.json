@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/concurrence.md",
+  "title": "Concurrence avec Doctrine (Locking)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le principe du 'Verrouillage Optimiste' (Optimistic Locking) ?",
+      "type": "single_choice",
+      "options": [
+        "Bloquer la ligne en lecture/écriture dès le début de la transaction.",
+        "Ne pas bloquer la base, mais utiliser une colonne de version (`@Version`) pour détecter les conflits au moment du `flush()`.",
+        "Espérer qu'il n'y aura jamais de conflit.",
+        "Utiliser des transactions READ UNCOMMITTED."
+      ],
+      "correct_answers": [
+        "Ne pas bloquer la base, mais utiliser une colonne de version (`@Version`) pour détecter les conflits au moment du `flush()`."
+      ],
+      "explanation": "Si la version en base est différente de la version en mémoire lors de la sauvegarde, une `OptimisticLockException` est lancée."
+    },
+    {
+      "id": 2,
+      "question": "Quelle exception est lancée par Doctrine en mode Optimiste si une modification concurrente est détectée ?",
+      "type": "single_choice",
+      "options": [
+        "`PessimisticLockException`",
+        "`OptimisticLockException`",
+        "`ConcurrencyException`",
+        "`VersionMismatchException`"
+      ],
+      "correct_answers": [
+        "`OptimisticLockException`"
+      ],
+      "explanation": "C'est au développeur de l'attraper et de décider quoi faire (réessayer, afficher une erreur à l'utilisateur, merger...)."
+    },
+    {
+      "id": 3,
+      "question": "Quand utiliser le 'Verrouillage Pessimiste' (Pessimistic Locking) ?",
+      "type": "single_choice",
+      "options": [
+        "Pour toutes les lectures.",
+        "Pour les processus critiques à forte contention (ex: mouvement de solde bancaire, stock limité) où on veut séquentialiser les accès.",
+        "Quand on n'a pas de colonne de version.",
+        "Pour améliorer les performances."
+      ],
+      "correct_answers": [
+        "Pour les processus critiques à forte contention (ex: mouvement de solde bancaire, stock limité) où on veut séquentialiser les accès."
+      ],
+      "explanation": "Le mode pessimiste (`SELECT ... FOR UPDATE`) bloque physiquement les autres transactions jusqu'à la fin de la transaction courante."
+    },
+    {
+      "id": 4,
+      "question": "Quelle clause SQL est utile pour implémenter un Worker qui prend des tâches sans bloquer les autres Workers ?",
+      "type": "single_choice",
+      "options": [
+        "`FOR UPDATE`",
+        "`FOR UPDATE SKIP LOCKED`",
+        "`FOR SHARE`",
+        "`LOCK IN SHARE MODE`"
+      ],
+      "correct_answers": [
+        "`FOR UPDATE SKIP LOCKED`"
+      ],
+      "explanation": "`SKIP LOCKED` permet de sélectionner des lignes verrouillables en ignorant celles déjà verrouillées par d'autres transactions."
+    }
+  ]
+}
