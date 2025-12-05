@@ -11,127 +11,95 @@ Un bundle est structuré comme une mini-application Symfony.
 
 ```text
 MyBundle/
-├── config/             # Configuration par défaut (services.yaml)
+├── config/             # Configuration (services.yaml, routes.yaml)
 ├── src/
 │   ├── Controller/
-│   ├── DependencyInjection/
-│   │   └── MyExtension.php  <-- Le point d'entrée
-│   ├── MyBundle.php         <-- La classe principale
+│   ├── DependencyInjection/ # Extension & Configuration
+│   ├── MyBundle.php         # Classe principale
 │   └── Service/
 ├── templates/
-└── composer.json
+├── composer.json
+├── README.md
+└── LICENSE
 ```
 
-## La classe Bundle
-Elle doit étendre `Symfony\Component\HttpKernel\Bundle\Bundle`.
-Depuis Symfony 6.1, elle peut souvent rester vide ou implémenter `getPath()` pour définir la racine.
+## La classe Bundle (Modern way: AbstractBundle)
+Depuis Symfony 6.1, la méthode recommandée est d'étendre `AbstractBundle`.
+Cette classe unique remplace souvent la paire `Bundle` + `DependencyInjection\Extension`.
 
 ```php
 namespace Acme\MyBundle;
 
-use Symfony\Component\HttpKernel\Bundle\Bundle;
-
-class MyBundle extends Bundle
-{
-    public function getPath(): string
-    {
-        return \dirname(__DIR__);
-    }
-}
-```
-
-## Dependency Injection Extension
-C'est le cœur du Bundle. C'est cette classe qui va charger vos services et traiter la configuration.
-Par convention, elle doit se trouver dans le sous-namespace `DependencyInjection` et s'appeler `NomDuBundleExtension` (sans le suffixe Bundle).
-
-Exemple pour `MyBundle` -> `MyExtension`.
-
-```php
-namespace Acme\MyBundle\DependencyInjection;
-
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\Config\FileLocator;
-
-class MyExtension extends Extension
-{
-    public function load(array $configs, ContainerBuilder $container): void
-    {
-        // 1. Charger les services du bundle
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
-        $loader->load('services.yaml');
-
-        // 2. Gérer la configuration (Configuration.php)
-        $configuration = new Configuration();
-        $config = $this->processConfiguration($configuration, $configs);
-        
-        // 3. Passer la config aux services (via paramètres)
-        $container->setParameter('my_bundle.api_key', $config['api_key']);
-    }
-}
-```
-
-## Configuration (TreeBuilder)
-Pour permettre aux utilisateurs de configurer votre bundle via `config/packages/my_bundle.yaml`, vous devez définir la structure attendue.
-
-```php
-namespace Acme\MyBundle\DependencyInjection;
-
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\ConfigurationInterface;
-
-class Configuration implements ConfigurationInterface
-{
-    public function getConfigTreeBuilder(): TreeBuilder
-    {
-        $treeBuilder = new TreeBuilder('my_bundle');
-
-        $treeBuilder->getRootNode()
-            ->children()
-                ->scalarNode('api_key')->isRequired()->end()
-                ->booleanNode('enable_logger')->defaultTrue()->end()
-            ->end();
-
-        return $treeBuilder;
-    }
-}
-```
-
-## AbstractBundle (Symfony 6.1+)
-Pour simplifier, Symfony propose maintenant `AbstractBundle` qui combine la classe Bundle et l'Extension. C'est la méthode recommandée pour les bundles modernes simples.
-
-```php
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
+use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 
 class MyBundle extends AbstractBundle
 {
+    // 1. Charger les services (services.yaml)
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         $container->import('../config/services.yaml');
-        
+
+        // Utiliser la config pour définir des paramètres ou services
         $builder->setParameter('my_bundle.api_key', $config['api_key']);
     }
 
+    // 2. Définir la configuration (Semantic Configuration)
     public function configure(DefinitionConfigurator $definition): void
     {
         $definition->rootNode()
             ->children()
-                ->scalarNode('api_key')->end()
+                ->scalarNode('api_key')->isRequired()->end()
+                ->booleanNode('enable_logger')->defaultTrue()->end()
             ->end();
+    }
+
+    // 3. Pré-configurer d'autres bundles (Prepend Extension)
+    public function prependExtension(ContainerConfigurator $container, ContainerBuilder $builder): void
+    {
+        // Exemple : configurer Twig automatiquement si ce bundle est installé
+        $container->extension('twig', [
+            'globals' => [
+                'my_bundle_version' => '1.0.0'
+            ]
+        ]);
     }
 }
 ```
 
+## La méthode Classique (Legacy / Complexe)
+Si vous avez besoin de plus de contrôle, vous pouvez séparer la classe Bundle et l'Extension.
+
+1.  **Bundle Class** : `Acme\MyBundle\MyBundle` (étend `Bundle`).
+2.  **Extension Class** : `Acme\MyBundle\DependencyInjection\MyExtension` (étend `Extension`).
+3.  **Configuration Class** : `Acme\MyBundle\DependencyInjection\Configuration` (implémente `ConfigurationInterface`).
+
+C'est l'`Extension` qui charge les services via `YamlFileLoader` et traite la configuration via `processConfiguration`.
+
+## Interaction avec d'autres Bundles (PrependExtensionInterface)
+Si votre bundle doit configurer un autre bundle (ex: ajouter une config Doctrine ou Twig), votre Extension doit implémenter `PrependExtensionInterface`.
+*Note : Avec `AbstractBundle`, c'est directement la méthode `prependExtension()`.*
+
+## Bonnes Pratiques (Best Practices)
+1.  **Nommage** : `AcmeBlogBundle` (pas `BlogBundle` tout court).
+2.  **Services** :
+    *   Préfixez TOUS vos IDs de services et paramètres (ex: `acme_blog.repository.post`).
+    *   Évitez l'`autowiring` public. Définissez vos services explicitement ou utilisez un autowiring local strict pour ne pas polluer le conteneur de l'application.
+3.  **Configuration** : Utilisez la **Semantic Configuration** (TreeBuilder) plutôt que de simples paramètres. Cela permet la validation et l'autocomplétion de la config.
+4.  **Composer** : Définissez le `type: symfony-bundle` dans `composer.json`.
+
 ## Recettes (Recipes)
-Pour distribuer votre bundle efficacement, créez une **Recette Flex** (dans `symfony/recipes-contrib`). Elle permettra de configurer automatiquement le bundle lors du `composer require` (création du fichier de config, ajout au bundles.php).
+Pour distribuer votre bundle efficacement, créez une **Recette Flex** (dans `symfony/recipes-contrib`).
+Elle permet de :
+*   Ajouter automatiquement le bundle dans `config/bundles.php`.
+*   Créer le fichier de configuration par défaut `config/packages/my_bundle.yaml`.
+*   Copier des fichiers par défaut (routes, env vars).
 
 ## 🧠 Concepts Clés
-1.  **Préfixe de Service** : Tous vos services doivent être préfixés (ex: `acme.my_bundle.service`) pour éviter les collisions avec l'application hôte.
-2.  **Compiler Passes** : Si votre bundle doit modifier d'autres services (ex: ajouter des tags, modifier Twig), utilisez un `CompilerPass` dans la méthode `build()` de la classe Bundle.
+*   **Compiler Passes** : Pour modifier des services existants (ex: ajouter des tags) lors de la compilation du conteneur, utilisez la méthode `build(ContainerBuilder $container)` dans votre classe Bundle.
 
 ## Ressources
 *   [Symfony Docs - Create a Bundle](https://symfony.com/doc/current/bundles.html)
-*   [Symfony Docs - AbstractBundle](https://symfony.com/doc/current/bundles/abstract_bundle.html)
+*   [Symfony Docs - Best Practices](https://symfony.com/doc/current/bundles/best_practices.html)
