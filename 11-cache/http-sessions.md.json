@@ -1,0 +1,67 @@
+{
+  "source_file": "11-cache/http-sessions.md",
+  "title": "Cache HTTP et Sessions Utilisateur",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Pourquoi le cache HTTP public et les sessions utilisateur sont-ils généralement incompatibles ?",
+      "type": "single_choice",
+      "options": [
+        "Car les sessions utilisent trop de mémoire.",
+        "Car le cache public sert le même contenu à tout le monde, alors que la session personnalise le contenu pour un utilisateur unique.",
+        "Car le protocole HTTP interdit les deux simultanément.",
+        "Car Symfony ne supporte pas les sessions en mode production."
+      ],
+      "correct_answers": [
+        "Car le cache public sert le même contenu à tout le monde, alors que la session personnalise le contenu pour un utilisateur unique."
+      ],
+      "explanation": "Si une page personnalisée (ex: 'Bonjour Seb') est mise en cache public, tous les visiteurs verront 'Bonjour Seb', ce qui est une faille de sécurité."
+    },
+    {
+      "id": 2,
+      "question": "Que fait Symfony par défaut lorsqu'une session est démarrée pendant le traitement d'une requête ?",
+      "type": "single_choice",
+      "options": [
+        "Il désactive la session.",
+        "Il rend la réponse `private` et non-cacheable (`must-revalidate`, `max-age=0`) pour éviter les fuites d'informations.",
+        "Il force la réponse en `public`.",
+        "Il supprime tous les cookies."
+      ],
+      "correct_answers": [
+        "Il rend la réponse `private` et non-cacheable (`must-revalidate`, `max-age=0`) pour éviter les fuites d'informations."
+      ],
+      "explanation": "C'est une sécurité par défaut pour empêcher qu'une réponse contenant des données de session ne finisse dans un cache partagé."
+    },
+    {
+      "id": 3,
+      "question": "Quelle technique permet d'avoir une page majoritairement en cache public tout en affichant des données utilisateur (comme le nom du connecté) ?",
+      "type": "multiple_choice",
+      "options": [
+        "Utiliser les ESI (Edge Side Includes) pour charger le bloc utilisateur dynamiquement.",
+        "Utiliser AJAX (Hinclude) pour charger les données utilisateur après le chargement de la page.",
+        "Désactiver la sécurité des sessions.",
+        "Mettre toute la page en cache public et espérer que les utilisateurs ont le même nom."
+      ],
+      "correct_answers": [
+        "Utiliser les ESI (Edge Side Includes) pour charger le bloc utilisateur dynamiquement.",
+        "Utiliser AJAX (Hinclude) pour charger les données utilisateur après le chargement de la page."
+      ],
+      "explanation": "Ces deux techniques (ESI et AJAX) permettent de séparer le contenu statique (cacheable publiquement) du contenu dynamique (privé)."
+    },
+    {
+      "id": 4,
+      "question": "Si vous voulez forcer Symfony à ne PAS modifier les headers de cache même si une session est active (Expert), que devez-vous faire ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `session_destroy()`.",
+        "Définir le header `AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER` à `true`.",
+        "Configurer `framework.session.enabled: false`.",
+        "Ce n'est pas possible, Symfony a toujours raison."
+      ],
+      "correct_answers": [
+        "Définir le header `AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER` à `true`."
+      ],
+      "explanation": "Ce header spécial instruit le Listener de session de Symfony de ne pas écraser vos directives de cache, vous laissant l'entière responsabilité de la sécurité."
+    }
+  ]
+}

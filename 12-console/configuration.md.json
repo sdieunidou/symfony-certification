@@ -1,0 +1,67 @@
+{
+  "source_file": "12-console/configuration.md",
+  "title": "Configuration des Commandes",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la méthode recommandée (depuis Symfony 5.3+) pour définir le nom et la description d'une commande, permettant le 'Lazy Loading' ?",
+      "type": "single_choice",
+      "options": [
+        "Définir des propriétés statiques `$defaultName` et `$defaultDescription`.",
+        "Utiliser l'attribut PHP `#[AsCommand]` sur la classe.",
+        "Utiliser la méthode `configure()`.",
+        "Configurer le service dans `console.yaml`."
+      ],
+      "correct_answers": [
+        "Utiliser l'attribut PHP `#[AsCommand]` sur la classe."
+      ],
+      "explanation": "L'attribut `#[AsCommand]` permet à Symfony de connaître le nom et la description de la commande sans avoir à instancier la classe, optimisant ainsi les performances (Lazy Loading)."
+    },
+    {
+      "id": 2,
+      "question": "Si vous utilisez l'autoconfiguration (par défaut dans Symfony), quelle classe votre commande doit-elle étendre pour être automatiquement enregistrée ?",
+      "type": "single_choice",
+      "options": [
+        "Symfony\\Component\\Console\\Command\\Command",
+        "Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController",
+        "Symfony\\Component\\HttpKernel\\Kernel",
+        "Psr\\Log\\LoggerInterface"
+      ],
+      "correct_answers": [
+        "Symfony\\Component\\Console\\Command\\Command"
+      ],
+      "explanation": "Toute classe étendant `Command` est automatiquement taguée `console.command` et enregistrée dans l'application console."
+    },
+    {
+      "id": 3,
+      "question": "Comment définir des arguments et des options pour une commande ?",
+      "type": "single_choice",
+      "options": [
+        "Via l'attribut `#[AsCommand]`.",
+        "Dans la méthode `execute()`.",
+        "Dans la méthode `configure()`.",
+        "Dans le constructeur."
+      ],
+      "correct_answers": [
+        "Dans la méthode `configure()`."
+      ],
+      "explanation": "Bien que le nom puisse être défini par attribut, la définition des arguments (`addArgument`) et options (`addOption`) se fait toujours dans la méthode `configure()`."
+    },
+    {
+      "id": 4,
+      "question": "Comment masquer une commande de la liste `bin/console list` tout en la gardant exécutable ?",
+      "type": "multiple_choice",
+      "options": [
+        "En définissant `hidden: true` dans l'attribut `#[AsCommand]`.",
+        "En préfixant son nom par un underscore `_`.",
+        "En la mettant en `private` dans `services.yaml`.",
+        "En supprimant la méthode `configure()`."
+      ],
+      "correct_answers": [
+        "En définissant `hidden: true` dans l'attribut `#[AsCommand]`.",
+        "En préfixant son nom par un underscore `_`."
+      ],
+      "explanation": "Les deux méthodes fonctionnent. L'attribut `hidden: true` est la méthode moderne explicite."
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "source_file": "11-cache/http-server-side.md",
+  "title": "Symfony Reverse Proxy (HttpCache)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Qu'est-ce que le composant `HttpCache` de Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Un système de cache de base de données.",
+        "Un Reverse Proxy écrit en PHP qui se comporte comme un Gateway Cache (ex: Varnish).",
+        "Un outil pour minifier les fichiers CSS et JS.",
+        "Un client HTTP pour faire des requêtes externes."
+      ],
+      "correct_answers": [
+        "Un Reverse Proxy écrit en PHP qui se comporte comme un Gateway Cache (ex: Varnish)."
+      ],
+      "explanation": "`HttpCache` est un reverse proxy intégré à Symfony, écrit en PHP, capable de gérer le cache HTTP et les ESI sans infrastructure tierce."
+    },
+    {
+      "id": 2,
+      "question": "Comment active-t-on le Reverse Proxy de Symfony en production (Symfony Flex / moderne) ?",
+      "type": "single_choice",
+      "options": [
+        "En installant le bundle `sensio/framework-extra-bundle`.",
+        "En configurant `framework.http_cache: true` dans `config/packages/framework.yaml`.",
+        "En décommentant une ligne dans le fichier `.env`.",
+        "Il est activé par défaut et ne peut pas être désactivé."
+      ],
+      "correct_answers": [
+        "En configurant `framework.http_cache: true` dans `config/packages/framework.yaml`."
+      ],
+      "explanation": "C'est la méthode de configuration standard depuis les versions récentes de Symfony."
+    },
+    {
+      "id": 3,
+      "question": "Quel en-tête HTTP permet de déboguer l'état du cache Symfony (HIT, MISS, STALE) ?",
+      "type": "single_choice",
+      "options": [
+        "`X-Cache-Debug`",
+        "`X-Symfony-Cache`",
+        "`Server-Timing`",
+        "`Cache-Status`"
+      ],
+      "correct_answers": [
+        "`X-Symfony-Cache`"
+      ],
+      "explanation": "Le header `X-Symfony-Cache` fournit des informations précieuses sur le traitement de la requête par le reverse proxy interne."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la principale différence de performance entre Symfony HttpCache et Varnish ?",
+      "type": "single_choice",
+      "options": [
+        "Symfony HttpCache est plus rapide car il est intégré.",
+        "Varnish est beaucoup plus performant car écrit en C et gérant le cache en RAM, alors que Symfony HttpCache instancie PHP à chaque requête.",
+        "Ils ont des performances identiques.",
+        "Symfony HttpCache ne supporte pas la charge."
+      ],
+      "correct_answers": [
+        "Varnish est beaucoup plus performant car écrit en C et gérant le cache en RAM, alors que Symfony HttpCache instancie PHP à chaque requête."
+      ],
+      "explanation": "Bien que Symfony HttpCache soit efficace (x10 vs app), Varnish reste la référence pour les très forts trafics."
+    },
+    {
+      "id": 5,
+      "question": "Pourquoi est-il critique de configurer `trusted_proxies` lorsqu'on utilise un Reverse Proxy ?",
+      "type": "single_choice",
+      "options": [
+        "Pour que Symfony puisse authentifier le proxy.",
+        "Pour que Symfony fasse confiance aux en-têtes comme `X-Forwarded-For` et restaure la véritable IP du client au lieu de celle du proxy.",
+        "Pour activer la compression GZIP.",
+        "Pour permettre l'utilisation du protocole HTTPS."
+      ],
+      "correct_answers": [
+        "Pour que Symfony fasse confiance aux en-têtes comme `X-Forwarded-For` et restaure la véritable IP du client au lieu de celle du proxy."
+      ],
+      "explanation": "Sans cela, l'application verra l'IP du proxy comme IP cliente, ce qui fausse les logs, la sécurité et les fonctionnalités géo-dépendantes."
+    }
+  ]
+}

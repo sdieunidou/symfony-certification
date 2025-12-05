@@ -1,0 +1,66 @@
+{
+  "source_file": "11-cache/http-validation.md",
+  "title": "Modèle de Validation (Validation Model)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel code de statut HTTP est renvoyé lorsque le serveur confirme que la version en cache du client est toujours valide (Validation réussie) ?",
+      "type": "single_choice",
+      "options": [
+        "200 OK",
+        "301 Moved Permanently",
+        "304 Not Modified",
+        "404 Not Found"
+      ],
+      "correct_answers": [
+        "304 Not Modified"
+      ],
+      "explanation": "Le statut 304 indique au client que sa copie locale est à jour et qu'il n'est pas nécessaire de retélécharger le corps de la réponse."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence entre un 'Strong ETag' et un 'Weak ETag' ?",
+      "type": "single_choice",
+      "options": [
+        "Le Strong ETag est crypté, le Weak ne l'est pas.",
+        "Le Strong ETag garantit une identité octet par octet, tandis que le Weak ETag garantit une équivalence sémantique.",
+        "Le Weak ETag est utilisé uniquement pour les images.",
+        "Il n'y a pas de différence."
+      ],
+      "correct_answers": [
+        "Le Strong ETag garantit une identité octet par octet, tandis que le Weak ETag garantit une équivalence sémantique."
+      ],
+      "explanation": "Un Weak ETag (préfixé par `W/`) permet de considérer comme identiques deux réponses qui diffèrent légèrement (ex: un espace en plus) mais qui ont le même sens pour l'utilisateur."
+    },
+    {
+      "id": 3,
+      "question": "Quelle méthode de l'objet `Response` permet de vérifier automatiquement si la requête correspond au cache (If-None-Match / If-Modified-Since) ?",
+      "type": "single_choice",
+      "options": [
+        "`$response->isValid()`",
+        "`$response->isNotModified($request)`",
+        "`$response->checkCache()`",
+        "`$response->validate($request)`"
+      ],
+      "correct_answers": [
+        "`$response->isNotModified($request)`"
+      ],
+      "explanation": "Cette méthode compare les en-têtes de la requête avec ceux de la réponse et renvoie `true` si le cache est valide, configurant automatiquement le statut 304."
+    },
+    {
+      "id": 4,
+      "question": "Pour optimiser les performances serveur avec le modèle de validation, quand doit-on calculer l'ETag ou la Date de modification ?",
+      "type": "single_choice",
+      "options": [
+        "Après avoir généré tout le contenu HTML.",
+        "Avant d'effectuer les opérations lourdes (requêtes complexes, rendu de template), en se basant sur des métadonnées légères.",
+        "Uniquement dans le template Twig.",
+        "Juste avant d'envoyer la réponse au client."
+      ],
+      "correct_answers": [
+        "Avant d'effectuer les opérations lourdes (requêtes complexes, rendu de template), en se basant sur des métadonnées légères."
+      ],
+      "explanation": "Si vous générez toute la page pour calculer son hash, vous économisez la bande passante mais pas le CPU serveur. L'idéal est de valider sur des données légères (ex: `updatedAt` de l'entité) avant le rendu."
+    }
+  ]
+}

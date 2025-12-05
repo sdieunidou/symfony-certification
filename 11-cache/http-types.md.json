@@ -1,0 +1,67 @@
+{
+  "source_file": "11-cache/http-types.md",
+  "title": "Types de Cache HTTP (Gateway vs Proxy)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quels sont les deux principaux types de cache dans l'architecture HTTP ?",
+      "type": "multiple_choice",
+      "options": [
+        "Le cache Navigateur (Client-side / Privé)",
+        "Le cache Base de Données (Redis / Doctrine)",
+        "Le Gateway Cache / Reverse Proxy (Partagé / Public)",
+        "Le cache CPU (L1 / L2)"
+      ],
+      "correct_answers": [
+        "Le cache Navigateur (Client-side / Privé)",
+        "Le Gateway Cache / Reverse Proxy (Partagé / Public)"
+      ],
+      "explanation": "L'architecture HTTP distingue le cache local du client (privé) et les caches intermédiaires partagés (Gateway/Proxy) qui servent plusieurs utilisateurs."
+    },
+    {
+      "id": 2,
+      "question": "Quel type de contenu est candidat pour le cache 'Public' (Gateway Cache) ?",
+      "type": "single_choice",
+      "options": [
+        "Les pages 'Mon Compte' et les Paniers d'achat.",
+        "Le contenu générique identique pour tous les utilisateurs (Homepage, Assets, Articles publics).",
+        "Les pages d'administration.",
+        "Les réponses API contenant des clés secrètes."
+      ],
+      "correct_answers": [
+        "Le contenu générique identique pour tous les utilisateurs (Homepage, Assets, Articles publics)."
+      ],
+      "explanation": "Le cache public est partagé entre tous les utilisateurs, il ne doit donc contenir aucune donnée personnelle ou sensible."
+    },
+    {
+      "id": 3,
+      "question": "Par défaut, comment le standard HTTP considère-t-il une réponse contenant un en-tête `Authorization` ?",
+      "type": "single_choice",
+      "options": [
+        "Comme publique.",
+        "Comme privée (non cacheable par un proxy partagé), sauf indication contraire explicite (`public`).",
+        "Comme invalide.",
+        "Comme ayant une durée de vie illimitée."
+      ],
+      "correct_answers": [
+        "Comme privée (non cacheable par un proxy partagé), sauf indication contraire explicite (`public`)."
+      ],
+      "explanation": "La présence d'authentification implique généralement un contenu personnalisé, donc le standard HTTP interdit le stockage partagé par défaut."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi ne faut-il jamais ajouter l'en-tête `Vary: Cookie` sur une réponse destinée au cache public ?",
+      "type": "single_choice",
+      "options": [
+        "Cela provoque une erreur 500.",
+        "Cela rend le cache inefficace car chaque utilisateur ayant un cookie différent (ex: session, tracking) aura sa propre version en cache, annulant le bénéfice du partage.",
+        "Cela supprime les cookies du client.",
+        "Cela force le passage en HTTPS."
+      ],
+      "correct_answers": [
+        "Cela rend le cache inefficace car chaque utilisateur ayant un cookie différent (ex: session, tracking) aura sa propre version en cache, annulant le bénéfice du partage."
+      ],
+      "explanation": "`Vary: Cookie` demande au proxy de stocker une version différente de la page pour chaque combinaison de cookies. Comme les cookies changent souvent par utilisateur, le cache devient inutilement fragmenté."
+    }
+  ]
+}

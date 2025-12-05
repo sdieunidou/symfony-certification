@@ -1,0 +1,81 @@
+{
+  "source_file": "11-cache/http-client-side.md",
+  "title": "Mise en cache Client-side (Navigateur)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence fondamentale entre les directives `private` et `public` du header `Cache-Control` ?",
+      "type": "single_choice",
+      "options": [
+        "`private` crypte les données, `public` les envoie en clair.",
+        "`private` indique que la réponse est spécifique à l'utilisateur et ne doit être stockée que par le navigateur. `public` permet le stockage par les caches partagés (CDN, Proxies).",
+        "`private` est pour l'intranet, `public` pour internet.",
+        "`private` désactive le cache, `public` l'active."
+      ],
+      "correct_answers": [
+        "`private` indique que la réponse est spécifique à l'utilisateur et ne doit être stockée que par le navigateur. `public` permet le stockage par les caches partagés (CDN, Proxies)."
+      ],
+      "explanation": "C'est la distinction majeure : `private` protège les données utilisateur (ex: page profil) d'être servies à d'autres via un CDN."
+    },
+    {
+      "id": 2,
+      "question": "Que signifie la directive `no-cache` ?",
+      "type": "single_choice",
+      "options": [
+        "Ne rien stocker du tout.",
+        "Le cache est autorisé, mais le client doit valider la fraîcheur (via ETag/Last-Modified) avec le serveur avant chaque réutilisation.",
+        "Le cache est désactivé pour les images uniquement.",
+        "C'est un synonyme de `no-store`."
+      ],
+      "correct_answers": [
+        "Le cache est autorisé, mais le client doit valider la fraîcheur (via ETag/Last-Modified) avec le serveur avant chaque réutilisation."
+      ],
+      "explanation": "`no-cache` ne signifie pas 'pas de cache', mais 'pas de cache sans validation'. Pour interdire le stockage, c'est `no-store`."
+    },
+    {
+      "id": 3,
+      "question": "Quel est le comportement par défaut de Symfony concernant le cache HTTP lorsqu'une session est active ?",
+      "type": "single_choice",
+      "options": [
+        "Il met la réponse en `public`.",
+        "Il désactive tout header de cache.",
+        "Il force la réponse en `private, must-revalidate, max-age=0`.",
+        "Il ignore la session."
+      ],
+      "correct_answers": [
+        "Il force la réponse en `private, must-revalidate, max-age=0`."
+      ],
+      "explanation": "Par sécurité, si une session est démarrée, Symfony considère la page comme privée et dynamique, empêchant le cache accidentel de données sensibles."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode de l'objet `Response` permet d'indiquer qu'une ressource ne changera JAMAIS ?",
+      "type": "single_choice",
+      "options": [
+        "`$response->setImmutable(true)`",
+        "`$response->setPublic()`",
+        "`$response->setMaxAge(0)`",
+        "Aucune, le web change tout le temps."
+      ],
+      "correct_answers": [
+        "`$response->setImmutable(true)`"
+      ],
+      "explanation": "Cela ajoute `immutable` au header `Cache-Control`, indiquant au navigateur qu'il n'est même pas nécessaire de revalider la ressource tant qu'elle n'a pas expiré."
+    },
+    {
+      "id": 5,
+      "question": "Si vous utilisez à la fois `Expires` et `Cache-Control: max-age`, lequel est prioritaire pour un navigateur moderne ?",
+      "type": "single_choice",
+      "options": [
+        "`Expires`",
+        "`Cache-Control: max-age`",
+        "Le plus restrictif des deux.",
+        "La moyenne des deux."
+      ],
+      "correct_answers": [
+        "`Cache-Control: max-age`"
+      ],
+      "explanation": "`max-age` (HTTP/1.1) a la priorité sur `Expires` (HTTP/1.0)."
+    }
+  ]
+}

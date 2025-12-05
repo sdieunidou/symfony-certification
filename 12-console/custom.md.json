@@ -1,0 +1,66 @@
+{
+  "source_file": "12-console/custom.md",
+  "title": "Commandes Personnalisées",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel type de valeur la méthode `execute()` d'une commande doit-elle retourner ?",
+      "type": "single_choice",
+      "options": [
+        "void (rien)",
+        "bool (true/false)",
+        "int (un entier correspondant au code de sortie)",
+        "string (le message à afficher)"
+      ],
+      "correct_answers": [
+        "int (un entier correspondant au code de sortie)"
+      ],
+      "explanation": "Elle doit retourner un entier : 0 pour succès (`Command::SUCCESS`), 1 pour erreur (`Command::FAILURE`), etc."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode du cycle de vie d'une commande est utilisée pour poser des questions à l'utilisateur (mode interactif) ?",
+      "type": "single_choice",
+      "options": [
+        "`configure()`",
+        "`initialize()`",
+        "`interact()`",
+        "`ask()`"
+      ],
+      "correct_answers": [
+        "`interact()`"
+      ],
+      "explanation": "La méthode `interact()` est appelée juste avant `execute()` uniquement si le mode interactif est actif, permettant de demander les arguments manquants."
+    },
+    {
+      "id": 3,
+      "question": "Depuis Symfony 7.3, comment peut-on créer une commande simple sans étendre la classe `Command` ?",
+      "type": "single_choice",
+      "options": [
+        "En implémentant l'interface `CommandInterface`.",
+        "En créant une classe avec une méthode `__invoke()` et l'attribut `#[AsCommand]`.",
+        "En créant une fonction anonyme dans `bin/console`.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "En créant une classe avec une méthode `__invoke()` et l'attribut `#[AsCommand]`."
+      ],
+      "explanation": "Symfony supporte désormais les commandes invokables, simplifiant la création de commandes simples."
+    },
+    {
+      "id": 4,
+      "question": "Si vous définissez un constructeur `__construct()` dans votre commande pour injecter des dépendances, que devez-vous impérativement faire ?",
+      "type": "single_choice",
+      "options": [
+        "Appeler `parent::__construct()`.",
+        "Déclarer la commande comme `lazy: true`.",
+        "Ne rien faire de spécial.",
+        "Initialiser les arguments d'entrée."
+      ],
+      "correct_answers": [
+        "Appeler `parent::__construct()`."
+      ],
+      "explanation": "Il est obligatoire d'appeler le constructeur parent de la classe `Command` pour que l'initialisation interne se fasse correctement."
+    }
+  ]
+}

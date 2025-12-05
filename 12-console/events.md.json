@@ -1,0 +1,66 @@
+{
+  "source_file": "12-console/events.md",
+  "title": "Événements de la Console",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel événement est déclenché juste avant l'exécution d'une commande console (permettant par exemple de la désactiver) ?",
+      "type": "single_choice",
+      "options": [
+        "`kernel.request`",
+        "`console.command`",
+        "`console.start`",
+        "`console.init`"
+      ],
+      "correct_answers": [
+        "`console.command`"
+      ],
+      "explanation": "L'événement `console.command` (classe `ConsoleCommandEvent`) est le premier déclenché et permet d'interagir avant l'exécution."
+    },
+    {
+      "id": 2,
+      "question": "Quel événement permet de gérer proprement l'arrêt d'un worker (boucle infinie) lors d'un Ctrl+C (SIGINT) ?",
+      "type": "single_choice",
+      "options": [
+        "`console.terminate`",
+        "`console.signal`",
+        "`kernel.terminate`",
+        "`console.stop`"
+      ],
+      "correct_answers": [
+        "`console.signal`"
+      ],
+      "explanation": "L'événement `console.signal` permet de s'abonner aux signaux système (comme SIGINT) pour effectuer un arrêt gracieux."
+    },
+    {
+      "id": 3,
+      "question": "Si une commande lance une exception, quel événement est dispatché ?",
+      "type": "single_choice",
+      "options": [
+        "`kernel.exception`",
+        "`console.error`",
+        "`console.exception`",
+        "`console.failure`"
+      ],
+      "correct_answers": [
+        "`console.error`"
+      ],
+      "explanation": "Le composant Console utilise `console.error` pour gérer les exceptions, indépendamment de `kernel.exception` (qui est pour HTTP)."
+    },
+    {
+      "id": 4,
+      "question": "Est-ce que les événements de la Console (`console.command`, etc.) sont déclenchés lors d'une requête HTTP classique ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, jamais.",
+        "Uniquement si la requête HTTP lance un sous-processus.",
+        "Oui, si le mode debug est activé."
+      ],
+      "correct_answers": [
+        "Non, jamais."
+      ],
+      "explanation": "Le cycle de vie Console est totalement distinct du cycle de vie HttpKernel. Ces événements ne concernent que l'utilisation CLI."
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "source_file": "11-cache/http-expiration.md",
+  "title": "Modèle d'Expiration",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Dans le modèle d'expiration, que se passe-t-il tant que le délai de validité (`max-age`) n'est pas écoulé ?",
+      "type": "single_choice",
+      "options": [
+        "Le client interroge le serveur avec un `If-Modified-Since`.",
+        "Le client utilise sa copie locale (cache) sans contacter le serveur.",
+        "Le serveur envoie une réponse 304 Not Modified.",
+        "Le cache est automatiquement invalidé."
+      ],
+      "correct_answers": [
+        "Le client utilise sa copie locale (cache) sans contacter le serveur."
+      ],
+      "explanation": "C'est le principe du modèle d'expiration : réduire les requêtes réseau en utilisant la copie locale tant qu'elle est considérée comme fraîche."
+    },
+    {
+      "id": 2,
+      "question": "Quelle directive `Cache-Control` est spécifiquement destinée aux caches partagés (proxies, CDN) et ignorée par les navigateurs ?",
+      "type": "single_choice",
+      "options": [
+        "`max-age`",
+        "`s-maxage`",
+        "`public`",
+        "`must-revalidate`"
+      ],
+      "correct_answers": [
+        "`s-maxage`"
+      ],
+      "explanation": "`s-maxage` (Shared Max Age) est prioritaire sur `max-age` pour les caches partagés, mais ignoré par les caches privés (navigateurs)."
+    },
+    {
+      "id": 3,
+      "question": "Comment activer le cache HTTP via des attributs PHP 8 dans un contrôleur Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant l'annotation `@Cache` dans les commentaires PHPDoc.",
+        "En utilisant l'attribut `#[Cache]` (ex: `#[Cache(public: true, maxage: 3600)]`).",
+        "En nommant la méthode `cacheIndex()`.",
+        "Ce n'est pas possible, il faut utiliser le fichier `cache.yaml`."
+      ],
+      "correct_answers": [
+        "En utilisant l'attribut `#[Cache]` (ex: `#[Cache(public: true, maxage: 3600)]`)."
+      ],
+      "explanation": "L'attribut `#[Cache]` (du namespace `Symfony\Component\HttpKernel\Attribute\Cache`) est la méthode recommandée et moderne pour configurer le cache par contrôleur."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi les méthodes POST, PUT et DELETE ne sont-elles généralement pas mises en cache ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'elles sont trop lentes.",
+        "Parce qu'elles ne sont pas considérées comme 'Safe' (elles modifient l'état du serveur).",
+        "Parce que les navigateurs ne supportent pas le cache sur ces méthodes.",
+        "Parce que Symfony les bloque."
+      ],
+      "correct_answers": [
+        "Parce qu'elles ne sont pas considérées comme 'Safe' (elles modifient l'état du serveur)."
+      ],
+      "explanation": "Le cache HTTP standard ne s'applique qu'aux méthodes 'Safe' (GET et HEAD) qui n'ont pas d'effets de bord sur le serveur."
+    },
+    {
+      "id": 5,
+      "question": "Si vous avez besoin de modifier le contenu d'une ressource AVANT la fin de son `max-age` (invalidation), que pouvez-vous faire avec le modèle d'expiration seul ?",
+      "type": "single_choice",
+      "options": [
+        "Envoyer une requête PURGE au navigateur.",
+        "Rien, le navigateur utilisera la version en cache jusqu'à la fin du délai. C'est une limitation du modèle.",
+        "Utiliser `Cache-Control: no-store` rétroactivement.",
+        "Changer le `max-age` sur le serveur."
+      ],
+      "correct_answers": [
+        "Rien, le navigateur utilisera la version en cache jusqu'à la fin du délai. C'est une limitation du modèle."
+      ],
+      "explanation": "Une fois que le navigateur a stocké la réponse avec une expiration future, le serveur ne peut plus le forcer à la mettre à jour. La solution habituelle est de changer l'URL (versioning des assets)."
+    }
+  ]
+}

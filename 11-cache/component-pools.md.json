@@ -1,0 +1,66 @@
+{
+  "source_file": "11-cache/component-pools.md",
+  "title": "Pools de Cache Personnalisés",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est l'avantage principal de définir des 'Pools' de cache personnalisés plutôt que d'utiliser le pool global ?",
+      "type": "single_choice",
+      "options": [
+        "Cela permet d'augmenter la taille maximale du cache.",
+        "Cela permet d'isoler les données (namespace) et d'utiliser des configurations différentes (ex: Redis pour l'un, Fichier pour l'autre).",
+        "Cela permet de contourner le composant Cache de Symfony.",
+        "Cela améliore automatiquement le référencement (SEO)."
+      ],
+      "correct_answers": [
+        "Cela permet d'isoler les données (namespace) et d'utiliser des configurations différentes (ex: Redis pour l'un, Fichier pour l'autre)."
+      ],
+      "explanation": "Les pools personnalisés offrent une isolation (clés préfixées) et une flexibilité de configuration (adapters différents) pour différentes parties de l'application."
+    },
+    {
+      "id": 2,
+      "question": "Comment configure-t-on un pool de cache qui utilise l'adaptateur Filesystem dans `framework.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "En définissant `adapter: cache.adapter.filesystem` sous la clé du pool.",
+        "En mettant `type: file`.",
+        "En créant un nouveau fichier services.yaml.",
+        "Ce n'est pas possible, le Filesystem est réservé au cache système."
+      ],
+      "correct_answers": [
+        "En définissant `adapter: cache.adapter.filesystem` sous la clé du pool."
+      ],
+      "explanation": "L'option `adapter` permet de spécifier le service d'adaptateur à utiliser, ici `cache.adapter.filesystem`."
+    },
+    {
+      "id": 3,
+      "question": "Si vous nommez votre pool `custom_thing.cache` dans la configuration, comment pouvez-vous l'injecter dans un service ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant le type `CustomThingCache`.",
+        "En utilisant l'autowiring avec le nom de variable correspondant en camelCase (ex: `CacheInterface $customThingCache`).",
+        "Uniquement via la configuration YAML des services (pas d'autowiring).",
+        "En injectant le service global `cache.app`."
+      ],
+      "correct_answers": [
+        "En utilisant l'autowiring avec le nom de variable correspondant en camelCase (ex: `CacheInterface $customThingCache`)."
+      ],
+      "explanation": "Symfony crée automatiquement un alias autowirable basé sur le nom du pool converti en camelCase."
+    },
+    {
+      "id": 4,
+      "question": "Comment Symfony assure-t-il que les clés d'un pool `pool_a` n'écrasent pas celles d'un `pool_b` utilisant le même backend (ex: Redis) ?",
+      "type": "single_choice",
+      "options": [
+        "Il utilise des bases de données Redis différentes (DB 0, DB 1...).",
+        "Il préfixe automatiquement les clés avec un Hash du nom du pool (Namespacing).",
+        "Il ne l'assure pas, c'est au développeur de gérer les préfixes.",
+        "Il vide le cache à chaque changement de pool."
+      ],
+      "correct_answers": [
+        "Il préfixe automatiquement les clés avec un Hash du nom du pool (Namespacing)."
+      ],
+      "explanation": "Le composant Cache gère le 'namespacing' de manière transparente en préfixant les clés, garantissant l'isolation."
+    }
+  ]
+}

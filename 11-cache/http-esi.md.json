@@ -1,0 +1,66 @@
+{
+  "source_file": "11-cache/http-esi.md",
+  "title": "Edge Side Includes (ESI)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel problème principal les ESI (Edge Side Includes) résolvent-ils ?",
+      "type": "single_choice",
+      "options": [
+        "La compression des assets CSS/JS.",
+        "Le problème des pages 'mixtes' contenant à la fois du contenu public (cacheable) et privé/dynamique (non cacheable).",
+        "L'authentification des utilisateurs via API.",
+        "Le routage des requêtes HTTP."
+      ],
+      "correct_answers": [
+        "Le problème des pages 'mixtes' contenant à la fois du contenu public (cacheable) et privé/dynamique (non cacheable)."
+      ],
+      "explanation": "ESI permet de mettre en cache la structure globale d'une page (ex: layout) tout en insérant dynamiquement des fragments non cachés (ex: panier utilisateur)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle fonction Twig utilise-t-on pour intégrer un fragment ESI ?",
+      "type": "single_choice",
+      "options": [
+        "`include()`",
+        "`render()`",
+        "`render_esi()`",
+        "`controller()`"
+      ],
+      "correct_answers": [
+        "`render_esi()`"
+      ],
+      "explanation": "`render_esi()` génère la balise `<esi:include ... />` si un proxy compatible est détecté, sinon il se comporte comme `render()`."
+    },
+    {
+      "id": 3,
+      "question": "Si aucun Reverse Proxy (Gateway Cache) n'est présent ou détecté, que fait `render_esi()` ?",
+      "type": "single_choice",
+      "options": [
+        "Il lance une exception critique.",
+        "Il affiche une erreur 404.",
+        "Il fonctionne comme un `render()` classique (inclusion synchrone par PHP), assurant le fonctionnement de l'application.",
+        "Il laisse la balise `<esi:include>` dans le HTML final."
+      ],
+      "correct_answers": [
+        "Il fonctionne comme un `render()` classique (inclusion synchrone par PHP), assurant le fonctionnement de l'application."
+      ],
+      "explanation": "C'est le mécanisme de 'Fallback'. L'application continue de fonctionner correctement, simplement sans le bénéfice du cache partiel."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi est-il nécessaire de configurer les `trusted_proxies` pour que ESI fonctionne avec Varnish ?",
+      "type": "single_choice",
+      "options": [
+        "Pour des raisons de sécurité uniquement.",
+        "Parce que Symfony supprime par défaut le header `Surrogate-Capability` envoyé par le proxy s'il ne provient pas d'une IP de confiance.",
+        "Pour permettre à Varnish de lire les cookies.",
+        "Ce n'est pas nécessaire."
+      ],
+      "correct_answers": [
+        "Parce que Symfony supprime par défaut le header `Surrogate-Capability` envoyé par le proxy s'il ne provient pas d'une IP de confiance."
+      ],
+      "explanation": "Symfony a besoin de voir le header `Surrogate-Capability` pour savoir qu'il peut émettre des tags ESI. Ce header est filtré si l'IP du proxy n'est pas de confiance."
+    }
+  ]
+}
