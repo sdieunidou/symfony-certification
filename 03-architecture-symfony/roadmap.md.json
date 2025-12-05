@@ -1,0 +1,81 @@
+{
+  "source_file": "03-architecture-symfony/roadmap.md",
+  "title": "Roadmap et Versions Symfony",
+  "questions": [
+    {
+      "id": 1,
+      "question": "En décembre 2025, quelles versions majeures sortent simultanément ?",
+      "type": "single_choice",
+      "options": [
+        "6.4 et 7.0",
+        "7.4 et 8.0",
+        "7.0 et 7.4",
+        "8.0 et 8.4"
+      ],
+      "correct_answers": [
+        "7.4 et 8.0"
+      ],
+      "explanation": "Le cycle de 2 ans se termine, donc la dernière LTS de la branche 7 (7.4) sort en même temps que la première version de la branche 8 (8.0)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence technique principale entre Symfony 7.4 (LTS) et Symfony 8.0 ?",
+      "type": "single_choice",
+      "options": [
+        "Symfony 8.0 a de nouvelles fonctionnalités que 7.4 n'a pas.",
+        "Symfony 7.4 et 8.0 ont les mêmes fonctionnalités, mais 8.0 a supprimé tout le code déprécié (BC Break).",
+        "Symfony 8.0 est payant.",
+        "Symfony 7.4 est plus rapide."
+      ],
+      "correct_answers": [
+        "Symfony 7.4 et 8.0 ont les mêmes fonctionnalités, mais 8.0 a supprimé tout le code déprécié (BC Break)."
+      ],
+      "explanation": "C'est le principe de la synchronisation : 8.0 oblige à nettoyer le code, 7.4 permet de continuer avec l'ancien code (marqué déprécié)."
+    },
+    {
+      "id": 3,
+      "question": "Quelle version de PHP est requise au minimum pour Symfony 7 ?",
+      "type": "single_choice",
+      "options": [
+        "PHP 8.0",
+        "PHP 8.1",
+        "PHP 8.2",
+        "PHP 8.3"
+      ],
+      "correct_answers": [
+        "PHP 8.2"
+      ],
+      "explanation": "Symfony 7 s'aligne sur les versions supportées de PHP et utilise ses fonctionnalités modernes."
+    },
+    {
+      "id": 4,
+      "question": "Pour un nouveau projet d'entreprise nécessitant une stabilité maximale sur 5 ans, quelle version choisir (en contexte fin 2025) ?",
+      "type": "single_choice",
+      "options": [
+        "Symfony 7.3 (Standard)",
+        "Symfony 7.4 (LTS)",
+        "Symfony 8.0 (Standard)",
+        "Symfony 7.0"
+      ],
+      "correct_answers": [
+        "Symfony 7.4 (LTS)"
+      ],
+      "explanation": "La version LTS offre 3 ans de correctifs de bugs + 1 an de sécurité, ce qui est le choix le plus pérenne."
+    },
+    {
+      "id": 5,
+      "question": "Où peut-on consulter la liste officielle des fonctionnalités ajoutées dans une version ?",
+      "type": "single_choice",
+      "options": [
+        "Sur StackOverflow.",
+        "Sur le blog officiel Symfony (articles 'New in Symfony') et les fichiers UPGRADE.",
+        "Dans le code source uniquement.",
+        "Sur Wikipedia."
+      ],
+      "correct_answers": [
+        "Sur le blog officiel Symfony (articles 'New in Symfony') et les fichiers UPGRADE."
+      ],
+      "explanation": "Le blog détaille les nouveautés de manière pédagogique."
+    }
+  ]
+}

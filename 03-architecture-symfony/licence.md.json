@@ -1,0 +1,66 @@
+{
+  "source_file": "03-architecture-symfony/licence.md",
+  "title": "Licence",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Sous quelle licence est distribué le code source de Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "GPL v3",
+        "Apache 2.0",
+        "MIT",
+        "BSD"
+      ],
+      "correct_answers": [
+        "MIT"
+      ],
+      "explanation": "La licence MIT est permissive et très populaire dans l'écosystème PHP."
+    },
+    {
+      "id": 2,
+      "question": "La licence MIT de Symfony m'autorise-t-elle à vendre une application que j'ai créée avec le framework ?",
+      "type": "single_choice",
+      "options": [
+        "Non, l'usage commercial est interdit.",
+        "Oui, sans restriction particulière autre que de conserver le copyright dans le code source.",
+        "Oui, mais je dois reverser une commission.",
+        "Oui, mais je dois rendre mon application Open Source aussi."
+      ],
+      "correct_answers": [
+        "Oui, sans restriction particulière autre que de conserver le copyright dans le code source."
+      ],
+      "explanation": "La licence MIT permet l'usage commercial, la modification, la distribution et la sous-licence (fermer le code)."
+    },
+    {
+      "id": 3,
+      "question": "Est-ce que l'utilisation de Symfony oblige mon code à devenir Open Source (Viralité) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, c'est le principe du Copyleft.",
+        "Non, la licence MIT n'est pas virale (contrairement à la GPL).",
+        "Oui, si je modifie le framework.",
+        "Uniquement si j'utilise Doctrine."
+      ],
+      "correct_answers": [
+        "Non, la licence MIT n'est pas virale (contrairement à la GPL)."
+      ],
+      "explanation": "C'est un point clé pour l'adoption en entreprise : on peut intégrer Symfony dans des logiciels propriétaires."
+    },
+    {
+      "id": 4,
+      "question": "Sous quelle licence est publiée la Documentation officielle de Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "MIT",
+        "Copyright strict (Tous droits réservés)",
+        "Creative Commons BY-SA 3.0",
+        "Domaine public"
+      ],
+      "correct_answers": [
+        "Creative Commons BY-SA 3.0"
+      ],
+      "explanation": "Vous pouvez partager et adapter la doc, à condition de créditer (BY) et de partager sous la même licence (SA)."
+    }
+  ]
+}

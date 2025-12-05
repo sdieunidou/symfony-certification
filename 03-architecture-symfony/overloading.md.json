@@ -1,0 +1,82 @@
+{
+  "source_file": "03-architecture-symfony/overloading.md",
+  "title": "Surcharge du Framework (Overloading)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la méthode recommandée pour modifier le comportement d'un service existant sans toucher à son code (Pattern Decorator) ?",
+      "type": "single_choice",
+      "options": [
+        "L'héritage de classe.",
+        "La décoration de service.",
+        "Le copier-coller dans `src/`.",
+        "L'utilisation d'événements."
+      ],
+      "correct_answers": [
+        "La décoration de service."
+      ],
+      "explanation": "La décoration permet d'envelopper le service original, d'intercepter les appels, et de déléguer le reste, tout en gardant le même ID de service."
+    },
+    {
+      "id": 2,
+      "question": "Comment surcharger un template Twig provenant d'un bundle tiers (ex: `AcmeFooBundle/Resources/views/index.html.twig`) ?",
+      "type": "single_choice",
+      "options": [
+        "Modifier le fichier dans `vendor/`.",
+        "Créer un fichier avec le même nom dans `templates/bundles/AcmeFooBundle/`.",
+        "Créer un bundle enfant.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "Créer un fichier avec le même nom dans `templates/bundles/AcmeFooBundle/`."
+      ],
+      "explanation": "Symfony vérifie d'abord dans `templates/bundles/` avant de charger le template original du vendor."
+    },
+    {
+      "id": 3,
+      "question": "Si vous souhaitez surcharger un contrôleur d'un bundle tiers, quelle est la méthode standard ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser l'héritage de bundle (déprécié).",
+        "Créer une nouvelle route avec le MÊME chemin (path) qui pointe vers votre contrôleur, et s'assurer qu'elle est chargée AVANT celle du bundle.",
+        "Modifier le `routes.yaml` du bundle.",
+        "Décorer le contrôleur."
+      ],
+      "correct_answers": [
+        "Créer une nouvelle route avec le MÊME chemin (path) qui pointe vers votre contrôleur, et s'assurer qu'elle est chargée AVANT celle du bundle."
+      ],
+      "explanation": "Le router s'arrête à la première correspondance. Si votre route est prioritaire, le contrôleur du bundle ne sera jamais appelé."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi préférer la décoration à l'héritage pour surcharger une classe ?",
+      "type": "multiple_choice",
+      "options": [
+        "Car l'héritage ne fonctionne pas sur les classes `final`.",
+        "Car la décoration respecte mieux les principes SOLID (Composition over Inheritance).",
+        "Car la décoration est plus rapide.",
+        "Car l'héritage est interdit en PHP 8."
+      ],
+      "correct_answers": [
+        "Car l'héritage ne fonctionne pas sur les classes `final`.",
+        "Car la décoration respecte mieux les principes SOLID (Composition over Inheritance)."
+      ],
+      "explanation": "La décoration est plus flexible et robuste aux changements internes de la classe décorée."
+    },
+    {
+      "id": 5,
+      "question": "Quel mécanisme permet de manipuler la définition des services (changer la classe, ajouter des tags) juste avant que le conteneur ne soit compilé ?",
+      "type": "single_choice",
+      "options": [
+        "Compiler Pass",
+        "Event Listener",
+        "Controller",
+        "Flex Recipe"
+      ],
+      "correct_answers": [
+        "Compiler Pass"
+      ],
+      "explanation": "Les CompilerPass sont des classes qui implémentent `CompilerPassInterface` et modifient le `ContainerBuilder`."
+    }
+  ]
+}

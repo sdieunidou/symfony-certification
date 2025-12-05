@@ -1,0 +1,96 @@
+{
+  "source_file": "03-architecture-symfony/flex.md",
+  "title": "Symfony Flex",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Qu'est-ce que Symfony Flex ?",
+      "type": "single_choice",
+      "options": [
+        "Un framework CSS pour Symfony.",
+        "Un plugin Composer qui automatise l'installation et la configuration des paquets Symfony.",
+        "Une version allégée de Symfony.",
+        "Un outil de déploiement."
+      ],
+      "correct_answers": [
+        "Un plugin Composer qui automatise l'installation et la configuration des paquets Symfony."
+      ],
+      "explanation": "Flex s'interface avec Composer pour exécuter des recettes (recipes) lorsqu'un paquet est installé."
+    },
+    {
+      "id": 2,
+      "question": "Où sont stockées les recettes (Recipes) officielles ?",
+      "type": "single_choice",
+      "options": [
+        "Dans le code source de Symfony.",
+        "Sur un serveur d'API dynamique.",
+        "Dans des dépôts GitHub (Main et Contrib) sous forme de fichiers JSON statiques.",
+        "Elles sont générées à la volée par IA."
+      ],
+      "correct_answers": [
+        "Dans des dépôts GitHub (Main et Contrib) sous forme de fichiers JSON statiques."
+      ],
+      "explanation": "Flex consomme des fichiers statiques pour la performance et la fiabilité (Serverless)."
+    },
+    {
+      "id": 3,
+      "question": "Que contient le fichier `symfony.lock` ?",
+      "type": "single_choice",
+      "options": [
+        "Les mots de passe chiffrés.",
+        "La liste des recettes installées et leur version, pour gérer les mises à jour.",
+        "Le PID du serveur web.",
+        "Les erreurs de compilation."
+      ],
+      "correct_answers": [
+        "La liste des recettes installées et leur version, pour gérer les mises à jour."
+      ],
+      "explanation": "Comme `composer.lock` pour les paquets, `symfony.lock` verrouille l'état des recettes appliquées."
+    },
+    {
+      "id": 4,
+      "question": "Qu'est-ce qu'un 'Pack' Symfony (ex: `webapp-pack`) ?",
+      "type": "single_choice",
+      "options": [
+        "Un fichier ZIP à télécharger.",
+        "Un méta-paquet Composer vide qui ne fait que requérir un ensemble d'autres paquets.",
+        "Un thème graphique.",
+        "Une extension PHP."
+      ],
+      "correct_answers": [
+        "Un méta-paquet Composer vide qui ne fait que requérir un ensemble d'autres paquets."
+      ],
+      "explanation": "C'est un raccourci pour installer plusieurs dépendances courantes en une seule commande."
+    },
+    {
+      "id": 5,
+      "question": "Comment mettre à jour une recette Flex après une mise à jour du paquet (ex: nouveau fichier de config) ?",
+      "type": "single_choice",
+      "options": [
+        "C'est automatique lors du `composer update`.",
+        "Il faut lancer `composer recipes:update`.",
+        "Il faut supprimer et réinstaller le paquet.",
+        "On ne peut pas."
+      ],
+      "correct_answers": [
+        "Il faut lancer `composer recipes:update`."
+      ],
+      "explanation": "Par défaut, Flex ne touche pas à vos fichiers de config existants lors d'une mise à jour. Cette commande permet d'appliquer explicitement les changements."
+    },
+    {
+      "id": 6,
+      "question": "Qu'est-ce que le dépôt 'Contrib' ?",
+      "type": "single_choice",
+      "options": [
+        "Un dépôt payant.",
+        "Le dépôt des recettes communautaires non-officielles.",
+        "Le dépôt des contributeurs core.",
+        "Une version bêta de Symfony."
+      ],
+      "correct_answers": [
+        "Le dépôt des recettes communautaires non-officielles."
+      ],
+      "explanation": "Pour utiliser ces recettes, il faut autoriser explicitement le dépôt contrib dans `composer.json` (`extra.symfony.allow-contrib: true`)."
+    }
+  ]
+}

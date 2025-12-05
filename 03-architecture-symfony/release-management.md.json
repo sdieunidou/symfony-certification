@@ -1,0 +1,96 @@
+{
+  "source_file": "03-architecture-symfony/release-management.md",
+  "title": "Release Management",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le cycle de sortie d'une nouvelle version mineure de Symfony (ex: 7.1, 7.2) ?",
+      "type": "single_choice",
+      "options": [
+        "Tous les ans.",
+        "Tous les 6 mois (Mai et Novembre).",
+        "Quand les fonctionnalités sont prêtes (Feature based).",
+        "Tous les 3 mois."
+      ],
+      "correct_answers": [
+        "Tous les 6 mois (Mai et Novembre)."
+      ],
+      "explanation": "Symfony suit un calendrier strict 'Time-based', permettant aux entreprises de planifier leurs mises à jour."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la particularité d'une version LTS (Long Term Support) comme la 6.4 ou 7.4 ?",
+      "type": "single_choice",
+      "options": [
+        "Elle contient moins de fonctionnalités.",
+        "Elle est supportée pendant 3 ans pour les bugs et 4 ans pour la sécurité.",
+        "Elle est payante.",
+        "Elle sort tous les 5 ans."
+      ],
+      "correct_answers": [
+        "Elle est supportée pendant 3 ans pour les bugs et 4 ans pour la sécurité."
+      ],
+      "explanation": "C'est la version de choix pour les projets industriels qui ne peuvent pas migrer tous les 6 mois."
+    },
+    {
+      "id": 3,
+      "question": "Quelle est la relation entre la dernière version mineure d'une branche (ex: 6.4) et la première version majeure suivante (ex: 7.0) ?",
+      "type": "single_choice",
+      "options": [
+        "Aucune relation.",
+        "7.0 est une réécriture complète.",
+        "Elles sortent en même temps et ont les mêmes fonctionnalités, sauf que 7.0 a supprimé tout le code déprécié (BC Break).",
+        "6.4 est une version bêta de 7.0."
+      ],
+      "correct_answers": [
+        "Elles sortent en même temps et ont les mêmes fonctionnalités, sauf que 7.0 a supprimé tout le code déprécié (BC Break)."
+      ],
+      "explanation": "Cela permet une migration facile : mettez à jour en 6.4, supprimez les dépréciations, et vous êtes compatible 7.0."
+    },
+    {
+      "id": 4,
+      "question": "Qu'est-ce que la 'BC Promise' (Backward Compatibility) ?",
+      "type": "single_choice",
+      "options": [
+        "La promesse que Symfony sera toujours gratuit.",
+        "La garantie qu'il n'y aura aucune rupture de compatibilité entre deux versions mineures (ex: 7.1 vers 7.2).",
+        "L'assurance que les bugs seront corrigés en 24h.",
+        "La compatibilité avec les vieilles versions de PHP."
+      ],
+      "correct_answers": [
+        "La garantie qu'il n'y aura aucune rupture de compatibilité entre deux versions mineures (ex: 7.1 vers 7.2)."
+      ],
+      "explanation": "Les ruptures de compatibilité ne sont autorisées que lors des versions majeures (ex: 6.4 -> 7.0)."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la durée de support (bugs) pour une version standard (non-LTS) ?",
+      "type": "single_choice",
+      "options": [
+        "8 mois",
+        "1 an",
+        "18 mois",
+        "2 ans"
+      ],
+      "correct_answers": [
+        "8 mois"
+      ],
+      "explanation": "Cela laisse 2 mois après la sortie de la version suivante pour migrer."
+    },
+    {
+      "id": 6,
+      "question": "À quel moment sortent les versions majeures de Symfony (ex: 6.0, 7.0) ?",
+      "type": "single_choice",
+      "options": [
+        "Tous les ans.",
+        "Tous les 2 ans, en Novembre des années impaires.",
+        "Aléatoirement.",
+        "Tous les 4 ans."
+      ],
+      "correct_answers": [
+        "Tous les 2 ans, en Novembre des années impaires."
+      ],
+      "explanation": "Exemple : 6.0 en Nov 2021, 7.0 en Nov 2023, 8.0 en Nov 2025."
+    }
+  ]
+}

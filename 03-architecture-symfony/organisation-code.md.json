@@ -1,0 +1,96 @@
+{
+  "source_file": "03-architecture-symfony/organisation-code.md",
+  "title": "Organisation du Code",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Dans quel dossier doit se trouver le code source PHP de l'application (Namespaces `App\...`) ?",
+      "type": "single_choice",
+      "options": [
+        "app/",
+        "src/",
+        "lib/",
+        "code/"
+      ],
+      "correct_answers": [
+        "src/"
+      ],
+      "explanation": "C'est le standard PSR-4 défini dans le `composer.json` de Symfony."
+    },
+    {
+      "id": 2,
+      "question": "Quel est le seul dossier qui doit être accessible publiquement par le serveur Web (Document Root) ?",
+      "type": "single_choice",
+      "options": [
+        "La racine du projet.",
+        "src/",
+        "public/",
+        "web/"
+      ],
+      "correct_answers": [
+        "public/"
+      ],
+      "explanation": "Le dossier `public/` contient le contrôleur frontal `index.php` et les assets. Tout le reste (`src`, `config`, `vendor`) doit rester caché pour la sécurité."
+    },
+    {
+      "id": 3,
+      "question": "Où sont stockés les fichiers de configuration ?",
+      "type": "single_choice",
+      "options": [
+        "src/Resources/config",
+        "app/config",
+        "config/",
+        "settings/"
+      ],
+      "correct_answers": [
+        "config/"
+      ],
+      "explanation": "Depuis Symfony 4, toute la configuration est centralisée à la racine dans `config/`."
+    },
+    {
+      "id": 4,
+      "question": "À quoi sert le dossier `var/` ?",
+      "type": "single_choice",
+      "options": [
+        "À stocker les variables.",
+        "À stocker les fichiers générés par Symfony (Cache, Logs) qui nécessitent des droits d'écriture.",
+        "À stocker les uploads utilisateurs.",
+        "À stocker les fichiers temporaires du système."
+      ],
+      "correct_answers": [
+        "À stocker les fichiers générés par Symfony (Cache, Logs) qui nécessitent des droits d'écriture."
+      ],
+      "explanation": "C'est le seul dossier qui doit être accessible en écriture (`chmod 777` ou ACL) par l'utilisateur du serveur web."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la différence entre le fichier `.env` et `.env.local` ?",
+      "type": "single_choice",
+      "options": [
+        "Aucune.",
+        "`.env` contient les valeurs par défaut et est commité. `.env.local` contient les surcharges spécifiques à la machine (secrets) et ne doit PAS être commité.",
+        "`.env` est pour la prod, `.env.local` pour le dev.",
+        "`.env.local` est généré automatiquement."
+      ],
+      "correct_answers": [
+        "`.env` contient les valeurs par défaut et est commité. `.env.local` contient les surcharges spécifiques à la machine (secrets) et ne doit PAS être commité."
+      ],
+      "explanation": "Le `.env.local` est ignoré par git (via `.gitignore`) pour protéger les secrets de prod ou la config locale de dev."
+    },
+    {
+      "id": 6,
+      "question": "Quelle architecture organise le code par fonctionnalité métier (ex: `src/Cart`, `src/Product`) plutôt que par couche technique ?",
+      "type": "single_choice",
+      "options": [
+        "Layered Architecture",
+        "MVC",
+        "Domain Driven Design (DDD) / Modular",
+        "Spaghetti Code"
+      ],
+      "correct_answers": [
+        "Domain Driven Design (DDD) / Modular"
+      ],
+      "explanation": "Cette approche est recommandée pour les applications complexes afin de garder une cohésion forte par domaine."
+    }
+  ]
+}

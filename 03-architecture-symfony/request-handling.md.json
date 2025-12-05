@@ -1,0 +1,96 @@
+{
+  "source_file": "03-architecture-symfony/request-handling.md",
+  "title": "Traitement de la Requête (Request Handling - HttpKernel)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est l'ordre correct des événements principaux du Kernel lors d'une requête standard ?",
+      "type": "single_choice",
+      "options": [
+        "request -> controller -> view -> response -> terminate",
+        "request -> controller -> arguments -> response -> terminate",
+        "request -> controller -> controller_arguments -> (view) -> response -> terminate",
+        "request -> response -> controller -> view"
+      ],
+      "correct_answers": [
+        "request -> controller -> controller_arguments -> (view) -> response -> terminate"
+      ],
+      "explanation": "C'est le pipeline complet : on reçoit la requête, on trouve le contrôleur, on résout ses arguments, on l'appelle (éventuellement view), on finalise la réponse et on termine."
+    },
+    {
+      "id": 2,
+      "question": "Quel composant est responsable de transformer la `Request` en `callable` (Contrôleur) ?",
+      "type": "single_choice",
+      "options": [
+        "ArgumentResolver",
+        "ControllerResolver",
+        "Router",
+        "EventDispatcher"
+      ],
+      "correct_answers": [
+        "ControllerResolver"
+      ],
+      "explanation": "Le ControllerResolver lit les attributs de requête (`_controller`) définis par le Router et retourne le callable PHP correspondant."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert l'événement `kernel.controller_arguments` ?",
+      "type": "single_choice",
+      "options": [
+        "À choisir quel contrôleur appeler.",
+        "À modifier ou ajouter des arguments qui seront passés à la méthode du contrôleur (après leur résolution).",
+        "À valider le formulaire.",
+        "À gérer les exceptions."
+      ],
+      "correct_answers": [
+        "À modifier ou ajouter des arguments qui seront passés à la méthode du contrôleur (après leur résolution)."
+      ],
+      "explanation": "C'est ici qu'agissent certains listeners de sécurité ou de validation qui ont besoin de connaître les valeurs exactes passées au contrôleur."
+    },
+    {
+      "id": 4,
+      "question": "Si un contrôleur retourne un tableau (array) au lieu d'une Response, quel événement est déclenché pour tenter de corriger cela ?",
+      "type": "single_choice",
+      "options": [
+        "kernel.exception",
+        "kernel.view",
+        "kernel.response",
+        "kernel.finish_request"
+      ],
+      "correct_answers": [
+        "kernel.view"
+      ],
+      "explanation": "Cet événement est la dernière chance pour transformer une valeur de retour brute en objet Response valide (utilisé par API Platform ou FOSRestBundle)."
+    },
+    {
+      "id": 5,
+      "question": "L'événement `kernel.terminate` se produit :",
+      "type": "single_choice",
+      "options": [
+        "Avant l'envoi de la réponse.",
+        "Après l'envoi de la réponse au client.",
+        "Uniquement en cas d'erreur.",
+        "Au démarrage du Kernel."
+      ],
+      "correct_answers": [
+        "Après l'envoi de la réponse au client."
+      ],
+      "explanation": "Il permet d'effectuer des tâches lourdes (envoi de mail, logs) sans impacter le temps de chargement perçu par l'utilisateur."
+    },
+    {
+      "id": 6,
+      "question": "Quel événement devriez-vous écouter pour implémenter un pare-feu (Firewall) personnalisé qui vérifie un token avant tout le reste ?",
+      "type": "single_choice",
+      "options": [
+        "kernel.request",
+        "kernel.controller",
+        "kernel.response",
+        "kernel.view"
+      ],
+      "correct_answers": [
+        "kernel.request"
+      ],
+      "explanation": "C'est l'événement le plus précoce. Si vous définissez une Response ici (ex: 403 Access Denied), le reste du processus est annulé."
+    }
+  ]
+}

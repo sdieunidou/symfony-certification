@@ -1,0 +1,96 @@
+{
+  "source_file": "03-architecture-symfony/naming-conventions.md",
+  "title": "Conventions de Nommage",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle convention de casse (Case) Symfony utilise-t-il pour les noms de méthodes PHP ?",
+      "type": "single_choice",
+      "options": [
+        "PascalCase (ex: GetName)",
+        "camelCase (ex: getName)",
+        "snake_case (ex: get_name)",
+        "kebab-case (ex: get-name)"
+      ],
+      "correct_answers": [
+        "camelCase (ex: getName)"
+      ],
+      "explanation": "C'est conforme au standard PSR-1/PSR-12."
+    },
+    {
+      "id": 2,
+      "question": "Comment doivent être nommés les paramètres de configuration et les services (non-classes) dans le conteneur ?",
+      "type": "single_choice",
+      "options": [
+        "En camelCase (ex: app.adminEmail)",
+        "En snake_case (ex: app.admin_email)",
+        "En majuscules (ex: APP_ADMIN_EMAIL)",
+        "Sans règle particulière."
+      ],
+      "correct_answers": [
+        "En snake_case (ex: app.admin_email)"
+      ],
+      "explanation": "La convention `snake_case` avec des points comme séparateurs est standard pour la configuration."
+    },
+    {
+      "id": 3,
+      "question": "Quel suffixe doit porter une classe d'Entité Doctrine ?",
+      "type": "single_choice",
+      "options": [
+        "Entity (ex: ProductEntity)",
+        "Model (ex: ProductModel)",
+        "Aucun suffixe (ex: Product)",
+        "Table (ex: ProductTable)"
+      ],
+      "correct_answers": [
+        "Aucun suffixe (ex: Product)"
+      ],
+      "explanation": "Une entité représente l'objet métier lui-même, elle ne porte généralement pas de suffixe technique."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la convention recommandée pour nommer les routes ?",
+      "type": "single_choice",
+      "options": [
+        "CamelCase (ex: blogShow)",
+        "snake_case (ex: app_blog_show)",
+        "kebab-case (ex: app-blog-show)",
+        "slash (ex: app/blog/show)"
+      ],
+      "correct_answers": [
+        "snake_case (ex: app_blog_show)"
+      ],
+      "explanation": "L'utilisation de snake_case et d'un préfixe `app_` permet d'éviter les conflits et de grouper les routes logiquement."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la convention pour les URLs ?",
+      "type": "single_choice",
+      "options": [
+        "snake_case (ex: /user_profile)",
+        "kebab-case (ex: /user-profile)",
+        "camelCase (ex: /userProfile)",
+        "Pas de convention."
+      ],
+      "correct_answers": [
+        "kebab-case (ex: /user-profile)"
+      ],
+      "explanation": "Les tirets `-` sont préférés dans les URLs pour la lisibilité et le SEO."
+    },
+    {
+      "id": 6,
+      "question": "Comment nommer une variable d'environnement ?",
+      "type": "single_choice",
+      "options": [
+        "lower_case",
+        "UPPER_SNAKE_CASE (ex: DATABASE_URL)",
+        "CamelCase",
+        "kebab-case"
+      ],
+      "correct_answers": [
+        "UPPER_SNAKE_CASE (ex: DATABASE_URL)"
+      ],
+      "explanation": "C'est le standard universel pour les variables d'environnement système."
+    }
+  ]
+}

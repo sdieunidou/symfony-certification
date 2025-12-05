@@ -1,0 +1,96 @@
+{
+  "source_file": "03-architecture-symfony/installation.md",
+  "title": "Installation & Configuration de Symfony",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la version minimale de PHP requise pour Symfony 7 ?",
+      "type": "single_choice",
+      "options": [
+        "PHP 8.0",
+        "PHP 8.1",
+        "PHP 8.2",
+        "PHP 7.4"
+      ],
+      "correct_answers": [
+        "PHP 8.2"
+      ],
+      "explanation": "Symfony 7 tire parti des fonctionnalités modernes de PHP 8.2 (Readonly classes, DNF types)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle commande permet de créer un projet Symfony complet (Webapp) avec le CLI ?",
+      "type": "single_choice",
+      "options": [
+        "symfony new my_project",
+        "symfony create my_project",
+        "symfony new my_project --webapp",
+        "composer install symfony/website-skeleton"
+      ],
+      "correct_answers": [
+        "symfony new my_project --webapp"
+      ],
+      "explanation": "L'option `--webapp` ajoute tous les paquets nécessaires pour une application web riche, contrairement au squelette de base."
+    },
+    {
+      "id": 3,
+      "question": "Quelle est la durée du support pour une version standard (non-LTS) de Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "3 ans",
+        "8 mois",
+        "1 an",
+        "2 ans"
+      ],
+      "correct_answers": [
+        "8 mois"
+      ],
+      "explanation": "Les versions standards (ex: 7.1, 7.2) sortent tous les 6 mois et sont maintenues 8 mois, obligeant à une mise à jour rapide."
+    },
+    {
+      "id": 4,
+      "question": "Combien de temps une version LTS (Long Term Support) est-elle supportée pour les bugs ?",
+      "type": "single_choice",
+      "options": [
+        "2 ans",
+        "3 ans",
+        "5 ans",
+        "10 ans"
+      ],
+      "correct_answers": [
+        "3 ans"
+      ],
+      "explanation": "3 ans de corrections de bugs + 1 an de corrections de sécurité uniquement, soit 4 ans au total."
+    },
+    {
+      "id": 5,
+      "question": "Quelle commande permet de vérifier si votre environnement local est prêt pour Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "php -v",
+        "symfony check:requirements",
+        "composer check-platform-reqs",
+        "symfony doctor"
+      ],
+      "correct_answers": [
+        "symfony check:requirements"
+      ],
+      "explanation": "Cette commande du CLI vérifie la version de PHP, les extensions requises et la configuration du `php.ini`."
+    },
+    {
+      "id": 6,
+      "question": "Quel outil est recommandé pour gérer les vulnérabilités de sécurité dans les dépendances ?",
+      "type": "single_choice",
+      "options": [
+        "Un antivirus.",
+        "symfony check:security (ou composer audit)",
+        "Le firewall.",
+        "La commande security:check (dépréciée)."
+      ],
+      "correct_answers": [
+        "symfony check:security (ou composer audit)"
+      ],
+      "explanation": "Cela compare le `composer.lock` avec une base de données de failles connues."
+    }
+  ]
+}

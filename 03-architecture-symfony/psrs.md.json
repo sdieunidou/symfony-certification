@@ -1,0 +1,96 @@
+{
+  "source_file": "03-architecture-symfony/psrs.md",
+  "title": "Interopérabilité et PSRs",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Que signifie PSR dans l'écosystème PHP ?",
+      "type": "single_choice",
+      "options": [
+        "PHP Standard Recommendations",
+        "PHP Security Rules",
+        "Public Service Requests",
+        "Private Static Resource"
+      ],
+      "correct_answers": [
+        "PHP Standard Recommendations"
+      ],
+      "explanation": "Les PSRs sont des recommandations éditées par le PHP-FIG pour faciliter l'interopérabilité entre les frameworks."
+    },
+    {
+      "id": 2,
+      "question": "Symfony utilise-t-il nativement les objets Request/Response de la norme PSR-7 ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, le HttpKernel utilise PSR-7 par défaut.",
+        "Non, Symfony utilise ses propres objets HttpFoundation (mutables), jugés plus performants et simples pour le cœur du framework, mais propose un bridge pour PSR-7.",
+        "Oui, mais uniquement pour les API.",
+        "Non, PSR-7 est incompatible avec Symfony."
+      ],
+      "correct_answers": [
+        "Non, Symfony utilise ses propres objets HttpFoundation (mutables), jugés plus performants et simples pour le cœur du framework, mais propose un bridge pour PSR-7."
+      ],
+      "explanation": "L'immutabilité stricte de PSR-7 a été considérée comme trop lourde (overhead) pour le noyau de Symfony."
+    },
+    {
+      "id": 3,
+      "question": "Quelle PSR définit l'interface standard pour le Logger (`LoggerInterface`) ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-3",
+        "PSR-4",
+        "PSR-11",
+        "PSR-6"
+      ],
+      "correct_answers": [
+        "PSR-3"
+      ],
+      "explanation": "C'est l'une des PSR les plus utilisées. Symfony l'utilise partout, permettant de remplacer Monolog par n'importe quel autre logger compatible."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la différence entre PSR-6 et PSR-16 concernant le Cache ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-6 est pour le cache serveur, PSR-16 pour le navigateur.",
+        "PSR-6 est une API complète et puissante (Item Pools), PSR-16 (Simple Cache) est une API simplifiée clé-valeur.",
+        "PSR-16 remplace PSR-6 qui est dépréciée.",
+        "Il n'y a pas de différence."
+      ],
+      "correct_answers": [
+        "PSR-6 est une API complète et puissante (Item Pools), PSR-16 (Simple Cache) est une API simplifiée clé-valeur."
+      ],
+      "explanation": "Symfony implémente les deux. PSR-6 permet des opérations plus fines (deferred save, tags) alors que PSR-16 vise la simplicité d'usage."
+    },
+    {
+      "id": 5,
+      "question": "Quelle PSR régit l'Autoloading des classes (mapping Namespace <-> Fichier) ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-0",
+        "PSR-4",
+        "PSR-1",
+        "PSR-12"
+      ],
+      "correct_answers": [
+        "PSR-4"
+      ],
+      "explanation": "PSR-4 est le standard actuel supporté par Composer."
+    },
+    {
+      "id": 6,
+      "question": "Quelle PSR récente (Symfony 6.3+) permet de mocker le temps (horloge) dans les tests ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-20 (Clock)",
+        "PSR-18 (Time)",
+        "PSR-7 (Date)",
+        "PSR-14 (Calendar)"
+      ],
+      "correct_answers": [
+        "PSR-20 (Clock)"
+      ],
+      "explanation": "L'interface `Psr\\Clock\\ClockInterface` permet d'injecter une horloge système en prod et une horloge figée (MockClock) en test."
+    }
+  ]
+}
