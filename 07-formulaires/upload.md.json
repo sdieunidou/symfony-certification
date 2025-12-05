@@ -1,0 +1,66 @@
+{
+  "source_file": "07-formulaires/upload.md",
+  "title": "Upload de Fichiers (Formulaires)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Pourquoi est-il recommandé d'utiliser l'option `'mapped' => false` pour un champ `FileType` dans un formulaire lié à une entité ?",
+      "type": "single_choice",
+      "options": [
+        "Pour empêcher l'upload.",
+        "Parce que l'entité stocke généralement le **nom** du fichier (string), alors que le formulaire reçoit un objet `UploadedFile`. Cela évite une erreur de type lors du mapping automatique.",
+        "Pour des raisons de performance.",
+        "C'est obligatoire."
+      ],
+      "correct_answers": [
+        "Parce que l'entité stocke généralement le **nom** du fichier (string), alors que le formulaire reçoit un objet `UploadedFile`. Cela évite une erreur de type lors du mapping automatique."
+      ],
+      "explanation": "Cela permet de gérer l'upload manuellement dans le contrôleur (récupérer le fichier, le déplacer, setter le nom string sur l'entité)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle classe représente le fichier reçu dans le formulaire ?",
+      "type": "single_choice",
+      "options": [
+        "`File`",
+        "`UploadedFile`",
+        "`Stream`",
+        "`Blob`"
+      ],
+      "correct_answers": [
+        "`UploadedFile`"
+      ],
+      "explanation": "`Symfony\Component\HttpFoundation\File\UploadedFile`."
+    },
+    {
+      "id": 3,
+      "question": "Quelle contrainte de validation permet de vérifier le type MIME et la taille du fichier ?",
+      "type": "single_choice",
+      "options": [
+        "`Image`",
+        "`File`",
+        "`Upload`",
+        "`MimeType`"
+      ],
+      "correct_answers": [
+        "`File`"
+      ],
+      "explanation": "La contrainte `Image` hérite de `File` et ajoute la validation des dimensions (pixels)."
+    },
+    {
+      "id": 4,
+      "question": "Lors de l'édition d'un formulaire, le champ fichier est vide (car on ne peut pas pré-remplir un input file). Comment gérer cela ?",
+      "type": "single_choice",
+      "options": [
+        "C'est impossible à gérer.",
+        "En vérifiant si le fichier envoyé est `null`. Si oui, on ne touche pas à la propriété filename de l'entité (on garde l'ancienne valeur).",
+        "En obligeant l'utilisateur à ré-uploader le fichier.",
+        "En utilisant un DataTransformer."
+      ],
+      "correct_answers": [
+        "En vérifiant si le fichier envoyé est `null`. Si oui, on ne touche pas à la propriété filename de l'entité (on garde l'ancienne valeur)."
+      ],
+      "explanation": "C'est l'avantage de `mapped: false`. Si le champ est vide, on ne fait rien, l'entité reste inchangée."
+    }
+  ]
+}

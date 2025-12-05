@@ -1,0 +1,66 @@
+{
+  "source_file": "07-formulaires/testing.md",
+  "title": "Tests de Formulaires",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle classe de base Symfony fournit-il pour tester unitairement un FormType ?",
+      "type": "single_choice",
+      "options": [
+        "`KernelTestCase`",
+        "`WebTestCase`",
+        "`TypeTestCase`",
+        "`FormTestCase`"
+      ],
+      "correct_answers": [
+        "`TypeTestCase`"
+      ],
+      "explanation": "`TypeTestCase` permet de tester la logique du formulaire (transformation, options) sans charger tout le kernel."
+    },
+    {
+      "id": 2,
+      "question": "Par défaut, `TypeTestCase` valide-t-il les contraintes de validation (`Assert\...`) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, il teste uniquement la transformation des données (DataTransformers) et l'hydratation de l'objet. La validation est gérée par le `Validator` qui est mocké ou absent par défaut.",
+        "Oui, si on utilise `getExtensions()`.",
+        "Uniquement les contraintes HTML5."
+      ],
+      "correct_answers": [
+        "Non, il teste uniquement la transformation des données (DataTransformers) et l'hydratation de l'objet. La validation est gérée par le `Validator` qui est mocké ou absent par défaut."
+      ],
+      "explanation": "Pour tester la validation, il vaut mieux faire des tests d'intégration (WebTestCase) ou ajouter l'extension Validator au TypeTestCase (complexe)."
+    },
+    {
+      "id": 3,
+      "question": "Comment tester un FormType qui a des dépendances injectées dans son constructeur (ex: `EntityManager`) ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant `getExtensions()` pour enregistrer le type avec ses mocks via `PreloadedExtension`.",
+        "En utilisant le conteneur de services.",
+        "Ce n'est pas possible, il faut retirer les dépendances.",
+        "En utilisant `new TaskType(...)` directement dans le test."
+      ],
+      "correct_answers": [
+        "En utilisant `getExtensions()` pour enregistrer le type avec ses mocks via `PreloadedExtension`."
+      ],
+      "explanation": "Le `TypeTestCase` utilise une `FormFactory` isolée qui ne connaît pas vos services. Il faut les pré-charger."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode assertion vérifie que la transformation des données s'est bien passée (DataTransformers ok) ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->assertTrue($form->isValid())`",
+        "`$this->assertTrue($form->isSynchronized())`",
+        "`$this->assertTrue($form->isSubmitted())`",
+        "`$this->assertFalse($form->isEmpty())`"
+      ],
+      "correct_answers": [
+        "`$this->assertTrue($form->isSynchronized())`"
+      ],
+      "explanation": "`isSynchronized()` retourne false si un DataTransformer a lancé une `TransformationFailedException`."
+    }
+  ]
+}

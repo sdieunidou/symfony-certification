@@ -1,0 +1,66 @@
+{
+  "source_file": "07-formulaires/types.md",
+  "title": "Création de Types Personnalisés (Custom Types)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle méthode de `AbstractType` permet de définir le type parent (héritage) ?",
+      "type": "single_choice",
+      "options": [
+        "`getParent()`",
+        "`extends()`",
+        "`configureOptions()`",
+        "`buildForm()`"
+      ],
+      "correct_answers": [
+        "`getParent()`"
+      ],
+      "explanation": "Par défaut, un type hérite de `FormType`. Si vous voulez créer un champ texte spécial, retournez `TextType::class`."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode permet de passer des variables personnalisées au template Twig (ex: une classe CSS calculée, une icône) ?",
+      "type": "single_choice",
+      "options": [
+        "`buildForm`",
+        "`configureOptions`",
+        "`buildView`",
+        "`finishView`"
+      ],
+      "correct_answers": [
+        "`buildView`"
+      ],
+      "explanation": "On ajoute les variables dans `$view->vars`."
+    },
+    {
+      "id": 3,
+      "question": "Comment définir le préfixe de bloc utilisé pour le theming (ex: `my_custom_widget`) ?",
+      "type": "single_choice",
+      "options": [
+        "Automatiquement via le nom de la classe (snake_case).",
+        "En surchargeant la méthode `getBlockPrefix()`.",
+        "Les deux réponses ci-dessus sont correctes.",
+        "Dans le fichier services.yaml."
+      ],
+      "correct_answers": [
+        "Les deux réponses ci-dessus sont correctes."
+      ],
+      "explanation": "Par défaut, `MyCustomType` donne `my_custom`. On peut le forcer avec `getBlockPrefix`."
+    },
+    {
+      "id": 4,
+      "question": "Peut-on injecter des services dans un Form Type personnalisé ?",
+      "type": "single_choice",
+      "options": [
+        "Non, les Form Types ne sont pas des services.",
+        "Oui, via le constructeur, car les Form Types sont enregistrés comme services (tag `form.type`).",
+        "Oui, mais uniquement via des setters.",
+        "Uniquement l'EntityManager."
+      ],
+      "correct_answers": [
+        "Oui, via le constructeur, car les Form Types sont enregistrés comme services (tag `form.type`)."
+      ],
+      "explanation": "L'autowiring fonctionne parfaitement pour injecter des Transformers, Repositories ou RequestStack."
+    }
+  ]
+}

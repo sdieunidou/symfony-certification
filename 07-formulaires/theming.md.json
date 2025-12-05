@@ -1,0 +1,66 @@
+{
+  "source_file": "07-formulaires/theming.md",
+  "title": "Thématisation des Formulaires (Theming)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment appliquer un thème de formulaire globalement à toute l'application ?",
+      "type": "single_choice",
+      "options": [
+        "Dans le contrôleur.",
+        "Dans `config/packages/twig.yaml`, clé `form_themes`.",
+        "Dans `base.html.twig`.",
+        "Dans `php.ini`."
+      ],
+      "correct_answers": [
+        "Dans `config/packages/twig.yaml`, clé `form_themes`."
+      ],
+      "explanation": "C'est ici qu'on configure par exemple `bootstrap_5_layout.html.twig`."
+    },
+    {
+      "id": 2,
+      "question": "Comment appliquer un thème spécifique à un seul formulaire dans un template Twig ?",
+      "type": "single_choice",
+      "options": [
+        "`{% form_theme form 'my_theme.html.twig' %}`",
+        "`{{ form_theme(form, 'my_theme.html.twig') }}`",
+        "`{% theme form 'my_theme.html.twig' %}`",
+        "`{% use 'my_theme.html.twig' %}`"
+      ],
+      "correct_answers": [
+        "`{% form_theme form 'my_theme.html.twig' %}`"
+      ],
+      "explanation": "Ce tag doit être placé avant le premier rendu du formulaire."
+    },
+    {
+      "id": 3,
+      "question": "Quel bloc Twig faut-il surcharger pour personnaliser l'affichage du widget (input) d'un champ `integer` ?",
+      "type": "single_choice",
+      "options": [
+        "`integer_row`",
+        "`integer_widget`",
+        "`integer_input`",
+        "`field_integer`"
+      ],
+      "correct_answers": [
+        "`integer_widget`"
+      ],
+      "explanation": "La convention de nommage est `type_partie` (ex: `text_label`, `choice_widget`, `form_errors`)."
+    },
+    {
+      "id": 4,
+      "question": "Comment personnaliser un champ unique (ex: le champ 'age' du formulaire 'profile') sans créer un fichier de thème externe ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant `_self` comme thème : `{% form_theme form _self %}` et en définissant le bloc `_profile_age_widget` dans le même fichier.",
+        "En utilisant du CSS.",
+        "En modifiant le FormType.",
+        "C'est impossible."
+      ],
+      "correct_answers": [
+        "En utilisant `_self` comme thème : `{% form_theme form _self %}` et en définissant le bloc `_profile_age_widget` dans le même fichier."
+      ],
+      "explanation": "Le nom du bloc suit la structure `_nomformulaire_nomchamp_partie`."
+    }
+  ]
+}

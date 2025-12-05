@@ -1,0 +1,66 @@
+{
+  "source_file": "07-formulaires/validation.md",
+  "title": "Validation des Formulaires",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment activer la validation sur un formulaire lié à une entité (data_class) ?",
+      "type": "single_choice",
+      "options": [
+        "En ajoutant des règles dans le contrôleur.",
+        "C'est automatique : le formulaire lit les métadonnées de validation (Attributs `#[Assert\...]`) définies dans la classe de l'entité.",
+        "En utilisant un fichier `validation.yaml` spécifique au formulaire.",
+        "Il faut appeler `$form->validate()`."
+      ],
+      "correct_answers": [
+        "C'est automatique : le formulaire lit les métadonnées de validation (Attributs `#[Assert\...]`) définies dans la classe de l'entité."
+      ],
+      "explanation": "Le composant Form utilise le `ValidatorExtension` pour faire le pont."
+    },
+    {
+      "id": 2,
+      "question": "Comment définir des règles de validation spécifiques qui ne s'appliquent que dans un certain contexte (ex: à la création mais pas à l'édition) ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant des Groupes de Validation (`validation_groups`).",
+        "En créant deux entités différentes.",
+        "En utilisant des `if` dans le contrôleur.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "En utilisant des Groupes de Validation (`validation_groups`)."
+      ],
+      "explanation": "On configure l'option `validation_groups` dans le `configureOptions` du formulaire (statiquement ou dynamiquement via callback)."
+    },
+    {
+      "id": 3,
+      "question": "Si un formulaire contient un champ non mappé (`mapped: false`), où doit-on définir ses contraintes de validation ?",
+      "type": "single_choice",
+      "options": [
+        "Dans l'entité.",
+        "Directement dans les options du champ via l'option `constraints`.",
+        "Dans le contrôleur.",
+        "Il ne peut pas être validé."
+      ],
+      "correct_answers": [
+        "Directement dans les options du champ via l'option `constraints`."
+      ],
+      "explanation": "Comme le champ n'est pas lié à une propriété de l'entité, il ne peut pas lire les annotations de l'entité."
+    },
+    {
+      "id": 4,
+      "question": "Que signifie l'attribut HTML `novalidate` sur la balise form ?",
+      "type": "single_choice",
+      "options": [
+        "Il désactive la validation Symfony.",
+        "Il désactive la validation native du navigateur (HTML5), permettant de tester la validation côté serveur (Symfony).",
+        "Il rend le formulaire optionnel.",
+        "Il supprime les erreurs."
+      ],
+      "correct_answers": [
+        "Il désactive la validation native du navigateur (HTML5), permettant de tester la validation côté serveur (Symfony)."
+      ],
+      "explanation": "C'est recommandé pour avoir un affichage des erreurs cohérent et stylisé par Symfony/Twig, plutôt que les bulles par défaut du navigateur."
+    }
+  ]
+}
