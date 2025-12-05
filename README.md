@@ -40,7 +40,6 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Traitement de la requête](./03-architecture-symfony/request-handling.md)
 * [Gestion des exceptions](./03-architecture-symfony/exception-handling.md)
 * [Event Dispatcher](./03-architecture-symfony/event-dispatcher.md)
-* [Bonnes pratiques officielles](./03-architecture-symfony/best-practices.md)
 * [Release management](./03-architecture-symfony/release-management.md)
 * [Rétrocompatibilité](./03-architecture-symfony/bc-promise.md)
 * [Dépréciations](./03-architecture-symfony/depreciations.md)
