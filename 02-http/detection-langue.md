@@ -68,30 +68,36 @@ class MainController extends AbstractController
 }
 ```
 
-### 2. Services Locale-Aware
-Si un service (hors Controller/Template) a besoin de la locale, il ne doit pas dépendre de la `Request` (mauvaise pratique, couplage HTTP).
-Il doit implémenter `Symfony\Contracts\Translation\LocaleAwareInterface`. Symfony mettra à jour la locale de ce service automatiquement si elle change.
+### 2. Tag `kernel.locale_aware`
+Si vous développez un service qui a besoin de connaître la locale courante (par exemple un générateur de PDF qui doit savoir en quelle langue écrire, ou un formateur de prix), vous pouvez implémenter `LocaleAwareInterface`.
+
+Symfony détectera automatiquement votre service (grâce à l'autoconfiguration et au tag `kernel.locale_aware`) et appellera `setLocale($locale)` sur votre service à chaque fois que la locale change dans l'application (lors d'une requête, ou changement manuel).
+
+Cela évite d'injecter `RequestStack` juste pour lire la locale (ce qui est une mauvaise pratique dans la couche service).
 
 ```php
+namespace App\Service;
+
 use Symfony\Contracts\Translation\LocaleAwareInterface;
 
-class MyService implements LocaleAwareInterface
+class InvoiceGenerator implements LocaleAwareInterface
 {
-    private string $locale = 'en';
+    private string $locale = 'en'; // Valeur par défaut
 
     public function setLocale(string $locale): void
     {
         $this->locale = $locale;
     }
-    
+
     public function getLocale(): string
     {
         return $this->locale;
     }
-    
-    public function doWork(): void
+
+    public function generate(): void
     {
-        // Utilise $this->locale
+        // Utilise $this->locale pour formater la facture
+        if ($this->locale === 'fr') { ... }
     }
 }
 ```
