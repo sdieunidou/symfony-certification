@@ -1,72 +1,115 @@
-# Filtres et Fonctions
+# Créer une Extension Twig (Custom)
 
 ## Concept clé
-Twig distingue deux types de transformations :
-1.  **Filtres** (`|`) : Modifient une variable existante (`{{ name|upper }}`).
-2.  **Fonctions** (`()`) : Génèrent du contenu ou accèdent à la logique (`{{ path('home') }}`).
+Si vous avez besoin d'une logique d'affichage spécifique (ex: formater un prix, générer un badge HTML, convertir du Markdown), vous devez créer une **Extension Twig**.
+Depuis Symfony 7.3, l'utilisation des **Attributs PHP** simplifie considérablement la déclaration.
 
-## Filtres Natifs (Twig Core)
-*   **Texte** : `upper`, `lower`, `capitalize`, `trim`, `striptags`, `nl2br`.
-*   **Tableaux** : `first`, `last`, `length`, `join`, `slice`, `sort`, `merge`.
-*   **Nombres** : `number_format`, `abs`, `round`.
-*   **Divers** : `date` (format), `json_encode`, `default` (valeur par défaut si null/empty).
-
-Exemple `default` :
-```twig
-{{ user.bio|default('Aucune bio renseignée.') }}
-```
-
-## Filtres et Fonctions Symfony (Twig Bridge)
-Symfony enrichit considérablement Twig.
-
-### Fonctions
-*   `path()`, `url()` : Routage.
-*   `asset()` : Assets.
-*   `render(controller())` : Embedding.
-*   `dump()` : Debug.
-*   `form_*()` : Formulaires.
-*   `is_granted()` : Sécurité.
-
-### Filtres
-*   `trans` : Traduction.
-*   `yaml_encode`, `yaml_dump`.
-*   `humanize` : Transforme `snake_case` en texte lisible.
-
-## Créer une Extension Twig (Custom)
-Si vous avez besoin d'une logique spécifique (ex: formater un prix avec une devise complexe, afficher un statut sous forme de badge HTML), créez une extension.
+## 1. Créer la Classe Extension
+Il suffit de créer une classe et de marquer les méthodes avec `#[AsTwigFilter]` ou `#[AsTwigFunction]`.
+L'autoconfiguration de Symfony (`services.yaml`) détecte automatiquement ces attributs et enregistre l'extension.
 
 ```php
 namespace App\Twig;
 
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
+use Twig\TwigFunction;
+use App\Service\MarkdownParser;
+
+// AbstractExtension est optionnel si vous n'utilisez que les attributs, 
+// mais recommandé pour getTokenParsers() ou getNodeVisitors()
+class AppExtension extends AbstractExtension
+{
+    // Injection de dépendance possible (Attention au Lazy Loading, voir plus bas)
+    public function __construct(
+        private MarkdownParser $parser
+    ) {}
+
+    #[AsTwigFilter]
+    public function price(float $number, string $currency = '€'): string
+    {
+        return number_format($number, 2, ',', ' ') . ' ' . $currency;
+    }
+
+    #[AsTwigFunction]
+    public function area(int $width, int $length): int
+    {
+        return $width * $length;
+    }
+    
+    // Si le nom du filtre diffère de la méthode
+    #[AsTwigFilter('md2html')]
+    public function markdownToHtml(string $content): string
+    {
+        return $this->parser->parse($content);
+    }
+}
+```
+
+## 2. Lazy-Loaded Extensions (Runtime) - **Performance**
+Si votre extension a des dépendances lourdes (ex: Base de données, Service complexe), injecter ces services dans le constructeur de l'Extension est **mauvais** pour la performance. Twig instancie toutes les extensions au démarrage, même si elles ne sont pas utilisées sur la page.
+
+La solution est de séparer la définition (Extension) de l'exécution (Runtime).
+
+### A. L'Extension (Définition)
+Elle ne contient aucune logique, juste la signature.
+
+```php
+namespace App\Twig;
+
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use App\Twig\AppRuntime;
 
 class AppExtension extends AbstractExtension
 {
     public function getFilters(): array
     {
         return [
-            new TwigFilter('price', [$this, 'formatPrice']),
+            // On pointe vers la classe Runtime et sa méthode
+            new TwigFilter('price', [AppRuntime::class, 'formatPrice']),
         ];
-    }
-
-    public function formatPrice(float $number, string $currency = 'EUR'): string
-    {
-        return number_format($number, 2, ',', ' ') . ' ' . $currency;
     }
 }
 ```
-**Usage** : `{{ product.price|price }}`.
-L'extension est enregistrée automatiquement comme service (autoconfiguration).
+*Note : Les attributs `#[AsTwigFilter]` supportent-ils le Runtime ? Oui, mais la séparation manuelle reste courante pour expliciter le runtime.*
+
+### B. Le Runtime (Logique)
+C'est ici qu'on injecte les dépendances. Cette classe ne sera instanciée que si le filtre `|price` est réellement utilisé dans le template.
+
+```php
+namespace App\Twig;
+
+use Twig\Extension\RuntimeExtensionInterface;
+
+class AppRuntime implements RuntimeExtensionInterface
+{
+    public function __construct(
+        private SomeHeavyService $service
+    ) {}
+
+    public function formatPrice(float $number): string
+    {
+        // Logique...
+    }
+}
+```
+
+## Filtres et Fonctions Natifs Importants
+*   **Filtres** : `trans`, `date`, `format`, `merge`, `map`, `filter`, `sort`.
+*   **Fonctions** : `path`, `url`, `asset`, `dump`, `form`.
 
 ## 🧠 Concepts Clés
-1.  **Pipe** : Les filtres s'enchaînent de gauche à droite. `{{ name|trim|upper }}` = `strtoupper(trim($name))`.
-2.  **Arguments** : Les filtres et fonctions acceptent des arguments. `{{ date|date('d/m/Y') }}`.
+1.  **Safe HTML** : Si votre filtre retourne du HTML (ex: un badge), il sera échappé automatiquement. Pour l'autoriser, ajoutez l'option `is_safe`.
+    ```php
+    #[AsTwigFilter(isSafe: ['html'])]
+    public function badge(string $status): string { ... }
+    ```
+2.  **Needs Environment** : Si vous avez besoin d'accéder à l'environnement Twig (ex: pour rendre un template depuis le filtre), ajoutez l'option `needs_environment: true` et acceptez `Environment $env` en premier argument.
 
 ## ⚠️ Points de vigilance (Certification)
-*   **Logique dans Template** : Ne faites pas de logique métier complexe dans Twig. Si vous avez besoin d'un filtre de 50 lignes, c'est probablement que le contrôleur aurait dû préparer la donnée, ou que vous avez besoin d'une extension Twig testable unitairement.
-*   **Filtre vs Fonction** : Une fonction ne s'applique pas à une variable via `|`. On ne fait pas `{{ 'home'|path }}`, on fait `{{ path('home') }}`.
+*   **Logique Métier** : Ne mettez pas de logique métier (Business Logic) dans Twig. Twig est pour la **Logique de Présentation**. Si ça touche à la base de données pour modifier des données, c'est un Service/Contrôleur.
+*   **Tests** : Les extensions sont des classes PHP pures, donc très faciles à tester unitairement avec PHPUnit.
 
 ## Ressources
-*   [Twig Filter Reference](https://twig.symfony.com/doc/3.x/filters/index.html)
-*   [Create Twig Extension](https://symfony.com/doc/current/templating/twig_extension.html)
+*   [Symfony Docs - Twig Extensions](https://symfony.com/doc/current/templating/twig_extension.html)
