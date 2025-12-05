@@ -32,6 +32,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 
 ### [3. Architecture Symfony](./03-architecture-symfony/)
 * [Symfony Flex](./03-architecture-symfony/flex.md)
+* [Symfony CLI](./03-architecture-symfony/cli.md)
 * [Licence](./03-architecture-symfony/licence.md)
 * [Composants](./03-architecture-symfony/composants.md)
 * [Bridges](./03-architecture-symfony/bridges.md)

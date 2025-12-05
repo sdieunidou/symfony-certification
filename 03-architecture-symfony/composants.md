@@ -57,4 +57,5 @@ Ces paquets ne sont parfois pas des "Components" au sens strict (namespace) mais
 *   **Contracts** : Symfony extrait les interfaces dans des paquets séparés (`symfony/contracts`, ex: `ServiceSubscriberInterface`, `HttpClientInterface`) pour réduire le couplage.
 
 ## Ressources
+*   [Symfony Packages - Liste exhaustive](https://symfony.com/packages)
 *   [Symfony Components Documentation](https://symfony.com/components)
