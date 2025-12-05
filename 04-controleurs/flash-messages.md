@@ -1,31 +1,31 @@
 # Messages Flash
 
 ## Concept clé
-Les messages "Flash" sont des messages stockés en session qui ne durent que le temps d'une seule requête supplémentaire (le temps d'une redirection). Ils sont utilisés pour notifier l'utilisateur ("Sauvegarde réussie", "Erreur...").
+Les Messages Flash sont un pattern UX pour afficher des notifications temporaires à l'utilisateur après une action (ex: "Votre profil a été mis à jour").
+Techniquement, ils sont stockés en **Session**, affichés une fois, puis **détruits automatiquement** (auto-expiring).
 
-## Application dans Symfony 7.0
-L'`AbstractController` fournit la méthode helper `addFlash()`.
-
-## Exemple de code
+## Utilisation dans le Contrôleur
+L'`AbstractController` fournit le helper `addFlash(string $type, mixed $message)`.
 
 ```php
-<?php
-
-public function update(): Response
+public function delete(int $id): Response
 {
-    // Traitement...
-    
-    // 1. Ajouter le message (type, message)
-    $this->addFlash('success', 'Profil mis à jour !');
-    $this->addFlash('warning', 'Pensez à changer votre mot de passe.');
+    // ... suppression ...
 
-    // 2. Rediriger
-    return $this->redirectToRoute('profile');
+    // On peut ajouter plusieurs messages du même type
+    $this->addFlash('success', 'Élément supprimé.');
+    $this->addFlash('info', 'Un email de confirmation a été envoyé.');
+
+    return $this->redirectToRoute('list');
 }
 ```
 
+## Affichage dans Twig
+Symfony expose la variable globale `app`.
+
 ```twig
-{# Dans le template Twig (base.html.twig) #}
+{# templates/base.html.twig #}
+
 {% for label, messages in app.flashes %}
     {% for message in messages %}
         <div class="alert alert-{{ label }}">
@@ -34,12 +34,35 @@ public function update(): Response
     {% endfor %}
 {% endfor %}
 ```
+*Note : La lecture `app.flashes` consomme les messages. Si vous rafraîchissez la page, ils disparaissent.*
 
-## Points de vigilance (Certification)
-*   **Session** : Les messages flash nécessitent que les sessions soient activées.
-*   **Array** : `app.flashes` retourne un tableau de messages pour chaque type (car on peut ajouter plusieurs flashs du même type).
-*   **Consommation** : Lire les messages flash (`app.flashes`) les supprime de la session. Ils ne s'afficheront pas à la requête suivante.
+## Types de Messages
+Le "type" (`success`, `warning`, `danger`, `info`) est une convention libre. Il correspond souvent aux classes CSS de Bootstrap ou Tailwind.
+
+## Cas Avancés (FlashBagInterface)
+Si vous avez besoin de manipuler les flashes sans les supprimer (peek) ou vérifier s'il y en a :
+
+```php
+// Injection de RequestStack
+$flashBag = $requestStack->getSession()->getFlashBag();
+
+// Vérifier sans consommer
+if ($flashBag->has('error')) { ... }
+
+// Lire sans supprimer (Peek)
+$errors = $flashBag->peek('error');
+
+// Lire et supprimer (Get - comportement par défaut)
+$errors = $flashBag->get('error');
+```
+
+## 🧠 Concepts Clés
+1.  **Survivre à la redirection** : C'est le but principal. HTTP est stateless, donc une variable PHP normale meurt à la fin du script. La Flash survit en session pour la requête suivante (qui affiche le résultat).
+2.  **Stateless API** : Les messages flash ne fonctionnent **PAS** dans une API Stateless (JWT), car il n'y a pas de session. Le client (Frontend) doit gérer ses propres notifications basées sur la réponse HTTP (200/201/400).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Array** : `addFlash` ajoute à une liste. Il n'écrase pas le message précédent.
+*   **Session Required** : Si les sessions sont désactivées, `addFlash` lancera une exception.
 
 ## Ressources
 *   [Symfony Docs - Flash Messages](https://symfony.com/doc/current/controller.html#flash-messages)
-

@@ -1,27 +1,52 @@
-# Protection CSRF
+# Protection CSRF (Cross-Site Request Forgery)
 
 ## Concept clé
-CSRF (Cross-Site Request Forgery) est une attaque où un site malveillant force l'utilisateur à soumettre un formulaire sur votre site à son insu.
-La protection consiste à inclure un jeton (token) secret unique dans chaque formulaire, et à le vérifier à la soumission.
+La CSRF est une attaque où un site malveillant force le navigateur de l'utilisateur à soumettre un formulaire sur votre application alors qu'il est authentifié.
+La protection consiste à générer un **Jeton (Token) Secret** unique par session et par formulaire, et à vérifier sa présence lors de la soumission.
 
 ## Application dans Symfony 7.0
-Le composant Form active la protection CSRF **par défaut**.
-Il génère un champ caché `_token`.
+La protection est activée **par défaut** et transparente pour le développeur si les bonnes pratiques sont respectées.
 
-### Configuration (options par défaut)
-```php
-// Dans configureOptions d'un Type
-$resolver->setDefaults([
-    'csrf_protection' => true,
-    'csrf_field_name' => '_token',
-    'csrf_token_id'   => 'task_item', // Identifiant unique pour ce formulaire
-]);
+### Configuration par défaut
+Dans n'importe quel `FormType`, les options par défaut (via `OptionsResolver`) sont :
+*   `csrf_protection`: `true`
+*   `csrf_field_name`: `_token`
+*   `csrf_token_id`: Le nom de la classe (ex: `task_item`)
+
+### Comment ça marche ?
+1.  **Génération** : À l'affichage, Symfony génère un champ caché `<input type="hidden" name="_token" value="...">`.
+2.  **Validation** : Lors du `handleRequest()`, Symfony vérifie que le token envoyé correspond à celui attendu.
+3.  **Erreur** : Si le token est invalide ou manquant, une erreur de formulaire est ajoutée ("The CSRF token is invalid"), et `$form->isValid()` retourne `false`.
+
+## Rendu du Token
+C'est le point critique. Le token **doit** être présent dans le HTML.
+Si vous utilisez `{{ form_end(form) }}`, Symfony affiche automatiquement tous les champs non rendus, y compris le champ caché `_token`.
+
+Si vous fermez la balise `</form>` manuellement, vous devez afficher le token manuellement :
+```twig
+{{ form_row(form._token) }}
+{# ou #}
+{{ form_rest(form) }}
 ```
 
-## Points de vigilance (Certification)
-*   **Rendu** : Le champ `_token` doit être rendu. `{{ form_end(form) }}` le fait automatiquement (via `form_rest`). Si vous ne mettez pas `form_end`, le token manquera et la soumission échouera ("The CSRF token is invalid").
-*   **API** : Pour les APIs stateless, on désactive souvent CSRF (`csrf_protection => false`) car l'authentification par token (Bearer) protège déjà ou nécessite une autre approche.
+## Désactiver CSRF (APIs)
+Pour une API REST sans session (Stateless), la protection CSRF basée sur la session est inutile (et impossible).
+
+```php
+public function configureOptions(OptionsResolver $resolver): void
+{
+    $resolver->setDefaults([
+        'csrf_protection' => false,
+    ]);
+}
+```
+
+## 🧠 Concepts Clés
+1.  **Token ID** : Chaque formulaire a un ID différent. Un token généré pour le formulaire de login ne fonctionnera pas pour le formulaire de contact.
+2.  **SameSite Cookie** : L'utilisation de cookies `SameSite: Lax` ou `Strict` (défaut Symfony) atténue déjà considérablement le risque CSRF, mais le token reste une défense en profondeur recommandée.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Caching** : Si vous cachez vos formulaires avec un cache HTTP public (Varnish), le token CSRF (qui est spécifique à l'utilisateur) sera caché et servi à tout le monde -> **Erreur CSRF pour tous**. Solution : Charger le formulaire en AJAX ou utiliser ESI, ou désactiver CSRF pour les formulaires publics.
 
 ## Ressources
 *   [Symfony Docs - CSRF Protection](https://symfony.com/doc/current/security/csrf.html)
-

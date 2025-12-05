@@ -1,62 +1,76 @@
 # Principes SOLID
 
-## Concept clé
-SOLID est un acronyme représentant 5 principes de conception orientée objet destinés à rendre le code plus maintenable, flexible et évolutif.
-
 ## 1. Single Responsibility Principle (SRP)
 **"Une classe ne doit avoir qu'une seule raison de changer."**
 
 ### Exemple Symfony
-Ne mettez pas de logique métier, d'envoi d'email et de requête SQL dans un Contrôleur.
-*   **Mauvais** : Un contrôleur qui valide la donnée, crée l'entité, appelle le mailer et flushe en base.
-*   **Bon** : Un contrôleur qui appelle un `UserRegistrationService`. Le service délègue l'email à un `MailerService`.
+Séparer la logique métier du contrôleur.
 
+**❌ Mauvais (Controlleur "Dieu")**
 ```php
-// Violation SRP
 class OrderController extends AbstractController {
-    public function create() {
-        // Validation...
-        // Calcul prix...
-        // Sauvegarde DB...
-        // Envoi email...
-        // Génération PDF...
+    public function create(Request $request) {
+        // 1. Validation
+        if (!$request->get('product')) { throw ... }
+        // 2. Calcul métier
+        $total = $price * 1.20;
+        // 3. Persistance
+        $this->em->persist($order);
+        $this->em->flush();
+        // 4. Notification
+        $this->mailer->send(...);
+        
+        return $this->json(['status' => 'ok']);
+    }
+}
+```
+
+**✅ Bon (Délégation)**
+```php
+class OrderController extends AbstractController {
+    public function create(Request $request, OrderManager $manager) {
+        // Le contrôleur ne gère que HTTP
+        $manager->createOrderFromRequest($request);
+        return $this->json(['status' => 'ok']);
     }
 }
 
-// Respect SRP
-class OrderService {
-    public function createOrder(OrderDto $dto) {
-        // Orchestre la création
-    }
+class OrderManager {
+    // Le service contient le métier
+    public function createOrderFromRequest(...) { ... }
 }
 ```
 
 ## 2. Open/Closed Principle (OCP)
-**"Les entités logicielles doivent être ouvertes à l'extension, mais fermées à la modification."**
+**"Ouvert à l'extension, fermé à la modification."**
 
-### Exemple Symfony : Event Dispatcher & Voters
-Vous voulez modifier le comportement lors de la création d'une commande sans toucher au code du cœur ?
-Utilisez les **Événements**.
-Le code qui dispatche l'événement est "fermé" (on ne le touche pas), mais "ouvert" via l'ajout de nouveaux Listeners.
+### Exemple Symfony
+Utiliser les **Événements** pour étendre une fonctionnalité sans modifier le code source.
 
 ```php
-// Core (Fermé)
-$this->dispatcher->dispatch(new OrderCreatedEvent($order));
+class OrderService {
+    public function create() {
+        $order = new Order();
+        // ... save ...
+        
+        // Point d'extension (Ouvert)
+        $this->dispatcher->dispatch(new OrderCreatedEvent($order));
+    }
+}
 
-// Extension (Ouvert)
-class SendInvoiceSubscriber implements EventSubscriberInterface {
-    // J'ajoute une fonctionnalité sans toucher à la classe Commande
+// Extension (Nouveau fichier, pas de modif de OrderService)
+class EmailSubscriber implements EventSubscriberInterface {
+    public function onOrderCreated(OrderCreatedEvent $event) {
+        // Envoi email
+    }
 }
 ```
 
-Les **Voters** de sécurité sont aussi un excellent exemple : on ajoute une règle de sécurité en créant une nouvelle classe Voter, sans modifier le `AuthorizationChecker`.
-
 ## 3. Liskov Substitution Principle (LSP)
-**"Les objets d'un programme doivent pouvoir être remplacés par des instances de leurs sous-types sans que cela n'altère le fonctionnement correct du programme."**
+**"Une sous-classe doit pouvoir remplacer sa classe parente sans casser l'application."**
 
 ### Exemple Symfony
-Si vous type-hintez une interface, n'importe quelle implémentation doit fonctionner.
-Si vous étendez une classe, ne changez pas les pré-conditions (paramètres) ou post-conditions (type de retour).
+Si vous remplacez un service par une autre implémentation, cela doit fonctionner transparentement.
 
 ```php
 interface StorageInterface {
@@ -64,49 +78,71 @@ interface StorageInterface {
 }
 
 class FileStorage implements StorageInterface {
-    public function save(string $data): void { /* ... */ }
+    public function save(string $data): void { /* écriture fichier */ }
 }
 
+// ✅ Respect LSP
+class S3Storage implements StorageInterface {
+    public function save(string $data): void { /* upload AWS */ }
+}
+
+// ❌ Violation LSP
 class ReadOnlyStorage implements StorageInterface {
     public function save(string $data): void {
-        // Violation LSP ! Si le code client attend que ça sauvegarde, 
-        // lancer une exception change le contrat.
-        throw new \Exception("Cannot save"); 
+        // Change le comportement attendu (ne sauvegarde pas ou lance une exception inattendue)
+        throw new \Exception("Not supported"); 
     }
 }
 ```
 
 ## 4. Interface Segregation Principle (ISP)
-**"Mieux vaut plusieurs interfaces spécifiques qu'une seule interface générale."**
+**"Pas d'interfaces obèses. Préférez plusieurs interfaces spécifiques."**
 
-### Exemple Symfony : UserInterface
-Avant, `UserInterface` obligeait parfois à implémenter des méthodes inutiles pour certains types d'utilisateurs (ex: API users vs Admin users).
-Symfony découpe ses interfaces : `PasswordAuthenticatedUserInterface` est séparée de `UserInterface`. Si votre utilisateur n'a pas de mot de passe (authentification via Google), vous n'avez pas à implémenter `getPassword()`.
+### Exemple Symfony
+La séparation des interfaces User.
+
+```php
+// Au lieu d'une interface UserInterface géante qui force à implémenter getPassword()...
+// ...ce qui est gênant pour un utilisateur API authentifié par Token (sans password).
+
+// Symfony sépare :
+interface UserInterface { 
+    public function getRoles(): array; 
+    public function getUserIdentifier(): string;
+}
+
+interface PasswordAuthenticatedUserInterface { 
+    public function getPassword(): ?string; 
+}
+
+// Mon utilisateur API n'implémente que la première.
+class ApiUser implements UserInterface { ... }
+```
 
 ## 5. Dependency Inversion Principle (DIP)
-**"Les modules de haut niveau ne doivent pas dépendre des modules de bas niveau. Les deux doivent dépendre d'abstractions."**
+**"Dépendre des abstractions, pas des implémentations."**
 
-### Exemple Symfony : Injection de Dépendances
-C'est le cœur de Symfony. On n'instancie jamais (`new`) un service dans un autre. On demande l'interface.
+### Exemple Symfony
+Injection de dépendance dans le constructeur.
 
-*   **Mauvais** : Dépendance forte vers une implémentation concrète.
-    ```php
-    class UserManager {
-        public function __construct() {
-            $this->mailer = new GmailMailer(); // Couplage fort
-        }
+**❌ Mauvais (Dépendance concrète)**
+```php
+class ReportGenerator {
+    public function __construct() {
+        // Couplage fort : Impossible de changer pour 'Dompdf' ou de mocker pour les tests
+        $this->pdfEngine = new WkHtmlToPdf(); 
     }
-    ```
+}
+```
 
-*   **Bon** : Dépendance vers une abstraction.
-    ```php
-    class UserManager {
-        public function __construct(MailerInterface $mailer) {
-            $this->mailer = $mailer; // Couplage faible via DIP
-        }
-    }
-    ```
+**✅ Bon (Abstraction)**
+```php
+class ReportGenerator {
+    // On demande une Interface (Contrat)
+    public function __construct(private PdfGeneratorInterface $pdfEngine) {}
+}
 
-## Ressources
-*   [Wikipedia - SOLID](https://fr.wikipedia.org/wiki/SOLID_(informatique))
-
+// Config services.yaml : on dit quelle implémentation utiliser
+// services:
+//    App\Service\PdfGeneratorInterface: '@App\Service\WkHtmlToPdf'
+```

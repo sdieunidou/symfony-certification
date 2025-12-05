@@ -1,46 +1,63 @@
-# Traitement des Formulaires
+# Traitement des Formulaires (Processing)
 
 ## Concept clé
-Le traitement d'un formulaire suit un pattern strict ("Handle Request").
-1.  Le formulaire reçoit la requête HTTP.
-2.  Il mappe les données de la requête sur l'objet sous-jacent.
-3.  Il vérifie la soumission et la validité.
+Le traitement d'un formulaire est un processus standardisé appelé le **Workflow de Soumission**.
+Il synchronise la requête HTTP avec l'objet PHP.
 
-## Application dans Symfony 7.0
+## Le Pattern Standard
 
 ```php
-public function new(Request $request): Response
+public function edit(Request $request, Task $task): Response
 {
-    $task = new Task();
     $form = $this->createForm(TaskType::class, $task);
-
-    // 1. Mappe la requête (POST) sur le formulaire et l'objet $task
+    
+    // Étape critique : Injection de la requête
     $form->handleRequest($request);
 
-    // 2. Vérifie si le formulaire a été soumis ET est valide
+    // Vérification d'état
     if ($form->isSubmitted() && $form->isValid()) {
-        // $task contient maintenant les données soumises
+        // À ce stade, $task est mis à jour avec les nouvelles données
         
-        // Sauvegarder en DB...
-        // $entityManager->persist($task);
-        // $entityManager->flush();
+        $this->entityManager->flush();
 
-        // Redirection (pattern Post-Redirect-Get)
-        return $this->redirectToRoute('task_success');
+        return $this->redirectToRoute('task_list');
     }
 
-    return $this->render('task/new.html.twig', [
-        'form' => $form,
-    ]);
+    return $this->render('task/edit.html.twig', ['form' => $form]);
 }
 ```
 
-## Points de vigilance (Certification)
-*   **handleRequest** : Cette méthode est magique. Elle regarde si la méthode est POST (par défaut), si les champs sont présents, remplit l'objet, et lance la validation.
-*   **isSubmitted** : Retourne `true` si le formulaire a été envoyé.
-*   **isValid** : Retourne `true` si les contraintes de validation (Validation Constraints) sont respectées.
-*   **Patch** : Si la méthode est PATCH (API), `handleRequest` ne mettra à jour que les champs soumis (submit partiel).
+## Ce que fait `handleRequest`
+1.  Vérifie si la méthode HTTP correspond (POST par défaut).
+2.  Si oui, il soumet le formulaire (`submit`).
+3.  Remplit les champs avec les données de la requête (`$_POST` ou `$_GET`).
+4.  Exécute les DataTransformers (View -> Norm -> Model).
+5.  Lance la validation (Constraints).
+
+## API vs HTML Forms
+*   **HTML (POST standard)** : `handleRequest` lit `$_POST`.
+*   **API (JSON)** : `handleRequest` ne lit **pas** le JSON body nativement par défaut (avant Symfony 6.3+). Il fallait utiliser `$form->submit($data)`.
+*   **Symfony 6.3+** : Le `RequestHandler` natif sait maintenant lire le JSON payload si configuré ou détecté.
+
+## Soumission Manuelle (`submit`)
+Pour les cas avancés (API, tests) :
+
+```php
+// true = clearMissing (met à null les champs absents, comme PUT)
+// false = patch (ne touche pas aux champs absents, comme PATCH)
+$form->submit($dataArray, false);
+```
+
+## 🧠 Concepts Clés
+1.  **Immutabilité** : L'objet `$task` passé au formulaire est modifié par référence.
+2.  **État** : Un formulaire a trois états principaux :
+    *   Initial (non soumis).
+    *   Soumis et Valide.
+    *   Soumis et Invalide (contient des erreurs).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Validation** : `$form->isValid()` ne peut être appelé que si `$form->isSubmitted()` est true.
+*   **GET Forms** : Pour les formulaires de recherche, configurez `method => GET` dans `configureOptions`. `handleRequest` lira alors `$_GET`. Pour éviter une URL polluée par le token, désactivez CSRF.
 
 ## Ressources
-*   [Symfony Docs - Processing Forms](https://symfony.com/doc/current/forms.html#processing-forms)
-
+*   [Symfony Docs - Form Processing](https://symfony.com/doc/current/forms.html#processing-forms)

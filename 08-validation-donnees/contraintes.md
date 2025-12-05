@@ -1,45 +1,60 @@
 # Contraintes de Validation Natives
 
 ## Concept clé
-Symfony fournit une vaste bibliothèque de contraintes prêtes à l'emploi.
+Symfony (via le composant `Validator`) fournit +60 contraintes prêtes à l'emploi pour couvrir 99% des besoins standards.
+Elles s'utilisent via des Attributs PHP 8 (`#[Assert\Name]`).
 
-## Application dans Symfony 7.0
+## Classification et Usage
 
-### Basic
-*   `NotBlank` (non vide et pas null)
-*   `NotNull`
-*   `IsNull`, `IsTrue`, `IsFalse`
-*   `Type` (integer, string...)
+### 1. Basique (Basic)
+*   `#[Assert\NotBlank]` : Le champ ne doit être ni `null`, ni `""`, ni `[]`. (Le standard pour "Requis").
+*   `#[Assert\NotNull]` : Accepte `""` (chaine vide) mais pas `null`.
+*   `#[Assert\IsNull]`.
+*   `#[Assert\Type('integer')]`.
 
-### String
-*   `Email`
-*   `Length` (min, max)
-*   `Url`
-*   `Regex`
-*   `UserPassword` (vérifie le mot de passe actuel, utile pour les changements de mot de passe)
+### 2. Texte (String)
+*   `#[Assert\Length(min: 3, max: 255)]`.
+*   `#[Assert\Email(mode: 'strict')]`.
+*   `#[Assert\Regex('/^\d{5}$/')]`.
+*   `#[Assert\Url]`.
+*   `#[Assert\Uuid]`, `#[Assert\Ulid]`.
+*   `#[Assert\Ip]`.
+*   `#[Assert\UserPassword]` : Vérifie que la valeur correspond au mot de passe actuel de l'utilisateur (pour changement de MDP).
 
-### Number
-*   `Positive`, `PositiveOrZero`, `Negative`
-*   `GreaterThan`, `LessThan`, `Range`
+### 3. Nombres (Number)
+*   `#[Assert\Positive]`, `#[Assert\PositiveOrZero]`.
+*   `#[Assert\Negative]`.
+*   `#[Assert\Range(min: 18, max: 99)]`.
+*   `#[Assert\DivisibleBy(0.5)]`.
 
-### Date
-*   `Date`, `DateTime`
-*   `Time`
-*   `GreaterThan` (fonctionne aussi pour les dates)
+### 4. Dates
+*   `#[Assert\Date]`, `#[Assert\DateTime]`, `#[Assert\Time]`.
+*   `#[Assert\GreaterThan('today')]`.
+*   `#[Assert\LessThanOrEqual('+1 hour')]`.
 
-### Collection
-*   `Choice` (valeur dans une liste)
-*   `Count` (taille du tableau)
-*   `Unique` (éléments uniques)
+### 5. Choix et Collections
+*   `#[Assert\Choice(['male', 'female'])]` ou callback.
+*   `#[Assert\Unique]` : Les éléments d'un tableau doivent être uniques.
+*   `#[Assert\Count(min: 1)]`.
+*   `#[Assert\All([...])]` : Applique une liste de contraintes à **chaque** élément d'un tableau.
+    *   `#[Assert\All([new Assert\NotBlank, new Assert\Email])]`
 
-### File
-*   `File` (taille, mime-type)
-*   `Image` (dimensions)
+### 6. Fichiers
+*   `#[Assert\File(maxSize: '10M')]`.
+*   `#[Assert\Image(minWidth: 100)]`.
 
-## Points de vigilance (Certification)
-*   **NotBlank vs NotNull** : `NotBlank` vérifie que la valeur n'est pas `null` ET n'est pas une chaîne vide `""`. `NotNull` accepte `""`.
-*   **Null** : La plupart des contraintes (sauf `NotNull` et `NotBlank`) ignorent les valeurs `null`. Si une propriété est optionnelle, ne mettez pas `NotNull`.
+### 7. Logique
+*   `#[Assert\IsTrue]` : Utile pour une case "J'accepte les CGU" (qui n'est pas stockée dans l'entité mais doit être vraie).
+*   `#[Assert\AtLeastOneOf]` : L'une des contraintes internes doit passer.
+
+## 🧠 Concepts Clés
+1.  **Nullabilité** : Par défaut, la plupart des contraintes (Email, Length, Regex) **ignorent** les valeurs `null`. Si vous voulez qu'un champ soit obligatoire, vous **DEVEZ** ajouter `#[Assert\NotBlank]` ou `#[Assert\NotNull]`.
+    *   *Exception* : `IsNull`, `NotNull`, `NotBlank`.
+2.  **Messages** : Toutes les contraintes ont une option `message`. `#[Assert\NotBlank(message: 'Ce champ est vide.')]`.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Type PHP vs Validator** : Typer une propriété `string` en PHP 8 ne remplace pas le validateur. PHP lance une `TypeError` (Fatal) si le type est mauvais. Le Validator génère une `ConstraintViolation` (Erreur utilisateur affichable). Les deux sont complémentaires.
+*   **Email** : Le mode par défaut de `Email` est lâche (autorise `abc` parfois selon la RFC). Utilisez `mode: 'html5'` ou `'strict'` pour un comportement attendu.
 
 ## Ressources
 *   [Symfony Docs - Constraints Reference](https://symfony.com/doc/current/reference/constraints.html)
-

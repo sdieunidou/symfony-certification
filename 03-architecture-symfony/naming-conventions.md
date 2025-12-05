@@ -1,35 +1,67 @@
 # Conventions de Nommage
 
 ## Concept clé
-Suivre des conventions strictes rend le code prédictible et navigable. Symfony suit les standards PSR et ajoute ses propres conventions.
+Symfony suit les standards **PSR** (PHP-FIG) et ajoute ses propres conventions pour garantir une uniformité dans l'écosystème. Un code respectant ces conventions est immédiatement compréhensible par tout développeur Symfony.
 
-## Conventions Symfony
-1.  **Classes** : UpperCamelCase (`UserProfile`).
-2.  **Méthodes/Propriétés** : lowerCamelCase (`isValid`, `$firstName`).
-3.  **Constantes** : UPPER_SNAKE_CASE (`DEFAULT_LIMIT`).
-4.  **Fichiers** : Même nom que la classe (`UserProfile.php`).
-5.  **Namespaces** : `Vendor\Project\Category\...` (ex: `App\Controller\Admin`).
-6.  **Services** : snake_case pour les IDs (ex: `app.msg_sender`), mais l'utilisation du FQCN (Fully Qualified Class Name) est recommandée comme ID (`App\Service\MsgSender`).
-7.  **Templates** : snake_case (`user_profile.html.twig`).
-8.  **Routes** : snake_case (`app_blog_show`).
-9.  **Paramètres de config** : snake_case (`app.items_per_page`).
+## Code PHP (PSR-1 / PSR-12)
+*   **Classes** : `UpperCamelCase` (PascalCase). Ex: `UserProfile`.
+*   **Méthodes** : `lowerCamelCase`. Ex: `getFirstName`.
+*   **Propriétés** : `lowerCamelCase`. Ex: `$createdAt`.
+*   **Constantes** : `UPPER_SNAKE_CASE`. Ex: `MAX_ATTEMPTS`.
+*   **Namespaces** : Correspondent à l'arborescence (PSR-4). `App\Controller\Admin`.
 
-## Suffixes
-Symfony utilise des suffixes explicites pour indiquer le rôle d'une classe :
-*   `...Controller`
-*   `...Command`
-*   `...Listener` / `...Subscriber`
-*   `...Type` (Formulaires)
-*   `...Voter` (Sécurité)
-*   `...Repository` (Doctrine)
-*   `...Interface`
-*   `...Trait`
-*   `...Exception`
+## Conventions Spécifiques Symfony
 
-## Points de vigilance (Certification)
-*   **Services** : Depuis Symfony 4, l'ID du service est par défaut le nom de la classe. Les IDs en snake_case (`app.mailer`) sont réservés aux alias ou aux services qui n'ont pas de classe propre (configurations).
-*   **Routes** : Il est recommandé de préfixer les noms de routes (ex: `app_admin_post_show`) pour éviter les collisions.
+### Services (Injection de Dépendances)
+*   **ID de Service** : Utilisez le **FQCN** (Fully Qualified Class Name) par défaut.
+    *   Bon : `App\Service\Mailer`
+    *   Obsolète/Réservé : `app.mailer` (snake_case utilisé pour les paramètres ou les alias courts).
+*   **Paramètres** : `snake_case`. Ex: `app.admin_email`.
+
+### Routing & URLs
+*   **Noms de routes** : `snake_case`.
+    *   Recommandé : `app_entity_action` (ex: `app_blog_show`, `api_user_list`).
+    *   Le préfixe `app_` évite les conflits avec les routes des bundles tiers.
+*   **URLs** : `kebab-case` (minuscules avec tirets).
+    *   Bon : `/blog/my-awesome-post`
+    *   Mauvais : `/blog/My_Awesome_Post`
+
+### Templates
+*   **Noms de fichiers** : `snake_case`.
+    *   Ex: `user_profile.html.twig`.
+*   **Emplacement** : `templates/{controller_name}/{action_name}.html.twig`.
+
+### Configuration
+*   **Clés YAML** : `snake_case`.
+*   **Variables d'env** : `UPPER_SNAKE_CASE`. Ex: `DATABASE_URL`.
+
+## Suffixes de Classes (Sémantique)
+Le nom de la classe doit indiquer son type/rôle.
+
+| Type | Suffixe | Exemple |
+| :--- | :--- | :--- |
+| Contrôleur | `Controller` | `BlogController` |
+| Entité | (Aucun) | `User`, `Product` |
+| Repository | `Repository` | `UserRepository` |
+| Commande CLI | `Command` | `CreateUserCommand` |
+| Écouteur | `Listener` / `Subscriber` | `ExceptionListener` |
+| Formulaire | `Type` | `RegistrationType` |
+| Sécurité | `Voter` | `PostVoter` |
+| Extension Twig | `Extension` | `AppExtension` |
+| Exception | `Exception` | `UserNotFoundException` |
+| Interface | `Interface` | `UserInterface` |
+| Trait | `Trait` | `TimestampableTrait` |
+
+## 🧠 Concepts Clés
+1.  **Prédictibilité** : Si je cherche le Voter pour les produits, je tape `ProductVoter` dans mon IDE (Ctrl+N) et je le trouve immédiatement.
+2.  **Autoconfiguration** : Symfony se base souvent sur l'implémentation d'interface (`EventSubscriberInterface`) plutôt que sur le nom ou le dossier, mais le nommage aide les humains.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Singulier vs Pluriel** :
+    *   Entités : **Singulier** (`Product`, pas `Products`). Une instance représente *un* produit.
+    *   Tables DB : Souvent pluriel (`products`) ou singulier (`product`) selon les conventions d'équipe, mais l'entité PHP reste singulière.
+    *   URLs REST : Pluriel pour les collections (`/products`), singulier+id pour les éléments (`/products/{id}`).
 
 ## Ressources
 *   [Symfony Coding Standards](https://symfony.com/doc/current/contributing/code/standards.html)
-
+*   [PSR-12: Extended Coding Style](https://www.php-fig.org/psr/psr-12/)

@@ -1,44 +1,71 @@
 # Héritage de Template
 
 ## Concept clé
-L'héritage est la fonctionnalité la plus puissante de Twig. Elle permet de définir un layout de base (squelette) et de laisser les templates enfants remplir ou surcharger des zones spécifiques appelées "Blocs".
+L'héritage permet de définir un **Layout** (squelette HTML commun) et de laisser les templates enfants remplir les trous (Blocs).
+C'est l'équivalent de l'héritage de classe en PHP.
 
-## Application dans Symfony 7.0
+## Structure
 
-### Parent (base.html.twig)
+### 1. Le Parent (`base.html.twig`)
+Définit la structure et les blocs par défaut.
+
 ```twig
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title %}Bienvenue{% endblock %}</title>
+        <title>{% block title %}Mon Site{% endblock %}</title>
+        {% block stylesheets %}
+            <link href="/app.css" rel="stylesheet"/>
+        {% endblock %}
     </head>
     <body>
         <header>...</header>
-        <main>
+        
+        <div class="container">
             {% block body %}{% endblock %}
-        </main>
+        </div>
+        
+        {% block javascripts %}{% endblock %}
     </body>
 </html>
 ```
 
-### Enfant (index.html.twig)
+### 2. L'Enfant (`page.html.twig`)
+Étend le parent et surcharge les blocs.
+
 ```twig
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Ma Page - {{ parent() }}{% endblock %}
 
 {% block body %}
-    <h1>Page d'accueil</h1>
-    {# Rappeler le contenu du parent #}
-    {{ parent() }}
+    <h1>Contenu de la page</h1>
 {% endblock %}
 ```
 
-## Points de vigilance (Certification)
-*   **Règle d'or** : Dans un template enfant (qui a un tag `extends`), **tout** le contenu affiché doit être à l'intérieur d'un `block`. Tout texte en dehors des blocs provoquera une erreur (Twig ne saura pas où le mettre dans le parent).
-*   **Niveaux** : L'héritage peut être multi-niveaux (Enfant extends Layout extends Base).
-*   **Dynamic inheritance** : On peut hériter dynamiquement : `{% extends ajax ? 'ajax.html.twig' : 'base.html.twig' %}`.
+## La fonction `parent()`
+Permet de récupérer le contenu du bloc parent au lieu de l'écraser complètement.
+Utile pour ajouter du CSS/JS spécifique à une page tout en gardant les styles globaux.
+
+```twig
+{% block stylesheets %}
+    {{ parent() }} {# Garde app.css #}
+    <link href="/page-specifique.css" rel="stylesheet"/>
+{% endblock %}
+```
+
+## 🧠 Concepts Clés
+1.  **Unique** : Un template ne peut étendre qu'**un seul** template parent.
+2.  **Racine** : Le tag `{% extends %}` doit être la **première** ligne du fichier (sauf commentaires).
+3.  **Hors Bloc** : Dans un template enfant, il est **interdit** d'écrire du HTML en dehors d'un bloc `{% block %}`. Twig lancera une erreur de compilation.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Héritage dynamique** : On peut choisir le parent dynamiquement (ex: layout normal vs layout AJAX).
+    ```twig
+    {% extends request.isXmlHttpRequest ? 'ajax.html.twig' : 'base.html.twig' %}
+    ```
+*   **Niveaux** : L'héritage peut être profond (A étend B qui étend C).
+*   **Block Naming** : Les noms de blocs doivent être uniques dans un template.
 
 ## Ressources
-*   [Twig - Template Inheritance](https://twig.symfony.com/doc/3.x/tags/extends.html)
-
+*   [Twig Docs - Template Inheritance](https://twig.symfony.com/doc/3.x/tags/extends.html)

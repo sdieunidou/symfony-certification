@@ -1,36 +1,51 @@
-# Niveaux de Verbosité
+# Niveaux de Verbosité (Verbosity)
 
 ## Concept clé
-Permet de contrôler la quantité d'informations affichées par la commande.
-L'utilisateur contrôle cela avec les drapeaux `-v`, `-vv`, `-vvv`, `-q`.
+La sortie d'une commande doit s'adapter au contexte : silencieuse pour un Cron, informative pour un utilisateur, bavarde pour le débogage.
+Symfony gère cela via des drapeaux passés à la commande.
 
-## Application dans Symfony 7.0
-Les constantes `OutputInterface` :
+## Les Niveaux
 
-*   `VERBOSITY_QUIET` (`-q`) : Rien n'est affiché.
-*   `VERBOSITY_NORMAL` (Défaut) : Infos standards.
-*   `VERBOSITY_VERBOSE` (`-v`) : Infos détaillées.
-*   `VERBOSITY_VERY_VERBOSE` (`-vv`) : Infos de débug.
-*   `VERBOSITY_DEBUG` (`-vvv`) : Tout (Stack traces complètes).
+| Option | Constante `OutputInterface` | Usage |
+| :--- | :--- | :--- |
+| **-q** (Quiet) | `VERBOSITY_QUIET` | Ne rien afficher (sauf erreurs script). Pour les logs CRON. |
+| (Défaut) | `VERBOSITY_NORMAL` | Informations utiles et erreurs. |
+| **-v** | `VERBOSITY_VERBOSE` | Plus de détails (ex: temps d'exécution, noms de fichiers créés). |
+| **-vv** | `VERBOSITY_VERY_VERBOSE` | Infos très détaillées. |
+| **-vvv** (Debug) | `VERBOSITY_DEBUG` | Tout. Affiche les Stack Traces complètes des exceptions. |
 
-### Utilisation
+## Utilisation dans le Code
+
+### 1. Conditionnelle (`if`)
 ```php
 if ($output->isVerbose()) {
-    $output->writeln('Starting process...');
+    // Affiché si -v, -vv ou -vvv
+    $output->writeln('Connexion au serveur...');
 }
 
 if ($output->isDebug()) {
-    $output->writeln('Memory usage: ' . memory_get_usage());
+    // Affiché uniquement si -vvv
+    $output->writeln('Memory: ' . memory_get_usage());
 }
-
-// Écriture conditionnelle
-$output->writeln('Only for verbose', OutputInterface::VERBOSITY_VERBOSE);
 ```
 
-## Points de vigilance (Certification)
-*   **Logique** : `isVerbose()` retourne true si le niveau est >= VERBOSE. Donc `-vvv` déclenche aussi `isVerbose()`.
-*   **Exceptions** : En mode quiet, les exceptions ne sont pas affichées (sauf erreur fatale script). En mode debug, les exceptions affichent toute la trace.
+### 2. Argument de `write`
+On peut passer le niveau requis directement à la méthode d'écriture.
+
+```php
+// S'affiche toujours
+$output->writeln('Terminé.');
+
+// S'affiche seulement si -v
+$output->writeln('Détails...', OutputInterface::VERBOSITY_VERBOSE);
+```
+
+## 🧠 Concepts Clés
+1.  **Quiet** : En mode `-q`, même les exceptions catchées par Symfony ne sont pas affichées. Le script retourne juste un code d'erreur (1).
+2.  **Accumulation** : `isVerbose()` est vrai pour `-v`, `-vv` et `-vvv`. `isVeryVerbose()` est vrai pour `-vv` et `-vvv`.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Exceptions** : Sans `-v`, une exception affiche juste le message d'erreur. Avec `-v`, on a la classe de l'exception. Avec `-vvv`, on a la stack trace complète. C'est le premier réflexe à avoir en cas de bug CLI.
 
 ## Ressources
 *   [Symfony Docs - Verbosity](https://symfony.com/doc/current/console/verbosity.html)
-

@@ -1,11 +1,11 @@
 # Composant Runtime
 
 ## Concept clé
-Introduit dans Symfony 5.3, le composant Runtime découple l'application (Kernel) du script d'entrée (Front Controller `index.php`).
-Il permet de supporter nativement PHP-FPM, mais aussi des serveurs asynchrones (Swoole, RoadRunner, ReactPHP) ou des fonctions Serverless (Lambda) sans changer le code de l'app.
+Avant Symfony 5.3, le fichier `public/index.php` contenait la logique de démarrage du Kernel (`$kernel = new Kernel... $kernel->handle...`).
+Le composant **Runtime** abstrait cette logique. Cela permet à l'application d'être agnostique vis-à-vis du serveur qui la fait tourner (PHP-FPM, CLI, Swoole, Lambda).
 
-## Application dans Symfony 7.0
-Le fichier `public/index.php` est minimaliste :
+## Le nouveau `public/index.php`
+Il est généré par la recette Flex et ne doit presque jamais être modifié.
 
 ```php
 use App\Kernel;
@@ -17,12 +17,23 @@ return function (array $context) {
 };
 ```
 
-C'est `autoload_runtime.php` qui détecte le Runtime à utiliser (par défaut `Symfony\Component\Runtime\SymfonyRuntime`).
+## Fonctionnement
+1.  `autoload_runtime.php` cherche une classe implémentant `Symfony\Component\Runtime\RuntimeInterface`.
+2.  Par défaut, il utilise `Symfony\Component\Runtime\SymfonyRuntime`.
+3.  Le Runtime instancie le Kernel (via la Closure retournée).
+4.  Le Runtime appelle le "Runner" approprié (ex: `HttpKernelRunner` pour le web, `ConsoleApplicationRunner` pour la CLI).
 
-## Points de vigilance (Certification)
-*   **Autoload** : On n'inclut plus `autoload.php` mais `autoload_runtime.php`.
-*   **Return** : Le script retourne une Closure qui crée le Kernel, il ne l'exécute pas lui-même (`$kernel->handle()`). C'est le Runtime qui appelle le handler.
+## Options du Runtime
+On peut configurer le Runtime via des variables d'environnement.
+*   `APP_RUNTIME_ENV`
+*   `APP_RUNTIME_DEBUG`
+
+## 🧠 Concepts Clés
+1.  **Découplage** : Votre code (`Kernel`) ne sait pas comment il est exécuté.
+2.  **Long-Running** : Avec des Runtimes alternatifs (comme FrankenPHP ou RoadRunner), l'application reste en mémoire entre les requêtes. Le composant Runtime facilite cette transition (bien que l'application elle-même doive être écrite en conséquence, sans fuite de mémoire).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Point d'entrée** : C'est toujours `index.php` pour le web ET `bin/console` pour la ligne de commande (qui utilise aussi le Runtime).
 
 ## Ressources
-*   [Symfony Docs - Runtime](https://symfony.com/doc/current/components/runtime.html)
-
+*   [Symfony Docs - Runtime Component](https://symfony.com/doc/current/components/runtime.html)

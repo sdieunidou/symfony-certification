@@ -1,50 +1,103 @@
-# Clean Architecture avec Symfony
+# Clean Architecture (Hexagonale / Onion)
 
 ## Concept Clé
-Popularisée par "Uncle Bob", la Clean Architecture vise à séparer les préoccupations en couches concentriques.
-L'objectif : **L'indépendance**.
-1.  Indépendant du Framework.
-2.  Indépendant de l'UI.
-3.  Indépendant de la Base de Données.
+L'objectif est de créer des systèmes :
+1.  Indépendants des Frameworks.
+2.  Testables.
+3.  Indépendants de l'UI.
+4.  Indépendants de la Base de Données.
+5.  Indépendants de tout agent externe.
 
-**Règle de dépendance** : Les dépendances ne vont que vers l'intérieur. Le Cœur ne connaît rien de la DB ou du Web.
+## La Règle de Dépendance
+C'est la règle absolue : **Les dépendances de code source ne peuvent pointer que vers l'intérieur.**
+Rien dans un cercle interne ne peut connaître quelque chose d'un cercle externe.
 
-## Les Couches (Layers)
+## Les Couches (Cercles)
 
-### 1. Domain (Entities)
-Le centre. Règles métier pures. Aucun framework, aucune annotation Doctrine. Juste du PHP pur.
+### 1. Enterprise Business Rules (Entities / Domain) - Le Cœur
+*   **Contenu** : Objets métier, règles métier de l'entreprise (universelles).
+*   **Dépendances** : Aucune. PHP Pur.
+*   **Exemple** : Entité `User`, VO `Email`, Service `PricingCalculator`.
 
-### 2. Use Cases (Application)
-Orchestration des règles métier. Contient les `CommandHandler`, `QueryHandler`.
-Définit les interfaces (Ports) pour accéder aux données (`UserRepositoryInterface`).
+### 2. Application Business Rules (Use Cases)
+*   **Contenu** : Règles métier spécifiques à l'application. Orchestration.
+*   **Rôle** : Prend les données de l'utilisateur, les passe au Domaine, et retourne le résultat.
+*   **Dépendances** : Dépend du Domaine.
+*   **Exemple** : `RegisterUserHandler`, `FindProductQuery`.
 
-### 3. Interface Adapters (Infrastructure)
-C'est ici que Symfony vit.
-*   Contrôleurs (Web).
-*   Commandes Console (CLI).
-*   Implémentations Doctrine des Repositories.
-*   Services d'envoi de mail (Mailer).
+### 3. Interface Adapters (Infrastructure / Adapters)
+*   **Rôle** : Convertir les données du format pratique pour les Use Cases et Entities vers le format pratique pour les agents externes (DB, Web).
+*   **Contenu** :
+    *   *Contrôleurs* : Reçoivent la Request HTTP, créent la Commande, appellent le Handler.
+    *   *Présenteurs* : Formattent la réponse pour la vue.
+    *   *Gateways (Implémentations)* : Repository Doctrine, Client API Stripe, Mailer SMTP.
+*   **Dépendances** : Dépend des Use Cases (via interfaces).
 
-## Implémentation Symfony
-Pour respecter Clean Arch, on évite le couplage fort :
-*   Pas d'annotations Doctrine (`#[ORM\Entity]`) directement sur les classes du Domaine (on utilise le mapping XML/YAML externe ou on sépare le modèle de persistance du modèle de domaine).
-*   Les Contrôleurs ne contiennent aucune logique, ils appellent des Use Cases (via Messenger par exemple).
-*   Le Domaine ne dépend pas de `Symfony\Component\...`.
+### 4. Frameworks & Drivers (External)
+*   **Contenu** : Le Framework (Symfony), la Base de Données (Postgres), le Frontend (Twig/React).
+*   **Rôle** : Détails techniques. On veut pouvoir en changer avec un minimum d'impact.
 
-### Exemple : Créer un User
+## Pattern "Ports & Adapters" (Hexagonale)
+C'est une variante très proche.
+*   **Hexagone (Cœur)** : Domaine + Application.
+*   **Ports (Interfaces)** : Ce que le cœur expose (API In) ou demande (SPI Out).
+    *   *Input Port (Primary)* : Interface du Use Case (ex: `RequestHandlerInterface`).
+    *   *Output Port (Secondary)* : Interface du Repository (`UserRepositoryInterface`).
+*   **Adapters (Implémentations)** :
+    *   *Driving Adapter (Input)* : Controller Symfony, Command Console.
+    *   *Driven Adapter (Output)* : Doctrine Repository, SwiftMailer.
 
-1.  **Domain** : Classe `User` (sans ORM), Interface `UserRepositoryInterface`.
-2.  **Application** : `CreateUserCommand` (DTO), `CreateUserHandler` (Logique).
-3.  **Infra** :
-    *   `UserController` (reçoit Request, dispatche Command).
-    *   `DoctrineUserRepository` (implémente l'interface, parle à la DB).
-    *   `mapping/User.orm.xml` (colle le Domain à la DB).
+## Implémentation Concrète dans Symfony
 
-## Avantages vs Inconvénients
-*   **+** : Testabilité extrême (Tests unitaires faciles sur le domaine).
-*   **+** : Évolutivité (On peut changer Doctrine pour autre chose).
-*   **-** : Complexité et verbosité (beaucoup de fichiers, DTOs, mappers).
-*   **-** : Perte de la rapidité de développement Symfony ("Rapid Application Development").
+### Structure de dossiers "Screaming Architecture"
+```text
+src/
+|-- User/                       # Contexte
+|   |-- Domain/                 # Cercle 1 (Interne)
+|   |   |-- User.php
+|   |   |-- UserRepositoryInterface.php  <-- Output Port
+|   |
+|   |-- Application/            # Cercle 2
+|   |   |-- Register/
+|   |   |   |-- RegisterUserCommand.php  <-- DTO Input
+|   |   |   |-- RegisterUserHandler.php  <-- Use Case
+|   |
+|   |-- Infrastructure/         # Cercle 3 & 4 (Externe)
+|       |-- Controller/
+|       |   |-- RegistrationController.php <-- Driving Adapter
+|       |-- Doctrine/
+|           |-- DoctrineUserRepository.php <-- Driven Adapter
+```
 
-*Note : Souvent, une architecture "Hexagonale" (Ports & Adapters) simplifiée est un meilleur compromis pour Symfony qu'une Clean Arch puriste.*
+### Inversion de Dépendance (DIP)
+Comment le Handler (Application) peut-il sauvegarder en base s'il ne doit pas dépendre de Doctrine (Infra) ?
+1.  **Application** définit l'interface `UserRepositoryInterface`.
+2.  **Application** utilise cette interface (type-hint).
+3.  **Infrastructure** implémente l'interface avec `DoctrineUserRepository`.
+4.  **Symfony (DI)** injecte l'implémentation dans le Handler au runtime.
+-> Le flux de contrôle va vers la DB, mais la dépendance de code source pointe vers l'intérieur (vers l'interface).
 
+### Request / Response Flow
+1.  **Request HTTP** arrive sur Symfony.
+2.  **Controller** : Extrait les données et crée un **Request Model** (DTO / Command).
+3.  **Bus** : Passe le DTO au **Handler** (Use Case).
+4.  **Handler** :
+    *   Valide le DTO.
+    *   Charge les **Entités** via le **Repository** (Interface).
+    *   Exécute la logique métier sur les Entités.
+    *   Sauvegarde via le Repository.
+    *   Retourne un **Response Model** (DTO) ou void.
+5.  **Controller** : Transforme le Response Model en `JsonResponse` ou `Response` (Twig).
+
+## Boundary (Frontière)
+Il est crucial de maintenir des frontières strictes.
+*   Ne jamais passer l'`Entity` directement au Controller ou à la Vue (risque de Lazy Loading, exposition de données sensibles).
+*   Utiliser des **DTOs** pour traverser les frontières.
+
+## Avantages
+*   **Testabilité** : Tester les Use Cases sans boot le Kernel ni la DB (Tests Unitaires purs).
+*   **Flexibilité** : Changer de MySQL à MongoDB ne demande que de réécrire l'Adapter Repository.
+*   **Maintenance** : Le code métier est isolé du "bruit" du framework.
+
+## Ressources
+*   *Clean Architecture* (Robert C. Martin - Uncle Bob)

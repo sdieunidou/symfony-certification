@@ -1,67 +1,96 @@
 # Gestion des Exceptions (Architecture)
 
 ## Concept clé
-Dans une application Symfony, les exceptions ne doivent pas faire crasher le serveur (Page blanche ou Stack trace brute en prod). Elles doivent être capturées et transformées en réponse HTTP appropriée (page d'erreur 404, 500, JSON error).
+En production, une application ne doit jamais crasher (Page blanche ou Stack Trace).
+Symfony intercepte toutes les exceptions via le mécanisme `kernel.exception` (via `ExceptionEvent`) pour les transformer en objet `Response`.
 
-## Application dans Symfony 7.0
-Le `HttpKernel` capture toutes les exceptions qui remontent lors du traitement de la requête.
-Il dispatche l'événement `kernel.exception`.
-Un écouteur par défaut (`ErrorListener`) attrape cet événement et :
-1.  Loggue l'erreur.
-2.  Détermine le code de statut HTTP (ex: `NotFoundHttpException` -> 404).
-3.  Délègue le rendu à un contrôleur d'erreur (`TwigBundle` fournit des templates d'erreur personnalisables).
+## Flux de Traitement d'Erreur
 
-## Exemple de code (Event Listener personnalisé)
+1.  **Exception lancée** : `throw new NotFoundHttpException()`.
+2.  **Kernel catch** : Le `HttpKernel` attrape l'exception.
+3.  **Dispatch Event** : `ExceptionEvent` est dispatché.
+4.  **ErrorListener** (Natif) :
+    *   Log l'exception.
+    *   Duplique la requête interne vers un contrôleur d'erreur (Forward).
+5.  **ErrorController** : Rend une vue Twig (`error404.html.twig`) ou du JSON selon le format.
+
+## Personnalisation des Pages d'Erreur
+
+Symfony utilise `TwigBundle` pour rendre les erreurs.
+Il suffit de créer des templates dans `templates/bundles/TwigBundle/Exception/` :
+*   `error404.html.twig` (Page non trouvée)
+*   `error403.html.twig` (Accès interdit)
+*   `error500.html.twig` (Erreur serveur)
+*   `error.html.twig` (Fallback pour toutes les autres erreurs)
+
+## Exceptions HTTP (HttpExceptionInterface)
+Pour contrôler le code HTTP de retour, lancez des exceptions implémentant `HttpExceptionInterface` ou utilisez les classes helper :
+
+| Exception | Code HTTP | Usage |
+| :--- | :--- | :--- |
+| `NotFoundHttpException` | 404 | Ressource inexistante. |
+| `AccessDeniedHttpException` | 403 | Interdit (Sécurité). |
+| `BadRequestHttpException` | 400 | Syntaxe requête invalide. |
+| `MethodNotAllowedHttpException`| 405 | GET sur POST. |
+| `ServiceUnavailableHttpException`| 503 | Maintenance. |
+| `UnprocessableEntityHttpException`| 422 | Validation échouée (API). |
+
+## JSON & API Error Handling
+Par défaut, Symfony rend du HTML. Pour une API, on veut du JSON.
+Plusieurs stratégies :
+
+### 1. Serializer (Symfony 6.4+)
+Symfony peut sérialiser nativement les erreurs si le format est JSON (RFC 7807 Problem Details).
+
+### 2. Event Listener Custom (Recommandé pour contrôle total)
 
 ```php
-<?php
-
-namespace App\EventListener;
-
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
-use Symfony\Component\HttpKernel\KernelEvents;
-
-final class JsonExceptionListener
+#[AsEventListener(event: KernelEvents::EXCEPTION)]
+public function onKernelException(ExceptionEvent $event): void
 {
-    #[AsEventListener(event: KernelEvents::EXCEPTION)]
-    public function onKernelException(ExceptionEvent $event): void
-    {
-        $exception = $event->getThrowable();
-        $request = $event->getRequest();
-
-        // Si ce n'est pas une API, on laisse faire Symfony
-        if ($request->getContentTypeFormat() !== 'json') {
-            return;
-        }
-
-        $response = new JsonResponse([
-            'error' => [
-                'message' => $exception->getMessage(),
-                'code' => $exception->getCode(),
-            ]
-        ]);
-
-        if ($exception instanceof HttpExceptionInterface) {
-            $response->setStatusCode($exception->getStatusCode());
-        } else {
-            $response->setStatusCode(500);
-        }
-
-        // Important : définir la réponse dans l'événement arrête la propagation
-        // et envoie cette réponse au client.
-        $event->setResponse($response);
+    $e = $event->getThrowable();
+    
+    // Vérifier si c'est une requête API
+    if (!$event->getRequest()->isXmlHttpRequest() && /* check accept header */) {
+        return;
     }
+
+    $data = [
+        'status' => 'error',
+        'message' => $e->getMessage(),
+    ];
+
+    // Mapping du code status
+    $statusCode = $e instanceof HttpExceptionInterface ? $e->getStatusCode() : 500;
+    
+    // Masquer les détails internes en prod pour les 500
+    if ($statusCode === 500 && $_ENV['APP_ENV'] === 'prod') {
+        $data['message'] = 'Internal Server Error';
+    }
+
+    $event->setResponse(new JsonResponse($data, $statusCode));
 }
 ```
 
-## Points de vigilance (Certification)
-*   **Priorité** : `kernel.exception` est déprécié au profit de `kernel.error` dans certaines versions futures, mais en 7.0 c'est toujours le mécanisme principal. Note : En fait, `ExceptionEvent` est utilisé.
-*   **Hiérarchie** : `HttpExceptionInterface` permet de contrôler le code de statut et les headers. Une exception standard PHP = 500.
-*   **Debugging** : En mode `APP_ENV=dev`, Symfony utilise le composant `ErrorHandler` pour afficher la belle page d'exception avec stack trace.
+## Mapping Configuration (`framework.yaml`)
+On peut mapper n'importe quelle classe d'exception (même tierce) vers un code HTTP sans écrire de code.
+
+```yaml
+framework:
+    exceptions:
+        App\Exception\UserBannedException: { status_code: 403 }
+        Symfony\Component\Serializer\Exception\NotNormalizableValueException: { status_code: 400 }
+```
+
+## 🧠 Concepts Clés
+1.  **Preview en Dev** : En dev, vous voyez la stack trace. Pour voir la page d'erreur réelle (comme l'utilisateur final), utilisez les routes spéciales fournies par `_error_controller` (ou modifiez l'URL via le router de dev, ex: `/_error/404`).
+2.  **Deprecation** : L'événement s'appelait `GetResponseForExceptionEvent` dans le passé. Il est renommé `ExceptionEvent`.
+3.  **FlattenException** : Symfony convertit l'objet Exception PHP (complexe, récursif) en un objet `FlattenException` simple pour pouvoir le passer au template Twig sans erreurs de sérialisation.
+
+## ⚠️ Points de vigilance (Certification)
+*   **`kernel.exception` vs `kernel.view`** : `kernel.exception` n'est appelé QUE s'il y a une exception. `kernel.view` est appelé si le contrôleur retourne une donnée brute.
+*   **Priorité** : Si vous écrivez un Listener d'exception, mettez une priorité élevée (ex: 10) pour passer avant le listener par défaut de Symfony, ou négative pour passer après (logger).
 
 ## Ressources
-*   [Symfony Docs - How to Customize Error Pages](https://symfony.com/doc/current/controller/error_pages.html)
-
+*   [Symfony Docs - Error Pages](https://symfony.com/doc/current/controller/error_pages.html)
+*   [RFC 7807 - Problem Details for HTTP APIs](https://tools.ietf.org/html/rfc7807)

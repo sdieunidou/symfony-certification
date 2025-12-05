@@ -1,30 +1,38 @@
 # Utilisateurs (UserInterface)
 
 ## Concept clé
-L'objet `User` est la représentation de l'identité dans le système.
-Il doit implémenter `Symfony\Component\Security\Core\User\UserInterface`.
+L'interface `UserInterface` est le contrat minimal que tout objet "Utilisateur" doit respecter pour être manipulé par le système de sécurité Symfony.
+C'est généralement une Entité Doctrine (`App\Entity\User`), mais ce n'est pas obligatoire (ça peut être un DTO, un modèle LDAP).
 
-## Application dans Symfony 7.0
-Méthodes requises :
-1.  `getRoles(): array` : Retourne les rôles (doit toujours contenir au moins `ROLE_USER`).
-2.  `getPassword(): ?string` : Le hash du mot de passe (ou null si auth externe).
-3.  `eraseCredentials()` : Pour nettoyer les données sensibles (plainPassword) après le login.
-4.  `getUserIdentifier(): string` : L'identifiant unique (email, username). Remplace `getUsername()` (déprécié).
+## Méthodes de `UserInterface`
 
-### PasswordAuthenticatedUserInterface
-Si l'utilisateur a un mot de passe stocké, il doit aussi implémenter cette interface (marqueur pour le PasswordHasher).
+### 1. `getRoles(): array`
+Retourne les rôles de l'utilisateur.
+**Règle** : Doit garantir que chaque utilisateur a au moins un rôle (souvent `ROLE_USER`) et que les rôles sont uniques.
 
-```php
-class User implements UserInterface, PasswordAuthenticatedUserInterface
-{
-    // ...
-}
-```
+### 2. `getUserIdentifier(): string`
+Retourne l'identifiant unique (login) : email, username, ou API Key.
+*(Remplace `getUsername` depuis Symfony 5.3).*
 
-## Points de vigilance (Certification)
-*   **Sérialisation** : L'objet User est sérialisé en session. Il doit être léger. Ne pas stocker de grosses données ou des objets non sérialisables (ressources) dedans. Éviter les relations Doctrine Lazy-Loaded non initialisées qui pourraient poser problème au réveil.
-*   **Equatable** : Par défaut, Symfony compare les ID. Si vous voulez que l'utilisateur soit déconnecté si son mot de passe change en DB, implémentez `EquatableInterface` (ou laissez Symfony faire le check par défaut sur le password si le provider le permet).
+### 3. `eraseCredentials(): void`
+Appelé après l'authentification pour nettoyer les données sensibles temporaires stockées dans l'objet (ex: le mot de passe en clair `plainPassword` soumis par le formulaire).
+
+## Interface `PasswordAuthenticatedUserInterface`
+Si votre utilisateur se connecte avec un mot de passe (Form Login, HTTP Basic), il **DOIT** implémenter cette interface supplémentaire.
+*   `getPassword(): ?string` : Retourne le hash du mot de passe (ou null).
+
+## Interface `EquatableInterface` (Optionnel)
+Par défaut, lors du "Refresh User" (rechargement depuis la session), Symfony vérifie si l'utilisateur a changé en comparant certaines propriétés (password, salt, username).
+Si vous implémentez `EquatableInterface`, vous prenez le contrôle de cette comparaison via la méthode `isEqualTo(UserInterface $user)`.
+*Utile si vous voulez déconnecter l'utilisateur si son `email` change, mais pas si son `lastname` change.*
+
+## 🧠 Concepts Clés
+1.  **Objet léger** : L'objet User est sérialisé en session. Ne stockez pas de grosses données (Blob, Collections Doctrine chargées) dans l'objet User.
+2.  **Découplage** : Le composant Security ne connaît pas votre classe `User`, il ne connaît que l'interface.
+
+## ⚠️ Points de vigilance (Certification)
+*   **getUsername** : Cette méthode est dépréciée et supprimée de `UserInterface` dans les versions récentes au profit de `getUserIdentifier`.
+*   **Salt** : `getSalt()` n'est plus nécessaire avec les algorithmes modernes (Bcrypt/Sodium).
 
 ## Ressources
 *   [Symfony Docs - The User Class](https://symfony.com/doc/current/security/user.html)
-

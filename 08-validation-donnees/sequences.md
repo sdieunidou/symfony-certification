@@ -1,34 +1,67 @@
 # Séquence de Groupe (Group Sequence)
 
 ## Concept clé
-Définir un ordre de validation.
-Par défaut, toutes les contraintes sont validées en parallèle. Avec une séquence, on peut dire : "Valide le groupe A d'abord. S'il y a des erreurs, arrête-toi. Sinon, valide le groupe B".
-Utile pour éviter des validations lourdes (appel API/DB) si les validations simples (format) échouent déjà.
+Par défaut, toutes les contraintes d'un groupe sont validées.
+La **Group Sequence** permet de définir un **ordre** et un **arrêt conditionnel**.
+"Valide d'abord les champs basiques. Si OK, valide les règles complexes (DB, API)."
 
 ## Application dans Symfony 7.0
-Attribut `#[Assert\GroupSequence]` sur la classe.
+On utilise l'attribut `#[Assert\GroupSequence]` au niveau de la classe.
 
 ```php
+namespace App\Entity;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[Assert\GroupSequence(['User', 'Strict'])]
 class User
 {
     #[Assert\NotBlank]
-    private string $username;
+    public string $username;
 
     #[Assert\IsTrue(groups: ['Strict'])]
-    public function isPasswordSafe(): bool
+    public function isExternalApiValid(): bool
     {
-        // Validation lourde...
+        // Appel lourd à une API
     }
 }
 ```
 
-Ici, `User` représente le groupe `Default`.
-Le validateur va d'abord vérifier `NotBlank`. S'il échoue, il s'arrête. Si OK, il lance `Strict`.
+**Comportement :**
+1.  Symfony remplace le groupe `Default` par la séquence définie `['User', 'Strict']`.
+2.  Étape 1 : Il valide le groupe `User` (qui est l'alias de la classe, donc les contraintes sans groupe comme `NotBlank`).
+3.  **Stop ou Encore** :
+    *   Si `NotBlank` échoue -> On s'arrête. `Strict` n'est jamais exécuté. (Gain de perf + UX plus claire).
+    *   Si `NotBlank` passe -> On passe à l'étape 2 : valider le groupe `Strict`.
 
-## Points de vigilance (Certification)
-*   **Provider** : `GroupSequenceProvider` permet de définir la séquence dynamiquement (ex: selon l'état "Premium" de l'utilisateur).
+## GroupSequenceProvider (Dynamique)
+Si la séquence dépend de l'état de l'objet (ex: un User Premium a des validations en plus), implémentez `GroupSequenceProviderInterface`.
+
+```php
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
+
+#[Assert\GroupSequenceProvider]
+class User implements GroupSequenceProviderInterface
+{
+    public function getGroupSequence(): array|GroupSequence
+    {
+        $groups = ['User'];
+        
+        if ($this->isPremium()) {
+            $groups[] = 'Premium';
+        }
+        
+        return $groups;
+    }
+}
+```
+
+## 🧠 Concepts Clés
+1.  **Optimisation** : Évite de lancer des requêtes DB lourdes (Unicité, Validateur custom) si le format de base (Email, Length) est déjà invalide.
+2.  **Substitution** : La séquence remplace le groupe `Default`.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Nom du groupe classe** : Dans la séquence, il faut inclure le nom court de la classe (`User`) ou `Default`. Si vous l'oubliez, les contraintes de base ne seront jamais validées.
 
 ## Ressources
 *   [Symfony Docs - Group Sequence](https://symfony.com/doc/current/validation/sequence_provider.html)
-

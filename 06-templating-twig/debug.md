@@ -1,23 +1,49 @@
-# Débogage des Variables
+# Débogage Twig
 
 ## Concept clé
-Voir le contenu d'une variable pendant le développement.
+Développer des templates complexes nécessite de pouvoir inspecter les variables disponibles.
 
-## Application dans Symfony 7.0
-La fonction `dump()` (nécessite le `VarDumper` component et le `DebugBundle`).
+## Outils de Débogage
 
-```twig
-{# Affiche le contenu dans la Web Debug Toolbar (cible) #}
-{% dump user %}
+### 1. Fonction `dump()`
+Nécessite le composant `VarDumper`.
+*   `{{ dump(user) }}` : Affiche la structure de la variable directement dans le HTML (Interactif).
+*   `{% dump user %}` : Envoie la structure dans la **Web Debug Toolbar** (onglet Twig) sans polluer le visuel.
+*   `{{ dump() }}` (sans argument) : Affiche **toutes** les variables disponibles dans le contexte courant.
 
-{# Affiche le contenu in-line (dans le HTML) #}
-{{ dump(user) }}
+### 2. Commande `debug:twig`
+Liste tous les filtres, fonctions, tests et variables globales disponibles.
+```bash
+php bin/console debug:twig
+php bin/console debug:twig --filter=date
 ```
 
-## Points de vigilance (Certification)
-*   **Prod** : En environnement de production, `dump()` n'affiche rien (ou peut ne pas exister si le bundle de debug n'est pas installé).
-*   **Arguments** : Sans argument, `{% dump %}` affiche toutes les variables disponibles dans le contexte courant. Utile pour découvrir ce qu'on a sous la main.
+### 3. Web Debug Toolbar
+L'icône Twig affiche :
+*   Le temps de rendu.
+*   Le graphe des templates (qui hérite de qui, qui inclut quoi).
+*   La liste des variables passées au template.
+
+## Commentaire Twig (`{# ... #}`)
+Utilisez `{# ... #}` pour commenter du code. Contrairement aux commentaires HTML `<!-- ... -->`, le contenu n'est **pas** rendu dans le code source final (sécurité + propreté).
+
+```twig
+{# Ce code ne sera pas visible par l'utilisateur #}
+{# {{ dump(secret_key) }} #}
+```
+
+## 🧠 Concepts Clés
+1.  **Environnement** : `dump()` n'est disponible que si le `DebugBundle` est activé (généralement en `APP_ENV=dev`). En production, l'appel est ignoré ou supprimé à la compilation.
+2.  **Stopwatch** : Vous pouvez chronométrer des parties de template.
+    ```twig
+    {% stop "menu_rendering" %}
+        ...
+    {% endstop %}
+    ```
+
+## ⚠️ Points de vigilance (Certification)
+*   **Dump en Prod** : Si vous forcez l'affichage du dump en prod, vous exposez des données sensibles.
+*   **Extension** : `dump` est une fonction fournie par l'extension `DebugExtension`.
 
 ## Ressources
 *   [Symfony Docs - Debugging variables](https://symfony.com/doc/current/templates.html#debugging-variables)
-

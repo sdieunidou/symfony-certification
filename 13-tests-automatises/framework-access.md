@@ -1,26 +1,55 @@
-# Accès aux Objets du Framework (Tests)
+# Accès aux Objets du Framework (Services)
 
 ## Concept clé
-Dans un test (Integration ou Functional), on a souvent besoin d'accéder aux services (EntityManager, Router, Custom Service).
+Dans les tests d'intégration (`KernelTestCase`) ou fonctionnels (`WebTestCase`), vous avez besoin d'accéder aux services de l'application (EntityManager, Router, MonService).
 
-## Application dans Symfony 7.0
-Dans un `KernelTestCase` ou `WebTestCase` :
+## `static::getContainer()`
+C'est la méthode magique. Elle retourne une instance spéciale du conteneur de test (`TestContainer`).
 
 ```php
-self::bootKernel();
-$container = static::getContainer();
+public function testService(): void
+{
+    self::bootKernel();
+    $container = static::getContainer();
 
-// Accès à un service (même privé)
-$router = $container->get('router');
-$myService = $container->get(MyService::class);
+    // Accès à un service (même privé !)
+    $myService = $container->get(MyService::class);
+    $result = $myService->complexCalculation();
+
+    $this->assertEquals(42, $result);
+}
 ```
 
-## Points de vigilance (Certification)
-*   **Client vs Container** :
-    *   `static::getContainer()` : Donne le conteneur de test (accès aux services privés).
-    *   `$client->getContainer()` : Donne le conteneur utilisé par le client dans la requête courante (accès limité, services souvent recréés). Préférer `static::getContainer()` pour l'injection de données ou les vérifications post-requête.
-*   **Service non partagé** : Attention, le service obtenu via `$container->get()` est la même instance que celle utilisée par l'application *uniquement si le kernel n'a pas redémarré*.
+## Pourquoi un Conteneur de Test ?
+En production, les services sont privés (inaccessibles via `get()`).
+Le `TestContainer` rend **tous** les services publics pour faciliter les tests.
+
+## Mocker un Service
+Parfois, on veut remplacer un vrai service (ex: StripeClient) par un faux dans le conteneur pour les tests fonctionnels.
+
+```php
+public function testPayment(): void
+{
+    $client = static::createClient();
+    
+    // Créer un mock
+    $mockStripe = $this->createMock(StripeClient::class);
+    $mockStripe->method('charge')->willReturn(true);
+
+    // Remplacer le service dans le conteneur
+    // Note: Cela ne marche que si le service n'a pas encore été utilisé/instancié
+    self::getContainer()->set(StripeClient::class, $mockStripe);
+
+    $client->request('POST', '/pay');
+}
+```
+
+## 🧠 Concepts Clés
+1.  **Client Container** : `$client->getContainer()` existe aussi mais est déprécié ou limité. Préférez toujours `static::getContainer()`.
+2.  **Persistance** : Le conteneur est recréé à chaque `request()` du client. Si vous remplacez un service (`set`), il sera perdu à la prochaine requête.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Boot** : Il faut impérativement que le kernel soit booté (`self::bootKernel()` ou `createClient()`) avant de demander le conteneur.
 
 ## Ressources
-*   [Symfony Docs - Accessing the Container](https://symfony.com/doc/current/testing.html#accessing-the-container)
-
+*   [Symfony Docs - Container in Tests](https://symfony.com/doc/current/testing.html#accessing-the-container)

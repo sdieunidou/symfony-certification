@@ -1,11 +1,10 @@
-# Tests Fonctionnels (Application Tests)
+# Tests Fonctionnels (WebTestCase)
 
 ## Concept clé
-Vérifier que l'application fonctionne de bout en bout (HTTP Request -> HTTP Response).
-On simule un navigateur qui navigue sur le site.
+Les tests fonctionnels (ou "Application Tests") vérifient le comportement de l'application du point de vue de l'utilisateur (Requête HTTP -> Réponse HTTP).
+Ils n'ont pas besoin de mocker les services internes (sauf appels API externes).
 
-## Application dans Symfony 7.0
-On utilise `WebTestCase` (qui étend `KernelTestCase`).
+## Structure d'un Test
 
 ```php
 namespace App\Tests\Controller;
@@ -14,21 +13,40 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BlogControllerTest extends WebTestCase
 {
-    public function testIndex(): void
+    public function testBlogList(): void
     {
+        // 1. Créer le client
         $client = static::createClient();
+
+        // 2. Faire une requête
         $crawler = $client->request('GET', '/blog');
 
+        // 3. Asserter la réponse technique (200 OK)
         $this->assertResponseIsSuccessful();
-        $this->assertSelectorTextContains('h1', 'Blog Index');
+
+        // 4. Asserter le contenu (Business value)
+        $this->assertSelectorTextContains('h1', 'Derniers articles');
+        $this->assertCount(10, $crawler->filter('article.post'));
     }
 }
 ```
 
-## Points de vigilance (Certification)
-*   **Assertions** : Symfony ajoute de nombreuses assertions pratiques : `assertResponseStatusCodeSame(200)`, `assertResponseRedirects()`, `assertSelectorExists()`.
-*   **Base de données** : Le test fonctionnel utilise la vraie base de données (souvent une DB de test dédiée). Il faut penser à la remettre à zéro entre chaque test (`DAMADoctrineTestBundle` ou transactions rollback).
+## Assertions Spécifiques (`BrowserKitAssertionsTrait`)
+Symfony fournit des assertions dédiées au Web :
+*   `assertResponseIsSuccessful()`
+*   `assertResponseStatusCodeSame(404)`
+*   `assertResponseRedirects('/login')`
+*   `assertSelectorExists('.alert-success')`
+*   `assertSelectorNotExists('.error')`
+*   `assertPageTitleSame('Accueil')`
+*   `assertCheckboxChecked('remember_me')`
+
+## 🧠 Concepts Clés
+1.  **Environnement** : Les tests tournent dans l'environnement `test` (`APP_ENV=test`). Le cache est séparé du dev.
+2.  **Base de Données** : Les tests fonctionnels écrivent en base. Utilisez une base de test dédiée. Pour la nettoyer entre chaque test, utilisez `DAMADoctrineTestBundle` (qui wrappe chaque test dans une transaction rollbakée).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Boot** : `createClient()` boote le Kernel. Si vous avez besoin d'accéder au conteneur *avant* de faire une requête (ex: créer un user en base), faites `$container = static::getContainer();` (qui boote le kernel si nécessaire).
 
 ## Ressources
 *   [Symfony Docs - Functional Tests](https://symfony.com/doc/current/testing.html#functional-tests)
-

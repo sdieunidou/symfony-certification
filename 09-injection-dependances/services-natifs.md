@@ -1,28 +1,35 @@
-# Services Natifs
+# Services Natifs (Built-in Services)
 
 ## Concept clé
-Symfony fournit des centaines de services prêts à l'emploi.
-Connaître les principaux IDs (ou classes interfaces) est essentiel.
+Symfony expose de nombreux services utilitaires. Pour écrire du code découplé et testable, il faut typer les arguments avec les **Interfaces** plutôt que les classes concrètes ou les IDs de services.
 
-## Application dans Symfony 7.0
+## Liste des Indispensables
 
-### Services principaux (Interfaces à typer)
-*   `Psr\Log\LoggerInterface` (Logger)
-*   `Symfony\Component\Routing\RouterInterface` (Router)
-*   `Symfony\Component\EventDispatcher\EventDispatcherInterface` (Dispatcher)
-*   `Symfony\Component\HttpFoundation\RequestStack` (Accès requête/session)
-*   `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` (Sécurité)
-*   `Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface` (User token)
-*   `Doctrine\ORM\EntityManagerInterface` (Base de données)
-*   `Symfony\Contracts\Translation\TranslatorInterface` (Traduction)
-*   `Symfony\Component\Serializer\SerializerInterface` (Sérialisation)
-*   `Twig\Environment` (Templating)
+| Rôle | Interface (Type Hint) | ID Service (Legacy/Alias) |
+| :--- | :--- | :--- |
+| **Logger** | `Psr\Log\LoggerInterface` | `logger` |
+| **Router** | `Symfony\Component\Routing\RouterInterface` | `router` |
+| **Event Dispatcher**| `Symfony\Contracts\EventDispatcher\EventDispatcherInterface` | `event_dispatcher` |
+| **Request/Session** | `Symfony\Component\HttpFoundation\RequestStack` | `request_stack` |
+| **Security Auth** | `Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface` | `security.authorization_checker` |
+| **Current User** | `Symfony\Bundle\SecurityBundle\Security` (Helper) | `security.helper` |
+| **Password Hash** | `Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface` | `security.user_password_hasher` |
+| **Serializer** | `Symfony\Component\Serializer\SerializerInterface` | `serializer` |
+| **Validator** | `Symfony\Component\Validator\Validator\ValidatorInterface` | `validator` |
+| **Translator** | `Symfony\Contracts\Translation\TranslatorInterface` | `translator` |
+| **Mailer** | `Symfony\Component\Mailer\MailerInterface` | `mailer` |
+| **Twig** | `Twig\Environment` | `twig` |
+| **Filesystem** | `Symfony\Component\Filesystem\Filesystem` | `filesystem` |
+| **Kernel** | `Symfony\Component\HttpKernel\KernelInterface` | `kernel` |
+| **Parameters** | `Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface` | `parameter_bag` |
 
-## Points de vigilance (Certification)
-*   **Alias** : La plupart de ces interfaces sont des alias vers les services concrets.
-*   **kernel** : Le service `kernel` (ID `http_kernel`) est le cœur de l'app.
-*   **service_container** : Le service qui représente le conteneur lui-même. Il est injectable, mais c'est une mauvaise pratique (Service Locator pattern) sauf cas très spécifiques.
+## 🧠 Concepts Clés
+1.  **Interface Segregation** : En typant sur l'interface, vous permettez de remplacer l'implémentation (ex: remplacer le Router par un Mock dans les tests).
+2.  **RequestStack** : Ne jamais injecter `Request` ou `Session` directement (impossible car ce sont des objets de données, pas des services). Injectez `RequestStack` et faites `$stack->getCurrentRequest()`.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Security** : Depuis Symfony 6.2, le service `Security` (classe helper) regroupe les fonctionnalités de `User` et `isGranted` de manière plus simple que l'ancien `SecurityContext`.
+*   **EntityManager** : Pour Doctrine, on injecte `Doctrine\ORM\EntityManagerInterface`.
 
 ## Ressources
-*   [Symfony Docs - Built-in Services](https://symfony.com/doc/current/service_container/debug.html) (utiliser `debug:container`)
-
+*   [Symfony Docs - Service Container Debug](https://symfony.com/doc/current/service_container/debug.html) (Commande `php bin/console debug:autowiring` pour voir la liste complète disponible).

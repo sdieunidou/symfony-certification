@@ -1,42 +1,38 @@
-# Doctrine & Messenger (Concurrency Pattern)
+# Doctrine & Messenger (Architecture Scalable)
 
 ## Concept Clé
-Traiter les écritures en base de données de manière asynchrone permet de :
-1.  Lisser la charge (Queue).
-2.  Gérer la concurrence (Serialisation des traitements).
-3.  Gérer les erreurs (Retries).
+Utiliser un **Command Bus** (Symfony Messenger) permet de :
+1.  Lisser les pics de charge (Queue).
+2.  Isoler les échecs (Retries).
+3.  Découpler le métier de l'infrastructure.
 
-## Middleware & Transaction
-Messenger exécute les messages à travers des Middlewares.
-Le `DoctrineTransactionMiddleware` (activé par défaut) enveloppe le traitement du Handler dans une transaction database.
-Si le Handler lance une exception, la transaction est rollbackée.
+## 1. Transactional Middleware
+Symfony Messenger intègre `DoctrineTransactionMiddleware`.
+Chaque message est traité dans une transaction unique.
+*   Succès Handler → `COMMIT`
+*   Exception Handler → `ROLLBACK`
 
-## Idempotence
-Si un message est rejoué (Retry) après un crash, il ne doit pas corrompre les données (ex: ne pas débiter le client 2 fois).
-Le Handler doit être **Idempotent**.
+Cela garantit l'atomicité : le message n'est dépilé que si le travail est fait.
 
-### Stratégies d'Idempotence
-1.  **Vérifier l'état** : "Si la commande est déjà payée, ne rien faire".
-2.  **Dédoublonnage** : Utiliser l'ID du message ou une clé métier unique stockée en base (`ProcessedMessage`).
+```yaml
+framework:
+    messenger:
+        buses:
+            command.bus:
+                middleware:
+                    - doctrine_transaction
+```
 
-## Cas concret : Incrémentation concurrente
-1000 utilisateurs cliquent sur "J'aime" en même temps.
-*   **Approche synchrone (Controller)** : 1000 transactions concurrentes -> Deadlocks ou Lock Wait Timeout.
-*   **Approche Messenger** :
-    1.  Controller : Envoie 1000 messages `VoteForPost` dans une queue (Redis/RabbitMQ). C'est instantané.
-    2.  Worker : Consomme les messages un par un (ou par petits lots).
-    3.  Handler :
-        ```php
-        $em->beginTransaction(); // Via Middleware
-        $post = $repo->find($msg->getPostId(), LockMode::PESSIMISTIC_WRITE); // Lock court
-        $post->incrementLikes();
-        // Commit
-        ```
-    
-Comme le Worker traite les messages séquentiellement (ou avec une concurrence maîtrisée par le nombre de workers), on réduit drastiquement les conflits DB.
+## 2. Stratégies de Retry
+Il existe 3 niveaux pour gérer les erreurs transitoires (Deadlocks, Timeouts).
 
-## Gestion des Retries
-Si une `OptimisticLockException` ou `DeadlockException` survient, Messenger peut automatiquement rejouer le message X fois après Y secondes.
+### Niveau 1 : Local (Dans le code)
+Utiliser une boucle `try/catch` dans le service.
+*   ✅ Précis.
+*   ❌ Verbeux, duplication de code.
+
+### Niveau 2 : Applicatif (Messenger - Recommandé)
+Laisser Messenger gérer le retry. Si une `DeadlockException` survient, Messenger rollback, attend, et relance le message.
 
 ```yaml
 framework:
@@ -44,7 +40,32 @@ framework:
         transports:
             async:
                 retry_strategy:
-                    max_retries: 3
-                    delay: 1000
+                    max_retries: 5
+                    delay: 500           # 500ms
+                    multiplier: 2         # 1s, 2s, 4s...
+                    max_delay: 10000
 ```
+*   ✅ Centralisé, résilient, backoff exponentiel natif.
+*   ✅ Chaque tentative est une nouvelle transaction propre.
 
+### Niveau 3 : Infrastructure (DB/Proxy)
+Certains drivers ou proxies (ProxySQL) peuvent rejouer les transactions.
+*   ✅ Transparent.
+*   ❌ Peu de contrôle métier.
+
+## 3. Idempotence
+Avec les retries, un handler peut être exécuté plusieurs fois pour le même message (ex: le commit passe, mais l'ack RabbitMQ échoue).
+Votre code doit être **Idempotent** : "L'exécuter 2 fois a le même effet qu'une fois".
+
+*   *Exemple* : "Débiter 10€". Si exécuté 2 fois → -20€. ❌ Pas idempotent.
+*   *Exemple* : "Passer le statut de la commande #123 à PAYÉ". Si exécuté 2 fois → Statut PAYÉ. ✅ Idempotent.
+
+## 4. Architecture CQRS & Workers
+Grâce à Messenger, vous pouvez séparer :
+*   **Commandes** (Écriture, via Handler synchrone ou asynchrone).
+*   **Requêtes** (Lecture, via Repository direct).
+
+Pour la scalabilité : lancez simplement plus de processus Workers (`php bin/console messenger:consume async`) pour dépiler plus vite. Les verrous (SKIP LOCKED) en base permettront aux workers de ne pas se marcher dessus.
+
+## Ressources
+*   [Symfony Messenger](https://symfony.com/doc/current/messenger.html)

@@ -1,26 +1,47 @@
-# Débogage du Code
+# Débogage et VarDumper
 
 ## Concept clé
-Outils pour introspecter le code en cours d'exécution.
+Symfony fournit des outils avancés pour inspecter l'état de l'application sans perturber son exécution ou l'affichage.
 
-## Application dans Symfony 7.0
+## Composant VarDumper
+Remplace `var_dump()` par la fonction `dump()`.
+*   **Formatage** : Affichage couleur, repliable (HTML), gestion des références circulaires.
+*   **Cible** :
+    *   Si Profiler actif : Le dump apparaît dans la **Debug Toolbar** (icône cible).
+    *   Si CLI : Sortie standard formattée.
+    *   Si Server Dump : Redirigé vers un serveur dédié.
 
-### VarDumper
-La fonction `dump()` remplace `var_dump()`.
-*   En Web : Affiche dans la Toolbar ou en HTML stylisé.
-*   En CLI : Affiche en couleur formatée.
-*   Server : `server:dump` permet de rediriger les dumps vers une fenêtre terminal dédiée pour ne pas casser la sortie API/AJAX.
+### Server Dump (`server:dump`)
+Très utile pour débugger des APIs ou des workers en arrière-plan où on ne voit pas la sortie HTML.
+1.  Lancer le serveur : `php bin/console server:dump`
+2.  Appeler `dump($var)` dans le code.
+3.  Le résultat s'affiche dans le terminal du serveur, pas dans la réponse HTTP.
 
-### Web Debug Toolbar (WDT)
-Barre en bas de page donnant accès au Profiler.
+## Web Debug Toolbar (WDT)
+Barre injectée en bas des pages HTML en mode `dev`.
+Donne un aperçu immédiat :
+*   Code HTTP / Temps de réponse / Mémoire.
+*   Nombre de requêtes DB / Cache hits.
+*   User connecté / Firewall.
+*   Logs / Exceptions.
 
-### Profiler
-Interface complète pour analyser la requête (Timeline, DB queries, Cache, Logs, Events).
+## Profiler
+L'interface complète (accessible via la WDT ou `/_profiler`).
+Permet de rejouer des requêtes passées, voir le graphe des services, l'arborescence Twig, etc.
 
-## Points de vigilance (Certification)
-*   **Performance** : Le Profiler consomme beaucoup de ressources. Il ne doit **jamais** être activé en Production.
-*   **Dump** : Laisser un `dump()` dans le code peut casser la prod ou fuiter des infos. Utiliser le linter ou CI pour interdire `dump()` en prod.
+## 🧠 Concepts Clés
+1.  **DebugBundle** : Intègre ces outils dans le framework.
+2.  **Stopwatch** : Le composant Stopwatch permet de mesurer le temps d'exécution de segments de code et de les afficher dans la Timeline du profiler.
+    ```php
+    $stopwatch->start('export');
+    // ...
+    $stopwatch->stop('export');
+    ```
+
+## ⚠️ Points de vigilance (Certification)
+*   **Prod** : `dump()` ne doit jamais être utilisé en production. Le bundle `DebugBundle` est normalement dans `require-dev` de composer.json. Si vous laissez un `dump()` et que le bundle n'est pas là, c'est une erreur fatale "Call to undefined function dump()".
+*   **Performance** : Le Profiler capture énormément de données. Il ralentit l'application.
 
 ## Ressources
-*   [Symfony Docs - Debugging](https://symfony.com/doc/current/components/var_dumper.html)
-
+*   [Symfony Docs - VarDumper](https://symfony.com/doc/current/components/var_dumper.html)
+*   [Symfony Docs - Profiler](https://symfony.com/doc/current/profiler.html)

@@ -1,26 +1,47 @@
 # Correspondance de Nom de Domaine (Host Matching)
 
 ## Concept clé
-Restreindre une route à un sous-domaine ou un domaine spécifique. Utile pour les applications multi-tenants ou ayant une API sur `api.example.com` et le site sur `www.example.com`.
+Le routage Symfony peut matcher non seulement sur le chemin (`/path`) mais aussi sur le **domaine** (`api.example.com`).
+C'est essentiel pour les applications multi-domaines ou multi-tenants.
 
 ## Application dans Symfony 7.0
-Utilisation de l'option `host`.
 
+### 1. Restreindre à un sous-domaine
 ```php
-// Matche uniquement sur mobile.example.com
-#[Route('/', host: 'mobile.example.com')]
-public function mobileHome(): Response { ... }
-
-// Avec placeholder
-#[Route('/', host: '{subdomain}.example.com')]
-public function tenantHome(string $subdomain): Response { ... }
+// Matche uniquement sur mobile.monsite.com/
+#[Route('/', host: 'mobile.monsite.com')]
+public function mobileIndex(): Response { ... }
 ```
 
-## Points de vigilance (Certification)
-*   **Paramètres** : Les placeholders du host (`{subdomain}`) sont passés comme arguments au contrôleur, tout comme les paramètres d'URL.
-*   **Environnement** : En dev local (`localhost`), cela peut être difficile à tester. Il faut souvent configurer le fichier `/etc/hosts`.
-*   **HTTP vs HTTPS** : Le host matching ne vérifie pas le protocole (utiliser `schemes: ['https']` pour ça).
+### 2. Sous-domaine dynamique (Placeholders)
+Vous pouvez capturer une partie du domaine comme paramètre.
+
+```php
+// Matche {user}.monsite.com/
+#[Route('/', host: '{username}.monsite.com')]
+public function userHome(string $username): Response
+{
+    // $username est disponible comme un paramètre d'URL classique
+}
+```
+
+### 3. Restriction de Protocole (Schemes)
+Forcer HTTPS ou HTTP.
+
+```php
+#[Route('/login', schemes: ['https'])]
+```
+*Note : Aujourd'hui, on force souvent HTTPS globalement au niveau du serveur web ou du Load Balancer, donc cette option est moins utilisée par route.*
+
+## 🧠 Concepts Clés
+1.  **Priorité** : Le Host Matching s'ajoute au Path Matching. Pour que la route matche, **TOUT** doit correspondre (Host + Path + Method).
+2.  **Tests Locaux** : Pour tester ça en local, vous devez modifier votre fichier `/etc/hosts` (Linux/Mac) ou `hosts` (Windows) pour mapper `mobile.localhost` vers `127.0.0.1`.
+3.  **Requirements** : On peut valider les placeholders du host avec des regex, comme pour le path.
+    *   `requirements: ['username' => '[a-z]+']`
+
+## ⚠️ Points de vigilance (Certification)
+*   **Génération d'URL** : Si vous générez une URL vers une route qui a un `host` différent de la requête courante, Symfony générera automatiquement une URL **absolue** (http://...). Si le host est le même, il génère une URL relative (/...).
+*   **Context** : Le routeur a besoin de connaître le host de la requête actuelle (`RequestContext`) pour faire ce matching.
 
 ## Ressources
 *   [Symfony Docs - Sub-Domain Routing](https://symfony.com/doc/current/routing.html#matching-a-host)
-

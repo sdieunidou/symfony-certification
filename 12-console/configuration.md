@@ -1,40 +1,61 @@
 # Configuration des Commandes
 
 ## Concept clé
-Comment enregistrer une commande dans l'application ?
-Comment la configurer (Nom, Description, Aide) ?
+Pour qu'une commande soit utilisable via `bin/console`, elle doit être enregistrée dans le conteneur de services et configurée (Nom, Description, Arguments).
 
-## Application dans Symfony 7.0
+## Enregistrement
+Par défaut, grâce à l'**Autoconfiguration** (`autoconfigure: true` dans `services.yaml`), toute classe étendant `Symfony\Component\Console\Command\Command` est automatiquement :
+1.  Enregistrée comme service.
+2.  Taguée avec `console.command`.
 
-### Enregistrement
-Grâce à l'autoconfiguration (activée par défaut), toute classe étendant `Command` dans `src/Command` est automatiquement enregistrée comme service et taguée `console.command`.
-Si l'autoconfiguration est désactivée, il faut taguer le service manuellement :
-```yaml
-services:
-    App\Command\MyCommand:
-        tags: ['console.command']
-```
+## Configuration (Méta-données)
 
-### Configuration (Méta-données)
-Depuis PHP 8, l'attribut `#[AsCommand]` est la méthode recommandée.
+### 1. Attribut PHP `#[AsCommand]` (Recommandé)
+Depuis Symfony 5.3+, on utilise un attribut PHP pour définir le nom et la description statiquement. Cela permet le **Lazy Loading** (la commande n'est pas instanciée tant qu'on ne l'appelle pas).
+
 ```php
-#[AsCommand(name: 'app:my-command', description: '...')]
+namespace App\Command;
+
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+
+#[AsCommand(
+    name: 'app:user:create',
+    description: 'Crée un nouvel utilisateur.',
+    aliases: ['app:add-user'],
+    hidden: false
+)]
+class CreateUserCommand extends Command
+{
+    // ...
+}
 ```
 
-Ancienne méthode (toujours valide, via `configure()`):
+### 2. Méthode `configure()` (Legacy / Dynamique)
+Toujours utilisée pour définir les Arguments et Options (qui sont dynamiques).
+Peut aussi être utilisée pour le nom/description, mais casse le Lazy Loading si on fait des calculs lourds.
+
 ```php
 protected function configure(): void
 {
     $this
-        ->setName('app:my-command')
-        ->setDescription('...')
-        ->setHelp('This command allows you to...');
+        // Si pas d'attribut AsCommand
+        // ->setName('app:user:create')
+        // ->setDescription('...')
+        
+        ->setHelp('This command allows you to create a user...')
+        ->addArgument('username', InputArgument::REQUIRED, 'The username of the user.')
+    ;
 }
 ```
 
-## Points de vigilance (Certification)
-*   **Lazy Loading** : Symfony charge les commandes de manière "paresseuse". Le constructeur de la commande n'est instancié que si la commande est réellement appelée (sauf si elle ne suit pas les conventions de nommage statiques). `#[AsCommand]` permet au framework de connaître le nom sans instancier la classe.
+## 🧠 Concepts Clés
+1.  **Lazy Loading** : Si une commande est lourde à construire (beaucoup de dépendances), `#[AsCommand]` est vital. `bin/console list` n'instanciera pas votre commande, il lira juste l'attribut.
+2.  **Nommage** : Convention `namespace:action` (ex: `doctrine:migrations:migrate`).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Commandes cachées** : `hidden: true` (ou préfixer le nom par `_`) cache la commande de la liste `bin/console list`, mais elle reste exécutable.
+*   **Service** : Une commande est un service. Vous pouvez utiliser l'injection de dépendances dans le constructeur (`__construct`). N'oubliez pas d'appeler `parent::__construct()`.
 
 ## Ressources
-*   [Symfony Docs - Console Configuration](https://symfony.com/doc/current/console/commands_as_services.html)
-
+*   [Symfony Docs - Console Commands](https://symfony.com/doc/current/console.html)

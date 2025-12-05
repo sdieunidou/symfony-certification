@@ -1,36 +1,63 @@
-# Paramètres d'URL (Requirements)
+# Paramètres d'URL et Prérequis (Requirements)
 
 ## Concept clé
-Les paramètres d'URL sont dynamiques (ex: `/blog/{slug}`). Par défaut, ils acceptent n'importe quoi (sauf `/`).
-On doit souvent les restreindre (ex: `id` doit être un entier, `locale` doit être `en` ou `fr`).
+Les paramètres de route (`{slug}`, `{id}`) capturent des segments d'URL variables.
+Pour éviter les conflits et valider les données, on définit des **Requirements** (Prérequis) sous forme d'Expressions Régulières (Regex).
 
-## Application dans Symfony 7.0
-On utilise des Expressions Régulières (Regex).
+## Syntaxe (Attributs)
 
-### Attributs
+### 1. Inline (Le plus concis - Recommandé)
+On définit la regex directement dans le placeholder `<...>`.
+
 ```php
-#[Route('/blog/{page}', name: 'blog_list', requirements: ['page' => '\d+'])]
-public function list(int $page): Response { ... }
+// id doit être composé de chiffres uniquement
+#[Route('/blog/{id<\d+>}', name: 'blog_show')]
+
+// slug doit être une chaine alphanumérique + tirets
+#[Route('/article/{slug<[a-z0-9-]+>}')]
 ```
 
-### Inline (Raccourci pratique)
+### 2. Option `requirements`
+Plus lisible pour les regex complexes ou réutilisées.
+
 ```php
-#[Route('/blog/{page<\d+>}', name: 'blog_list')]
+#[Route(
+    '/blog/{year}/{slug}', 
+    requirements: [
+        'year' => '\d{4}',
+        'slug' => '[a-z0-9-]+'
+    ]
+)]
 ```
 
-### YAML
-```yaml
-blog_show:
-    path: /blog/{slug}
-    controller: ...
-    requirements:
-        slug: '[a-z0-9-]+'
-```
+## Regex Courantes
+*   `\d+` : Entier (1, 99, 1000).
+*   `\w+` : Mot (lettres, chiffres, underscore).
+*   `[a-z0-9-]+` : Slug URL classique.
+*   `.+` : Tout (y compris les slashs `/`, si configuré, sinon s'arrête au prochain slash).
 
-## Points de vigilance (Certification)
-*   **Greedy** : Si deux routes ont le même pattern mais des requirements différents, l'ordre compte.
-*   **Validation** : Si le paramètre ne matche pas la regex, la route ne matche pas (Symfony passe à la suivante). Si aucune route ne matche, c'est une 404.
+## Catch-All (Wildcard)
+Pour capturer "tout le reste de l'URL", y compris les slashs.
+Exemple : un gestionnaire de fichiers `/files/path/to/my/image.jpg`.
+
+```php
+// 'path' capturera "path/to/my/image.jpg"
+#[Route('/files/{path}', requirements: ['path' => '.+'])]
+```
+*Sans le `.`, le paramètre s'arrêterait au premier `/`.*
+
+## 🧠 Concepts Clés
+1.  **Matching Strict** : Si l'URL ne correspond pas à la regex, la route est ignorée. Symfony essaie la suivante.
+2.  **Validation Précoce** : C'est une première couche de validation. Si `{id}` force `\d+`, vous êtes sûr de recevoir un string numérique dans le contrôleur (ou rien du tout, 404).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Ancrage** : Symfony ancre automatiquement la regex (ajoute `^` et `$`). Inutile de les mettre (`\d+` suffit, pas besoin de `^\d+$`).
+*   **Priorité** :
+    *   Route A : `/blog/{id<\d+>}`
+    *   Route B : `/blog/{slug}`
+    *   URL `/blog/123` matche A.
+    *   URL `/blog/abc` ne matche pas A (regex fail), donc matche B.
+    *   C'est un excellent moyen de gérer des URLs polymorphes.
 
 ## Ressources
-*   [Symfony Docs - Route Requirements](https://symfony.com/doc/current/routing.html#parameter-validation)
-
+*   [Symfony Docs - Requirements](https://symfony.com/doc/current/routing.html#parameter-validation)

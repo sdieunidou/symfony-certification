@@ -1,35 +1,59 @@
 # Attributs de Routage Spéciaux
 
 ## Concept clé
-Le routeur Symfony utilise des paramètres "magiques" commençant par un underscore `_` pour contrôler le comportement du framework.
+Symfony utilise des attributs de requête commençant par `_` (underscore) pour piloter le framework.
+Ces attributs sont automatiquement remplis par le Routeur lorsqu'une route matche.
 
-## Application dans Symfony 7.0
-*   `_controller` : Définit quel contrôleur exécuter (`Class::method` ou service ID). C'est ce que le routeur remplit quand il matche une URL.
-*   `_format` : Définit le format de la requête (`html`, `json`, `xml`). Utilisé pour la Content Negotiation.
-*   `_locale` : Définit la langue de la requête. Utilisé par le Translator.
-*   `_fragment` : Utilisé pour les rendus de fragments ESI.
-*   `_route` : Contient le nom de la route matchée.
+## Liste des Attributs Magiques
 
-## Exemple de code
+### 1. `_controller`
+Détermine le code à exécuter.
+*   Format : `App\Controller\BlogController::index` (ou Service ID).
+*   C'est l'attribut le plus important. Sans lui, pas de page.
+
+### 2. `_route`
+Contient le **nom** de la route matchée (ex: `blog_show`).
+*   Utile pour le débogage, les menus (active class), ou les logs.
+
+### 3. `_route_params`
+Tableau contenant tous les paramètres extraits de l'URL (ex: `['id' => '123']`).
+
+### 4. `_format`
+Force le format de la requête pour la Content Negotiation.
+*   Si défini dans la route (`defaults: { _format: 'json' }`), `$request->getRequestFormat()` renverra 'json'.
+*   Configure automatiquement le `Content-Type` de la réponse.
+
+### 5. `_locale`
+Force la locale de la requête.
+*   Déclenche le `LocaleListener` qui fait `$request->setLocale(...)`.
+*   Impacte les traductions et le formatage des dates/nombres.
+
+### 6. `_fragment`
+Utilisé pour les sous-requêtes ESI/Hinclude. Contient des informations de sécurité (signature) pour s'assurer que le fragment est appelé par le serveur et non par un utilisateur malveillant.
+
+### 7. `_stateless` (Symfony 6+)
+Indique que cette route ne doit pas utiliser de Session.
+*   Si la route tente de démarrer la session, une exception est levée (en debug).
+*   Utile pour sécuriser les APIs REST.
+
+## Exemple d'Usage (Contrôleur)
 
 ```php
-#[Route('/api/posts', defaults: ['_format' => 'json'])]
-public function api(): Response
+// On peut injecter ces attributs comme arguments de contrôleur
+public function index(string $_route, string $_format): Response
 {
-    // $request->getRequestFormat() retournera 'json' par défaut
-}
-
-#[Route('/{_locale}/about', requirements: ['_locale' => 'en|fr'])]
-public function about(): Response
-{
-    // La locale est automatiquement set sur la Request
+    // $_route = 'blog_index'
+    // $_format = 'html'
 }
 ```
 
-## Points de vigilance (Certification)
-*   Ces attributs sont stockés dans `$request->attributes`.
-*   Vous pouvez définir vos propres attributs commençant par `_`, mais évitez de surcharger ceux du système sauf si vous savez ce que vous faites.
+## 🧠 Concepts Clés
+1.  **Réservés** : Ne créez pas vos propres paramètres commençant par `_` (ex: `_my_param`) dans les URLs (`/blog/{_my_param}`). C'est risqué.
+2.  **Request Attributes** : Tous ces paramètres finissent dans `$request->attributes`.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Priorité** : Si l'URL contient un paramètre `{_locale}` (ex: `/fr/...`), il écrase toute valeur par défaut.
+*   **Controller Arguments** : Symfony mappe les attributs de requête aux arguments de la méthode contrôleur par nom. Donc `$request->attributes->get('slug')` est injecté dans `$slug`.
 
 ## Ressources
-*   [Symfony Docs - Special Routing Attributes](https://symfony.com/doc/current/routing.html#special-parameters)
-
+*   [Symfony Docs - Special Attributes](https://symfony.com/doc/current/routing.html#special-parameters)

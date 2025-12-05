@@ -1,35 +1,49 @@
-# Configuration et DotEnv
+# Configuration et Environnements
 
 ## Concept clé
-Symfony distingue la **configuration** (comportement de l'application, `config/*.yaml`) de l'**environnement** (infrastructure, `.env`).
+Symfony sépare strictement :
+*   La **Configuration** : Le comportement de l'application (Quels services ? Quelles routes ?). Stockée dans `config/`.
+*   L'**Environnement** : Les spécificités de l'infrastructure (IP de la DB, Clé API). Stocké dans des variables d'environnement.
 
-## Application dans Symfony 7.0
+## Hiérarchie `.env` (Composant Dotenv)
+Symfony charge les variables d'environnement dans cet ordre (le dernier écrase le précédent) :
+1.  Variables réelles du système (export bash, php-fpm). **Gagnant absolu**.
+2.  `.env` (Committé, valeurs par défaut).
+3.  `.env.local` (Non committé, surcharges machine locale).
+4.  `.env.{env}` (Committé, ex: `.env.test`).
+5.  `.env.{env}.local` (Non committé, ex: `.env.test.local`).
 
-### DotEnv
-Le composant `Dotenv` charge les fichiers `.env` dans `$_SERVER` et `$_ENV`.
-*   `.env` : Valeurs par défaut (committé).
-*   `.env.local` : Surcharges locales (non committé, machine développeur).
-*   `.env.test` : Environnement de test.
+## Utilisation
+*   **YAML** : `%env(DATABASE_URL)%`.
+*   **PHP** : `$_ENV['DATABASE_URL']` ou via injection `#[Autowire(env: '...')]`.
 
-```php
-// public/index.php
-(new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
-```
+## Processeurs de Variables d'Env
+On peut transformer la valeur à la volée dans le YAML.
+*   `%env(int:MAX_ITEMS)%` : Cast en entier.
+*   `%env(bool:DEBUG)%` : Cast en booléen.
+*   `%env(json:PAGES)%` : Décode du JSON.
+*   `%env(file:SECRET_FILE)%` : Lit le contenu du fichier dont le chemin est dans la var.
+*   `%env(base64:KEY)%` : Décode du base64.
+*   `%env(trim:VAR)%` : Supprime les espaces.
 
-### ExpressionLanguage
-Permet d'utiliser des expressions dynamiques dans la configuration (Security, Routing, Validation, Services).
+## Expression Language (Configuration dynamique)
+Dans `services.yaml`, on peut utiliser des expressions logiques si nécessaire.
 
 ```yaml
 services:
     App\Mailer:
-        arguments: ["@=service('App\\\\Config').getSmtpServer()"]
+        # Si le paramètre 'use_smtp' est vrai, on injecte SmtpMailer, sinon Sendmail
+        arguments: ["@=parameter('use_smtp') ? service('App\\SmtpMailer') : service('App\\Sendmail')"]
 ```
 
-## Points de vigilance (Certification)
-*   **Hiérarchie .env** : `.env.local` écrase `.env`. En mode test, `.env.test.local` écrase `.env.test`.
-*   **Réel vs Var** : En prod, on utilise de "vraies" variables d'environnement serveur (SetEnv Apache, export bash), le fichier `.env` n'est qu'un fallback. `composer dump-env prod` compile le .env en fichier PHP optimisé pour la prod.
+## 🧠 Concepts Clés
+1.  **Compilation** : La configuration (`config/`) est compilée en PHP et mise en cache. Elle est statique en prod.
+2.  **Runtime** : Les variables d'environnement sont lues à chaque requête (Runtime). C'est ce qui permet de changer un mot de passe DB sans redéployer/vider le cache (juste redémarrer le worker/fpm).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Dump Env** : En production, parser le fichier `.env` à chaque requête est lent. La commande `composer dump-env prod` compile le `.env` en un fichier PHP optimisé `.env.local.php`.
+*   **Secrets** : Ne jamais committer de secrets dans `.env`. Utiliser le **Secrets Vault** (`bin/console secrets:set`) pour chiffrer les valeurs et les committer en toute sécurité.
 
 ## Ressources
 *   [Symfony Docs - Configuration](https://symfony.com/doc/current/configuration.html)
-*   [Symfony Docs - ExpressionLanguage](https://symfony.com/doc/current/components/expression_language.html)
-
+*   [Symfony Docs - Env Var Processors](https://symfony.com/doc/current/configuration/env_var_processors.html)

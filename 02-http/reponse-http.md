@@ -1,52 +1,77 @@
-# Réponse HTTP
+# Réponse HTTP (Response)
 
 ## Concept clé
-Une réponse HTTP est le message renvoyé par le serveur :
-1.  **Ligne de statut** : Version HTTP, Code (200), Message (OK).
-2.  **En-têtes** : Content-Type, Content-Length, Set-Cookie, Cache-Control...
-3.  **Corps** : Le contenu HTML, JSON, image, etc.
+L'objet Réponse est le but ultime de toute application web : envoyer des données au client.
+Structure :
+1.  **Status Line** : `HTTP/1.1 200 OK`
+2.  **Headers** : Métadonnées (`Content-Type: application/json`, `Set-Cookie: ...`)
+3.  **Body** : Contenu payload (HTML, JSON, Binaire).
 
 ## Application dans Symfony 7.0
-L'objet `Response` (et ses sous-classes `JsonResponse`, `BinaryFileResponse`, `StreamedResponse`) encapsule ces éléments.
-Le contrôleur **doit** retourner un objet `Response`.
+Symfony oblige le contrôleur à retourner un objet qui hérite de `Symfony\Component\HttpFoundation\Response`.
 
-## Exemple de code
+### Les Types de Réponses
+
+1.  **`Response`** : Standard. Contenu string chargé en mémoire.
+2.  **`JsonResponse`** : Spécifique API.
+    *   Encode auto (`json_encode`).
+    *   Header `Content-Type: application/json`.
+3.  **`BinaryFileResponse`** : Pour servir des fichiers statiques (images, PDF) efficacement.
+    *   Gère les `Range` (reprise de téléchargement).
+    *   Gère `X-Sendfile` (délègue l'envoi réel à Nginx/Apache pour perf maximale).
+4.  **`StreamedResponse`** : Pour les contenus générés à la volée (gros CSV, Logs temps réel).
+    *   Maintient la connexion ouverte et envoie par paquets (chunks).
+    *   Évite la saturation mémoire (OOM) sur les gros exports.
+5.  **`RedirectResponse`** : Raccourci pour une 301/302 + Header Location.
+
+## Exemple de Code Expert
 
 ```php
-<?php
-
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Cookie;
-
-public function api(): Response
+public function export(): StreamedResponse
 {
-    // Réponse JSON
-    $response = new JsonResponse(['status' => 'ok']);
-    
-    // Ajouter un header
-    $response->headers->set('X-App-Version', '1.0');
-    
-    // Ajouter un cookie
-    $response->headers->setCookie(new Cookie('theme', 'dark'));
-    
-    // Définir le cache (Cache-Control)
-    $response->setPublic();
-    $response->setMaxAge(3600);
-    
-    // Modifier le code de statut
-    $response->setStatusCode(Response::HTTP_ACCEPTED);
+    $response = new StreamedResponse(function () {
+        $handle = fopen('php://output', 'w+');
+        // Génération ligne par ligne : Faible empreinte mémoire
+        for ($i = 0; $i < 100000; $i++) {
+            fputcsv($handle, ["Row $i", rand()]);
+            flush(); // Force l'envoi au client
+        }
+        fclose($handle);
+    });
+
+    $response->headers->set('Content-Type', 'text/csv');
+    $response->headers->set('Content-Disposition', 'attachment; filename="export.csv"');
 
     return $response;
 }
 ```
 
-## Points de vigilance (Certification)
-*   **prepare()** : La méthode `$response->prepare($request)` est appelée par le framework juste avant l'envoi. Elle corrige certains headers (Content-Type, Content-Length) selon la requête et les normes HTTP.
-*   **send()** : Envoie les headers puis le contenu. Dans une app Symfony full-stack, c'est le `Kernel` qui appelle `send()`, pas vous.
-*   **Streaming** : Pour les gros fichiers ou les réponses longues, utiliser `StreamedResponse` pour ne pas tout charger en mémoire.
-*   **JSON** : `JsonResponse` encode automatiquement les données et définit le header `Content-Type: application/json`.
+## Sécurité via les Headers
+La réponse est le lieu pour renforcer la sécurité côté client.
+*   **CSP (Content-Security-Policy)** : Restreint les sources de scripts/styles.
+*   **X-Content-Type-Options: nosniff** : Empêche le navigateur de deviner le type MIME.
+*   **X-Frame-Options: DENY** : Empêche l'inclusion en iFrame (Clickjacking).
+
+Dans Symfony, on configure souvent ces headers globalement via un EventListener (`response` event) ou `NelmioSecurityBundle`.
+
+## HTTP/103 Early Hints
+Nouveauté supportée par Symfony : Permet d'envoyer des headers "Link" (preload) au client **pendant** que le serveur calcule encore la réponse finale (traitement DB). Le navigateur commence à télécharger le CSS/JS avant même d'avoir reçu le HTML.
+
+```php
+$response->sendHeaders(103); // Envoie immédiat des headers
+// ... calcul lourd ...
+return $response;
+```
+
+## 🧠 Concepts Clés
+1.  **Objet Mutable** : L'objet `Response` est mutable. Les listeners du Kernel peuvent le modifier avant l'envoi (ajouter des cookies, compresser le body, injecter la Toolbar).
+2.  **`prepare()`** : Méthode cruciale appelée automatiquement avant l'envoi. Elle fixe le Charset par défaut, calcule le Content-Length si absent, et nettoie les headers invalides selon la norme HTTP.
+3.  **`send()`** : Envoie physiquement les headers HTTP (via `header()`) et le contenu (via `echo`). Une fois fait, on ne peut plus rien modifier.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Mémoire** : Ne jamais mettre le contenu d'un fichier de 1Go dans une `Response` standard (`setContent(file_get_contents(...))`). Crash assuré. Utilisez `BinaryFileResponse` ou `StreamedResponse`.
+*   **Callback** : `StreamedResponse` utilise un callback. Attention : ce callback est exécuté au moment du `send()`, donc après que le Kernel a fini son travail. Les services injectés doivent être encore valides (attention aux connexions DB fermées si gestion manuelle).
 
 ## Ressources
-*   [Symfony Docs - The Response Object](https://symfony.com/doc/current/components/http_foundation.html#response)
-
+*   [Symfony Docs - Response](https://symfony.com/doc/current/components/http_foundation.html#response)
+*   [MDN - HTTP Headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers)

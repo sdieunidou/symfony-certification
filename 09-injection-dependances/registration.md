@@ -1,36 +1,49 @@
-# Enregistrement de Services
+# Enregistrement de Services (`services.yaml`)
 
 ## Concept clé
-Dire au conteneur comment créer vos objets.
-Depuis Symfony 4, grâce à l'Autowiring et l'Autoconfigure, c'est souvent automatique.
+Le fichier `config/services.yaml` est le point d'entrée principal pour dire à Symfony comment instancier vos classes.
+Avec la configuration moderne par défaut, l'intervention manuelle est minime.
 
-## Application dans Symfony 7.0
+## La Configuration Standard (Best Practice)
 
-### Configuration par défaut (services.yaml)
 ```yaml
 services:
-    # Configuration par défaut pour les services de ce fichier
+    # 1. Configuration par défaut pour TOUS les services de ce fichier
     _defaults:
-        autowire: true      # Injecte automatiquement les dépendances
-        autoconfigure: true # Ajoute les tags automatiquement (ex: Twig Extension)
+        autowire: true      # Injection de dépendances automatique
+        autoconfigure: true # Ajout automatique de tags (Twig extension, Command...)
 
-    # Rend les classes dans src/ disponibles comme services
+    # 2. Enregistrement en masse (Service Discovery)
+    # Rend toutes les classes de src/ disponibles comme services
     App\:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+
+    # 3. Surcharges spécifiques (si nécessaire)
+    # Ex: passer un argument scalaire qui ne peut pas être autowiré
+    App\Service\ReportGenerator:
+        arguments:
+            $reportLimit: 100
 ```
 
-### Attributs PHP (AsService)
-Rarement nécessaire car la config par défaut couvre 99% des cas, mais on peut exclure ou configurer un service via attributs ou config manuelle.
+## Explications
+*   **Autowire** : Symfony regarde le constructeur `__construct(LoggerInterface $logger)` et injecte le service `logger`.
+*   **Autoconfigure** : Si votre classe implémente `Command`, Symfony ajoute le tag `console.command`. Si elle implémente `EventSubscriberInterface`, elle ajoute `kernel.event_subscriber`.
+*   **Exclude** : On n'enregistre PAS les Entités (ce sont des données, pas des services) ni le Kernel.
 
-## Points de vigilance (Certification)
-*   **Autowiring** : Le conteneur regarde le type (Type Hint) de l'argument du constructeur (`LoggerInterface $logger`) et trouve le service correspondant.
-*   **Scalar arguments** : L'autowiring ne marche pas pour les scalaires (string, int). Il faut utiliser `bind` ou `#[Autowire]`.
-*   **Multiple implementations** : Si vous avez 2 classes qui implémentent `MailerInterface`, l'autowiring échouera (ambiguïté). Il faut nommer l'argument (`$defaultMailer`) ou utiliser `#[Target('my.mailer')]`.
+## 🧠 Concepts Clés
+1.  **ID du service** : Par défaut, l'ID d'un service est son **FQCN** (Fully Qualified Class Name, ex: `App\Service\Mailer`).
+2.  **Alias** : On peut créer un alias pour référencer un service par un nom court ou une interface.
+    ```yaml
+    App\Contract\MailerInterface: '@App\Service\SmtpMailer'
+    ```
+
+## ⚠️ Points de vigilance (Certification)
+*   **App Namespace** : La clé `App\` dans le yaml correspond au namespace PHP défini dans `composer.json` (autoload psr-4). Si vous changez le namespace racine, il faut adapter le yaml.
+*   **Ordre** : Les définitions spécifiques (en bas du fichier) écrasent les définitions glob (en haut). C'est pour cela qu'on met `App\` en premier, puis les exceptions en dessous.
 
 ## Ressources
 *   [Symfony Docs - Service Configuration](https://symfony.com/doc/current/service_container.html#creating-configuring-services-in-the-container)
-

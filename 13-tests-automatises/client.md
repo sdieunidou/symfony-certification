@@ -1,36 +1,64 @@
 # Objet Client (KernelBrowser)
 
 ## Concept clé
-L'objet `Client` (retourné par `static::createClient()`) simule un navigateur web. Il maintient un état (cookies, historique) entre les requêtes.
+L'objet `KernelBrowser` est votre interface principale pour les tests fonctionnels. Il remplace le navigateur web.
+Il permet d'envoyer des requêtes et d'interagir avec la réponse via le `Crawler`.
 
-## Application dans Symfony 7.0
-Le client permet d'interagir avec l'application sans passer par Apache/Nginx (requête interne).
+## Méthodes Principales
 
+### 1. Navigation (`request`)
 ```php
-// Requête simple
-$client->request('GET', '/post/1');
+// Signature : method, uri, parameters, files, server, content
+$crawler = $client->request('GET', '/posts');
 
-// Soumettre un formulaire
-$client->submitForm('Login', [
-    'email' => 'user@example.com',
-    'password' => 'password',
-]);
-
-// Login automatique (pour les tests, évite de passer par le form)
-$user = $userRepository->findOneByEmail('admin@example.com');
-$client->loginUser($user);
-
-// AJAX
-$client->xmlHttpRequest('POST', '/api/data');
-
-// Suivre redirection
-$client->followRedirect();
+// POST API JSON
+$client->request(
+    'POST', 
+    '/api/posts', 
+    [], 
+    [], 
+    ['CONTENT_TYPE' => 'application/json'], 
+    json_encode(['title' => 'Test'])
+);
 ```
 
-## Points de vigilance (Certification)
-*   **Isolation** : Le client redémarre le Kernel à chaque requête (`request()`) pour isoler les environnements, mais il garde les cookies (session PHP).
-*   **Insulated** : On peut forcer le client à s'exécuter dans un processus PHP séparé (`$client->insulate()`), mais c'est lent.
+### 2. Interaction (`click`, `submit`)
+```php
+// Clic sur un lien (Link object du Crawler)
+$client->click($link);
+
+// Soumission de formulaire (Form object du Crawler)
+$client->submit($form, ['field' => 'value']);
+```
+
+### 3. Authentification (`loginUser`)
+C'est un helper magique pour connecter un utilisateur sans passer par le formulaire de login (lent).
+
+```php
+$user = $userRepository->findOneByEmail('admin@test.com');
+// Simule le login sur le firewall 'main'
+$client->loginUser($user);
+```
+
+### 4. AJAX (`xmlHttpRequest`)
+Raccourci pour `request()` avec le header `X-Requested-With: XMLHttpRequest`.
+
+```php
+$client->xmlHttpRequest('GET', '/api/search');
+```
+
+## Historique et Navigation
+*   `$client->back()` : Retour page précédente.
+*   `$client->forward()` : Page suivante.
+*   `$client->reload()` : Rafraîchir.
+
+## 🧠 Concepts Clés
+1.  **Interne** : Le client ne fait **pas** de vraies requêtes HTTP réseau (pas de cURL). Il instancie le Kernel et appelle `handle()`. C'est très rapide.
+2.  **Panther** : Si vous avez besoin de tester du Javascript (React/Vue), `KernelBrowser` ne suffit pas (il ne parse pas le JS). Utilisez `Symfony\Panther` (qui pilote un vrai Chrome/Firefox).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Formulaires** : `submit()` prend un objet `Form` (extrait du Crawler), pas le nom du formulaire.
+    *   `$client->submitForm('Button Label', [...])` est un raccourci pratique introduit récemment.
 
 ## Ressources
-*   [Symfony Docs - Test Client](https://symfony.com/doc/current/testing.html#making-requests)
-
+*   [Symfony Docs - KernelBrowser](https://symfony.com/doc/current/testing.html#making-requests)

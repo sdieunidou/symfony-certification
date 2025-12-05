@@ -1,52 +1,75 @@
 # SPL (Standard PHP Library)
 
 ## Concept clé
-La SPL est une collection d'interfaces et de classes orientées objet pour résoudre des problèmes classiques, intégrée par défaut à PHP. Elle couvre principalement :
-*   **Structures de données** : `SplStack`, `SplQueue`, `SplHeap`, `SplFixedArray`.
-*   **Itérateurs** : `ArrayIterator`, `DirectoryIterator`, `RecursiveIteratorIterator`.
-*   **Exceptions** : `LogicException`, `RuntimeException` et leurs enfants.
-*   **Autoloading** : `spl_autoload_register`.
-*   **Fichiers** : `SplFileInfo`, `SplFileObject`.
+La SPL est une collection d'interfaces et de classes orientées objet intégrées au cœur de PHP pour résoudre des problèmes standards. Elle n'est pas une extension désactivable.
+Elle transforme PHP d'un langage de script en un langage applicatif robuste.
 
 ## Application dans Symfony 7.0
-Symfony s'appuie fortement sur la SPL.
-*   Le composant **Finder** utilise intensément les itérateurs SPL (`RecursiveDirectoryIterator`).
-*   Le composant **HttpFoundation** étend `SplFileInfo` pour la gestion des fichiers uploadés (`UploadedFile`).
-*   Les exceptions standards (`InvalidArgumentException`, `LogicException`) sont utilisées partout.
+Symfony est bâti sur la SPL.
+*   **`SplFileInfo`** : Base de la gestion de fichiers (`UploadedFile`, `Finder`).
+*   **`Iterator`** : Le composant Finder renvoie des itérateurs pour parcourir efficacement des millions de fichiers sans saturation mémoire.
+*   **`ArrayAccess`** : Permet d'accéder à des objets comme à des tableaux (ex: `$session['key']`).
+*   **`Countable`** : Permet d'utiliser `count($obj)`.
 
-## Exemple de code
+## Structures de Données (Data Structures)
+PHP propose des structures plus optimisées que le simple `array` pour des cas spécifiques.
+*   **`SplDoublyLinkedList`**, **`SplStack`** (LIFO), **`SplQueue`** (FIFO).
+*   **`SplHeap`**, **`SplMinHeap`**, **`SplMaxHeap`** (Tas pour tri).
+*   **`SplFixedArray`** : Tableau à taille fixe, clés numériques uniquement. Plus rapide et moins gourmand en mémoire que `array`.
+*   **`SplObjectStorage`** : Permet d'utiliser des **objets comme clés** dans un map (ce que le `array` natif ne permet pas) et de leur associer des données. Très utilisé dans l'Unit of Work de Doctrine.
+
+## Autoloading
+La fonction centrale de la SPL moderne est **`spl_autoload_register`**.
+Elle permet d'enregistrer plusieurs fonctions qui seront appelées séquentiellement quand PHP rencontre une classe inconnue. C'est le moteur de **Composer**.
 
 ```php
-<?php
+spl_autoload_register(function ($class) {
+    // Logique pour trouver le fichier de la classe $class et l'inclure
+    include 'classes/' . $class . '.class.php';
+});
+```
 
-// Utilisation de SplFileInfo
-$info = new \SplFileInfo('/path/to/file.txt');
-echo $info->getExtension(); // txt
-echo $info->getSize(); // taille en octets
+## Les Itérateurs (Iterators)
+Pattern fondamental pour parcourir des collections sans exposer leur structure interne.
+*   **`ArrayIterator`** : Itérer sur un array (pour le passer là où un Iterator est attendu).
+*   **`DirectoryIterator`** / **`RecursiveDirectoryIterator`** : Parcourir le système de fichiers.
+*   **`FilterIterator`** : Filtrer les résultats à la volée.
+*   **`LimitIterator`** : Pagination (Offset/Limit).
 
-// Utilisation de Countable et IteratorAggregate (Interfaces SPL/Core)
-class Panier implements \Countable, \IteratorAggregate
-{
-    private array $items = [];
+## Exemple : DirectoryIterator
 
-    public function count(): int
-    {
-        return count($this->items);
-    }
-
-    public function getIterator(): \Traversable
-    {
-        return new \ArrayIterator($this->items);
+```php
+$dir = new \DirectoryIterator('/tmp');
+foreach ($dir as $fileinfo) {
+    if (!$fileinfo->isDot()) {
+        echo $fileinfo->getFilename() . "\n";
     }
 }
 ```
 
-## Points de vigilance (Certification)
-*   **Exceptions** : Connaître la différence sémantique entre `LogicException` (erreur de code, bug développeur) et `RuntimeException` (erreur dépendant de l'environnement ou des données à l'exécution).
-*   **Structures de données** : Savoir que `SplFixedArray` est plus rapide et consomme moins de mémoire qu'un `array` PHP classique pour des tableaux de taille fixe indexés numériquement.
-*   **Interfaces** : Connaître `Countable` (permet `count($obj)`), `ArrayAccess` (permet `$obj['key']`), `Traversable` (interface parente de `Iterator` et `IteratorAggregate`, ne peut pas être implémentée directement par une classe utilisateur).
+## Exceptions SPL
+La SPL fournit une hiérarchie d'exceptions standards à utiliser de préférence aux exceptions génériques.
+1.  **LogicException** (Problème de code/développeur)
+    *   `DomainException` : Valeur hors du domaine valide (logique).
+    *   `InvalidArgumentException` : Argument méthode incorrect.
+    *   `BadMethodCallException`.
+2.  **RuntimeException** (Problème d'exécution/environnement)
+    *   `OutOfBoundsException` : Index invalide.
+    *   `OverflowException` / `UnderflowException`.
+    *   `UnexpectedValueException`.
+
+## 🧠 Concepts Clés
+1.  **Interfaces Magiques** :
+    *   `Traversable` : Interface mère de `Iterator` et `IteratorAggregate`. Seul l'interpréteur PHP peut l'implémenter. Vos classes doivent implémenter `Iterator` ou `IteratorAggregate` pour être utilisables dans un `foreach`.
+    *   `IteratorAggregate` : Plus simple à implémenter. On définit juste `getIterator()` qui renvoie un itérateur externe (souvent un `ArrayIterator` ou un `Generator`).
+2.  **Performance** : Les structures `Spl*` sont implémentées en C. Elles sont souvent plus performantes pour des usages spécifiques (Queue, Stack) que l'utilisation de `array_push/pop`.
+
+## ⚠️ Points de vigilance (Certification)
+*   **ArrayAccess n'est pas itérable** : Implémenter `ArrayAccess` permet `$obj['key']`, mais ne permet pas `foreach ($obj)`. Pour le foreach, il faut `Iterator` ou `IteratorAggregate`.
+*   **Exceptions** : La certification demande souvent de choisir la "meilleure" exception pour un scénario donné.
+    *   Ex: "Un argument passé est du bon type mais négatif alors qu'attendu positif" -> `InvalidArgumentException`.
+    *   Ex: "Impossible d'écrire dans le fichier car disque plein" -> `RuntimeException`.
 
 ## Ressources
 *   [Manuel PHP - SPL](https://www.php.net/manual/fr/book.spl.php)
-*   [Manuel PHP - Exceptions SPL](https://www.php.net/manual/fr/spl.exceptions.php)
-
+*   [Manuel PHP - Interfaces prédéfinies](https://www.php.net/manual/fr/reserved.interfaces.php)

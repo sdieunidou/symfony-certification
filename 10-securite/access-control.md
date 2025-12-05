@@ -1,34 +1,49 @@
-# Règles de Contrôle d'Accès (Access Control Rules)
+# Règles de Contrôle d'Accès (Access Control)
 
 ## Concept clé
-Sécuriser des patterns d'URL directement dans la configuration `security.yaml`. C'est la première barrière de défense (globale).
+La section `access_control` dans `security.yaml` est la **première ligne de défense**.
+Elle permet de sécuriser des modèles d'URL (Regex) sans toucher au code (Contrôleurs).
+Le principe fondamental est : **"First Match Wins"** (Le premier qui correspond gagne).
 
-## Application dans Symfony 7.0
+## Configuration (`security.yaml`)
 
 ```yaml
-access_control:
-    # Ordre important : First match wins !
-    
-    # 1. Login public
-    - { path: ^/login, roles: PUBLIC_ACCESS }
-    
-    # 2. Admin sécurisé
-    - { path: ^/admin, roles: ROLE_ADMIN }
-    
-    # 3. Profil utilisateur (doit être connecté)
-    - { path: ^/profile, roles: ROLE_USER }
-    
-    # 4. API (Method restriction)
-    - { path: ^/api, roles: ROLE_API, methods: [POST, PUT] }
+security:
+    access_control:
+        # 1. Exclusion (Assets, Profiler) : PUBLIC_ACCESS
+        - { path: ^/(_(profiler|wdt)|css|images|js)/, roles: PUBLIC_ACCESS }
+
+        # 2. Login : PUBLIC_ACCESS
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+
+        # 3. Admin : Rôle requis
+        # 'ips' restreint l'accès à une liste d'adresses IP (ex: VPN entreprise)
+        - { path: ^/admin, roles: ROLE_ADMIN, ips: [127.0.0.1, 192.168.0.1/24] }
+
+        # 4. API : Méthode HTTP spécifique
+        - { path: ^/api/secure, roles: IS_AUTHENTICATED_FULLY, methods: [POST, PUT] }
+
+        # 5. Expression complexe (allow_if)
+        # Autorise l'accès si l'utilisateur a le rôle OU si c'est une IP de confiance
+        - { path: ^/internal, allow_if: "is_granted('ROLE_ADMIN') or request.getClientIp() == '10.0.0.1'" }
 ```
 
-## Points de vigilance (Certification)
-*   **PUBLIC_ACCESS** : Rôle virtuel spécial pour dire "Tout le monde peut accéder, même non connecté".
-*   **IS_AUTHENTICATED_FULLY** : L'utilisateur est connecté (pas via RememberMe).
-*   **IS_AUTHENTICATED_REMEMBERED** : Connecté (via session ou cookie RememberMe).
-*   **Channel** : On peut forcer HTTPS (`requires_channel: https`).
-*   **IP** : On peut restreindre par IP (`ips: [127.0.0.1, ...]`).
+## Attributs Spéciaux
+En plus des rôles (`ROLE_XXX`), Symfony fournit des attributs virtuels :
+*   `PUBLIC_ACCESS` : Autorise tout le monde (même anonyme).
+*   `IS_AUTHENTICATED_FULLY` : Connecté (Session ou Token). Exclut "Remember Me".
+*   `IS_AUTHENTICATED_REMEMBERED` : Connecté (Session ou Cookie "Se souvenir de moi"). Inclut "Fully".
+*   `IS_IMPERSONATOR` : L'utilisateur actuel est en train d'imiter quelqu'un d'autre (`switch_user`).
+
+## 🧠 Concepts Clés
+1.  **Ordre** : C'est le piège classique. Si vous mettez `- { path: ^/, roles: ROLE_USER }` en premier, **toutes** les pages (y compris `/login`) nécessiteront d'être connecté -> Boucle de redirection infinie.
+2.  **Canaux** : `requires_channel: https` force la redirection vers HTTPS pour ce pattern. (Moins utile aujourd'hui si tout le site est HTTPS via le serveur web).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Access Control vs Firewall** :
+    *   **Firewall** (`pattern: ^/admin`) : Active le système de sécurité (Session, User).
+    *   **Access Control** (`path: ^/admin`) : Décide si on a le droit d'entrer.
+    *   Vous pouvez avoir un firewall public (`security: true`, `anonymous: true` en vieux Symfony) et restreindre l'accès via `access_control`.
 
 ## Ressources
 *   [Symfony Docs - Access Control](https://symfony.com/doc/current/security/access_control.html)
-

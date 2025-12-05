@@ -1,45 +1,71 @@
 # Extensions de Type de Formulaire
 
 ## Concept clé
-Comment modifier un type de formulaire existant (natif ou tiers) sans utiliser l'héritage ?
-Par exemple, ajouter une option `help_tooltip` à *tous* les champs de type `TextType`.
-C'est le principe du "Décorateur" appliqué aux types.
+Symfony applique le principe Open/Closed. Vous ne pouvez pas modifier le code de `TextType` ou `FormType` (classes natives), mais vous pouvez les étendre via une **Extension de Type**.
+C'est l'équivalent d'un "Décorateur global" pour tous les formulaires de ce type.
 
-## Application dans Symfony 7.0
-Créer une classe implémentant `FormTypeExtensionInterface` (ou étendant `AbstractTypeExtension`).
+## Cas d'usage
+*   Ajouter une option globale (ex: `help_tooltip` sur tous les champs).
+*   Ajouter une classe CSS par défaut sur tous les boutons.
+*   Modifier la manière dont une option est gérée.
+
+## Implémentation
+
+Créer une classe qui implémente `FormTypeExtensionInterface` (ou étend `AbstractTypeExtension`).
 
 ```php
-#[AsFormTypeExtension] // Autoconfiguration PHP 8
-class HelpTooltipExtension extends AbstractTypeExtension
+namespace App\Form\Extension;
+
+use Symfony\Component\Form\AbstractTypeExtension;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormTypeExtensionInterface;
+
+class ImageIconExtension extends AbstractTypeExtension
 {
+    // 1. Quels types j'étends ?
     public static function getExtendedTypes(): iterable
     {
-        // Appliquer à tous les champs
-        return [FormType::class];
+        // J'étends UNIQUEMENT TextType
+        return [TextType::class];
     }
 
+    // 2. Ajouter l'option
     public function configureOptions(OptionsResolver $resolver): void
     {
-        // Ajouter la nouvelle option
-        $resolver->setDefined(['help_tooltip']);
+        $resolver->setDefined(['icon']); // Optionnelle
+        $resolver->setAllowedTypes('icon', 'string');
     }
 
+    // 3. Passer la valeur à la vue (Twig)
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        // Passer la valeur à la vue Twig
-        if (isset($options['help_tooltip'])) {
-            $view->vars['help_tooltip'] = $options['help_tooltip'];
+        if (isset($options['icon'])) {
+            $view->vars['icon'] = $options['icon'];
         }
     }
 }
 ```
 
-Ensuite, dans le thème Twig, on peut utiliser `{{ help_tooltip }}`.
+Ensuite dans le thème Twig :
+```twig
+{% block text_widget %}
+    {% if icon is defined %}
+        <i class="fa fa-{{ icon }}"></i>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
+```
 
-## Points de vigilance (Certification)
-*   **Config** : Si vous n'utilisez pas l'autoconfiguration, il faut taguer le service avec `form.type_extension`.
-*   **Portée** : En étendant `FormType`, vous étendez *tous* les types (car tous en héritent). Pour cibler uniquement les champs texte, étendez `TextType`.
+## 🧠 Concepts Clés
+1.  **Autoconfiguration** : Grâce à l'interface `FormTypeExtensionInterface`, Symfony enregistre automatiquement votre extension.
+2.  **Héritage** : Si vous étendez `FormType::class` (le type racine), votre extension s'appliquera à **TOUS** les champs (car tous héritent de FormType).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Plusieurs extensions** : Plusieurs extensions peuvent s'appliquer au même type. L'ordre d'exécution dépend de la priorité du service (rarement critique).
+*   **Surcharge** : Vous ne pouvez pas *supprimer* une option existante, mais vous pouvez changer sa valeur par défaut dans `configureOptions`.
 
 ## Ressources
 *   [Symfony Docs - Form Type Extensions](https://symfony.com/doc/current/form/create_form_type_extension.html)
-

@@ -1,49 +1,66 @@
-# Validation d'Objets PHP
+# Validation d'Objets PHP (Service Validator)
 
 ## Concept clé
-Le composant Validator permet de valider que les données d'un objet (ou un tableau) respectent certaines règles (Contraintes). Il est indépendant des formulaires, mais souvent utilisé avec.
+Le composant Validator (`symfony/validator`) est un service autonome. Bien qu'intégré aux Formulaires, il peut (et doit) être utilisé seul pour valider des DTOs, des Entités API, ou des paramètres de commande.
 
-## Application dans Symfony 7.0
-On utilise des Attributs PHP pour définir les règles directement sur les propriétés de la classe.
+## Utilisation du Service
 
 ```php
-namespace App\Entity;
+// Injection
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-use Symfony\Component\Validator\Constraints as Assert;
-
-class User
-{
-    #[Assert\NotBlank]
-    #[Assert\Length(min: 3)]
-    private string $name;
-
-    #[Assert\Email(message: 'L\'email {{ value }} n\'est pas valide.')]
-    private string $email;
-}
-```
-
-### Utilisation du Service Validator
-```php
-public function register(ValidatorInterface $validator): Response
+public function index(ValidatorInterface $validator): Response
 {
     $user = new User();
-    // ... remplir l'objet ...
+    $user->email = 'invalid-email';
 
+    // Retourne une ConstraintViolationList
     $errors = $validator->validate($user);
 
     if (count($errors) > 0) {
-        $errorsString = (string) $errors;
-        return new Response($errorsString);
+        // Il y a des erreurs
+        $errorString = (string) $errors; // Casting string pour debug rapide
+        
+        // Accès détaillé
+        foreach ($errors as $violation) {
+            echo $violation->getMessage(); // "This value is not a valid email."
+            echo $violation->getPropertyPath(); // "email"
+            echo $violation->getInvalidValue(); // "invalid-email"
+        }
     }
-
-    return new Response('Valid User!');
 }
 ```
 
-## Points de vigilance (Certification)
-*   **Indépendance** : Le validateur valide des objets, pas des formulaires. Le formulaire utilise le validateur en interne.
-*   **Configuration** : Symfony supporte YAML et XML pour la configuration de validation (`config/validator/`), mais les Attributs sont recommandés.
+## Valider une valeur simple
+On peut valider une valeur scalaire sans créer de classe, en passant les contraintes à la volée.
+
+```php
+use Symfony\Component\Validator\Constraints as Assert;
+
+$email = 'test@example.com';
+$constraints = [
+    new Assert\NotBlank(),
+    new Assert\Email(),
+];
+
+$errors = $validator->validate($email, $constraints);
+```
+
+## Sources de Métadonnées
+Comment le Validator sait-il quelles règles appliquer à la classe `User` ?
+1.  **Attributs PHP** (Recommandé en Symfony 7).
+2.  **YAML** (`config/validator/*.yaml`).
+3.  **XML**.
+4.  **Méthode statique** `loadValidatorMetadata` (Rare).
+
+## 🧠 Concepts Clés
+1.  **JSR-303** : Le Validator Symfony est inspiré de la spécification Bean Validation de Java (JSR-303).
+2.  **Violation** : Une erreur est une instance de `ConstraintViolation`.
+3.  **Service** : Le validateur est stateless et réutilisable.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Exceptions** : Le Validator ne lance **pas** d'exception s'il y a des erreurs de validation. Il retourne une liste d'erreurs (que vous pouvez compter). C'est à vous de décider si vous devez lancer une Exception (ex: API) ou afficher le formulaire (HTML).
+*   **Autowiring** : `ValidatorInterface` injecte le service principal.
 
 ## Ressources
 *   [Symfony Docs - Validation](https://symfony.com/doc/current/validation.html)
-

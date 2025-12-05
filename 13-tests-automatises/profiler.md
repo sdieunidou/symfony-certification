@@ -1,34 +1,49 @@
-# Objet Profiler (Tests)
+# Objet Profiler (Tests Fonctionnels)
 
 ## Concept clé
-Lors des tests fonctionnels, on a accès au Profiler Symfony pour vérifier des données techniques invisibles dans le HTML (Emails envoyés, Requêtes SQL, Cache).
+Lors des tests fonctionnels, vous n'avez pas d'yeux pour voir la "Web Debug Toolbar".
+Cependant, vous pouvez accéder à l'objet `Profiler` pour inspecter les métadonnées de la requête :
+*   Combien de requêtes SQL ?
+*   Est-ce qu'un email a été envoyé ?
+*   Quelles exceptions ont été levées ?
 
-## Application dans Symfony 7.0
-Le profilage doit être activé en environnement de test (`config/packages/test/web_profiler.yaml`).
+## Activation
+Le profiler doit être activé dans la configuration de test (`config/packages/test/web_profiler.yaml` : `enabled: true`).
 
 ```php
-$client->enableProfiler(); // S'assurer qu'il est actif
+// Dans le test
+$client->enableProfiler();
+```
 
-$client->request('POST', '/contact');
+## Récupération des Données
+```php
+$client->request('POST', '/register');
 
-// Récupérer le profil de la dernière requête
+// Récupérer le profil de la requête
 $profile = $client->getProfile();
 
 if ($profile) {
-    // Vérifier le collector Mailer
+    // 1. Collector Mailer
     $mailCollector = $profile->getCollector('mailer');
     $this->assertEquals(1, $mailCollector->getMessageCount());
+    
+    $email = $mailCollector->getEvents()->getMessages()[0];
+    $this->assertInstanceOf(Email::class, $email);
+    $this->assertEquals('Bienvenue', $email->getSubject());
 
-    // Vérifier le collector DB
+    // 2. Collector Database (Doctrine)
     $dbCollector = $profile->getCollector('db');
-    $this->assertLessThan(10, $dbCollector->getQueryCount());
+    $this->assertLessThan(5, $dbCollector->getQueryCount());
 }
 ```
 
-## Points de vigilance (Certification)
-*   **Disponibilité** : Si `$client->getProfile()` retourne `false`, c'est que le profiler est désactivé (souvent pour gagner en perf dans la CI).
-*   **Redirection** : Si la requête redirige, le client suit la redirection (selon config). Le profil récupéré est celui de la *dernière* requête. Pour inspecter la requête *avant* redirection, il faut désactiver `followRedirects` ou naviguer dans l'historique des profils.
+## 🧠 Concepts Clés
+1.  **Collectors** : Le profiler est composé de collecteurs de données (`db`, `mailer`, `time`, `security`, `twig`...).
+2.  **Historique** : Si la page redirige, `$client->getProfile()` retourne le profil de la *dernière* requête (la page d'atterrissage).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Performance** : Le profiler ralentit les tests. Ne l'activez que si nécessaire.
+*   **API** : Fonctionne aussi pour les APIs JSON (le profiler collecte les données même si la toolbar n'est pas affichée).
 
 ## Ressources
 *   [Symfony Docs - Profiling in Tests](https://symfony.com/doc/current/testing/profiling.html)
-

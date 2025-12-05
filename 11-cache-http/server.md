@@ -1,27 +1,50 @@
-# Mise en cache Server-side (Reverse Proxy)
+# Mise en cache Server-side (Reverse Proxy / Gateway)
 
 ## Concept clé
-Cacher les réponses complètes HTML avant même qu'elles n'atteignent l'application PHP (Front Controller). C'est ce qui permet d'atteindre des performances énormes (milliers de req/s).
+Un **Gateway Cache** (ou Reverse Proxy) est un serveur intermédiaire situé devant votre application. Il intercepte les requêtes et sert les réponses cachées à la place de votre application PHP.
+C'est la clé pour scaler à des millions de requêtes.
 
-## Application dans Symfony 7.0
-Deux options :
-1.  **Symfony HttpCache** (PHP) : Un reverse proxy implémenté en PHP. Facile à installer (décorateur du Kernel dans `index.php`).
-    ```php
-    // public/index.php
-    $kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
-    // Envelopper le kernel
+## Solutions Supportées
+
+### 1. Symfony HttpCache (PHP)
+Symfony fournit un Reverse Proxy écrit en PHP pur (`Symfony\Bundle\FrameworkBundle\HttpCache\HttpCache`).
+*   **Avantage** : Zéro infrastructure. Fonctionne partout (même hébergement mutualisé). Facile à débugger. Supporte ESI.
+*   **Inconvénient** : Moins performant que Varnish (car boot PHP), mais bien plus rapide que l'appli complète (ne boot pas le Kernel complet).
+*   **Mise en place** : Modifier `public/index.php`.
+
+```php
+// public/index.php
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+
+// Envelopper le kernel avec le Cache
+if ('prod' === $kernel->getEnvironment()) {
     $kernel = new HttpCache($kernel);
-    ```
-2.  **Varnish / Nginx** (Infra) : Solutions dédiées plus performantes.
+}
+```
 
-### Invalidation
-L'inconvénient du cache serveur est qu'il faut le purger quand les données changent.
-Symfony ne gère pas la purge nativement (le standard HTTP ne le prévoit pas), mais le `FOSHttpCacheBundle` est souvent utilisé pour envoyer des requêtes `PURGE` à Varnish.
+### 2. Varnish / Nginx (Infrastructure)
+Solutions logicielles dédiées (C/C++).
+*   **Avantage** : Performance extrême.
+*   **Inconvénient** : Configuration complexe (VCL), nécessite accès root.
 
-## Points de vigilance (Certification)
-*   **HttpCache** : Supporte l'ESI (Edge Side Includes). Stocke les fichiers dans `var/cache/prod/http_cache`.
-*   **Shared** : Les caches serveurs sont "Shared". Ils ignorent les headers `private`. Ils utilisent `s-maxage`.
+### 3. CDN (Cloudflare, Fastly, AWS CloudFront)
+Caches distribués géographiquement.
+
+## Interaction avec Symfony
+Symfony est "Http Cache aware". Il suffit de retourner les bons headers (`Cache-Control: public, s-maxage=...`) et le Reverse Proxy (quel qu'il soit) obéira.
+
+## Invalidation
+Le problème difficile. Le modèle d'expiration ne permet pas de purger le cache instantanément.
+Pour purger un Reverse Proxy (ex: après modification d'un article), il faut envoyer une requête HTTP spéciale (`PURGE /article/1`).
+*   Symfony ne gère pas ça nativement.
+*   Utilisez `FOSHttpCacheBundle` pour gérer l'invalidation (Ban/Purge) de Varnish/SymfonyHttpCache.
+
+## 🧠 Concepts Clés
+1.  **X-Symfony-Cache** : Header ajouté par `HttpCache` (en debug) pour indiquer si la réponse vient du cache (`HIT`), a été générée (`MISS`) ou validée (`FRESH`).
+2.  **Store** : `HttpCache` stocke ses fichiers dans `var/cache/prod/http_cache`.
+
+## ⚠️ Points de vigilance (Certification)
+*   **IP Client** : Derrière un reverse proxy, `REMOTE_ADDR` est l'IP du proxy. Il faut configurer les **Trusted Proxies** pour que Symfony lise `X-Forwarded-For` et récupère la vraie IP client.
 
 ## Ressources
-*   [Symfony Docs - Symfony Reverse Proxy](https://symfony.com/doc/current/http_cache.html#symfony-reverse-proxy)
-
+*   [Symfony Docs - Reverse Proxy](https://symfony.com/doc/current/http_cache.html#symfony-reverse-proxy)

@@ -1,56 +1,114 @@
-# Concurrence avec Doctrine
+# Concurrence avec Doctrine (Locking & Recettes)
 
-## Problème
-Deux utilisateurs éditent la même entité en même temps. Qui gagne ? Comment éviter l'écrasement de données ?
+## Concept Clé
+Lorsque plusieurs utilisateurs (ou processus) tentent de modifier la même donnée en même temps, on risque des conflits (Lost Update).
+Pour résoudre ce problème, on utilise des verrous (Locks) et des stratégies de timeout.
 
-## 1. Transactions et Autocommit
-Par défaut, Doctrine désactive l'autocommit lors du `flush()`. Il ouvre une transaction, envoie les requêtes, et commit.
-Cependant, entre le moment où vous *lisez* une donnée et le moment où vous *écrivez*, il s'écoule du temps.
+## 1. Niveaux d'isolation & Timeouts
+Avant même les verrous, la configuration de la connexion est cruciale.
 
-## 2. Pessimistic Locking (Verrouillage Pessimiste)
-On verrouille la ligne en base de données **au moment de la lecture**. Personne d'autre ne peut la lire/modifier tant que la transaction n'est pas finie.
-*SQL* : `SELECT ... FOR UPDATE`.
+*   **READ COMMITTED** : Bon compromis performance/sécurité (souvent le défaut).
+*   **Timeouts de verrou** : Éviter qu'un processus attende indéfiniment.
 
 ```php
-$em->beginTransaction();
-try {
-    // PESSIMISTIC_WRITE bloque les autres lectures/écritures
-    $account = $em->find(Account::class, $id, LockMode::PESSIMISTIC_WRITE);
-    
-    $account->setBalance($account->getBalance() + 100);
-    $em->flush();
-    $em->commit();
-} catch (\Exception $e) {
-    $em->rollback();
-}
-```
-*Usage* : Systèmes bancaires, billetterie (éviter la double vente). Impact fort sur les performances (attente).
+// Postgres (dans la transaction courante)
+$em->getConnection()->executeStatement("SET LOCAL lock_timeout = '500ms'");
 
-## 3. Optimistic Locking (Verrouillage Optimiste)
-On ne verrouille rien. On espère qu'il n'y aura pas de conflit.
-Au moment d'écrire, on vérifie si la donnée a changé depuis notre lecture.
-On utilise une colonne de version (`@Version`).
+// MySQL
+$em->getConnection()->executeStatement("SET innodb_lock_wait_timeout = 1");
+```
+
+## 2. Optimistic Locking (Verrouillage Optimiste)
+**Stratégie** : "On espère que tout ira bien". On ne bloque pas la base.
+Idéal si **beaucoup de lectures**, peu d'écritures concurrentes.
+
+### Mise en place
+Ajouter une colonne de version (`@Version`) dans l'entité.
 
 ```php
 #[ORM\Entity]
 class Product
 {
-    #[ORM\Column(type: 'integer')]
-    #[ORM\Version] // Magie Doctrine
+    #[ORM\Id, ORM\Column, ORM\GeneratedValue]
+    private ?int $id = null;
+
+    #[ORM\Column]
+    #[ORM\Version] // Doctrine gère ce champ automatiquement
     private int $version;
 }
 ```
 
-Si deux utilisateurs modifient la version 1 :
-1.  User A lit v1.
-2.  User B lit v1.
-3.  User A sauvegarde -> v2.
-4.  User B essaie de sauvegarder v1 -> Doctrine voit que la version en base est v2 -> **OptimisticLockException**.
+### Fonctionnement
+1.  Doctrine lit l'entité (version 1).
+2.  Lors du `flush()`, Doctrine exécute : `UPDATE product SET ..., version = 2 WHERE id = 1 AND version = 1`.
+3.  Si la ligne n'est pas trouvée (modifiée par un autre), Doctrine lance une `OptimisticLockException`.
 
-*Usage* : Formulaires d'édition, Wikis. L'utilisateur doit recharger la page et refaire sa modif.
+## 3. Pessimistic Locking (Verrouillage Pessimiste)
+**Stratégie** : "On bloque tout". On verrouille la ligne dès la lecture.
+Pour les processus critiques courts (stock, solde).
 
-## 4. Retries (Réessais)
-En cas d'échec (Deadlock ou OptimisticLockException), on peut retenter l'opération automatiquement.
-C'est complexe à faire dans un contrôleur (car il faut réinitialiser l'EntityManager fermé).
-C'est beaucoup plus simple avec **Messenger**.
+### Mise en place
+Utiliser le mode de verrouillage lors du `find()`.
 
+```php
+use Doctrine\DBAL\LockMode;
+
+$em->wrapInTransaction(function($em) use ($id) {
+    // SELECT ... FOR UPDATE
+    $product = $em->find(Product::class, $id, LockMode::PESSIMISTIC_WRITE);
+    
+    $product->decrementStock(1);
+    
+    $em->flush(); // Le verrou est relâché au commit de la transaction
+});
+```
+
+### Pattern Worker : SKIP LOCKED
+Pour traiter des tâches en parallèle sans conflit : "Donne-moi les tâches que personne d'autre ne traite".
+
+```php
+$rows = $em->getConnection()->fetchAllAssociative("
+  SELECT id FROM job
+  WHERE status = 'pending'
+  FOR UPDATE SKIP LOCKED
+  LIMIT 100
+");
+```
+
+## 4. Recettes Types
+
+### R1 : Réservation de Stock (Optimiste + Retry)
+Comme les conflits sont rares mais possibles, on utilise l'Optimistic Lock avec une boucle de retry.
+
+```php
+$maxTries = 3;
+do {
+    try {
+        $em->wrapInTransaction(function($em) use ($productId) {
+            $p = $em->find(Product::class, $productId); // #[Version] activé
+            if ($p->getStock() <= 0) throw new Exception('Rupture');
+            $p->decrementStock(1);
+            $em->flush();
+        });
+        break; // Succès
+    } catch (OptimisticLockException $e) {
+        if (--$maxTries <= 0) throw $e;
+        usleep(random_int(50000, 150000)); // Backoff
+    }
+} while (true);
+```
+
+### R2 : Mouvement de Solde (Pessimiste)
+Forte contention, on veut être sûr de séquentialiser les opérations.
+
+```php
+$em->wrapInTransaction(function($em) use ($accountId, $amount) {
+    // On verrouille tout de suite
+    $account = $em->find(Account::class, $accountId, LockMode::PESSIMISTIC_WRITE);
+    $account->addBalance($amount);
+    $em->flush();
+});
+```
+
+## Ressources
+*   [Doctrine Locking Support](https://www.doctrine-project.org/projects/doctrine-orm/en/current/reference/transactions-and-concurrency.html#locking-support)

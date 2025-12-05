@@ -1,22 +1,28 @@
 # Redirections Internes (Forward)
 
 ## Concept clé
-Contrairement à une redirection HTTP (le navigateur fait une 2ème requête), une redirection interne (Forward) s'exécute entièrement côté serveur.
-Le contrôleur A appelle le contrôleur B, et le contrôleur B retourne une réponse qui est renvoyée au client comme si elle venait de A. L'URL dans le navigateur ne change pas.
+La méthode `forward()` permet de transférer le traitement d'une action de contrôleur à une autre **en interne**, sans que le navigateur du client ne le sache (pas de changement d'URL).
+C'est une **Sous-Requête** (Sub-Request).
 
-## Application dans Symfony 7.0
-Utilisation de la méthode `forward()`.
+## Différence avec Redirection HTTP
+*   **Redirect (`redirectToRoute`)** :
+    1.  Serveur répond 302 Location: /new-url.
+    2.  Navigateur fait une nouvelle requête GET /new-url.
+    3.  URL change. Performance : 2 requêtes HTTP complètes.
+*   **Forward (`forward`)** :
+    1.  Serveur instancie le nouveau contrôleur et l'appelle directement.
+    2.  Serveur renvoie la réponse finale.
+    3.  Navigateur ne voit rien (URL inchangée). Performance : 1 requête HTTP, mais 2 cycles Kernel.
 
-## Exemple de code
+## Utilisation
+Méthode helper `AbstractController::forward()`.
 
 ```php
-<?php
-
-public function index(string $name): Response
+public function index(string $username): Response
 {
-    // Redirige le traitement vers une autre méthode de contrôleur
+    // Appelle App\Controller\OtherController::fancy($username, 'green')
     $response = $this->forward('App\Controller\OtherController::fancy', [
-        'name'  => $name,
+        'name'  => $username,
         'color' => 'green',
     ]);
 
@@ -24,11 +30,14 @@ public function index(string $name): Response
 }
 ```
 
-## Points de vigilance (Certification)
-*   **Performance** : Le Forward redémarre un sous-cycle de vie (Request -> Kernel -> Controller). C'est plus lourd qu'un simple appel de méthode PHP, mais plus léger qu'une redirection HTTP.
-*   **Usage** : Rarement utilisé dans les applications modernes. On préfère souvent extraire la logique commune dans un Service ou utiliser `twig:render` (Fragment rendering) pour intégrer un contrôleur dans une vue.
-*   **Arguments** : Les arguments passés à `forward` sont passés comme attributs de requête, pas comme paramètres GET.
+## 🧠 Concepts Clés
+1.  **Sub-Request** : Le Kernel est relancé (`handle` avec `HttpKernelInterface::SUB_REQUEST`).
+2.  **Indépendance** : La sous-requête a son propre objet `Request` (cloné de la principale), ses propres attributs, etc.
+3.  **Fragment Rendering** : C'est le même mécanisme utilisé par Twig `{{ render(controller('...')) }}` pour insérer des blocs dynamiques (ex: panier dans le header) sans dupliquer la logique.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Usage** : C'est devenu assez rare en code moderne. On préfère souvent extraire la logique métier dans un **Service** réutilisable et l'appeler depuis les deux contrôleurs. Le Forward est "lourd" (instanciation contrôleur, cycle kernel).
+*   **Arguments** : Les arguments passés à `forward` (tableau) sont injectés comme **attributs de requête** (`$request->attributes`) pour correspondre aux arguments de la méthode cible.
 
 ## Ressources
 *   [Symfony Docs - Forwarding](https://symfony.com/doc/current/controller/forwarding.html)
-

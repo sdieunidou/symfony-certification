@@ -1,48 +1,56 @@
 # Traductions et Pluralisation (Twig)
 
 ## Concept clé
-Afficher du texte dans la langue de l'utilisateur.
+L'internationalisation (i18n) dans les vues repose sur le composant `Translation` et son intégration Twig.
+Le but est de remplacer les textes statiques par des clés de traduction.
 
-## Application dans Symfony 7.0
-Le filtre `|trans` est l'outil principal.
+## Utilisation
+
+### 1. Filtre `trans` (Pour les textes courts)
+C'est la méthode la plus courante.
 
 ```twig
-{# Simple #}
-<h1>{{ 'Hello World'|trans }}</h1>
+<h1>{{ 'home.title'|trans }}</h1>
 
-{# Avec paramètres #}
-<p>{{ 'Hello %name%'|trans({ '%name%': user.name }) }}</p>
+{# Avec paramètres (placeholders) #}
+<p>{{ 'hello_user'|trans({'%name%': user.name}) }}</p>
 
-{# Domaine spécifique (fichier messages.fr.yaml par défaut) #}
-<button>{{ 'Delete'|trans({}, 'admin') }}</button>
+{# Domaine spécifique (fichier messages par défaut) #}
+<button>{{ 'delete'|trans({}, 'admin') }}</button>
 ```
 
-### Tag {% trans %}
-Pour les blocs de texte plus longs.
+### 2. Tag `{% trans %}` (Pour les blocs complexes)
+Utile si le texte contient des variables entrelacées.
 
 ```twig
 {% trans %}
-    Hello %name%!
-    Welcome to our site.
+    Hello %name%, welcome back!
 {% endtrans %}
 ```
 
-### Pluralisation
-Symfony gère la pluralisation via le format ICU MessageFormat (recommandé depuis Symfony 6+).
+## Pluralisation (ICU MessageFormat)
+Depuis Symfony 6, le format recommandé est **ICU** (International Components for Unicode). C'est un standard puissant géré par l'extension `intl`.
 
+### Dans le fichier YAML (translations/messages.fr.yaml)
 ```yaml
-# translations/messages.fr.yaml
-apples_count: '{count, plural, =0 {Aucune pomme} one {Une pomme} other {# pommes}}'
+# Format ICU
+item_count: '{count, plural, =0 {Aucun article} one {1 article} other {# articles}}'
 ```
 
+### Dans le template
 ```twig
-{{ 'apples_count'|trans({ 'count': nb_apples }) }}
+{{ 'item_count'|trans({'count': cart.count}) }}
 ```
+*Note : La variable utilisée pour le choix du pluriel doit être passée en paramètre.*
 
-## Points de vigilance (Certification)
-*   **Domaines** : Par défaut, Symfony cherche dans `messages.LOCALE.yaml`. Si vous spécifiez un domaine (ex: `validators`), il cherchera dans `validators.LOCALE.yaml`.
-*   **Extraction** : La commande `php bin/console translation:extract` scanne vos templates Twig à la recherche des tags `trans` pour générer les fichiers de traduction.
+## 🧠 Concepts Clés
+1.  **Scanner** : La commande `php bin/console translation:extract` scanne les templates Twig pour trouver les tags `trans` et créer/mettre à jour les fichiers YAML automatiquement.
+2.  **Variable** : Si vous traduisez une variable (`{{ status|trans }}`), le scanner ne peut pas la détecter. C'est valide au runtime, mais vous devrez ajouter la clé manuellement dans le YAML.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Legacy** : L'ancien format de pluralisation avec les pipes `|` et les intervalles `[0,1]` (ex: `one|many`) est supporté mais moins puissant que ICU.
+*   **Domaine** : Si vous ne spécifiez pas de domaine, c'est `messages`.
 
 ## Ressources
-*   [Symfony Docs - Translations](https://symfony.com/doc/current/translation.html)
-
+*   [Symfony Docs - Translations in Templates](https://symfony.com/doc/current/translation.html#templates)
+*   [ICU MessageFormat Syntax](https://symfony.com/doc/current/translation/message_format.html)

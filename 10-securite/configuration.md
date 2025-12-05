@@ -1,47 +1,75 @@
-# Configuration de la Sécurité
+# Configuration de la Sécurité (`security.yaml`)
 
 ## Concept clé
-Toute la sécurité est centralisée dans `config/packages/security.yaml`.
+La sécurité est le composant le plus complexe à configurer. Tout se passe dans `config/packages/security.yaml`.
+L'ordre des sections n'importe pas, mais l'ordre des éléments dans les listes (`firewalls`, `access_control`) est CRITIQUE.
 
-## Application dans Symfony 7.0
+## Structure Complète
 
-Structure typique :
 ```yaml
 security:
-    # 1. Hachage des mots de passe
+    # 1. Configuration des Hashers (Mots de passe)
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
 
-    # 2. Fournisseurs d'utilisateurs (Où sont-ils ?)
+    # 2. User Providers (Sources de données)
     providers:
         app_user_provider:
             entity:
                 class: App\Entity\User
                 property: email
 
-    # 3. Firewalls (Comment on se connecte ?)
+    # 3. Firewalls (Zones sécurisées)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false # Pas de sécu pour les assets
+            security: false # Désactive la sécurité (Perf)
+        
         main:
             lazy: true
             provider: app_user_provider
+            
+            # Authenticators
             form_login:
                 login_path: app_login
                 check_path: app_login
+                enable_csrf: true
+            
+            json_login:
+                check_path: api_login
+            
+            # Custom Authenticator
+            custom_authenticator: App\Security\ApiKeyAuthenticator
+
+            # Logout
             logout:
                 path: app_logout
+                target: app_home
 
-    # 4. Contrôle d'accès (URL matching)
+            # Features
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+            
+            # Limite les sessions concurrentes
+            concurrent_sessions: 1
+
+    # 4. Contrôle d'accès (URL Rules)
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
+
+    # 5. Hiérarchie des rôles
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_USER]
 ```
 
-## Points de vigilance (Certification)
-*   **Ordre des Firewalls** : Le premier qui matche l'URL gagne. Toujours mettre les règles spécifiques (`dev`, `api`) avant le `main` (qui matche souvent `/`).
-*   **Lazy** : `lazy: true` signifie que la session n'est démarrée que si on accède réellement à l'utilisateur. C'est la performance par défaut.
+## 🧠 Concepts Clés
+1.  **Authenticator Manager** : Depuis Symfony 6, c'est le nouveau système par défaut (`enable_authenticator_manager: true` est implicite).
+2.  **Provider** : Un firewall a besoin d'un provider pour charger l'utilisateur après l'authentification (Refresh User).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Pattern** : Si une URL matche plusieurs firewalls, le **premier** gagne. C'est pourquoi `dev` est toujours en premier.
+*   **Context** : Pour partager l'authentification entre deux firewalls (ex: `main` et `admin` s'ils sont séparés), il faut leur donner le même `context`. Sinon, se connecter sur l'un ne connecte pas sur l'autre.
 
 ## Ressources
-*   [Symfony Docs - Security Configuration](https://symfony.com/doc/current/security.html#configuration)
-
+*   [Symfony Docs - Security Config](https://symfony.com/doc/current/reference/configuration/security.html)

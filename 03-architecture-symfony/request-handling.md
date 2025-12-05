@@ -1,40 +1,71 @@
-# Traitement de la Requête (Request Handling)
+# Traitement de la Requête (Request Handling - HttpKernel)
 
 ## Concept clé
-Le cycle de vie d'une requête dans Symfony suit un chemin précis géré par le `HttpKernel`. C'est le cœur du fonctionnement du framework.
+Comprendre comment `HttpKernel::handle()` transforme une `Request` en `Response` est la compétence la plus fondamentale pour un architecte Symfony.
 
-## Application dans Symfony 7.0
-Le flux :
-1.  **Front Controller** (`public/index.php`) : Reçoit la requête, boote le Kernel.
-2.  **Kernel** : Appelle `HttpKernel::handle($request)`.
-3.  **Events** : Le `HttpKernel` dispatche des événements pour transformer la requête en réponse.
+## Le Pipeline (Events) en Détail
 
-### Les étapes clés (Events) :
-1.  `kernel.request` : Très tôt. Peut retourner une `Response` immédiatement (ex: redirection, maintenance). Sinon, le routing détermine le contrôleur.
-2.  `kernel.controller` : Le contrôleur est déterminé. On peut le modifier ou faire de l'initialisation.
-3.  `kernel.controller_arguments` : Résolution des arguments (Autowiring, Value Resolvers).
-4.  **Exécution du Contrôleur** : Votre code est exécuté. Il retourne une `Response`.
-5.  `kernel.view` : (Optionnel) Si le contrôleur ne retourne pas une `Response` (ex: un tableau ou null), cet événement doit transformer le résultat en `Response`. Utilisé par API Platform ou `@View`.
-6.  `kernel.response` : La réponse est prête. On peut modifier les headers, compresser, ajouter des cookies.
-7.  `kernel.finish_request` : Nettoyage (reset des locales, etc.).
-8.  `kernel.terminate` : Après l'envoi au client (`$response->send()`). Pour les tâches lourdes (envoi email, logging).
+Chaque étape correspond à un événement dispatché par `HttpKernel`.
 
-## Exemple de code
+### 1. `kernel.request` (Early Stage)
+*   **Event** : `RequestEvent`.
+*   **Rôle** : Pré-traitement, Sécurité, Routing.
+*   **Acteurs** :
+    *   `RouterListener` : Parse l'URL et remplit `$request->attributes` (`_route`, `_controller`).
+    *   `LocaleListener` : Définit la locale.
+    *   `Firewall` (Security) : Authentifie l'utilisateur ou lance `AccessDeniedException`.
+*   **Sortie possible** : Si un listener set une `Response` (ex: redirection), on saute directement à l'étape 6 (`kernel.response`).
 
-```php
-// index.php simplifié
-$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
-$request = Request::createFromGlobals();
-$response = $kernel->handle($request); // Tout se passe ici
-$response->send();
-$kernel->terminate($request, $response);
-```
+### 2. `kernel.controller` (Resolution)
+*   **Event** : `ControllerEvent`.
+*   **Rôle** : Le `ControllerResolver` a trouvé le callable (Classe::Méthode) à appeler. C'est le moment de modifier ce choix ou d'initialiser le contrôleur.
+*   **Acteurs** : `ParamConverter` (préparation), `@IsGranted` checks.
 
-## Points de vigilance (Certification)
-*   **Ordre** : Connaître l'ordre exact des événements est **crucial** pour la certification.
-    *   Request -> Controller -> ControllerArguments -> (Controller execution) -> View (si besoin) -> Response -> Terminate.
-*   **Exceptions** : Si une exception est lancée à n'importe quel moment, l'événement `kernel.exception` est dispatché pour tenter de créer une réponse d'erreur.
+### 3. `kernel.controller_arguments` (Arguments)
+*   **Event** : `ControllerArgumentsEvent`.
+*   **Rôle** : Le `ArgumentResolver` calcule les valeurs à passer à la méthode (Autowiring services, Entity via ID, Request, UserInterface).
+*   **Acteurs** : `EntityValueResolver`, `ServiceValueResolver`.
+
+### 4. Exécution du Contrôleur (The Core)
+*   Le Kernel appelle `$controller(...$arguments)`.
+*   C'est **votre** code.
+
+### 5. `kernel.view` (Post-Processing - Optionnel)
+*   **Event** : `ViewEvent`.
+*   **Quand** : UNIQUEMENT si le contrôleur ne retourne PAS une `Response`.
+*   **Rôle** : Transformer le résultat brut en Response.
+*   **Acteurs** : API Platform (s'active ici pour sérialiser l'objet retourné en JSON/LD). Si non géré, le Kernel lance une erreur "Controller must return a Response".
+
+### 6. `kernel.response` (Late Stage)
+*   **Event** : `ResponseEvent`.
+*   **Rôle** : Modification globale de la réponse.
+*   **Acteurs** :
+    *   `WebDebugToolbarListener` : Injecte la barre de debug (en dev).
+    *   `ContextListener` (Security) : Sauvegarde l'utilisateur en session.
+    *   `ResponseListener` : Fixe le charset et le Content-Type.
+    *   Ajout de cookies, compression Gzip, Headers CORS.
+
+### 7. `kernel.finish_request` (Cleanup)
+*   **Event** : `FinishRequestEvent`.
+*   **Rôle** : Reset de l'état global (ex: Translator locale) pour ne pas polluer la requête suivante (ou la requête parente dans le cas d'une sous-requête).
+
+### 8. `kernel.terminate` (Post-Send)
+*   **Event** : `TerminateEvent`.
+*   **Quand** : APRES `$response->send()`. L'utilisateur a déjà sa page.
+*   **Rôle** : Tâches lourdes non-bloquantes pour l'user.
+*   **Acteurs** : Envoi d'emails (si spool mémoire), Logs.
+
+## 🧠 Concepts Clés
+1.  **Resolver** :
+    *   `ControllerResolverInterface` : `Request` -> `callable`.
+    *   `ArgumentResolverInterface` : `Request` + `callable` -> `array arguments`.
+2.  **Sub-Requests** : Les événements sont dispatchés pour la requête principale (`MAIN_REQUEST`) ET les sous-requêtes (`SUB_REQUEST`, ex: `{{ render() }}`). La plupart des listeners doivent vérifier `$event->isMainRequest()` pour ne pas s'exécuter inutilement sur les fragments.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Exception** : Si une exception survient n'importe quand, on saute à `kernel.exception`.
+*   **Ordre** : Request -> Controller -> Arguments -> View -> Response -> Terminate.
+*   **Type-Hinting** : Pour créer un ArgumentResolver personnalisé (ex: injecter `UserDTO $user` automatiquement), il faut implémenter `ValueResolverInterface` (depuis Symfony 6.2, remplace `ArgumentValueResolverInterface`).
 
 ## Ressources
-*   [Symfony Docs - The HttpKernel Component](https://symfony.com/doc/current/components/http_kernel.html)
-
+*   [Symfony HttpKernel Component](https://symfony.com/doc/current/components/http_kernel.html)
+*   [The HttpKernel Events](https://symfony.com/doc/current/reference/events.html#http-kernel-events)

@@ -1,11 +1,16 @@
-# Devinette de la Locale (Locale Guessing)
+# Internationalisation (i18n) du Routage
 
 ## Concept clé
-Le routeur ne "devine" pas la locale tout seul, mais il permet de la gérer proprement.
-Le pattern recommandé est de préfixer les URLs par `/{_locale}`.
+Pour le SEO et l'UX, on veut souvent traduire les URLs :
+*   `/en/about-us`
+*   `/fr/a-propos`
 
-## Application dans Symfony 7.0
-Si vous configurez une route avec `path: /{_locale}/...`, le paramètre spécial `_locale` sera automatiquement utilisé pour définir la locale de la requête (`$request->setLocale()`) très tôt dans le processus.
+Symfony gère cela nativement via l'attribut `_locale`.
+
+## Stratégies
+
+### 1. Préfixe Global (Recommandé)
+Toutes les URLs commencent par la locale.
 
 ```yaml
 # config/routes.yaml
@@ -16,12 +21,29 @@ controllers:
     requirements:
         _locale: en|fr|de
 ```
+Symfony détecte `{_locale}`, configure la requête, et le service Translator.
 
-Pour la racine `/`, on crée souvent une route sans locale qui redirige vers la locale par défaut ou devinée (voir section HTTP - Détection de langue).
+### 2. URLs Traduites (Localized Paths)
+On peut définir un path différent par locale pour la **même** route.
 
-## Points de vigilance (Certification)
-*   **Sticky Locale** : Le routeur met à jour la locale de la requête, qui est ensuite utilisée par le service Translator.
+```php
+#[Route(path: [
+    'en' => '/about-us',
+    'fr' => '/a-propos',
+    'de' => '/ueber-uns'
+], name: 'about')]
+public function about(): Response { ... }
+```
+Lors de la génération `path('about')`, Symfony choisit automatiquement le bon path selon la locale courante.
+
+## 🧠 Concepts Clés
+1.  **Sticky Locale** : Une fois le paramètre `_locale` identifié dans la route, il est stocké dans le contexte du routeur.
+    *   Si je suis sur `/fr/blog`, générer un lien vers `path('contact')` générera `/fr/contact` automatiquement, sans avoir à repasser `{_locale: 'fr'}`.
+2.  **Locale par défaut** : Si l'URL ne contient pas de locale, Symfony utilise `framework.default_locale`.
+
+## ⚠️ Points de vigilance (Certification)
+*   **JMSI18nRoutingBundle** : C'était la solution standard en Symfony 2/3. C'est obsolète. Symfony gère tout nativement maintenant.
+*   **Doublons** : Si vous avez `/about` (sans locale) et `/en/about`, attention au Duplicate Content SEO. Redirigez toujours la racine vers la version localisée si nécessaire.
 
 ## Ressources
 *   [Symfony Docs - Localized Routes](https://symfony.com/doc/current/routing.html#localized-routes-i18n)
-

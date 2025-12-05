@@ -1,32 +1,48 @@
-# Portées de Validation (Validation Scopes)
+# Portée de Validation (Validation Scopes - Cascade)
 
 ## Concept clé
-La validation ne se limite pas à une seule classe. Elle peut "cascader" sur les objets liés (Relations).
-Si un `Article` contient un auteur `User`, valider l'article doit-il valider l'auteur ?
+Par défaut, la validation ne traverse **pas** les objets.
+Si vous avez un objet `Order` qui contient un objet `Address`, valider `Order` ne validera pas les contraintes à l'intérieur de `Address` (comme le code postal), sauf si vous le demandez explicitement.
 
-## Application dans Symfony 7.0
-Utilisation de la contrainte `Valid`.
+## La Contrainte `Valid`
+Pour activer la "Cascade de validation", il faut utiliser la contrainte spéciale `#[Assert\Valid]`.
 
 ```php
 class Order
 {
+    #[Assert\NotBlank]
+    public string $reference;
+
+    // Dit au validateur : "Rentre dans cet objet et valide-le aussi"
     #[Assert\Valid]
-    private Address $shippingAddress;
+    public Address $shippingAddress;
+    
+    // Fonctionne aussi sur les collections (array/ArrayCollection)
+    // Valide chaque item Product de la liste
+    #[Assert\Valid]
+    public array $products = [];
 }
 
 class Address
 {
     #[Assert\NotBlank]
-    private string $city;
+    public string $city;
 }
 ```
 
-Quand on valide `Order`, le validateur voit `#[Assert\Valid]`, descend dans l'objet `shippingAddress`, et valide ses contraintes (`city`). Sans cela, seule la présence de l'objet Address serait validée (si `NotNull` est présent), mais pas son contenu.
+## Gestion des Groupes en Cascade
+Si vous validez `Order` avec le groupe `registration`, Symfony essaiera de valider `Address` avec le groupe `registration` aussi.
+Si `Address` n'a pas de contraintes dans ce groupe, rien ne sera validé.
 
-## Points de vigilance (Certification)
-*   **Circularité** : Le validateur gère les références circulaires (A -> B -> A) pour ne pas boucler à l'infini.
-*   **Traversable** : Fonctionne aussi sur les collections (tableaux d'objets). `#[Assert\Valid]` sur `private array $items` validera chaque item.
+Si vous voulez mapper les groupes (ex: valider `Order` en `Default` doit déclencher `Address` en `Strict`), utilisez l'option `traverse` (complexe et rare).
+
+## 🧠 Concepts Clés
+1.  **Profondeur** : La validation descend récursivement dans l'arbre d'objets tant qu'elle rencontre `#[Valid]`.
+2.  **Circularité** : Le composant Validator détecte et gère les références circulaires (A -> B -> A) pour éviter les boucles infinies.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Oubli** : C'est la source d'erreur #1. "J'ai mis `@NotBlank` dans `Address` mais ça ne marche pas !". Réponse : Avez-vous mis `@Valid` sur la propriété `$address` dans la classe parente ?
+*   **Formulaires** : Le composant Form ajoute automatiquement `#[Valid]` si vous imbriquez des formulaires (`options['cascade_validation']` qui est true par défaut sur les enfants). Mais pour la validation d'objets purs (API/DTO), il faut l'ajouter manuellement.
 
 ## Ressources
 *   [Symfony Docs - Valid Constraint](https://symfony.com/doc/current/reference/constraints/Valid.html)
-

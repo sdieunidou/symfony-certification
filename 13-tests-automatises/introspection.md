@@ -1,36 +1,48 @@
 # Introspection Request et Response
 
 ## Concept clé
-Après avoir fait une requête avec le client, on veut inspecter ce qui s'est passé.
+Les assertions de haut niveau (`assertResponseIsSuccessful`) ne suffisent pas toujours. Parfois, il faut inspecter les objets bruts `Request` et `Response` pour vérifier des headers, des cookies, ou du JSON complexe.
 
-## Application dans Symfony 7.0
+## Accès via le Client
 
 ```php
-$client->request('GET', '/');
+$client->request('GET', '/api/me');
 
-// La requête envoyée (Symfony\Component\HttpFoundation\Request)
+/** @var \Symfony\Component\HttpFoundation\Request $request */
 $request = $client->getRequest();
-echo $request->getUri();
 
-// La réponse reçue (Symfony\Component\HttpFoundation\Response)
+/** @var \Symfony\Component\HttpFoundation\Response $response */
 $response = $client->getResponse();
-echo $response->getStatusCode();
-echo $response->headers->get('Content-Type');
 ```
 
-### Assertions pratiques
-Plutôt que d'inspecter manuellement :
+## Inspection
+
+### Response
 ```php
-$this->assertResponseIsSuccessful(); // 2xx
-$this->assertResponseStatusCodeSame(404);
-$this->assertResponseRedirects('/login');
-$this->assertResponseHeaderSame('Content-Type', 'application/json');
-$this->assertResponseHasCookie('PHPSESSID');
+// Code statut
+$this->assertEquals(200, $response->getStatusCode());
+
+// Headers
+$this->assertTrue($response->headers->contains('Content-Type', 'application/json'));
+
+// Contenu (Body)
+$content = $response->getContent();
+$json = json_decode($content, true);
+$this->assertEquals('fabien', $json['username']);
 ```
 
-## Points de vigilance (Certification)
-*   **Type** : `$client->getResponse()` retourne la réponse *brute* (avant qu'elle soit envoyée au navigateur). C'est utile pour tester le contenu binaire ou JSON sans passer par le Crawler.
+### Request
+Utile pour vérifier ce que le client a réellement envoyé (ex: après une redirection ou un submitForm).
+```php
+$this->assertEquals('POST', $request->getMethod());
+```
+
+## 🧠 Concepts Clés
+1.  **État final** : `getResponse()` retourne la réponse de la **dernière** requête. Si `followRedirects` est true (défaut), c'est la réponse de la page finale après redirection. Pour inspecter la redirection elle-même (302), il faut désactiver `followRedirects`.
+2.  **Raw** : C'est la réponse brute, non parsée par le Crawler.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Interne** : `$client->getRequest()` retourne la requête interne de Symfony, pas celle d'Apache.
 
 ## Ressources
-*   [Symfony Docs - Test Assertions](https://symfony.com/doc/current/testing.html#troubleshooting-application-errors)
-
+*   [Symfony Docs - Testing](https://symfony.com/doc/current/testing.html)

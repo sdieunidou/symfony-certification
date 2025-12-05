@@ -1,35 +1,60 @@
 # Variables Globales
 
 ## Concept clé
-Certaines variables sont disponibles dans tous les templates sans avoir besoin de les passer depuis le contrôleur.
+Les variables globales sont injectées automatiquement dans **tous** les templates Twig.
+Elles évitent d'avoir à passer manuellement des données omniprésentes (User, Config, Request) depuis chaque contrôleur.
 
-## Application dans Symfony 7.0
-La variable globale la plus importante fournie par Symfony est `app`.
-C'est une instance de `Symfony\Bridge\Twig\AppVariable`.
+## La variable `app`
+Symfony injecte une variable `app` (instance de `AppVariable`) qui donne accès au contexte applicatif.
 
-### Propriétés de `app`
-*   `app.user` : L'utilisateur connecté (ou null).
+*   `app.user` : L'objet User connecté (ou `null`).
 *   `app.request` : L'objet Request courant.
 *   `app.session` : La session.
-*   `app.flashes` : Les messages flash.
-*   `app.environment` : L'environnement (dev, prod).
-*   `app.debug` : Booléen (mode debug).
+*   `app.flashes` : Les messages flash (consommés à la lecture).
+*   `app.environment` : L'environnement (ex: `dev`, `prod`).
+*   `app.debug` : Booléen (mode debug actif ?).
 
-### Définir vos propres globales
-Dans `config/packages/twig.yaml` :
+Exemple :
+```twig
+{% if app.user %}
+    Bonjour {{ app.user.userIdentifier }}
+{% else %}
+    <a href="{{ path('login') }}">Connexion</a>
+{% endif %}
+
+<body class="{{ app.environment }}">
+```
+
+## Définir vos propres globales
+Vous pouvez définir des variables statiques ou des services comme globales dans `config/packages/twig.yaml`.
 
 ```yaml
 twig:
     globals:
-        admin_email: 'admin@example.com'
-        # Service injection (préfixe @)
-        uuid_generator: '@App\Service\UuidGenerator'
+        # Valeur scalaire
+        admin_email: 'contact@monsite.com'
+        
+        # Paramètre de service (via %...%)
+        ga_tracking_id: '%ga_tracking_id%'
+        
+        # Service complet (via @...)
+        # Attention à la performance : le service sera instancié à chaque page !
+        cart_manager: '@App\Service\CartManager'
 ```
 
-## Points de vigilance (Certification)
-*   **Performance** : Les globales définies dans `twig.yaml` sont injectées dans tous les templates. Évitez d'injecter des services lourds s'ils ne sont pas utilisés partout.
-*   **Accès** : `app.user` retourne l'objet User (UserInterface). Si non connecté, c'est `null`. Toujours vérifier `{% if app.user %}`.
+Usage :
+```twig
+<a href="mailto:{{ admin_email }}">Contact</a>
+Total panier : {{ cart_manager.total }} €
+```
+
+## 🧠 Concepts Clés
+1.  **Injection** : Les globales sont injectées avant le rendu du template.
+2.  **Contexte** : Elles sont disponibles partout, y compris dans les templates inclus ou étendus.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Performance** : Injecter un service lourd comme globale est une mauvaise pratique car il sera instancié sur toutes les pages (même une page d'erreur 404 ou une page statique). Préférez un Rendu de Contrôleur ou une Extension Twig (Lazy loading) pour les besoins dynamiques globaux.
+*   **Surcharge** : Si vous passez une variable depuis le contrôleur avec le même nom qu'une globale (ex: `user`), la variable du contrôleur **écrase** la globale.
 
 ## Ressources
 *   [Symfony Docs - Global Variables](https://symfony.com/doc/current/templates.html#global-variables)
-

@@ -1,34 +1,60 @@
 # Autorisation (AuthZ)
 
 ## Concept clé
-L'autorisation répond à la question : **"Avez-vous le droit de faire ça ?"**.
-Elle intervient *après* l'authentification (ou pendant, si l'action est publique).
-
-## Application dans Symfony 7.0
+Une fois authentifié (Qui ?), l'autorisation détermine les droits (Quoi ?).
 Le service central est `AuthorizationCheckerInterface`.
 
-La décision se base sur :
-1.  **Attributs** : Ce qu'on vérifie (ex: `ROLE_ADMIN`, `ARTICLE_EDIT`).
-2.  **Sujet** : L'objet sur lequel on agit (ex: `$article`).
-3.  **Utilisateur** : Celui qui demande l'accès (récupéré du TokenStorage).
+## Mécanismes de Vérification
 
-### Vérification dans le code
+### 1. Contrôleur (`AbstractController`)
 ```php
-// Contrôleur
 $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
-// Service
-if ($this->authChecker->isGranted('ARTICLE_EDIT', $article)) { ... }
-
-// Twig
-{% if is_granted('ROLE_ADMIN') %} ... {% endif %}
+$this->denyAccessUnlessGranted('POST_EDIT', $post); // Voter
 ```
 
-## Points de vigilance (Certification)
-*   **Roles** : Un rôle est une chaîne commençant par `ROLE_`. C'est le niveau d'autorisation le plus basique.
-*   **Voters** : Pour des règles complexes (ex: "Je peux éditer si je suis l'auteur"), on utilise des Voters.
-*   **AccessDecisionManager** : Le service qui orchestre les voters (stratégie `affirmative` par défaut : il suffit d'un voter qui dit OUI).
+### 2. Service (Injection)
+```php
+public function __construct(
+    private AuthorizationCheckerInterface $authChecker
+) {}
+
+public function edit(Post $post)
+{
+    if (!$this->authChecker->isGranted('POST_EDIT', $post)) {
+        throw new AccessDeniedException();
+    }
+}
+```
+
+### 3. Attributs PHP (`#[IsGranted]`) - Recommandé
+Déclaratif et propre.
+
+```php
+#[IsGranted('ROLE_ADMIN')]
+class AdminController extends AbstractController
+{
+    #[IsGranted('POST_EDIT', subject: 'post')]
+    public function edit(Post $post): Response { ... }
+}
+```
+
+## Access Decision Manager
+C'est le cerveau qui prend la décision finale en consultant tous les **Voters**.
+Stratégies de vote (config `security.access_decision_manager.strategy`) :
+1.  **affirmative** (Défaut) : Accès accordé dès qu'un voter dit OUI.
+2.  **consensus** : La majorité l'emporte.
+3.  **unanimous** : Tous les voters (qui ne s'abstiennent pas) doivent dire OUI.
+4.  **priority** : Le premier voter (selon priorité service) décide.
+
+## 🧠 Concepts Clés
+1.  **RoleVoter** : Un voter natif qui vérifie les chaînes commençant par `ROLE_`.
+2.  **AuthenticatedVoter** : Gère `IS_AUTHENTICATED_FULLY`, `IS_AUTHENTICATED_REMEMBERED`, `PUBLIC_ACCESS`.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Subject** : L'attribut `#[IsGranted]` sur une méthode peut automatiquement résoudre le sujet (ex: l'argument `$post`) si le nom correspond.
+*   **Exception** : Si l'accès est refusé :
+    *   Si connecté : `AccessDeniedException` (403).
+    *   Si pas connecté : `AuthenticationException` (Redirection vers Login).
 
 ## Ressources
 *   [Symfony Docs - Authorization](https://symfony.com/doc/current/security.html#authorization-denying-access)
-

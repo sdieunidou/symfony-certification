@@ -1,49 +1,55 @@
-# L'objet Request dans le Contrôleur
+# L'objet Request (Usage Contrôleur)
 
 ## Concept clé
-L'accès à la requête HTTP courante se fait par Injection de Dépendance dans la méthode du contrôleur.
+Dans un contrôleur, l'objet `Request` est votre fenêtre sur les données envoyées par le client.
+Il est injecté par type-hint : `public function index(Request $request)`.
 
-## Application dans Symfony 7.0
-Il suffit de typer un argument avec `Symfony\Component\HttpFoundation\Request`.
+## Récupération des Données (Les "Bags")
 
-## Exemple de code
+| Propriété | Source PHP | Usage |
+| :--- | :--- | :--- |
+| `$request->query` | `$_GET` | Paramètres d'URL (`?page=1`). |
+| `$request->request` | `$_POST` | Données de formulaire. |
+| `$request->files` | `$_FILES` | Fichiers uploadés. |
+| `$request->cookies` | `$_COOKIE` | Cookies client. |
+| `$request->headers` | `$_SERVER` | En-têtes HTTP (`User-Agent`, `Content-Type`). |
+| `$request->attributes`| (Symfony) | Paramètres de route (`{id}`), `_route`, etc. |
+| `$request->server` | `$_SERVER` | Variables serveur (`REMOTE_ADDR`). |
 
-```php
-<?php
+## Méthodes Utiles
 
-namespace App\Controller;
+### Typage (InputBag)
+Depuis Symfony 5+, `query`, `request` et `cookies` sont des `InputBag`.
+*   `$request->query->getInt('page', 1)` : Force en entier.
+*   `$request->query->getBoolean('ajax')` : Convertit 'true', '1', 'on' en `true`.
+*   `$request->query->getString('name')` : Force en string.
+*   `$request->query->getEnum('status', MyEnum::class)` (Symfony 6.3+).
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+### Contenu Brut (JSON API)
+Pour une API JSON, `$_POST` est vide.
+*   `$request->getContent()` : Chaîne JSON brute.
+*   `$request->toArray()` : Convertit le JSON en tableau PHP (lance une Exception si invalide).
 
-class SearchController extends AbstractController
-{
-    #[Route('/search')]
-    public function index(Request $request): Response
-    {
-        // Récupération des paramètres GET
-        $query = $request->query->get('q');
-        $page = $request->query->getInt('page', 1);
-        
-        // Vérification AJAX
-        if ($request->isXmlHttpRequest()) {
-            // ...
-        }
+### Infos Requête
+*   `$request->getMethod()` : 'GET', 'POST'...
+*   `$request->getClientIp()` : IP du client (gère les proxies si configuré).
+*   `$request->getPreferredLanguage(['en', 'fr'])`.
+*   `$request->isXmlHttpRequest()` : Vérifie header `X-Requested-With` (AJAX jQuery legacy). *Note: Moins utilisé avec `fetch` moderne qui n'envoie pas ce header par défaut.*
 
-        return $this->render('search/results.html.twig', [
-            'query' => $query
-        ]);
-    }
-}
-```
+## Attributs vs Paramètres
+Confusion classique :
+*   URL : `/product/123?sort=price`
+*   Route : `/product/{id}`
+*   `$request->attributes->get('id')` -> `123` (Routing)
+*   `$request->query->get('sort')` -> `price` (Query String)
 
-## Points de vigilance (Certification)
-*   **Argument Resolver** : C'est le composant `HttpKernel` (via `ArgumentResolver`) qui inspecte la signature de votre méthode, voit le type `Request`, et injecte l'objet requête courant.
-*   **Ordre** : L'ordre des arguments n'importe pas (sauf pour les paramètres de route optionnels qui doivent être à la fin ou correspondre aux noms).
-*   **ParamConverter** : Ne pas confondre l'injection de `Request` (native) avec les convertisseurs de paramètres (Entity) qui transforment un `id` en objet `User`.
+## 🧠 Concepts Clés
+1.  **Stateless** : L'objet Request est recréé à chaque requête.
+2.  **Immutabilité** : Ne modifiez pas l'objet Request manuellement (sauf cas très avancés). Considérez-le comme "Read-Only".
+
+## ⚠️ Points de vigilance (Certification)
+*   **Injection** : Ne jamais faire `new Request()` dans un contrôleur. Toujours l'injecter. `Request::createFromGlobals()` est réservé au Front Controller (`index.php`).
+*   **Session** : `$request->getSession()` démarre la session si nécessaire.
 
 ## Ressources
-*   [Symfony Docs - The Request Object](https://symfony.com/doc/current/controller.html#the-request-object-as-a-controller-argument)
-
+*   [Symfony Docs - Request](https://symfony.com/doc/current/components/http_foundation.html#accessing-request-data)

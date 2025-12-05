@@ -1,35 +1,65 @@
 # User Providers (Fournisseurs d'utilisateurs)
 
 ## Concept clé
-Le User Provider est le pont entre le système de sécurité et votre stockage d'utilisateurs (Base de données, LDAP, API, Fichier config, Mémoire).
-Son rôle unique : **Charger un utilisateur** (UserInterface) à partir d'un identifiant (email, username).
+Le User Provider est le composant "Lecture Seule" qui permet à Symfony de récupérer un utilisateur UserInterface à partir d'un identifiant (email, username, api_key).
+Il ne gère ni le mot de passe, ni l'authentification. Juste le chargement.
 
-## Application dans Symfony 7.0
-Le type le plus courant est `entity` (Doctrine).
+## Interface `UserProviderInterface`
+Trois méthodes obligatoires :
+1.  `loadUserByIdentifier(string $identifier): UserInterface` : Chargement initial (Login).
+2.  `refreshUser(UserInterface $user): UserInterface` : Rechargement à chaque requête (depuis la session).
+3.  `supportsClass(string $class): bool`.
+
+## Types de Providers
+
+### 1. Entity (Doctrine) - Le plus courant
+Charge l'utilisateur depuis la base de données.
 
 ```yaml
 providers:
-    # Provider Doctrine
     app_user_provider:
         entity:
             class: App\Entity\User
-            property: email
-            
-    # Provider Chaîné (Cherche dans A, puis B)
-    chain_provider:
-        chain:
-            providers: [in_memory_users, app_user_provider]
+            property: email # La colonne à chercher
 ```
 
-Il implémente `UserProviderInterface` :
-*   `loadUserByIdentifier(string $identifier)`
-*   `refreshUser(UserInterface $user)` : Recharger l'user depuis la session (vérifier s'il a changé).
-*   `supportsClass(string $class)`
+### 2. Memory (Static)
+Utile pour les tests ou un backend admin simple.
 
-## Points de vigilance (Certification)
-*   **User vs Provider** : Le Provider *trouve* l'utilisateur. L'Authenticator *vérifie* le mot de passe.
-*   **Refresh** : À chaque requête (si stateful), l'utilisateur est désérialisé de la session, puis le Provider est appelé (`refreshUser`) pour s'assurer qu'il existe toujours et est à jour (ex: rôle changé).
+```yaml
+providers:
+    admin_users:
+        memory:
+            users:
+                admin: { password: '...', roles: ['ROLE_ADMIN'] }
+```
+
+### 3. Chain (Chaîne)
+Combine plusieurs providers. Cherche dans le premier, puis le second...
+
+```yaml
+providers:
+    all_users:
+        chain:
+            providers: [admin_users, app_user_provider]
+```
+
+### 4. Custom (Service)
+Si vous chargez vos utilisateurs depuis une API externe.
+Créez une classe qui implémente `UserProviderInterface` et configurez-la :
+```yaml
+providers:
+    my_api_provider:
+        id: App\Security\ApiUserProvider
+```
+
+## 🧠 Concepts Clés
+1.  **Refresh User** : C'est une sécurité. À chaque requête, Symfony prend l'ID de l'utilisateur stocké en session, et demande au Provider de le recharger (`refreshUser`). Si l'utilisateur a été supprimé ou si ses données critiques ont changé (mot de passe), il est déconnecté.
+2.  **Identifier** : Depuis Symfony 5.3, `loadUserByUsername` est remplacé par `loadUserByIdentifier`.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Pourquoi Refresh ?** : Pour garantir que l'utilisateur en session est toujours à jour (rôles, état bloqué) par rapport à la DB.
+*   **Stateless** : Si votre firewall est `stateless: true`, `refreshUser` n'est jamais appelé (car pas de session).
 
 ## Ressources
 *   [Symfony Docs - User Providers](https://symfony.com/doc/current/security/user_provider.html)
-

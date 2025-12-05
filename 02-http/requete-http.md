@@ -1,64 +1,72 @@
-# Requête HTTP
+# Requête HTTP (Request)
 
 ## Concept clé
-Une requête HTTP est un message texte envoyé par le client contenant :
-1.  **Ligne de requête** : Méthode (GET, POST...), URI (`/path?query=1`), Version HTTP (HTTP/1.1).
-2.  **En-têtes (Headers)** : Métadonnées (Host, User-Agent, Content-Type, Accept...).
-3.  **Corps (Body)** : Données optionnelles (JSON, XML, Form data), séparé des en-têtes par une ligne vide.
+L'objet `Request` est une représentation orientée objet de la requête HTTP entrante et de l'environnement serveur. Il encapsule les superglobales PHP (`$_GET`, `$_POST`, etc.) qui ne doivent **jamais** être utilisées directement dans Symfony.
 
-## Application dans Symfony 7.0
-Le composant `HttpFoundation` fournit l'objet `Request`.
-Il normalise l'accès aux superglobales PHP (`$_GET`, `$_POST`, `$_COOKIE`, `$_FILES`, `$_SERVER`).
+## Anatomie de l'objet Request
 
-L'objet `Request` possède des propriétés publiques ("ParameterBags") pour accéder aux données :
-*   `$request->query` : Paramètres d'URL (`$_GET`)
-*   `$request->request` : Paramètres POST (`$_POST`)
-*   `$request->attributes` : Attributs de routage (paramètres d'URL parsés comme `{id}`) et données internes.
-*   `$request->cookies` : Cookies (`$_COOKIE`)
-*   `$request->files` : Fichiers uploadés (`$_FILES`)
-*   `$request->server` : Variables serveur (`$_SERVER`)
-*   `$request->headers` : En-têtes HTTP (dérivé de `$_SERVER`)
+L'objet contient plusieurs "Sacs" (ParameterBags) publics :
+1.  `$request->query` (`$_GET`) : Paramètres d'URL.
+2.  `$request->request` (`$_POST`) : Paramètres du corps de requête (Formulaire).
+3.  `$request->attributes` : **Spécifique Symfony**. Stocke les résultats du Routing (`_route`, `id`), de la Sécurité, et vos données custom.
+4.  `$request->cookies` (`$_COOKIE`).
+5.  `$request->files` (`$_FILES`) : Objets `UploadedFile`.
+6.  `$request->server` (`$_SERVER`) et `$request->headers`.
 
-## Exemple de code
+## Trusted Proxies (Indispensable en Prod)
+Dans une architecture moderne, Symfony est souvent derrière un Load Balancer (AWS ELB, Cloudflare, Nginx Reverse Proxy).
+La requête arrive à Symfony depuis l'IP du Proxy (ex: `10.0.0.1`), pas du client réel.
+Le Proxy transmet l'IP réelle via des headers (`X-Forwarded-For`, `X-Forwarded-Proto`).
+
+Si vous ne configurez pas les **Trusted Proxies**, `$request->getClientIp()` renverra l'IP du proxy, et `$request->isSecure()` (HTTPS) renverra false.
 
 ```php
-<?php
-
-use Symfony\Component\HttpFoundation\Request;
-
-public function index(Request $request): Response
-{
-    // Lire un paramètre GET ?page=2
-    $page = $request->query->getInt('page', 1);
-
-    // Lire un paramètre POST
-    $token = $request->request->get('_token');
-
-    // Lire un header (insensible à la casse)
-    $userAgent = $request->headers->get('User-Agent');
-
-    // Lire le contenu brut (Body) pour une API JSON
-    $content = $request->getContent();
-    $data = $request->toArray(); // Helper Symfony pour décoder le JSON (si content-type json)
-
-    // Vérifier la méthode
-    if ($request->isMethod('POST')) {
-        // ...
-    }
-    
-    // Récupérer l'IP client
-    $ip = $request->getClientIp();
-    
-    return new Response('...');
-}
+// config/packages/framework.yaml
+framework:
+    # Faire confiance à tous les proxies (si dans conteneur isolé) ou liste d'IPs
+    trusted_proxies: '127.0.0.1,10.0.0.0/8' 
+    trusted_headers: ['x-forwarded-for', 'x-forwarded-proto', ...]
 ```
 
-## Points de vigilance (Certification)
-*   **Priorité** : Ne jamais utiliser `$_GET` ou `$_POST` directement dans Symfony. Utiliser l'objet `Request`.
-*   **Attributes** : `$request->attributes` est le seul "sac" modifiable par le framework (pour stocker les paramètres de route `_route`, `_controller`, `id`, etc.).
-*   **getContent()** : Permet de lire le flux `php://input`. Ne peut être lu qu'une seule fois en PHP natif, mais Symfony met en cache le contenu pour permettre des lectures multiples.
-*   **Override** : La méthode `enableHttpMethodParameterOverride()` permet de simuler des méthodes PUT/DELETE via un champ caché `_method` dans un formulaire POST (utile car les formulaires HTML ne supportent que GET et POST).
+## InputBag et Typage (PHP 8)
+Depuis Symfony 5/6, `query`, `request` et `cookies` sont des `InputBag`. Ils permettent de récupérer des valeurs typées, ce qui est plus sûr.
+
+```php
+// Récupère un entier (transtypage auto). Renvoie 1 par défaut.
+$page = $request->query->getInt('page', 1);
+
+// Récupère une string (force le type)
+$name = $request->request->getString('name');
+
+// Récupère un booléen
+$isAjax = $request->query->getBoolean('ajax');
+
+// Récupère un Enum (Symfony 6.3+ / PHP 8.1)
+$status = $request->query->getEnum('status', App\Enum\Status::class);
+```
+
+## Formats et Contenu Brut
+Pour les APIs JSON, les données ne sont pas dans `$_POST`. Elles sont dans le corps brut.
+
+```php
+// Lire le JSON brut
+$content = $request->getContent();
+
+// Helper Symfony (convertit JSON en Array)
+// Lance une Exception si JSON invalide
+$data = $request->toArray(); 
+```
+
+## 🧠 Concepts Clés
+1.  **Immutabilité** : L'objet Request est mutable (on peut modifier les attributes), mais il est conceptuellement préférable de le traiter comme immuable.
+2.  **Host Matching** : On peut récupérer le host (`$request->getHost()`) pour faire du routing par sous-domaine.
+3.  **Request Format** : `$request->getRequestFormat()` déduit le format (json, html) de l'extension d'URL ou du header Accept (voir Négociation de Contenu).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Paramètres vs Attributs** : Ne confondez pas `$request->query->get('id')` (le `?id=1` dans l'URL) et `$request->attributes->get('id')` (le `{id}` de la route `/product/{id}`). Le Routing remplit `attributes`.
+*   **Override Globals** : `Request::createFromGlobals()` initialise la requête. Symfony le fait dans `public/index.php`. Mais Symfony ne *modifie pas* les globales PHP (contrairement à certaines vieilles librairies).
+*   **Session** : La session n'est pas un Bag direct de la Request. On y accède via `$request->getSession()`. Attention : cela démarre la session si elle ne l'est pas. Si vous êtes en API Stateless (JWT), n'appelez jamais `getSession()`.
 
 ## Ressources
-*   [Symfony Docs - The Request Object](https://symfony.com/doc/current/components/http_foundation.html#request)
-
+*   [Symfony Docs - Request](https://symfony.com/doc/current/components/http_foundation.html#request)
+*   [Trusted Proxies Configuration](https://symfony.com/doc/current/deployment/proxies.html)

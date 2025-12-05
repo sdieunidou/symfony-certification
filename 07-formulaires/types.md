@@ -1,38 +1,71 @@
-# Types de Formulaires (AbstractType)
+# Création de Types Personnalisés (Custom Types)
 
 ## Concept clé
-Tout champ de formulaire est un "Type". Votre formulaire global est aussi un "Type" (Composite).
-Chaque Type définit :
-1.  **BuildForm** : Quels champs il contient (enfants).
-2.  **BuildView** : Comment passer les variables à la vue (Twig).
-3.  **ConfigureOptions** : Les options par défaut (`label`, `required`, etc.).
-4.  **Parent** : De quoi il hérite (par défaut `FormType`).
+Si vous réutilisez souvent la même configuration de champ (ex: un sélecteur de code postal, un éditeur WYSIWYG), ou si vous avez besoin d'un comportement complexe (DataTransformer intégré), créez un **Custom Form Type**.
 
-## Application dans Symfony 7.0
-Créer un Type personnalisé pour un champ complexe (ex: `ColorPickerType`).
+## Structure d'un Type
 
 ```php
-class ColorPickerType extends AbstractType
+namespace App\Form\Type;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
+
+class ZipCodeType extends AbstractType
 {
+    // 1. Héritage (Parent)
     public function getParent(): string
     {
-        // Hérite de TextType (se comportera comme un champ texte)
-        return TextType::class;
+        return TextType::class; // Se comporte comme un TextType
     }
-    
+
+    // 2. Options par défaut
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'attr' => ['class' => 'color-picker'],
+            'attr' => ['class' => 'zip-code-input'],
+            'help' => 'Format: 5 chiffres',
         ]);
+    }
+    
+    // 3. Logique (DataTransformers / Listeners)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        // $builder->addModelTransformer(...)
+    }
+
+    // 4. Passage de variables à la vue (Twig)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
+    {
+        // Ajoute une variable {{ is_metropolitan }} au template du widget
+        $view->vars['is_metropolitan'] = true; 
     }
 }
 ```
 
-## Points de vigilance (Certification)
-*   **Extension** : Ne pas confondre "Créer un Type personnalisé" (nouvelle classe) et "Créer une Extension de Type" (modifier un type existant partout).
-*   **Nom** : Le nom du bloc Twig associé (`_color_picker_widget`) est dérivé du nom de la classe (snake case sans "Type").
+## Nom du Bloc (Block Prefix)
+Par défaut, le nom du bloc pour le theming est dérivé du nom de la classe.
+`App\Form\Type\ZipCodeType` -> `zip_code` (snake case sans "Type").
+Bloc Twig associé : `zip_code_widget`.
+
+Vous pouvez le forcer :
+```php
+public function getBlockPrefix(): string
+{
+    return 'mon_code_postal';
+}
+```
+
+## 🧠 Concepts Clés
+1.  **Composition** : Un Custom Type peut être simple (hérite de `TextType`) ou composite (hérite de `FormType` et ajoute plusieurs sous-champs via `buildForm`, comme `AddressType` qui a rue, ville, zip).
+2.  **Service** : Les types sont des services. Vous pouvez injecter l'`EntityManager` ou le `RequestStack` dans le constructeur.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Parent** : Si vous ne définissez pas `getParent()`, il hérite de `FormType` par défaut (le type de base composite). Si vous voulez juste styliser un champ texte, n'oubliez pas de retourner `TextType::class`.
 
 ## Ressources
-*   [Symfony Docs - Custom Types](https://symfony.com/doc/current/form/create_custom_field_type.html)
-
+*   [Symfony Docs - Creating Custom Types](https://symfony.com/doc/current/form/create_custom_field_type.html)

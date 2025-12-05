@@ -1,32 +1,58 @@
-# Configuration Sémantique
+# Configuration Sémantique (Bundles)
 
 ## Concept clé
-Permet de définir une configuration DSL (Domain Specific Language) pour un Bundle, qui sera validée et transformée avant d'être injectée dans le conteneur. C'est ce qui permet d'écrire `framework: { secret: '...' }` dans `config/packages/framework.yaml`.
+La Configuration Sémantique est le mécanisme qui permet aux Bundles d'exposer une configuration claire et validée aux utilisateurs (`config/packages/acme_demo.yaml`).
+Elle transforme cette config utilisateur (YAML) en définitions de services valides.
 
-## Application dans Symfony 7.0
-Utilisée principalement lors de la création de Bundles réutilisables.
-Deux classes clés :
-1.  `Configuration` (implémente `ConfigurationInterface`) : Définit l'arbre de configuration (TreeBuilder).
-2.  `Extension` (étend `Extension`) : Charge la config, la processe, et définit les services.
+## Les 2 Composants
 
-### Exemple (TreeBuilder)
+### 1. La classe `Configuration`
+Implements `ConfigurationInterface`. Définit la structure (Schema) via le `TreeBuilder`.
+
 ```php
 public function getConfigTreeBuilder(): TreeBuilder
 {
-    $treeBuilder = new TreeBuilder('acme_social');
-    $treeBuilder->getRootNode()
+    $treeBuilder = new TreeBuilder('acme_demo');
+    $rootNode = $treeBuilder->getRootNode();
+
+    $rootNode
         ->children()
-            ->scalarNode('twitter_api_key')->isRequired()->end()
-            ->booleanNode('enable_logging')->defaultFalse()->end()
+            ->booleanNode('enabled')->defaultTrue()->end()
+            ->scalarNode('api_key')->isRequired()->cannotBeEmpty()->end()
+            ->arrayNode('servers')
+                ->scalarPrototype()->end()
+            ->end()
         ->end();
+
     return $treeBuilder;
 }
 ```
 
-## Points de vigilance (Certification)
-*   **Extension** : La classe Extension doit se trouver dans le sous-namespace `DependencyInjection`.
-*   **Prepend** : L'interface `PrependExtensionInterface` permet à un bundle de configurer d'autres bundles (ex: DoctrineBundle configure TwigBundle).
+### 2. L'Extension DI (`DependencyInjection\AcmeDemoExtension`)
+Charge la config, la valide avec la classe `Configuration`, et manipule le conteneur.
+
+```php
+public function load(array $configs, ContainerBuilder $container): void
+{
+    $configuration = new Configuration();
+    $config = $this->processConfiguration($configuration, $configs);
+
+    // $config contient le tableau validé (ex: ['enabled' => true, 'api_key' => '...'])
+    
+    // On peut définir des paramètres ou charger des services
+    $container->setParameter('acme_demo.api_key', $config['api_key']);
+    
+    $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+    $loader->load('services.yaml');
+}
+```
+
+## 🧠 Concepts Clés
+1.  **Validation** : Le `Config` component valide les types, les champs requis, les valeurs par défaut. Si l'utilisateur fait une erreur dans son YAML, il a un message d'erreur précis ("The child node 'api_key' at path 'acme_demo' must be configured").
+2.  **Extension** : C'est le pont entre la config utilisateur et le conteneur. Elle est chargée automatiquement par le Kernel si elle suit les conventions de nommage.
+
+## ⚠️ Points de vigilance (Certification)
+*   **PrependExtensionInterface** : Permet à un bundle de configurer un *autre* bundle avant le chargement. (Ex: DoctrineBundle configure TwigBundle pour ajouter des variables globales).
 
 ## Ressources
-*   [Symfony Docs - Defining and Processing Configuration](https://symfony.com/doc/current/components/config/definition.html)
-
+*   [Symfony Docs - Bundle Configuration](https://symfony.com/doc/current/components/config/definition.html)

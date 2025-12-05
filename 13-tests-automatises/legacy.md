@@ -1,32 +1,36 @@
-# Gestion du Code Déprécié (Tests)
+# Gestion du Code Déprécié (Legacy Tests)
 
 ## Concept clé
-Comment tester une application qui génère des dépréciations sans que les tests n'échouent (ou au contraire, pour s'assurer qu'on n'en génère pas) ?
+Un test bien écrit doit non seulement vérifier que le code fonctionne, mais aussi qu'il n'utilise pas de fonctionnalités dépréciées (pour préparer l'avenir).
+À l'inverse, si vous testez une fonctionnalité legacy que vous maintenez, vous devez pouvoir dire "Je sais que c'est déprécié, c'est normal".
 
-## Application dans Symfony 7.0
-Le `SYMFONY_DEPRECATIONS_HELPER` variable d'environnement contrôle ce comportement.
+## `expectDeprecation()`
+Le trait `Symfony\Bridge\PhpUnit\ExpectDeprecationTrait` permet d'asserter qu'un appel va générer une dépréciation spécifique.
 
-*   `disabled=1` : Ignore tout.
-*   `max[total]=999` : Tolère 999 dépréciations.
-*   `max[self]=0` : Tolère 0 dépréciation dans VOTRE code (src/), mais ignore les vendors. (Recommandé).
-*   `weak` : Affiche les dépréciations mais ne fait pas échouer les tests.
-
-### Tester une dépréciation attendue
-Si vous écrivez une librairie et que vous voulez tester qu'une méthode déclenche bien une dépréciation (pour prévenir vos utilisateurs) :
 ```php
-/**
- * @group legacy
- */
-public function testLegacyFeature(): void
+public function testLegacyFunction(): void
 {
-    $this->expectDeprecation('Since my-lib 1.0: Use newMethod() instead.');
-    $myObject->oldMethod();
+    $this->expectDeprecation('Since my-package 1.2: The "foo()" method is deprecated, use "bar()" instead.');
+    
+    $myObject->foo(); // Si foo() ne déclenche pas la dépréciation, le test échoue.
 }
 ```
 
-## Points de vigilance (Certification)
-*   **@group legacy** : Marquer un test comme legacy permet au Bridge de savoir que ce test a le droit de générer des dépréciations.
+## Groupe `@group legacy`
+Si un test utilise du code déprécié mais que vous ne voulez pas utiliser `expectDeprecation` (ou qu'il y en a trop), marquez le test avec l'annotation `@group legacy`.
+Le Bridge PHPUnit sera plus tolérant avec ces tests.
+
+## Configuration Globale (`SYMFONY_DEPRECATIONS_HELPER`)
+Variable d'environnement (dans `phpunit.xml`) pour contrôler la sévérité globale.
+*   `max[self]=0` : Aucune dépréciation tolérée dans votre code (`src/`), mais tolérance pour les bibliothèques tierces (`vendor/`). **C'est la configuration recommandée.**
+*   `disabled` : Désactive tout rapport.
+
+## 🧠 Concepts Clés
+1.  **Silence** : Le bridge rend les tests bruyants (rapports) pour vous forcer à agir.
+2.  **Trigger** : Votre code déclenche des dépréciations via `trigger_deprecation()`.
+
+## ⚠️ Points de vigilance (Certification)
+*   **Direct vs Indirect** : Le bridge distingue les dépréciations causées par votre code (Direct) de celles causées par des appels internes du framework (Indirect).
 
 ## Ressources
-*   [Symfony Docs - Testing Deprecations](https://symfony.com/doc/current/components/phpunit_bridge.html#configuration)
-
+*   [Symfony Docs - Deprecation Helper](https://symfony.com/doc/current/components/phpunit_bridge.html#configuration)

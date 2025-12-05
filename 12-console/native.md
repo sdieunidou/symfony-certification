@@ -1,34 +1,47 @@
-# Commandes Natives
+# Commandes Natives Indispensables
 
 ## Concept clé
-Symfony (et ses bundles) fournit de nombreuses commandes prêtes à l'emploi pour gérer l'application, le cache, la base de données, etc.
+Un développeur Symfony passe 30% de son temps dans le terminal. Connaître les commandes natives est vital pour la productivité et le débogage.
 
-## Application dans Symfony 7.0
-Toutes les commandes s'exécutent via `php bin/console`.
+## Général
+*   `php bin/console list` : Liste toutes les commandes.
+*   `php bin/console help [cmd]` : Affiche l'aide et les arguments d'une commande.
+*   `php bin/console about` : Infos sur l'environnement (Version Symfony/PHP, Kernel).
 
-### Commandes Indispensables
-*   `list` : Liste toutes les commandes disponibles.
-*   `help [cmd]` : Affiche l'aide d'une commande.
-*   `cache:clear` : Vide le cache (indispensable après déploiement).
-*   `cache:pool:clear` : Vide les pools de cache PSR-6.
-*   `router:match` : Débugge le routage.
-*   `debug:autowiring` : Liste les services autowirables.
-*   `debug:container` : Liste les services.
+## Cache & Config
+*   **`cache:clear`** : Vide le cache (et le warmup). Indispensable après déploiement ou changement de config.
+*   `cache:pool:clear` : Vide les pools de cache PSR-6 (Redis, Filesystem).
+*   `cache:warmup` : Prépare le cache (sans le vider avant).
+
+## Débogage (Debug Bundle)
+*   `debug:container` : Liste les services publics.
+*   `debug:autowiring` : Liste les types injectables (interfaces).
+*   `debug:router` : Liste les routes.
 *   `debug:event-dispatcher` : Liste les écouteurs.
-*   `secrets:set` : Gère les secrets chiffrés (Vault).
-*   `about` : Affiche les infos sur l'environnement actuel.
+*   `debug:config [bundle]` : Dump la configuration actuelle d'un bundle.
+*   `debug:twig` : Filtres/fonctions disponibles.
 
-### Doctrine
+## Développement (Maker Bundle)
+*   `make:controller`, `make:entity`, `make:form`, `make:command`, `make:migration`.
+
+## Base de données (Doctrine)
 *   `doctrine:database:create`
-*   `doctrine:migrations:diff` / `migrate`
+*   `doctrine:schema:update --force` (Dev uniquement !)
+*   `doctrine:migrations:diff` (Génère une migration)
+*   `doctrine:migrations:migrate` (Exécute les migrations)
 
-### Maker (Dev)
-*   `make:controller`, `make:entity`, `make:command`...
+## Qualité (Lint)
+*   `lint:yaml` : Vérifie la syntaxe des fichiers YAML.
+*   `lint:twig` : Vérifie la syntaxe des templates Twig.
+*   `lint:container` : Vérifie que les services injectés existent.
 
-## Points de vigilance (Certification)
-*   **Alias** : Certaines commandes ont des alias (ex: `debug:router` ou `router:debug`).
-*   **Environnement** : Par défaut, la console tourne en `APP_ENV=dev` (sauf si défini dans `.env` ou via `--env=prod`). Attention, `cache:clear` sans option vide le cache de l'env par défaut (dev). Pour la prod : `APP_ENV=prod php bin/console cache:clear`.
+## 🧠 Concepts Clés
+1.  **Environnement** : Attention, par défaut la console tourne en `APP_ENV=dev`. `cache:clear` vide le cache **dev**. Pour vider la prod : `APP_ENV=prod php bin/console cache:clear`.
+2.  **Interactive** : La plupart des commandes sont interactives (elles posent des questions si des arguments manquent). Pour scripter (CI/CD), utilisez `--no-interaction` (`-n`).
+
+## ⚠️ Points de vigilance (Certification)
+*   **Router Match** : `router:match /path` est l'outil de debug ultime pour les erreurs 404.
+*   **Secrets** : `secrets:set` / `secrets:list` gère le coffre-fort de secrets chiffrés.
 
 ## Ressources
 *   [Symfony Docs - Console Commands](https://symfony.com/doc/current/console.html)
-
