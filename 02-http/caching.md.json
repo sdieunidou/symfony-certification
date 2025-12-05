@@ -4,153 +4,94 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quels sont les objectifs principaux du mécanisme de cache HTTP ?",
-      "type": "single_choice",
+      "question": "Sur quels headers HTTP repose le modèle d'Expiration (le plus performant) ?",
+      "type": "multiple_choice",
       "options": [
-        "Assurer la confidentialité des données",
-        "Réduire la charge serveur, la latence et la bande passante",
-        "Garantir l'intégrité des transactions bancaires",
-        "Permettre le traçage des utilisateurs"
+        "Cache-Control (max-age)",
+        "Expires",
+        "ETag",
+        "Last-Modified"
       ],
-      "answer": [
-        "Réduire la charge serveur, la latence et la bande passante"
+      "correct_answers": [
+        "Cache-Control (max-age)",
+        "Expires"
       ],
-      "explanation": "Le cache HTTP permet de stocker des copies de réponses pour réduire la charge serveur, la latence et la bande passante."
+      "explanation": "L'expiration (Cache-Control, Expires) permet au client de réutiliser le cache sans contacter le serveur, contrairement à la Validation (ETag, Last-Modified) qui nécessite une requête."
     },
     {
       "id": 2,
-      "question": "Sur quels modèles repose le cache HTTP ?",
-      "type": "multiple_choice",
+      "question": "Que signifie le header `Cache-Control: no-cache` ?",
+      "type": "single_choice",
       "options": [
-        "L'authentification et l'autorisation",
-        "L'expiration et la validation",
-        "La compression et le cryptage",
-        "La réplication et la distribution"
+        "Le contenu ne doit jamais être mis en cache.",
+        "Le cache doit revalider la ressource avec le serveur (ETag/Last-Modified) avant de servir la version stockée.",
+        "Le cache est privé.",
+        "Le contenu expire immédiatement."
       ],
-      "answer": [
-        "L'expiration et la validation"
+      "correct_answers": [
+        "Le cache doit revalider la ressource avec le serveur (ETag/Last-Modified) avant de servir la version stockée."
       ],
-      "explanation": "Il repose sur deux modèles distincts mais complémentaires : l'Expiration (Cache-Control, Expires) et la Validation (ETag, Last-Modified)."
+      "explanation": "`no-cache` est trompeur : il n'interdit pas le stockage, mais oblige à vérifier la fraîcheur auprès du serveur avant utilisation."
     },
     {
       "id": 3,
-      "question": "Dans le modèle d'expiration, que se passe-t-il tant que le délai de validité d'une ressource n'est pas écoulé ?",
+      "question": "Quelle est la différence entre `max-age` et `s-maxage` ?",
       "type": "single_choice",
       "options": [
-        "Le navigateur envoie une requête HEAD pour vérifier la validité",
-        "Le navigateur ne contacte pas le serveur",
-        "Le serveur renvoie un code 304 Not Modified",
-        "Le serveur renvoie automatiquement la nouvelle version si disponible"
+        "`max-age` est pour les images, `s-maxage` pour les scripts.",
+        "`max-age` s'applique à tous les caches, `s-maxage` surcharge `max-age` uniquement pour les caches partagés (CDN, Proxies).",
+        "`s-maxage` est une version sécurisée de `max-age`.",
+        "Il n'y a aucune différence."
       ],
-      "answer": [
-        "Le navigateur ne contacte pas le serveur"
+      "correct_answers": [
+        "`max-age` s'applique à tous les caches, `s-maxage` surcharge `max-age` uniquement pour les caches partagés (CDN, Proxies)."
       ],
-      "explanation": "Tant que le délai n'est pas écoulé, le navigateur (ou le proxy) NE CONTACTE PAS le serveur (0 appel réseau)."
+      "explanation": "Cela permet de définir une durée différente pour le navigateur de l'utilisateur (private) et pour le CDN (shared)."
     },
     {
       "id": 4,
-      "question": "Quel code statut HTTP est renvoyé par le serveur lors d'une validation réussie (le fichier n'a pas changé) ?",
+      "question": "Quel code HTTP renvoie le serveur lors d'une revalidation réussie (le contenu n'a pas changé) ?",
       "type": "single_choice",
       "options": [
         "200 OK",
         "301 Moved Permanently",
         "304 Not Modified",
-        "403 Forbidden"
+        "409 Conflict"
       ],
-      "answer": [
+      "correct_answers": [
         "304 Not Modified"
       ],
-      "explanation": "Si le fichier est inchangé après comparaison, le serveur répond 304 Not Modified (Header sans corps)."
+      "explanation": "Le serveur répond 304 sans corps de message, indiquant au client d'utiliser sa version locale."
     },
     {
       "id": 5,
-      "question": "Quelle directive Cache-Control définit la durée de vie en secondes pour tous les caches ?",
-      "type": "single_choice",
-      "options": [
-        "expires",
-        "max-age",
-        "s-maxage",
-        "ttl"
-      ],
-      "answer": [
-        "max-age"
-      ],
-      "explanation": "max-age définit la durée de vie en secondes."
-    },
-    {
-      "id": 6,
-      "question": "Quelle directive Cache-Control est spécifique aux caches partagés (comme les CDN ou proxy) ?",
-      "type": "single_choice",
-      "options": [
-        "public",
-        "s-maxage",
-        "proxy-revalidate",
-        "shared-max-age"
-      ],
-      "answer": [
-        "s-maxage"
-      ],
-      "explanation": "s-maxage définit la durée de vie pour les caches partagés uniquement."
-    },
-    {
-      "id": 7,
-      "question": "Quelle est la différence entre 'public' et 'private' dans Cache-Control ?",
-      "type": "single_choice",
-      "options": [
-        "'public' est pour les fichiers HTML, 'private' pour les images",
-        "'public' peut être caché par tout le monde, 'private' uniquement par le client final",
-        "'public' ne nécessite pas d'authentification, 'private' si",
-        "Il n'y a pas de différence, ce sont des synonymes"
-      ],
-      "answer": [
-        "'public' peut être caché par tout le monde, 'private' uniquement par le client final"
-      ],
-      "explanation": "public : Peut être caché par tout le monde. private : Peut être caché uniquement par le client final (navigateur)."
-    },
-    {
-      "id": 8,
-      "question": "Que signifie réellement la directive 'no-cache' ?",
-      "type": "single_choice",
-      "options": [
-        "Ne jamais mettre en cache la réponse",
-        "Ne pas stocker la réponse sur le disque",
-        "Doit revalider avec le serveur avant chaque utilisation",
-        "Supprimer le cache existant"
-      ],
-      "answer": [
-        "Doit revalider avec le serveur avant chaque utilisation"
-      ],
-      "explanation": "no-cache : Doit revalider avec le serveur avant chaque utilisation (mal nommé !)."
-    },
-    {
-      "id": 9,
-      "question": "Quelle directive interdit absolument de stocker la réponse ?",
+      "question": "Quelle directive empêche formellement tout stockage de la réponse sur disque ou en mémoire ?",
       "type": "single_choice",
       "options": [
         "no-cache",
+        "must-revalidate",
         "no-store",
-        "private",
-        "must-revalidate"
+        "private"
       ],
-      "answer": [
+      "correct_answers": [
         "no-store"
       ],
-      "explanation": "no-store : Interdiction absolue de stocker la réponse."
+      "explanation": "`no-store` est la seule directive qui interdit strictement tout enregistrement de la donnée (utile pour données bancaires, etc.)."
     },
     {
-      "id": 10,
-      "question": "Quelle directive indique que la ressource ne changera jamais pendant sa durée de vie ?",
+      "id": 6,
+      "question": "À quoi sert la directive `immutable` ?",
       "type": "single_choice",
       "options": [
-        "permanent",
-        "forever",
-        "immutable",
-        "static"
+        "À empêcher la modification du fichier sur le serveur.",
+        "À indiquer au client que la ressource ne changera jamais durant sa période de validité, rendant la revalidation inutile même en cas de rafraîchissement manuel.",
+        "À rendre le cache permanent (infini).",
+        "À protéger le cookie de session."
       ],
-      "answer": [
-        "immutable"
+      "correct_answers": [
+        "À indiquer au client que la ressource ne changera jamais durant sa période de validité, rendant la revalidation inutile même en cas de rafraîchissement manuel."
       ],
-      "explanation": "immutable : La ressource ne changera jamais pendant sa durée de vie."
+      "explanation": "Très utile pour les assets versionnés (ex: `app.12345.js`), cela évite les requêtes 'If-Modified-Since' inutiles."
     }
   ]
 }

@@ -1,0 +1,112 @@
+{
+  "source_file": "03-architecture-symfony/bc-promise.md",
+  "title": "Promesse de Rétrocompatibilité (Backward Compatibility Promise)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Que garantit la 'BC Promise' (Promesse de Rétrocompatibilité) de Symfony pour les mises à jour mineures (ex: 7.0 vers 7.1) ?",
+      "type": "single_choice",
+      "options": [
+        "Elle garantit de nouvelles fonctionnalités sans aucun changement de code.",
+        "Elle garantit que la mise à jour ne cassera pas l'application si les règles sont respectées.",
+        "Elle garantit une augmentation des performances d'au moins 10%.",
+        "Elle garantit que toutes les classes dépréciées seront supprimées."
+      ],
+      "correct_answers": [
+        "Elle garantit que la mise à jour ne cassera pas l'application si les règles sont respectées."
+      ],
+      "explanation": "La BC Promise assure que les mises à jour mineures sont sans danger ('safe') et n'introduisent pas de rupture de compatibilité pour l'API publique couverte."
+    },
+    {
+      "id": 2,
+      "question": "Parmi les éléments suivants, lesquels sont couverts par la promesse de rétrocompatibilité (sont 'Safe') ?",
+      "type": "multiple_choice",
+      "options": [
+        "L'API Publique (Classes et Méthodes non @internal)",
+        "Les classes marquées @internal",
+        "Les formats de configuration (YAML/XML)",
+        "Les fonctionnalités marquées @experimental"
+      ],
+      "correct_answers": [
+        "L'API Publique (Classes et Méthodes non @internal)",
+        "Les formats de configuration (YAML/XML)"
+      ],
+      "explanation": "L'API publique et la configuration sont couvertes. Les éléments @internal et @experimental ne le sont pas et peuvent changer à tout moment."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi hériter d'une classe du Core (Service interne) est-il considéré comme risqué vis-à-vis de la BC Promise ?",
+      "type": "single_choice",
+      "options": [
+        "Car les classes du Core sont toujours finales.",
+        "Car le constructeur (`__construct`) n'est pas couvert par la BC Promise et peut changer de signature (nouvelles dépendances).",
+        "Car l'héritage est interdit par PSR-4.",
+        "Car cela empêche l'utilisation de l'autowiring."
+      ],
+      "correct_answers": [
+        "Car le constructeur (`__construct`) n'est pas couvert par la BC Promise et peut changer de signature (nouvelles dépendances)."
+      ],
+      "explanation": "Symfony se réserve le droit de modifier le constructeur de ses services (pour injecter une nouvelle dépendance) pour corriger des bugs ou ajouter des features, ce qui casserait les classes enfants qui appellent `parent::__construct`."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la recommandation principale pour étendre le comportement d'un service natif sans utiliser l'héritage ?",
+      "type": "single_choice",
+      "options": [
+        "Le Clonage",
+        "L'Injection de Setter",
+        "La Décoration",
+        "Le Monkey Patching"
+      ],
+      "correct_answers": [
+        "La Décoration"
+      ],
+      "explanation": "La décoration (via le Design Pattern Decorator) est la méthode recommandée pour envelopper un service existant et modifier son comportement sans subir les risques liés à l'héritage."
+    },
+    {
+      "id": 5,
+      "question": "L'ajout d'une nouvelle méthode dans une interface existante est-il considéré comme une rupture de compatibilité (BC Break) ?",
+      "type": "single_choice",
+      "options": [
+        "Non, c'est une amélioration mineure.",
+        "Oui, car toutes les classes implémentant cette interface échoueront si elles n'implémentent pas la nouvelle méthode.",
+        "Non, car PHP supporte les méthodes abstraites optionnelles.",
+        "Oui, mais seulement si l'interface est @final."
+      ],
+      "correct_answers": [
+        "Oui, car toutes les classes implémentant cette interface échoueront si elles n'implémentent pas la nouvelle méthode."
+      ],
+      "explanation": "Ajouter une méthode à une interface force toutes les classes qui l'implémentent à définir cette méthode, ce qui casse le code existant. Symfony évite cela dans les versions mineures."
+    },
+    {
+      "id": 6,
+      "question": "Quelle balise PHPDoc indique qu'une classe ou méthode est réservée à l'usage interne du framework et ne doit pas être utilisée ?",
+      "type": "single_choice",
+      "options": [
+        "@private",
+        "@hidden",
+        "@internal",
+        "@protected"
+      ],
+      "correct_answers": [
+        "@internal"
+      ],
+      "explanation": "La balise `@internal` signale explicitement que le code ne fait pas partie de l'API publique supportée et peut changer sans préavis."
+    },
+    {
+      "id": 7,
+      "question": "Dans le cycle de vie Symfony, quand devez-vous corriger les utilisations de code déprécié ?",
+      "type": "single_choice",
+      "options": [
+        "Immédiatement lors de la sortie d'une version mineure.",
+        "Avant de passer à la version majeure suivante (ex: pour passer de 7.4 à 8.0).",
+        "Jamais, le code déprécié reste fonctionnel indéfiniment.",
+        "Uniquement si l'application plante."
+      ],
+      "correct_answers": [
+        "Avant de passer à la version majeure suivante (ex: pour passer de 7.4 à 8.0)."
+      ],
+      "explanation": "Les fonctionnalités dépréciées fonctionnent encore dans les versions mineures (avec un avertissement), mais sont supprimées dans la version majeure suivante. La mise à jour majeure exige donc d'avoir traité toutes les dépréciations."
+    }
+  ]
+}
