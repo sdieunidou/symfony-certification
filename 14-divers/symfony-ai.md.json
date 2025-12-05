@@ -1,0 +1,66 @@
+{
+  "source_file": "14-divers/symfony-ai.md",
+  "title": "Composant Symfony AI",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel composant de Symfony AI permet de gérer l'historique et l'état des conversations ?",
+      "type": "single_choice",
+      "options": [
+        "Platform Component",
+        "Agent Component",
+        "Chat Component",
+        "Store Component"
+      ],
+      "correct_answers": [
+        "Chat Component"
+      ],
+      "explanation": "Le Chat Component gère la persistance des messages pour maintenir le contexte."
+    },
+    {
+      "id": 2,
+      "question": "Qu'est-ce que le 'Tool Calling' dans le contexte des Agents Symfony AI ?",
+      "type": "single_choice",
+      "options": [
+        "L'appel d'une commande CLI.",
+        "La capacité pour un Agent (LLM) de décider d'appeler une méthode PHP définie comme outil (`#[Tool]`) pour récupérer des données ou effectuer une action.",
+        "Un outil de débogage.",
+        "L'installation de dépendances."
+      ],
+      "correct_answers": [
+        "La capacité pour un Agent (LLM) de décider d'appeler une méthode PHP définie comme outil (`#[Tool]`) pour récupérer des données ou effectuer une action."
+      ],
+      "explanation": "C'est ce qui rend l'IA 'active' et capable d'interagir avec votre application."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert le Store Component (`symfony/ai-store`) ?",
+      "type": "single_choice",
+      "options": [
+        "À stocker les logs.",
+        "À gérer le stockage vectoriel (Vector Database) pour implémenter le RAG (Retrieval Augmented Generation).",
+        "À mettre en cache les réponses HTTP.",
+        "À stocker les fichiers uploadés."
+      ],
+      "correct_answers": [
+        "À gérer le stockage vectoriel (Vector Database) pour implémenter le RAG (Retrieval Augmented Generation)."
+      ],
+      "explanation": "Il permet de rechercher des documents sémantiquement proches d'une requête utilisateur."
+    },
+    {
+      "id": 4,
+      "question": "Quel bundle permet d'intégrer le standard ouvert MCP (Model Context Protocol) ?",
+      "type": "single_choice",
+      "options": [
+        "AI Bundle",
+        "MCP Bundle",
+        "OpenAI Bundle",
+        "Context Bundle"
+      ],
+      "correct_answers": [
+        "MCP Bundle"
+      ],
+      "explanation": "Le MCP Bundle permet de connecter des sources de données externes standardisées aux modèles d'IA."
+    }
+  ]
+}

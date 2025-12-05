@@ -1,0 +1,51 @@
+{
+  "source_file": "14-divers/runtime.md",
+  "title": "Composant Runtime",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le rôle du composant `Runtime` introduit dans Symfony 5.3 ?",
+      "type": "single_choice",
+      "options": [
+        "Gérer les erreurs d'exécution.",
+        "Abstraire la logique de démarrage de l'application (`index.php`) pour la découpler du serveur web (FPM, CLI, Swoole).",
+        "Optimiser la vitesse de PHP.",
+        "Gérer les cron jobs."
+      ],
+      "correct_answers": [
+        "Abstraire la logique de démarrage de l'application (`index.php`) pour la découpler du serveur web (FPM, CLI, Swoole)."
+      ],
+      "explanation": "`index.php` ne contient plus que le chargement de `autoload_runtime.php` et une closure retournant le Kernel."
+    },
+    {
+      "id": 2,
+      "question": "Où se trouve le fichier d'entrée principal (Front Controller) d'une application Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "`index.php` à la racine.",
+        "`public/index.php`.",
+        "`bin/console`.",
+        "`src/Kernel.php`."
+      ],
+      "correct_answers": [
+        "`public/index.php`."
+      ],
+      "explanation": "C'est le seul fichier PHP exposé publiquement par le serveur web."
+    },
+    {
+      "id": 3,
+      "question": "Comment configurer les options du Runtime (ex: env, debug) ?",
+      "type": "single_choice",
+      "options": [
+        "Dans `services.yaml`.",
+        "Via des variables d'environnement (`APP_RUNTIME_ENV`, `APP_RUNTIME_DEBUG`).",
+        "Dans le code PHP.",
+        "Dans `composer.json`."
+      ],
+      "correct_answers": [
+        "Via des variables d'environnement (`APP_RUNTIME_ENV`, `APP_RUNTIME_DEBUG`)."
+      ],
+      "explanation": "Le Runtime lit ces variables avant même de booter le Kernel."
+    }
+  ]
+}

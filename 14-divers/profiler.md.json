@@ -1,0 +1,66 @@
+{
+  "source_file": "14-divers/profiler.md",
+  "title": "Web Profiler et Data Collectors",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment activer le Profiler pour une requête API (qui ne rend pas de HTML et donc pas de Toolbar) ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas possible.",
+        "En ajoutant le header `X-Debug-Token-Link`.",
+        "Le profiler est actif en arrière-plan. On peut retrouver le profil via l'historique (`/_profiler`) ou via le header de réponse `X-Debug-Token-Link` qui donne l'URL directe.",
+        "En passant un paramètre `?profile=1`."
+      ],
+      "correct_answers": [
+        "Le profiler est actif en arrière-plan. On peut retrouver le profil via l'historique (`/_profiler`) ou via le header de réponse `X-Debug-Token-Link` qui donne l'URL directe."
+      ],
+      "explanation": "Le profiler stocke les données indépendamment de l'affichage de la WDT."
+    },
+    {
+      "id": 2,
+      "question": "Où sont stockées les données du profiler ?",
+      "type": "single_choice",
+      "options": [
+        "En base de données.",
+        "Dans `var/cache/dev/profiler` (fichiers).",
+        "En mémoire RAM uniquement.",
+        "Dans les cookies."
+      ],
+      "correct_answers": [
+        "Dans `var/cache/dev/profiler` (fichiers)."
+      ],
+      "explanation": "C'est pourquoi vider le cache supprime l'historique du profiler."
+    },
+    {
+      "id": 3,
+      "question": "Comment créer un collecteur de données personnalisé pour le profiler ?",
+      "type": "single_choice",
+      "options": [
+        "En créant un EventListener.",
+        "En étendant `AbstractDataCollector`, en implémentant `collect()`, et en taguant le service `data_collector`.",
+        "En modifiant le Kernel.",
+        "En utilisant `dump()`."
+      ],
+      "correct_answers": [
+        "En étendant `AbstractDataCollector`, en implémentant `collect()`, et en taguant le service `data_collector`."
+      ],
+      "explanation": "Cela permet d'ajouter un onglet dans le profiler avec vos propres métriques."
+    },
+    {
+      "id": 4,
+      "question": "Dans un test fonctionnel, comment accéder aux données du profiler ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->getProfile()`",
+        "`$client->getContainer()->get('profiler')`",
+        "En parsant le HTML.",
+        "Via une API externe."
+      ],
+      "correct_answers": [
+        "`$client->getProfile()`"
+      ],
+      "explanation": "Cette méthode retourne l'objet `Symfony\Component\HttpKernel\Profiler\Profile` associé à la dernière requête."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "14-divers/performance.md",
+  "title": "Performance",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est l'optimisation PHP la plus cruciale à activer en production ?",
+      "type": "single_choice",
+      "options": [
+        "Le JIT Compiler.",
+        "OPcache (avec `validate_timestamps=0`).",
+        "APCu.",
+        "Xdebug."
+      ],
+      "correct_answers": [
+        "OPcache (avec `validate_timestamps=0`)."
+      ],
+      "explanation": "Cela évite à PHP de vérifier si les fichiers ont changé à chaque requête, supprimant une grande partie des I/O."
+    },
+    {
+      "id": 2,
+      "question": "À quoi sert l'option Composer `--classmap-authoritative` ?",
+      "type": "single_choice",
+      "options": [
+        "À installer uniquement les dépendances de prod.",
+        "À générer une map statique de toutes les classes. Si une classe n'est pas dans la map, l'autoloader ne vérifie même pas le disque.",
+        "À vérifier les licences.",
+        "À optimiser les images."
+      ],
+      "correct_answers": [
+        "À générer une map statique de toutes les classes. Si une classe n'est pas dans la map, l'autoloader ne vérifie même pas le disque."
+      ],
+      "explanation": "C'est une optimisation majeure de l'autoloading en production."
+    },
+    {
+      "id": 3,
+      "question": "Comment utiliser le composant `Stopwatch` pour profiler une partie spécifique de votre code ?",
+      "type": "single_choice",
+      "options": [
+        "`$stopwatch->start('event_name'); ... $stopwatch->stop('event_name');`",
+        "`$stopwatch->measure(function() { ... });`",
+        "`Stopwatch::start() ... Stopwatch::stop()`",
+        "`dump($var)`"
+      ],
+      "correct_answers": [
+        "`$stopwatch->start('event_name'); ... $stopwatch->stop('event_name');`"
+      ],
+      "explanation": "L'événement apparaîtra ensuite dans la Timeline du Web Profiler."
+    },
+    {
+      "id": 4,
+      "question": "Qu'est-ce que le Preloading PHP (7.4+) ?",
+      "type": "single_choice",
+      "options": [
+        "Un mécanisme pour charger les assets CSS avant le HTML.",
+        "Une fonctionnalité d'OPcache qui charge et compile les classes PHP en mémoire au démarrage du serveur (avant toute requête).",
+        "Un système de cache de base de données.",
+        "Le chargement anticipé des images."
+      ],
+      "correct_answers": [
+        "Une fonctionnalité d'OPcache qui charge et compile les classes PHP en mémoire au démarrage du serveur (avant toute requête)."
+      ],
+      "explanation": "Symfony génère un script de preload optimisé dans `var/cache/prod`."
+    }
+  ]
+}

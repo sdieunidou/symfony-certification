@@ -1,0 +1,66 @@
+{
+  "source_file": "14-divers/zero-downtime.md",
+  "title": "Déploiement Zéro Downtime (ZDD)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le principe de base d'un déploiement Zéro Downtime ?",
+      "type": "single_choice",
+      "options": [
+        "Le site est mis en maintenance.",
+        "La nouvelle version est déployée en parallèle, et on bascule le trafic (via lien symbolique ou load balancer) instantanément.",
+        "On écrase les fichiers en direct.",
+        "On utilise FTP."
+      ],
+      "correct_answers": [
+        "La nouvelle version est déployée en parallèle, et on bascule le trafic (via lien symbolique ou load balancer) instantanément."
+      ],
+      "explanation": "L'objectif est que l'utilisateur ne voie jamais d'erreur ou de page de maintenance."
+    },
+    {
+      "id": 2,
+      "question": "Comment gérer les sessions PHP lors d'un déploiement sur plusieurs serveurs ou lors d'un basculement ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser le stockage de fichiers par défaut.",
+        "Utiliser un stockage de session partagé (Redis, Base de données).",
+        "Demander à l'utilisateur de se reconnecter.",
+        "Utiliser des cookies non sécurisés."
+      ],
+      "correct_answers": [
+        "Utiliser un stockage de session partagé (Redis, Base de données)."
+      ],
+      "explanation": "Si les sessions sont dans des fichiers locaux, elles sont perdues si l'utilisateur change de serveur."
+    },
+    {
+      "id": 3,
+      "question": "Quelle stratégie adopter pour les migrations de base de données destructrices (ex: renommer une colonne) en ZDD ?",
+      "type": "single_choice",
+      "options": [
+        "Tout faire en une fois.",
+        "Pattern 'Expand and Contract' : Ajouter la nouvelle colonne, écrire dans les deux, migrer les données, puis supprimer l'ancienne colonne dans un déploiement ultérieur.",
+        "Arrêter le site pendant la migration.",
+        "Ne jamais renommer de colonne."
+      ],
+      "correct_answers": [
+        "Pattern 'Expand and Contract' : Ajouter la nouvelle colonne, écrire dans les deux, migrer les données, puis supprimer l'ancienne colonne dans un déploiement ultérieur."
+      ],
+      "explanation": "Cela permet au code V1 (qui utilise l'ancienne colonne) et V2 (qui utilise la nouvelle) de coexister."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi faut-il redémarrer (ou reloader) PHP-FPM après un déploiement atomique (symlink) ?",
+      "type": "single_choice",
+      "options": [
+        "Pour vider la mémoire.",
+        "Parce que le cache OPcache conserve les anciens fichiers en mémoire (surtout si `validate_timestamps=0`).",
+        "C'est inutile.",
+        "Pour relancer Nginx."
+      ],
+      "correct_answers": [
+        "Parce que le cache OPcache conserve les anciens fichiers en mémoire (surtout si `validate_timestamps=0`)."
+      ],
+      "explanation": "Sans reload, PHP continuerait d'exécuter l'ancien code qui est en cache RAM, même si les fichiers disques ont changé."
+    }
+  ]
+}
