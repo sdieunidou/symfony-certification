@@ -1,0 +1,81 @@
+{
+  "source_file": "04-controleurs/response.md",
+  "title": "L'objet Response (Usage Contrôleur)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle méthode de l'`AbstractController` permet de retourner une réponse JSON en utilisant le Serializer ?",
+      "type": "single_choice",
+      "options": [
+        "`renderJson()`",
+        "`json($data)`",
+        "`new JsonResponse($data)`",
+        "`serialize($data)`"
+      ],
+      "correct_answers": [
+        "`json($data)`"
+      ],
+      "explanation": "Le helper `json()` détecte si le service Serializer est disponible pour encoder les objets, sinon il utilise `json_encode`."
+    },
+    {
+      "id": 2,
+      "question": "Pour télécharger un fichier, quelle méthode helper utiliser ?",
+      "type": "single_choice",
+      "options": [
+        "`download()`",
+        "`file()`",
+        "`binary()`",
+        "`returnFile()`"
+      ],
+      "correct_answers": [
+        "`file()`"
+      ],
+      "explanation": "Elle retourne une `BinaryFileResponse` qui gère les headers `Content-Disposition` (attachment) et `Range`."
+    },
+    {
+      "id": 3,
+      "question": "Comment envoyer des données en streaming (ex: export CSV ligne par ligne) pour économiser la mémoire ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `StreamedResponse` (ou helper `stream()`).",
+        "Utiliser `JsonResponse`.",
+        "Faire des `echo` et `flush` dans une boucle.",
+        "Ce n'est pas possible en PHP."
+      ],
+      "correct_answers": [
+        "Utiliser `StreamedResponse` (ou helper `stream()`)."
+      ],
+      "explanation": "La `StreamedResponse` prend un callback qui sera exécuté lors de l'envoi, permettant d'envoyer le contenu par morceaux."
+    },
+    {
+      "id": 4,
+      "question": "Peut-on modifier les headers d'une réponse après l'avoir créée ?",
+      "type": "single_choice",
+      "options": [
+        "Non, elle est immuable.",
+        "Oui, via `$response->headers->set('Nom', 'Valeur')`.",
+        "Uniquement le Content-Type.",
+        "Oui, mais seulement avant le return."
+      ],
+      "correct_answers": [
+        "Oui, via `$response->headers->set('Nom', 'Valeur')`."
+      ],
+      "explanation": "L'objet Response est mutable jusqu'à ce qu'il soit envoyé par le Kernel."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la différence entre `render()` et `renderView()` ?",
+      "type": "single_choice",
+      "options": [
+        "`render` retourne une `Response`, `renderView` retourne une `string` (HTML).",
+        "`render` est pour Twig, `renderView` pour PHP.",
+        "`renderView` est déprécié.",
+        "Il n'y a pas de différence."
+      ],
+      "correct_answers": [
+        "`render` retourne une `Response`, `renderView` retourne une `string` (HTML)."
+      ],
+      "explanation": "`renderView` est utile pour générer du HTML à mettre dans un email ou un JSON, sans créer de réponse HTTP complète."
+    }
+  ]
+}

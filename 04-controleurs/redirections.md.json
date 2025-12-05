@@ -1,0 +1,81 @@
+{
+  "source_file": "04-controleurs/redirections.md",
+  "title": "Redirections HTTP",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle méthode helper permet de rediriger vers une route nommée ?",
+      "type": "single_choice",
+      "options": [
+        "`redirect()`",
+        "`redirectToRoute()`",
+        "`forward()`",
+        "`route()`"
+      ],
+      "correct_answers": [
+        "`redirectToRoute()`"
+      ],
+      "explanation": "`redirect()` prend une URL absolue/relative, `redirectToRoute()` prend un nom de route et génère l'URL."
+    },
+    {
+      "id": 2,
+      "question": "Quel code HTTP est utilisé par défaut pour une redirection ?",
+      "type": "single_choice",
+      "options": [
+        "301 (Moved Permanently)",
+        "302 (Found / Temporary Redirect)",
+        "307 (Temporary Redirect)",
+        "308 (Permanent Redirect)"
+      ],
+      "correct_answers": [
+        "302 (Found / Temporary Redirect)"
+      ],
+      "explanation": "C'est le standard historique. Pour le SEO (changement d'URL définitif), il faut spécifier 301."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi utiliser le pattern PRG (Post-Redirect-Get) après la soumission d'un formulaire ?",
+      "type": "single_choice",
+      "options": [
+        "Pour améliorer le référencement.",
+        "Pour empêcher l'utilisateur de soumettre le formulaire une deuxième fois s'il rafraîchit la page (F5).",
+        "Pour masquer les données POST.",
+        "C'est obligatoire en HTTP/2."
+      ],
+      "correct_answers": [
+        "Pour empêcher l'utilisateur de soumettre le formulaire une deuxième fois s'il rafraîchit la page (F5)."
+      ],
+      "explanation": "La redirection transforme la requête POST en GET, rendant le rafraîchissement inoffensif."
+    },
+    {
+      "id": 4,
+      "question": "Quel code HTTP garantit que la méthode de la requête (ex: POST) sera conservée lors de la redirection ?",
+      "type": "single_choice",
+      "options": [
+        "301",
+        "302",
+        "307 (ou 308)",
+        "303"
+      ],
+      "correct_answers": [
+        "307 (ou 308)"
+      ],
+      "explanation": "Avec 301/302, les navigateurs changent souvent POST en GET. 307/308 interdisent ce changement."
+    },
+    {
+      "id": 5,
+      "question": "Est-ce que `redirectToRoute` transmet automatiquement les paramètres `$_GET` de la requête courante à la suivante ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, il faut les passer manuellement dans le tableau de paramètres.",
+        "Seulement si le nom de la route est le même.",
+        "Oui, sauf si on met un flag `clear_params`."
+      ],
+      "correct_answers": [
+        "Non, il faut les passer manuellement dans le tableau de paramètres."
+      ],
+      "explanation": "La redirection repart de zéro. Si vous voulez conserver `?page=2`, vous devez l'injecter : `['page' => $request->query->get('page')]`."
+    }
+  ]
+}

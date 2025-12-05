@@ -1,0 +1,96 @@
+{
+  "source_file": "04-controleurs/conventions.md",
+  "title": "Conventions de Nommage (Contrôleurs)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la convention recommandée pour nommer une méthode de contrôleur (Action) ?",
+      "type": "single_choice",
+      "options": [
+        "camelCase (ex: `listPosts`) sans suffixe obligatoire.",
+        "snake_case (ex: `list_posts`).",
+        "camelCase avec suffixe Action (ex: `listPostsAction`).",
+        "PascalCase (ex: `ListPosts`)."
+      ],
+      "correct_answers": [
+        "camelCase (ex: `listPosts`) sans suffixe obligatoire."
+      ],
+      "explanation": "Le suffixe `Action` n'est plus nécessaire depuis Symfony 4. Le nom de la méthode doit simplement décrire ce qu'elle fait."
+    },
+    {
+      "id": 2,
+      "question": "Comment définir une route pour un contrôleur 'Single Action' (Invokable) ?",
+      "type": "single_choice",
+      "options": [
+        "Sur la méthode `__construct`.",
+        "Sur la méthode `__invoke`.",
+        "Sur la classe elle-même.",
+        "Ce n'est pas supporté."
+      ],
+      "correct_answers": [
+        "Sur la classe elle-même."
+      ],
+      "explanation": "Pour un contrôleur invokable, l'attribut `#[Route]` se place généralement au-dessus de la classe (ou de la méthode `__invoke`, les deux fonctionnent)."
+    },
+    {
+      "id": 3,
+      "question": "Dans quel namespace se trouvent par défaut les contrôleurs ?",
+      "type": "single_choice",
+      "options": [
+        "`App\Controllers`",
+        "`App\Controller`",
+        "`App\Http\Controllers`",
+        "`App\Action`"
+      ],
+      "correct_answers": [
+        "`App\Controller`"
+      ],
+      "explanation": "C'est le standard PSR-4 défini par la recette Flex."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la convention de nommage pour les **noms** de routes ?",
+      "type": "single_choice",
+      "options": [
+        "camelCase (ex: `blogShow`)",
+        "snake_case (ex: `blog_show`)",
+        "kebab-case (ex: `blog-show`)",
+        "Pas de convention."
+      ],
+      "correct_answers": [
+        "snake_case (ex: `blog_show`)"
+      ],
+      "explanation": "Le snake_case est la convention la plus répandue dans l'écosystème Symfony."
+    },
+    {
+      "id": 5,
+      "question": "Quel type de retour est fortement encouragé pour les méthodes de contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "`void`",
+        "`array`",
+        "`Response` (ou ses enfants)",
+        "`mixed`"
+      ],
+      "correct_answers": [
+        "`Response` (ou ses enfants)"
+      ],
+      "explanation": "Le typage `: Response` rend le code explicite et permet à PHP de détecter une erreur si vous oubliez le return."
+    },
+    {
+      "id": 6,
+      "question": "Si vous organisez vos contrôleurs en sous-dossiers (ex: `src/Controller/Api/`), comment cela affecte-t-il le chargement des routes ?",
+      "type": "single_choice",
+      "options": [
+        "Cela casse tout.",
+        "Il faut configurer manuellement chaque dossier.",
+        "Rien ne change, Symfony scanne récursivement le dossier `src/Controller` pour trouver les attributs `#[Route]`.",
+        "Les routes sont préfixées automatiquement par le nom du dossier."
+      ],
+      "correct_answers": [
+        "Rien ne change, Symfony scanne récursivement le dossier `src/Controller` pour trouver les attributs `#[Route]`."
+      ],
+      "explanation": "L'organisation en sous-dossiers est purement organisationnelle pour le développeur, le Routing charge tout ce qu'il trouve."
+    }
+  ]
+}

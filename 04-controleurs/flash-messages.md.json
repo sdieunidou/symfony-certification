@@ -1,0 +1,96 @@
+{
+  "source_file": "04-controleurs/flash-messages.md",
+  "title": "Messages Flash",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Où sont stockés techniquement les Messages Flash ?",
+      "type": "single_choice",
+      "options": [
+        "Dans un cookie dédié.",
+        "Dans la Session utilisateur.",
+        "Dans la base de données.",
+        "Dans le cache."
+      ],
+      "correct_answers": [
+        "Dans la Session utilisateur."
+      ],
+      "explanation": "Ils survivent en session le temps d'une redirection, puis sont supprimés après lecture."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la caractéristique principale d'un message flash ?",
+      "type": "single_choice",
+      "options": [
+        "Il clignote à l'écran.",
+        "Il ne peut être lu qu'une seule fois (il est détruit automatiquement après lecture).",
+        "Il est permanent.",
+        "Il est envoyé par email."
+      ],
+      "correct_answers": [
+        "Il ne peut être lu qu'une seule fois (il est détruit automatiquement après lecture)."
+      ],
+      "explanation": "C'est le principe 'Flash' : afficher une notification temporaire (succès, erreur) après une action."
+    },
+    {
+      "id": 3,
+      "question": "Comment ajouter un message flash depuis un contrôleur (`AbstractController`) ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->addFlash('success', 'Bravo !');`",
+        "`$this->flash('Bravo !');`",
+        "`$this->session->setFlash('Bravo !');`",
+        "`return new FlashResponse('Bravo !');`"
+      ],
+      "correct_answers": [
+        "`$this->addFlash('success', 'Bravo !');`"
+      ],
+      "explanation": "Le helper `addFlash` est la méthode standard."
+    },
+    {
+      "id": 4,
+      "question": "Dans Twig, comment accède-t-on aux messages flash ?",
+      "type": "single_choice",
+      "options": [
+        "Via `app.session`",
+        "Via la variable globale `app.flashes`.",
+        "Via `flashes()` function.",
+        "Via `messages` variable."
+      ],
+      "correct_answers": [
+        "Via la variable globale `app.flashes`."
+      ],
+      "explanation": "`app.flashes` retourne un tableau de messages groupés par type."
+    },
+    {
+      "id": 5,
+      "question": "Peut-on utiliser les messages flash dans une API Stateless (sans session) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, sans problème.",
+        "Non, car les messages flash dépendent de la session. Une API doit renvoyer l'information dans le corps de la réponse JSON.",
+        "Oui, en utilisant des cookies.",
+        "Oui, avec JWT."
+      ],
+      "correct_answers": [
+        "Non, car les messages flash dépendent de la session. Une API doit renvoyer l'information dans le corps de la réponse JSON."
+      ],
+      "explanation": "Sans stockage session côté serveur, le concept de persistance 'entre deux requêtes' n'existe pas."
+    },
+    {
+      "id": 6,
+      "question": "Que fait la méthode `peek()` du FlashBag ?",
+      "type": "single_choice",
+      "options": [
+        "Elle lit les messages et les supprime.",
+        "Elle lit les messages SANS les supprimer (permet de les afficher plusieurs fois).",
+        "Elle ajoute un message.",
+        "Elle supprime tous les messages."
+      ],
+      "correct_answers": [
+        "Elle lit les messages SANS les supprimer (permet de les afficher plusieurs fois)."
+      ],
+      "explanation": "Contrairement à `get()` qui consomme les messages."
+    }
+  ]
+}

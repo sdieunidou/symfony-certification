@@ -1,0 +1,66 @@
+{
+  "source_file": "04-controleurs/forward.md",
+  "title": "Redirections Internes (Forward)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence fondamentale entre `redirectToRoute()` et `forward()` ?",
+      "type": "single_choice",
+      "options": [
+        "`redirect` change l'URL du navigateur (nouvelle requête HTTP), `forward` reste sur la même URL (sous-requête interne).",
+        "`redirect` est pour GET, `forward` est pour POST.",
+        "`forward` est plus rapide car il ne charge pas le kernel.",
+        "Il n'y a aucune différence."
+      ],
+      "correct_answers": [
+        "`redirect` change l'URL du navigateur (nouvelle requête HTTP), `forward` reste sur la même URL (sous-requête interne)."
+      ],
+      "explanation": "Le forward exécute un autre contrôleur en interne et renvoie sa réponse, sans que le client ne sache qu'il y a eu un transfert."
+    },
+    {
+      "id": 2,
+      "question": "Quel mécanisme Symfony utilise pour implémenter `forward()` ?",
+      "type": "single_choice",
+      "options": [
+        "HTTP Redirect 307.",
+        "Sub-Request (Sous-requête) gérée par le HttpKernel.",
+        "Include PHP.",
+        "Ajax."
+      ],
+      "correct_answers": [
+        "Sub-Request (Sous-requête) gérée par le HttpKernel."
+      ],
+      "explanation": "Symfony crée une nouvelle instance de `Request`, la marque comme `SUB_REQUEST`, et la repasse dans la méthode `handle()` du Kernel."
+    },
+    {
+      "id": 3,
+      "question": "Comment sont passés les arguments à la méthode cible lors d'un `forward()` ?",
+      "type": "single_choice",
+      "options": [
+        "Via l'URL.",
+        "Via un tableau passé en 2ème argument, qui seront injectés comme attributs de requête.",
+        "Via la session.",
+        "Via des variables globales."
+      ],
+      "correct_answers": [
+        "Via un tableau passé en 2ème argument, qui seront injectés comme attributs de requête."
+      ],
+      "explanation": "Les clés du tableau doivent correspondre aux noms des arguments de la méthode du contrôleur cible."
+    },
+    {
+      "id": 4,
+      "question": "Est-ce que l'événement `kernel.request` est déclenché lors d'un `forward()` ?",
+      "type": "single_choice",
+      "options": [
+        "Non, jamais.",
+        "Oui, car c'est une nouvelle requête traitée par le Kernel (avec `$event->isMainRequest() === false`).",
+        "Seulement en mode debug.",
+        "Uniquement si on change de locale."
+      ],
+      "correct_answers": [
+        "Oui, car c'est une nouvelle requête traitée par le Kernel (avec `$event->isMainRequest() === false`)."
+      ],
+      "explanation": "Le cycle de vie est rejoué pour la sous-requête."
+    }
+  ]
+}

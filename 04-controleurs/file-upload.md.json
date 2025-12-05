@@ -1,0 +1,96 @@
+{
+  "source_file": "04-controleurs/file-upload.md",
+  "title": "Upload de Fichiers",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle classe représente un fichier uploadé dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "`SplFileInfo`",
+        "`File`",
+        "`UploadedFile`",
+        "`StreamedFile`"
+      ],
+      "correct_answers": [
+        "`UploadedFile`"
+      ],
+      "explanation": "`Symfony\\Component\\HttpFoundation\\File\\UploadedFile` étend `SplFileInfo` et ajoute des méthodes spécifiques comme `move()` et `isValid()`."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la méthode recommandée (la plus sûre) pour déterminer l'extension d'un fichier uploadé ?",
+      "type": "single_choice",
+      "options": [
+        "`$file->getClientOriginalExtension()`",
+        "`$file->guessExtension()`",
+        "En parsant le nom du fichier avec une regex.",
+        "En forçant `.txt`."
+      ],
+      "correct_answers": [
+        "`$file->guessExtension()`"
+      ],
+      "explanation": "`guessExtension()` devine l'extension à partir du contenu binaire (Mime Type) et non du nom fourni par l'utilisateur (qui peut être falsifié)."
+    },
+    {
+      "id": 3,
+      "question": "Quel attribut (Symfony 6.3+) permet d'injecter et valider un fichier directement dans le contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "`#[MapEntity]`",
+        "`#[MapUploadedFile]`",
+        "`#[File]`",
+        "`#[Upload]`"
+      ],
+      "correct_answers": [
+        "`#[MapUploadedFile]`"
+      ],
+      "explanation": "Cet attribut permet d'appliquer des contraintes de validation (taille, mime) directement sur l'argument `UploadedFile`."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode permet de déplacer le fichier temporaire vers son dossier de destination final ?",
+      "type": "single_choice",
+      "options": [
+        "`rename()`",
+        "`copy()`",
+        "`move()`",
+        "`save()`"
+      ],
+      "correct_answers": [
+        "`move()`"
+      ],
+      "explanation": "`$file->move($directory, $filename)` gère le déplacement de manière sécurisée et retourne l'objet File du nouveau fichier."
+    },
+    {
+      "id": 5,
+      "question": "Pourquoi ne faut-il jamais faire confiance à `$file->getClientOriginalName()` pour nommer le fichier final ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que le nom peut être vide.",
+        "Parce qu'il peut contenir des caractères dangereux (../) ou être utilisé pour écraser des fichiers système.",
+        "Parce qu'il est trop long.",
+        "Parce que Symfony ne le remplit pas."
+      ],
+      "correct_answers": [
+        "Parce qu'il peut contenir des caractères dangereux (../) ou être utilisé pour écraser des fichiers système."
+      ],
+      "explanation": "Il faut toujours 'assainir' (slugger) le nom ou générer un ID unique (UUID/UniqID)."
+    },
+    {
+      "id": 6,
+      "question": "Où doivent être stockés les fichiers publics (images, pdf) pour être accessibles via le serveur web ?",
+      "type": "single_choice",
+      "options": [
+        "`src/uploads`",
+        "`var/uploads`",
+        "`public/uploads`",
+        "`config/uploads`"
+      ],
+      "correct_answers": [
+        "`public/uploads`"
+      ],
+      "explanation": "Le dossier `public/` est le Document Root. Les fichiers en dehors ne sont pas accessibles directement par URL."
+    }
+  ]
+}

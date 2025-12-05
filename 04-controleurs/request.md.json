@@ -1,0 +1,81 @@
+{
+  "source_file": "04-controleurs/request.md",
+  "title": "L'objet Request (Usage Contrôleur)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Dans quelle propriété de l'objet `Request` se trouvent les données envoyées via un formulaire POST ?",
+      "type": "single_choice",
+      "options": [
+        "`$request->query`",
+        "`$request->request`",
+        "`$request->attributes`",
+        "`$request->post`"
+      ],
+      "correct_answers": [
+        "`$request->request`"
+      ],
+      "explanation": "`request` correspond à `$_POST`, `query` à `$_GET`."
+    },
+    {
+      "id": 2,
+      "question": "Comment récupérer une donnée JSON brute envoyée dans le corps de la requête (Body) ?",
+      "type": "single_choice",
+      "options": [
+        "`$request->request->all()`",
+        "`$request->getContent()` ou `$request->toArray()`",
+        "`$request->getBody()`",
+        "`json_decode($_POST)`"
+      ],
+      "correct_answers": [
+        "`$request->getContent()` ou `$request->toArray()`"
+      ],
+      "explanation": "`$request->getContent()` retourne la chaîne brute. `$request->toArray()` la décode en tableau (Symfony 5.2+)."
+    },
+    {
+      "id": 3,
+      "question": "À quoi correspond `$request->attributes` ?",
+      "type": "single_choice",
+      "options": [
+        "Aux attributs HTML.",
+        "Aux paramètres internes de Symfony (ex: variables de route `{id}`, `_route`, `_controller`).",
+        "Aux headers HTTP.",
+        "Aux cookies."
+      ],
+      "correct_answers": [
+        "Aux paramètres internes de Symfony (ex: variables de route `{id}`, `_route`, `_controller`)."
+      ],
+      "explanation": "C'est le stockage interne utilisé par le Router et le Kernel pour passer des infos au contrôleur."
+    },
+    {
+      "id": 4,
+      "question": "Comment récupérer l'IP du client de manière fiable, même derrière un proxy ?",
+      "type": "single_choice",
+      "options": [
+        "`$_SERVER['REMOTE_ADDR']`",
+        "`$request->server->get('REMOTE_ADDR')`",
+        "`$request->getClientIp()` (si `trusted_proxies` est configuré).",
+        "`$request->headers->get('X-Forwarded-For')`"
+      ],
+      "correct_answers": [
+        "`$request->getClientIp()` (si `trusted_proxies` est configuré)."
+      ],
+      "explanation": "Cette méthode gère la complexité des headers de proxy (`X-Forwarded-For`) de manière sécurisée."
+    },
+    {
+      "id": 5,
+      "question": "Peut-on modifier l'objet `Request` dans le contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, mais c'est déconseillé (l'objet doit être considéré comme immuable/état initial).",
+        "Non, il est verrouillé (read-only).",
+        "Oui, c'est la bonne pratique pour passer des données à la vue.",
+        "Seulement les headers."
+      ],
+      "correct_answers": [
+        "Oui, mais c'est déconseillé (l'objet doit être considéré comme immuable/état initial)."
+      ],
+      "explanation": "Bien que techniquement possible, modifier la Request rend le code difficile à déboguer. Utilisez des variables locales ou des DTOs."
+    }
+  ]
+}

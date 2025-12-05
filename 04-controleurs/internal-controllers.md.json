@@ -1,0 +1,66 @@
+{
+  "source_file": "04-controleurs/internal-controllers.md",
+  "title": "Contrôleurs Internes Natifs",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel contrôleur interne permet de rendre un template Twig directement depuis `routes.yaml` sans créer de classe PHP ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\\Bundle\\FrameworkBundle\\Controller\\TemplateController`",
+        "`Symfony\\Component\\HttpKernel\\Controller\\RenderController`",
+        "`App\\Controller\\DefaultController`",
+        "`Symfony\\Bundle\\TwigBundle\\Controller\\TemplateAction`"
+      ],
+      "correct_answers": [
+        "`Symfony\\Bundle\\FrameworkBundle\\Controller\\TemplateController`"
+      ],
+      "explanation": "C'est très utile pour les pages statiques (Homepage, About, Legal)."
+    },
+    {
+      "id": 2,
+      "question": "Quel contrôleur interne permet de gérer des redirections directement depuis la configuration de routing ?",
+      "type": "single_choice",
+      "options": [
+        "`RouterController`",
+        "`RedirectController`",
+        "`ForwardController`",
+        "`MoveController`"
+      ],
+      "correct_answers": [
+        "`RedirectController`"
+      ],
+      "explanation": "`RedirectController` peut rediriger vers une URL externe (`urlRedirectAction`) ou une route interne (`redirectAction`)."
+    },
+    {
+      "id": 3,
+      "question": "Peut-on injecter des services personnalisés (ex: `ProductRepository`) dans un `TemplateController` utilisé via `routes.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, via l'option `services`.",
+        "Non, ce contrôleur est générique. Si vous avez besoin de logique dynamique, vous devez créer votre propre contrôleur.",
+        "Oui, via le contexte Twig.",
+        "Oui, mais uniquement en dev."
+      ],
+      "correct_answers": [
+        "Non, ce contrôleur est générique. Si vous avez besoin de logique dynamique, vous devez créer votre propre contrôleur."
+      ],
+      "explanation": "Le `TemplateController` ne peut passer que des variables statiques (définies dans le yaml) au template."
+    },
+    {
+      "id": 4,
+      "question": "Quel paramètre permet de définir le code HTTP de redirection (301, 302) avec `RedirectController` ?",
+      "type": "single_choice",
+      "options": [
+        "`code`",
+        "`status`",
+        "`permanent` (true = 301, false = 302)",
+        "`http_code`"
+      ],
+      "correct_answers": [
+        "`permanent` (true = 301, false = 302)"
+      ],
+      "explanation": "L'option `permanent: true` génère une redirection 301 (Moved Permanently)."
+    }
+  ]
+}

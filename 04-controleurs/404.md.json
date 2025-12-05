@@ -1,0 +1,96 @@
+{
+  "source_file": "04-controleurs/404.md",
+  "title": "Générer des pages 404 (Not Found)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Dans un contrôleur Symfony, comment déclencher correctement une erreur 404 ?",
+      "type": "single_choice",
+      "options": [
+        "En retournant `new Response('Not found', 404)`.",
+        "En lançant une exception (ex: `throw $this->createNotFoundException()`).",
+        "En redirigeant vers `/404`.",
+        "En faisant `header('HTTP/1.0 404 Not Found'); exit;`."
+      ],
+      "correct_answers": [
+        "En lançant une exception (ex: `throw $this->createNotFoundException()`)."
+      ],
+      "explanation": "Il faut lancer une exception pour que le mécanisme de gestion d'erreurs de Symfony (ExceptionListener) prenne le relais et affiche la bonne page d'erreur ou le bon JSON."
+    },
+    {
+      "id": 2,
+      "question": "Si vous injectez une Entité Doctrine (ex: `Product $product`) dans une méthode de contrôleur et que l'ID n'existe pas en base, que se passe-t-il par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "L'argument `$product` est null.",
+        "Une exception `NotFoundHttpException` (404) est lancée automatiquement.",
+        "Une nouvelle entité vide est créée.",
+        "Le contrôleur est exécuté avec l'ID."
+      ],
+      "correct_answers": [
+        "Une exception `NotFoundHttpException` (404) est lancée automatiquement."
+      ],
+      "explanation": "C'est le comportement par défaut du `EntityValueResolver` (anciennement ParamConverter). Pour rendre l'argument optionnel, il faut le typer comme nullable (`?Product $product`)."
+    },
+    {
+      "id": 3,
+      "question": "Où devez-vous créer le template Twig pour personnaliser la page 404 ?",
+      "type": "single_choice",
+      "options": [
+        "`templates/error/404.html.twig`",
+        "`templates/bundles/TwigBundle/Exception/error404.html.twig`",
+        "`templates/404.html.twig`",
+        "`public/404.html`"
+      ],
+      "correct_answers": [
+        "`templates/bundles/TwigBundle/Exception/error404.html.twig`"
+      ],
+      "explanation": "C'est la convention de surcharge des templates de bundles dans Symfony."
+    },
+    {
+      "id": 4,
+      "question": "En environnement de développement (`APP_ENV=dev`), comment prévisualiser votre page 404 personnalisée ?",
+      "type": "single_choice",
+      "options": [
+        "Impossible, il faut passer en prod.",
+        "En déclenchant une vraie 404.",
+        "En utilisant une URL spéciale fournie par le `_error_controller` (souvent `/_error/404`).",
+        "En désactivant le debug."
+      ],
+      "correct_answers": [
+        "En utilisant une URL spéciale fournie par le `_error_controller` (souvent `/_error/404`)."
+      ],
+      "explanation": "En dev, Symfony intercepte les exceptions pour afficher la stack trace de debug. L'URL spéciale permet de voir le rendu final."
+    },
+    {
+      "id": 5,
+      "question": "Quelle méthode helper de `AbstractController` crée l'exception appropriée pour une 404 ?",
+      "type": "single_choice",
+      "options": [
+        "`create404()`",
+        "`createNotFoundException()`",
+        "`generateNotFound()`",
+        "`notFound()`"
+      ],
+      "correct_answers": [
+        "`createNotFoundException()`"
+      ],
+      "explanation": "Elle instancie et retourne une `NotFoundHttpException`."
+    },
+    {
+      "id": 6,
+      "question": "Si une ressource existe mais que l'utilisateur n'a pas les droits pour la voir, est-ce une 404 ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, c'est une 403 (Access Denied), sauf si on souhaite masquer l'existence de la ressource pour des raisons de sécurité.",
+        "C'est une 500.",
+        "C'est une 401."
+      ],
+      "correct_answers": [
+        "Non, c'est une 403 (Access Denied), sauf si on souhaite masquer l'existence de la ressource pour des raisons de sécurité."
+      ],
+      "explanation": "Sémantiquement, 403 est correct. Cependant, pour éviter l'énumération de ressources (User Enumeration), on peut choisir de renvoyer une 404."
+    }
+  ]
+}

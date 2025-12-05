@@ -1,0 +1,81 @@
+{
+  "source_file": "04-controleurs/cookies.md",
+  "title": "Cookies (Usage dans le Contrôleur)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment lire un cookie envoyé par le client dans un contrôleur Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Via `$_COOKIE`.",
+        "Via `$request->cookies->get('nom')`.",
+        "Via `$response->headers->getCookie('nom')`.",
+        "Via le service `CookieReader`."
+      ],
+      "correct_answers": [
+        "Via `$request->cookies->get('nom')`."
+      ],
+      "explanation": "Les cookies font partie de la Requête entrante. On y accède via le sac de paramètres `cookies`."
+    },
+    {
+      "id": 2,
+      "question": "Comment envoyer un cookie au client (le créer/modifier) ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant `setcookie()` de PHP natif.",
+        "En l'ajoutant à la requête : `$request->cookies->set(...)`.",
+        "En créant un objet `Cookie` et en l'ajoutant aux headers de la `Response`.",
+        "En le mettant en session."
+      ],
+      "correct_answers": [
+        "En créant un objet `Cookie` et en l'ajoutant aux headers de la `Response`."
+      ],
+      "explanation": "Les cookies sont envoyés via le header `Set-Cookie`. C'est donc une responsabilité de l'objet Response."
+    },
+    {
+      "id": 3,
+      "question": "Comment supprimer un cookie proprement ?",
+      "type": "single_choice",
+      "options": [
+        "Appeler `$response->headers->removeCookie('name')`.",
+        "Envoyer un cookie avec le même nom et une date d'expiration passée (`clearCookie` helper).",
+        "Vider le cache du navigateur.",
+        "On ne peut pas."
+      ],
+      "correct_answers": [
+        "Envoyer un cookie avec le même nom et une date d'expiration passée (`clearCookie` helper)."
+      ],
+      "explanation": "Le protocole HTTP supprime un cookie en l'écrasant par une version expirée."
+    },
+    {
+      "id": 4,
+      "question": "Lors de la création d'un cookie, que fait l'option `httpOnly` ?",
+      "type": "single_choice",
+      "options": [
+        "Elle force le cookie à être envoyé uniquement en HTTP (pas HTTPS).",
+        "Elle empêche le JavaScript client (`document.cookie`) d'accéder au cookie.",
+        "Elle chiffre le cookie.",
+        "Elle le rend temporaire."
+      ],
+      "correct_answers": [
+        "Elle empêche le JavaScript client (`document.cookie`) d'accéder au cookie."
+      ],
+      "explanation": "C'est une protection contre le vol de session via XSS (Cross-Site Scripting)."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la différence entre modifier `$request->cookies` et `$response->headers->setCookie` ?",
+      "type": "single_choice",
+      "options": [
+        "Aucune.",
+        "`$request->cookies` modifie la valeur pour le script courant (lecture immédiate), `$response` envoie l'ordre au navigateur pour les prochaines requêtes.",
+        "`$request` est persistant, `$response` est temporaire.",
+        "`$response` est déprécié."
+      ],
+      "correct_answers": [
+        "`$request->cookies` modifie la valeur pour le script courant (lecture immédiate), `$response` envoie l'ordre au navigateur pour les prochaines requêtes."
+      ],
+      "explanation": "Pour que l'utilisateur 'garde' le cookie, il faut impérativement passer par la Response."
+    }
+  ]
+}

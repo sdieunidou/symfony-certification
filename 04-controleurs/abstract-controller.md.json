@@ -1,0 +1,126 @@
+{
+  "source_file": "04-controleurs/abstract-controller.md",
+  "title": "La classe AbstractController",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence principale entre l'ancienne classe `Controller` (dépréciée) et `AbstractController` ?",
+      "type": "single_choice",
+      "options": [
+        "`AbstractController` est plus lente.",
+        "`AbstractController` utilise un `ContainerBag` (Service Locator) restreint aux services abonnés, au lieu d'injecter tout le conteneur public.",
+        "`AbstractController` ne permet pas d'utiliser Twig.",
+        "Il n'y a aucune différence."
+      ],
+      "correct_answers": [
+        "`AbstractController` utilise un `ContainerBag` (Service Locator) restreint aux services abonnés, au lieu d'injecter tout le conteneur public."
+      ],
+      "explanation": "C'est une amélioration de performance et d'architecture. On ne peut accéder via `$this->container` qu'aux services explicitement déclarés dans `getSubscribedServices()`."
+    },
+    {
+      "id": 2,
+      "question": "Comment accéder à un service personnalisé (ex: `App\Service\Mailer`) dans un contrôleur étendant `AbstractController` ?",
+      "type": "single_choice",
+      "options": [
+        "Via `$this->get('App\\Service\\Mailer')`.",
+        "Via `$this->container->get('App\\Service\\Mailer')`.",
+        "En l'injectant dans le constructeur ou dans la méthode du contrôleur (Action).",
+        "Via une variable globale."
+      ],
+      "correct_answers": [
+        "En l'injectant dans le constructeur ou dans la méthode du contrôleur (Action)."
+      ],
+      "explanation": "L'injection de dépendances explicite est la seule méthode recommandée et fiable."
+    },
+    {
+      "id": 3,
+      "question": "Quel helper permet de rediriger l'utilisateur vers une autre route ?",
+      "type": "single_choice",
+      "options": [
+        "`forward()`",
+        "`redirectToRoute()`",
+        "`render()`",
+        "`json()`"
+      ],
+      "correct_answers": [
+        "`redirectToRoute()`"
+      ],
+      "explanation": "Il retourne un objet `RedirectResponse` (HTTP 302 par défaut)."
+    },
+    {
+      "id": 4,
+      "question": "La méthode `getParameter()` permet-elle de lire directement une variable d'environnement (ex: `$_ENV['DB_PASS']`) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui.",
+        "Non, elle lit les **paramètres du conteneur** (définis dans `services.yaml`).",
+        "Oui, mais seulement en local.",
+        "Seulement si elle commence par `APP_`."
+      ],
+      "correct_answers": [
+        "Non, elle lit les **paramètres du conteneur** (définis dans `services.yaml`)."
+      ],
+      "explanation": "Pour lire une variable d'env via `getParameter`, il faut d'abord la mapper vers un paramètre dans la configuration (`parameters: my_param: '%env(MY_ENV_VAR)%'`)."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert la méthode `render()` ?",
+      "type": "single_choice",
+      "options": [
+        "À afficher du texte brut.",
+        "À rendre un template Twig et retourner un objet `Response` contenant le HTML.",
+        "À rediriger vers une vue.",
+        "À générer du JSON."
+      ],
+      "correct_answers": [
+        "À rendre un template Twig et retourner un objet `Response` contenant le HTML."
+      ],
+      "explanation": "C'est le raccourci standard pour retourner une page HTML."
+    },
+    {
+      "id": 6,
+      "question": "Quelle méthode helper permet de retourner facilement une réponse JSON ?",
+      "type": "single_choice",
+      "options": [
+        "`renderJson()`",
+        "`json()`",
+        "`api()`",
+        "`ajax()`"
+      ],
+      "correct_answers": [
+        "`json()`"
+      ],
+      "explanation": "La méthode `json($data)` utilise le serializer (si disponible) ou `json_encode` pour créer une `JsonResponse`."
+    },
+    {
+      "id": 7,
+      "question": "Dans Symfony 7.4+, comment injecter uniquement le helper `render` sans hériter de `AbstractController` ?",
+      "type": "single_choice",
+      "options": [
+        "Impossible.",
+        "En utilisant le trait `ControllerTrait`.",
+        "En utilisant l'attribut `#[AutowireMethodOf(ControllerHelper::class)]` sur une propriété Closure ou un argument.",
+        "En injectant le service `twig`."
+      ],
+      "correct_answers": [
+        "En utilisant l'attribut `#[AutowireMethodOf(ControllerHelper::class)]` sur une propriété Closure ou un argument."
+      ],
+      "explanation": "Cela permet un découplage total et d'éviter l'héritage, tout en bénéficiant des raccourcis du framework."
+    },
+    {
+      "id": 8,
+      "question": "Que retourne la méthode `getUser()` ?",
+      "type": "single_choice",
+      "options": [
+        "Toujours un objet `UserInterface`.",
+        "L'objet `UserInterface` représentant l'utilisateur connecté, ou `null` s'il n'est pas connecté.",
+        "L'ID de l'utilisateur.",
+        "Le token de sécurité."
+      ],
+      "correct_answers": [
+        "L'objet `UserInterface` représentant l'utilisateur connecté, ou `null` s'il n'est pas connecté."
+      ],
+      "explanation": "Il faut toujours gérer le cas où `getUser()` retourne `null` (sauf si le contrôleur est sécurisé par un firewall/access_control)."
+    }
+  ]
+}

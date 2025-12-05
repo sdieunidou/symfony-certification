@@ -1,0 +1,81 @@
+{
+  "source_file": "04-controleurs/session.md",
+  "title": "Session (Usage & Configuration)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Depuis Symfony 6, quel service doit-on injecter pour accéder à la session ?",
+      "type": "single_choice",
+      "options": [
+        "`SessionInterface`",
+        "`RequestStack` (puis `$requestStack->getSession()`)",
+        "`$_SESSION`",
+        "`Session`"
+      ],
+      "correct_answers": [
+        "`RequestStack` (puis `$requestStack->getSession()`)"
+      ],
+      "explanation": "L'injection directe de la session est dépréciée car la session est liée à la requête courante (dans la pile)."
+    },
+    {
+      "id": 2,
+      "question": "Où configure-t-on le stockage des sessions (fichier, base de données, Redis) ?",
+      "type": "single_choice",
+      "options": [
+        "Dans `php.ini`.",
+        "Dans `config/packages/framework.yaml` (clé `handler_id`).",
+        "Dans le contrôleur.",
+        "Dans `.env`."
+      ],
+      "correct_answers": [
+        "Dans `config/packages/framework.yaml` (clé `handler_id`)."
+      ],
+      "explanation": "Symfony surcharge la gestion native de PHP via ses propres handlers."
+    },
+    {
+      "id": 3,
+      "question": "Comment stocker les sessions en base de données ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas supporté.",
+        "En configurant le `PdoSessionHandler` comme `handler_id`.",
+        "En installant un bundle tiers.",
+        "En écrivant du SQL à la main."
+      ],
+      "correct_answers": [
+        "En configurant le `PdoSessionHandler` comme `handler_id`."
+      ],
+      "explanation": "Symfony fournit un handler natif pour PDO (MySQL, PostgreSQL, etc.)."
+    },
+    {
+      "id": 4,
+      "question": "Qu'est-ce qu'un 'Flash Message' ?",
+      "type": "single_choice",
+      "options": [
+        "Un message qui s'affiche en clignotant.",
+        "Un message stocké en session qui est automatiquement supprimé après avoir été lu une fois.",
+        "Un message envoyé par email.",
+        "Une notification push."
+      ],
+      "correct_answers": [
+        "Un message stocké en session qui est automatiquement supprimé après avoir été lu une fois."
+      ],
+      "explanation": "C'est le mécanisme standard pour les notifications 'Succès/Erreur' après une redirection."
+    },
+    {
+      "id": 5,
+      "question": "Quand la session démarre-t-elle (`session_start`) dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Au démarrage du Kernel.",
+        "Automatiquement à chaque requête.",
+        "Uniquement quand on lit ou écrit dans l'objet Session (Lazy).",
+        "Jamais."
+      ],
+      "correct_answers": [
+        "Uniquement quand on lit ou écrit dans l'objet Session (Lazy)."
+      ],
+      "explanation": "Si l'application n'utilise pas la session (ex: page statique), aucun cookie `PHPSESSID` n'est envoyé."
+    }
+  ]
+}

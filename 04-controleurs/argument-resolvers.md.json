@@ -1,0 +1,126 @@
+{
+  "source_file": "04-controleurs/argument-resolvers.md",
+  "title": "Argument Value Resolvers (Injection dans les méthodes)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel mécanisme permet à Symfony d'injecter des valeurs (Request, Entity, User) dans les arguments des méthodes de contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "L'Autowiring du constructeur.",
+        "Les Argument Value Resolvers.",
+        "Les Event Listeners.",
+        "La magie noire."
+      ],
+      "correct_answers": [
+        "Les Argument Value Resolvers."
+      ],
+      "explanation": "Le `HttpKernel` utilise une collection de résolveurs (`ArgumentResolverInterface`) pour déterminer la valeur de chaque argument selon son type ou ses attributs."
+    },
+    {
+      "id": 2,
+      "question": "Quel attribut remplace l'annotation `@ParamConverter` pour mapper une entité Doctrine depuis l'URL ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Route]`",
+        "`#[MapEntity]`",
+        "`#[Entity]`",
+        "`#[ORM]`"
+      ],
+      "correct_answers": [
+        "`#[MapEntity]`"
+      ],
+      "explanation": "Introduit dans Symfony 6.2/6.3, cet attribut natif remplace la dépendance à `SensioFrameworkExtraBundle`."
+    },
+    {
+      "id": 3,
+      "question": "Quel attribut permet de désérialiser ET valider le corps de la requête (JSON/XML) vers un objet DTO ?",
+      "type": "single_choice",
+      "options": [
+        "`#[MapEntity]`",
+        "`#[MapRequestPayload]`",
+        "`#[RequestBody]`",
+        "`#[JsonContent]`"
+      ],
+      "correct_answers": [
+        "`#[MapRequestPayload]`"
+      ],
+      "explanation": "C'est l'outil idéal pour les API. Il gère la désérialisation et lance une erreur 422 si la validation (Constraints) échoue."
+    },
+    {
+      "id": 4,
+      "question": "Quel attribut permet d'injecter et valider les paramètres de la Query String (ex: `?page=1&sort=desc`) dans un DTO ?",
+      "type": "single_choice",
+      "options": [
+        "`#[MapQueryString]`",
+        "`#[MapQueryParameter]`",
+        "`#[Query]`",
+        "`#[Get]`"
+      ],
+      "correct_answers": [
+        "`#[MapQueryString]`"
+      ],
+      "explanation": "`#[MapQueryString]` mappe tout ou partie de la query string vers un objet complet, tandis que `#[MapQueryParameter]` cible un seul paramètre scalaire."
+    },
+    {
+      "id": 5,
+      "question": "Comment injecter l'utilisateur connecté dans une méthode de contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "En ajoutant un argument typé `UserInterface $user` avec l'attribut `#[CurrentUser]`.",
+        "En utilisant `$this->getUser()` uniquement.",
+        "En ajoutant `User $user` (le résolveur Entity va essayer de le charger depuis l'URL).",
+        "C'est impossible."
+      ],
+      "correct_answers": [
+        "En ajoutant un argument typé `UserInterface $user` avec l'attribut `#[CurrentUser]`."
+      ],
+      "explanation": "L'attribut `#[CurrentUser]` indique explicitement au résolveur de sécurité d'injecter l'utilisateur de la session/token."
+    },
+    {
+      "id": 6,
+      "question": "Si vous utilisez `#[MapRequestPayload]` et que la validation du DTO échoue, quel code HTTP est retourné par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "400 Bad Request",
+        "404 Not Found",
+        "422 Unprocessable Entity",
+        "500 Internal Server Error"
+      ],
+      "correct_answers": [
+        "422 Unprocessable Entity"
+      ],
+      "explanation": "C'est le standard pour les erreurs de validation sémantique."
+    },
+    {
+      "id": 7,
+      "question": "Peut-on injecter n'importe quel service dans une méthode de contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "Non, uniquement dans le constructeur.",
+        "Oui, grâce au `ServiceValueResolver`, il suffit de typer l'argument avec l'interface ou la classe du service.",
+        "Oui, mais il faut ajouter l'attribut `#[Service]`.",
+        "Uniquement les services taggués 'public'."
+      ],
+      "correct_answers": [
+        "Oui, grâce au `ServiceValueResolver`, il suffit de typer l'argument avec l'interface ou la classe du service."
+      ],
+      "explanation": "Les méthodes de contrôleur supportent l'injection de dépendances au même titre que le constructeur."
+    },
+    {
+      "id": 8,
+      "question": "Quelle interface faut-il implémenter pour créer son propre Value Resolver ?",
+      "type": "single_choice",
+      "options": [
+        "ArgumentValueResolverInterface (Dépréciée)",
+        "ValueResolverInterface",
+        "ControllerArgumentInterface",
+        "ParamConverterInterface"
+      ],
+      "correct_answers": [
+        "ValueResolverInterface"
+      ],
+      "explanation": "`ValueResolverInterface` est la nouvelle interface simplifiée depuis Symfony 6.2."
+    }
+  ]
+}
