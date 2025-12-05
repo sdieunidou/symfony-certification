@@ -21,6 +21,28 @@ Une classe qui "sait" ce qu'elle écoute en implémentant `EventSubscriberInterf
 *   Doit implémenter `getSubscribedEvents()`.
 *   **Avantage** : Autonome, facile à réutiliser et partager entre projets. Symfony l'enregistre automatiquement sans config.
 
+```php
+namespace App\EventSubscriber;
+
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+
+class RequestSubscriber implements EventSubscriberInterface
+{
+    public static function getSubscribedEvents(): array
+    {
+        return [
+            RequestEvent::class => 'onKernelRequest',
+        ];
+    }
+
+    public function onKernelRequest(RequestEvent $event): void
+    {
+        // ...
+    }
+}
+```
+
 ## Création d'un Event Custom
 Pour découpler votre propre code, vous pouvez dispatcher vos événements.
 
