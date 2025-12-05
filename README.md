@@ -236,4 +236,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Intl](./19-composants/intl.md)
 * [Lock](./19-composants/lock.md)
 * [Filesystem](./19-composants/filesystem.md)
+* [Finder](./19-composants/finder.md)
+* [Dotenv](./19-composants/dotenv.md)
+* [String](./19-composants/string.md)
 * [Clock](./19-composants/clock.md)
