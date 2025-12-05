@@ -1,0 +1,66 @@
+{
+  "source_file": "13-tests-automatises/panther.md",
+  "title": "Tests E2E avec Panther",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence fondamentale entre `WebTestCase` et `Panther` ?",
+      "type": "single_choice",
+      "options": [
+        "`WebTestCase` est plus lent.",
+        "`WebTestCase` simule un navigateur en PHP sans exécuter le JS, tandis que `Panther` pilote un vrai navigateur (Chrome/Firefox) capable d'exécuter le JavaScript.",
+        "`Panther` ne supporte pas Symfony.",
+        "`WebTestCase` utilise Selenium."
+      ],
+      "correct_answers": [
+        "`WebTestCase` simule un navigateur en PHP sans exécuter le JS, tandis que `Panther` pilote un vrai navigateur (Chrome/Firefox) capable d'exécuter le JavaScript."
+      ],
+      "explanation": "Panther est nécessaire pour les tests End-to-End (E2E) impliquant du JS complexe (React, Vue, AJAX)."
+    },
+    {
+      "id": 2,
+      "question": "Quel protocole Panther utilise-t-il pour piloter les navigateurs ?",
+      "type": "single_choice",
+      "options": [
+        "Puppeteer",
+        "WebDriver (W3C standard) via ChromeDriver ou GeckoDriver.",
+        "Cypress",
+        "HTTP"
+      ],
+      "correct_answers": [
+        "WebDriver (W3C standard) via ChromeDriver ou GeckoDriver."
+      ],
+      "explanation": "Il implémente le protocole WebDriver de manière transparente."
+    },
+    {
+      "id": 3,
+      "question": "Quelle interface `Panther` implémente-t-il pour rester familier aux développeurs Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "L'interface de `Guzzle`.",
+        "L'interface `BrowserKit` et `DomCrawler` (comme WebTestCase).",
+        "L'interface `Selenium`.",
+        "L'interface `PHPUnit`."
+      ],
+      "correct_answers": [
+        "L'interface `BrowserKit` et `DomCrawler` (comme WebTestCase)."
+      ],
+      "explanation": "Vous utilisez `request()`, `click()`, `filter()` exactement comme dans `WebTestCase`."
+    },
+    {
+      "id": 4,
+      "question": "Quelle fonctionnalité clé de Panther permet de gérer l'asynchronicité du JavaScript ?",
+      "type": "single_choice",
+      "options": [
+        "`sleep(5)`",
+        "`$client->waitFor('.element')`",
+        "`$client->wait()`",
+        "`$client->async()`"
+      ],
+      "correct_answers": [
+        "`$client->waitFor('.element')`"
+      ],
+      "explanation": "Cela permet d'attendre qu'un élément apparaisse dans le DOM avant de faire une assertion, évitant les 'flaky tests'."
+    }
+  ]
+}

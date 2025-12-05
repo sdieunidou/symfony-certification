@@ -1,0 +1,66 @@
+{
+  "source_file": "13-tests-automatises/profiler.md",
+  "title": "Objet Profiler (Tests Fonctionnels)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Dans un test fonctionnel, comment accéder aux données de performance et aux logs de la requête effectuée (comme dans la Web Debug Toolbar) ?",
+      "type": "single_choice",
+      "options": [
+        "En regardant les fichiers de logs.",
+        "En récupérant l'objet `Profiler` via `$client->getProfile()`.",
+        "En utilisant le crawler.",
+        "C'est impossible en test."
+      ],
+      "correct_answers": [
+        "En récupérant l'objet `Profiler` via `$client->getProfile()`."
+      ],
+      "explanation": "Le profiler doit être activé (`enableProfiler()`) pour que cela fonctionne."
+    },
+    {
+      "id": 2,
+      "question": "Comment vérifier qu'un email a bien été envoyé lors d'une requête testée ?",
+      "type": "single_choice",
+      "options": [
+        "En vérifiant la boîte mail.",
+        "En inspectant le collecteur `mailer` du Profiler.",
+        "En mockant le service mailer (possible mais complexe en fonctionnel).",
+        "Les deux dernières réponses sont valides."
+      ],
+      "correct_answers": [
+        "Les deux dernières réponses sont valides."
+      ],
+      "explanation": "L'inspection du Profiler est la méthode 'boîte noire' préférée : `$client->getProfile()->getCollector('mailer')`."
+    },
+    {
+      "id": 3,
+      "question": "Si la requête entraîne une redirection, que retourne `$client->getProfile()` ?",
+      "type": "single_choice",
+      "options": [
+        "Le profil de la première requête (avant redirection).",
+        "Le profil de la dernière requête (après redirection).",
+        "Un tableau de tous les profils.",
+        "Null."
+      ],
+      "correct_answers": [
+        "Le profil de la dernière requête (après redirection)."
+      ],
+      "explanation": "Le client suit les redirections par défaut. Pour avoir le profil de la redirection elle-même, il faut désactiver `followRedirects`."
+    },
+    {
+      "id": 4,
+      "question": "Faut-il activer le profiler pour tous les tests ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, c'est mieux.",
+        "Non, car cela consomme beaucoup de mémoire et ralentit l'exécution des tests.",
+        "Oui, c'est obligatoire.",
+        "Seulement en prod."
+      ],
+      "correct_answers": [
+        "Non, car cela consomme beaucoup de mémoire et ralentit l'exécution des tests."
+      ],
+      "explanation": "Activez-le uniquement pour les tests qui ont besoin de vérifier des données techniques (emails, db queries)."
+    }
+  ]
+}

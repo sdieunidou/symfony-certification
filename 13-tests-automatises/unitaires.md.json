@@ -1,0 +1,66 @@
+{
+  "source_file": "13-tests-automatises/unitaires.md",
+  "title": "Tests Unitaires (PHPUnit)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle classe de base utiliser pour un test unitaire pur (sans framework Symfony) ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\Bundle\FrameworkBundle\Test\KernelTestCase`",
+        "`PHPUnit\Framework\TestCase`",
+        "`Symfony\Bundle\FrameworkBundle\Test\WebTestCase`",
+        "`SymfonyTest`"
+      ],
+      "correct_answers": [
+        "`PHPUnit\Framework\TestCase`"
+      ],
+      "explanation": "Pour tester une classe isolée (Service, DTO), le framework PHPUnit standard suffit et est le plus rapide."
+    },
+    {
+      "id": 2,
+      "question": "Quand faut-il utiliser `KernelTestCase` ?",
+      "type": "single_choice",
+      "options": [
+        "Toujours.",
+        "Quand le test a besoin d'accéder au conteneur de services (ex: tester un Repository avec une vraie DB, ou un service dépendant de la config).",
+        "Quand on veut tester le rendu HTML.",
+        "Quand on utilise Twig."
+      ],
+      "correct_answers": [
+        "Quand le test a besoin d'accéder au conteneur de services (ex: tester un Repository avec une vraie DB, ou un service dépendant de la config)."
+      ],
+      "explanation": "C'est un test d'intégration."
+    },
+    {
+      "id": 3,
+      "question": "Dans un test unitaire, si votre classe dépend d'un autre service (ex: Logger), que devez-vous faire ?",
+      "type": "single_choice",
+      "options": [
+        "Instancier le vrai Logger.",
+        "Créer un Mock (Doublure) du Logger.",
+        "Utiliser `KernelTestCase`.",
+        "Ne pas tester."
+      ],
+      "correct_answers": [
+        "Créer un Mock (Doublure) du Logger."
+      ],
+      "explanation": "`$this->createMock(LoggerInterface::class)` permet d'isoler la classe testée de ses dépendances."
+    },
+    {
+      "id": 4,
+      "question": "Quelle commande permet d'installer tout le nécessaire pour tester dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "`composer require phpunit/phpunit`",
+        "`composer require --dev symfony/test-pack`",
+        "`composer require symfony/phpunit-bridge`",
+        "`make test`"
+      ],
+      "correct_answers": [
+        "`composer require --dev symfony/test-pack`"
+      ],
+      "explanation": "Le `test-pack` est un méta-paquet qui inclut PHPUnit, le Bridge, le BrowserKit, le CssSelector, etc."
+    }
+  ]
+}

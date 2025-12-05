@@ -1,0 +1,51 @@
+{
+  "source_file": "11-cache/component-commands.md",
+  "title": "Commandes Console (Cache Component)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle commande permet de vider un pool de cache spécifique (ex: Redis) ?",
+      "type": "single_choice",
+      "options": [
+        "`cache:clear`",
+        "`cache:pool:clear`",
+        "`cache:warmup`",
+        "`redis:flush`"
+      ],
+      "correct_answers": [
+        "`cache:pool:clear`"
+      ],
+      "explanation": "`cache:clear` vide le cache système (`var/cache`). `cache:pool:clear` vide les données applicatives."
+    },
+    {
+      "id": 2,
+      "question": "Comment lister tous les pools de cache disponibles ?",
+      "type": "single_choice",
+      "options": [
+        "`cache:list`",
+        "`cache:pool:list`",
+        "`debug:container`",
+        "`list:cache`"
+      ],
+      "correct_answers": [
+        "`cache:pool:list`"
+      ],
+      "explanation": "Affiche les pools système et utilisateur."
+    },
+    {
+      "id": 3,
+      "question": "Si vous utilisez un cache taggé, comment invalider uniquement les items liés au tag 'product' ?",
+      "type": "single_choice",
+      "options": [
+        "`cache:clear --tag=product`",
+        "`cache:pool:invalidate-tags pool_name product`",
+        "`cache:tags:clear product`",
+        "Il faut vider tout le pool."
+      ],
+      "correct_answers": [
+        "`cache:pool:invalidate-tags pool_name product`"
+      ],
+      "explanation": "Cette commande permet une invalidation chirurgicale."
+    }
+  ]
+}

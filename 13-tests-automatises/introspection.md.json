@@ -1,0 +1,66 @@
+{
+  "source_file": "13-tests-automatises/introspection.md",
+  "title": "Introspection Request et Response",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment accéder à l'objet `Response` de la dernière requête effectuée par le client ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->getLastResponse()`",
+        "`$client->getResponse()`",
+        "`$client->response()`",
+        "`$crawler->getResponse()`"
+      ],
+      "correct_answers": [
+        "`$client->getResponse()`"
+      ],
+      "explanation": "Cela retourne une instance de `Symfony\Component\HttpFoundation\Response`."
+    },
+    {
+      "id": 2,
+      "question": "Si le client suit les redirections (`followRedirects(true)`), que contient `$client->getResponse()` après une requête qui a redirigé ?",
+      "type": "single_choice",
+      "options": [
+        "La réponse de la première page (302 Redirect).",
+        "La réponse de la page finale (200 OK).",
+        "Un tableau de toutes les réponses.",
+        "Null."
+      ],
+      "correct_answers": [
+        "La réponse de la page finale (200 OK)."
+      ],
+      "explanation": "Pour tester la redirection elle-même (vérifier le header Location), il faut désactiver le suivi automatique (`followRedirects(false)`)."
+    },
+    {
+      "id": 3,
+      "question": "Comment vérifier le contenu JSON d'une réponse API ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant `$response->getContent()` et `json_decode()`.",
+        "En utilisant le Crawler.",
+        "En utilisant `$response->getJson()`.",
+        "En utilisant `$client->json()`."
+      ],
+      "correct_answers": [
+        "En utilisant `$response->getContent()` et `json_decode()`."
+      ],
+      "explanation": "Le Crawler est fait pour le HTML/XML. Pour le JSON, on inspecte la chaîne brute retournée par `getContent()`."
+    },
+    {
+      "id": 4,
+      "question": "Comment vérifier que la réponse contient un header spécifique ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->assertTrue($client->getResponse()->headers->has('Content-Type'))`",
+        "`$this->assertHeader('Content-Type')`",
+        "`$client->hasHeader('Content-Type')`",
+        "`$crawler->header('Content-Type')`"
+      ],
+      "correct_answers": [
+        "`$this->assertTrue($client->getResponse()->headers->has('Content-Type'))`"
+      ],
+      "explanation": "On accède au sac de headers via la propriété publique `headers` de l'objet Response."
+    }
+  ]
+}

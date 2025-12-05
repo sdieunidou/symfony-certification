@@ -1,0 +1,66 @@
+{
+  "source_file": "13-tests-automatises/fixtures.md",
+  "title": "Fixtures & Base de Données",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Pourquoi utiliser `DAMADoctrineTestBundle` dans les tests fonctionnels Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Pour accélérer l'installation de Doctrine.",
+        "Pour isoler chaque test en enveloppant son exécution dans une transaction base de données qui est annulée (rollback) à la fin.",
+        "Pour créer des fixtures aléatoires.",
+        "Pour tester Doctrine sans base de données."
+      ],
+      "correct_answers": [
+        "Pour isoler chaque test en enveloppant son exécution dans une transaction base de données qui est annulée (rollback) à la fin."
+      ],
+      "explanation": "Cela garantit que l'état de la base de données est propre pour chaque test, évitant les effets de bord."
+    },
+    {
+      "id": 2,
+      "question": "Quelle commande permet de charger les fixtures dans la base de test ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console doctrine:fixtures:load`",
+        "`php bin/console doctrine:fixtures:load --env=test`",
+        "`php bin/console make:fixtures`",
+        "`php bin/console test:fixtures`"
+      ],
+      "correct_answers": [
+        "`php bin/console doctrine:fixtures:load --env=test`"
+      ],
+      "explanation": "Il est crucial de spécifier `--env=test` pour ne pas écraser la base de développement."
+    },
+    {
+      "id": 3,
+      "question": "Comment définir une base de données spécifique pour les tests ?",
+      "type": "single_choice",
+      "options": [
+        "Dans le fichier `.env`.",
+        "Dans le fichier `.env.test` ou `.env.test.local` en surchargeant `DATABASE_URL`.",
+        "Dans le contrôleur.",
+        "C'est automatique."
+      ],
+      "correct_answers": [
+        "Dans le fichier `.env.test` ou `.env.test.local` en surchargeant `DATABASE_URL`."
+      ],
+      "explanation": "Les tests chargent automatiquement l'environnement `test` qui lit `.env.test`."
+    },
+    {
+      "id": 4,
+      "question": "Quelle classe abstraite faut-il étendre pour créer une fixture Doctrine ?",
+      "type": "single_choice",
+      "options": [
+        "`DoctrineFixture`",
+        "`Fixture` (du namespace `Doctrine\Bundle\FixturesBundle\Fixture`)",
+        "`BaseFixture`",
+        "`DataFixture`"
+      ],
+      "correct_answers": [
+        "`Fixture` (du namespace `Doctrine\Bundle\FixturesBundle\Fixture`)"
+      ],
+      "explanation": "Cette classe impose d'implémenter la méthode `load(ObjectManager $manager)`."
+    }
+  ]
+}

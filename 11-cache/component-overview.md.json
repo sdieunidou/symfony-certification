@@ -1,0 +1,66 @@
+{
+  "source_file": "11-cache/component-overview.md",
+  "title": "Composant Cache : Vue d'ensemble",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le standard (Interface) recommandé par Symfony pour interagir avec le cache ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-6 (CacheItemPoolInterface)",
+        "PSR-16 (SimpleCache)",
+        "Cache Contracts (`Symfony\Contracts\Cache\CacheInterface` / `ItemInterface`)",
+        "Doctrine Cache"
+      ],
+      "correct_answers": [
+        "Cache Contracts (`Symfony\Contracts\Cache\CacheInterface` / `ItemInterface`)"
+      ],
+      "explanation": "Les Cache Contracts simplifient l'usage (callback pour le recalcul) et intègrent la protection contre le Stampede."
+    },
+    {
+      "id": 2,
+      "question": "Quels sont les deux pools de cache configurés par défaut dans `cache.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "`cache.default` et `cache.user`",
+        "`cache.app` (données applicatives) et `cache.system` (fichiers internes framework).",
+        "`redis` et `memcached`",
+        "`public` et `private`"
+      ],
+      "correct_answers": [
+        "`cache.app` (données applicatives) et `cache.system` (fichiers internes framework)."
+      ],
+      "explanation": "`cache.system` est optimisé pour la performance (OPcache) et stocke les métadonnées (annotations, etc.)."
+    },
+    {
+      "id": 3,
+      "question": "Quel adapter est recommandé pour `cache.system` en production ?",
+      "type": "single_choice",
+      "options": [
+        "`cache.adapter.redis`",
+        "`cache.adapter.system` (qui utilise APCu ou PHP Files + OPcache)",
+        "`cache.adapter.array`",
+        "`cache.adapter.filesystem`"
+      ],
+      "correct_answers": [
+        "`cache.adapter.system` (qui utilise APCu ou PHP Files + OPcache)"
+      ],
+      "explanation": "Cet adapter est optimisé pour stocker des structures PHP compilées qui ne changent qu'au déploiement."
+    },
+    {
+      "id": 4,
+      "question": "Comment utiliser le cache dans un service ?",
+      "type": "single_choice",
+      "options": [
+        "Injecter `CacheInterface` (autowire `cache.app`).",
+        "Utiliser `new Redis()`.",
+        "Utiliser `$_SESSION`.",
+        "Injecter `ContainerInterface`."
+      ],
+      "correct_answers": [
+        "Injecter `CacheInterface` (autowire `cache.app`)."
+      ],
+      "explanation": "L'autowiring injecte par défaut le pool principal de l'application."
+    }
+  ]
+}

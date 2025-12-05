@@ -1,0 +1,66 @@
+{
+  "source_file": "13-tests-automatises/legacy.md",
+  "title": "Gestion du Code Déprécié (Legacy Tests)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel composant Symfony détecte et rapporte les dépréciations lors de l'exécution des tests ?",
+      "type": "single_choice",
+      "options": [
+        "Le composant Deprecation.",
+        "Le PHPUnit Bridge.",
+        "Le composant ErrorHandler.",
+        "PHPUnit nativement."
+      ],
+      "correct_answers": [
+        "Le PHPUnit Bridge."
+      ],
+      "explanation": "Il intercepte `trigger_deprecation()` et les erreurs `E_USER_DEPRECATED`."
+    },
+    {
+      "id": 2,
+      "question": "Comment configurer la tolérance aux dépréciations pour échouer si VOTRE code génère une dépréciation, mais ignorer celles des vendors ?",
+      "type": "single_choice",
+      "options": [
+        "`SYMFONY_DEPRECATIONS_HELPER=disabled`",
+        "`SYMFONY_DEPRECATIONS_HELPER=max[total]=0`",
+        "`SYMFONY_DEPRECATIONS_HELPER=max[self]=0`",
+        "`SYMFONY_DEPRECATIONS_HELPER=strict`"
+      ],
+      "correct_answers": [
+        "`SYMFONY_DEPRECATIONS_HELPER=max[self]=0`"
+      ],
+      "explanation": "C'est la configuration recommandée pour maintenir un code propre tout en permettant d'utiliser des dépendances pas encore à jour."
+    },
+    {
+      "id": 3,
+      "question": "Quelle méthode permet de tester qu'un appel de fonction déclenche bien une dépréciation attendue ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->expectException(DeprecationException::class)`",
+        "`$this->expectDeprecation('Message...')`",
+        "`$this->assertDeprecated()`",
+        "`$this->expectError()`"
+      ],
+      "correct_answers": [
+        "`$this->expectDeprecation('Message...')`"
+      ],
+      "explanation": "Cette méthode est fournie par le trait `ExpectDeprecationTrait` du bridge."
+    },
+    {
+      "id": 4,
+      "question": "Quelle annotation permet de marquer un test entier comme 'Legacy' (les dépréciations y seront ignorées) ?",
+      "type": "single_choice",
+      "options": [
+        "`@legacy`",
+        "`@group legacy`",
+        "`@deprecated`",
+        "`@ignoreDeprecations`"
+      ],
+      "correct_answers": [
+        "`@group legacy`"
+      ],
+      "explanation": "Le bridge PHPUnit traite les tests du groupe `legacy` différemment."
+    }
+  ]
+}

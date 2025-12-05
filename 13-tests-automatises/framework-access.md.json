@@ -1,0 +1,66 @@
+{
+  "source_file": "13-tests-automatises/framework-access.md",
+  "title": "Accès aux Objets du Framework (Intégration)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Comment accéder au conteneur de services dans un test d'intégration (`KernelTestCase`) ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->container`",
+        "`static::getContainer()` (après `self::bootKernel()`)",
+        "`$client->getContainer()`",
+        "On ne peut pas."
+      ],
+      "correct_answers": [
+        "`static::getContainer()` (après `self::bootKernel()`)"
+      ],
+      "explanation": "Cette méthode retourne le conteneur de test spécial qui permet d'accéder aux services privés."
+    },
+    {
+      "id": 2,
+      "question": "Est-il possible de remplacer un service par un Mock dans le conteneur de test ?",
+      "type": "single_choice",
+      "options": [
+        "Non, le conteneur est immuable.",
+        "Oui, en utilisant `$container->set('service_id', $mock)`.",
+        "Oui, mais seulement dans `config/services_test.yaml`.",
+        "Oui, en utilisant `$container->override(...)`."
+      ],
+      "correct_answers": [
+        "Oui, en utilisant `$container->set('service_id', $mock)`."
+      ],
+      "explanation": "Le conteneur de test est modifiable au runtime, contrairement au conteneur de production."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi est-il recommandé de désactiver le mode debug (`debug => false`) pour les tests automatisés ?",
+      "type": "single_choice",
+      "options": [
+        "Pour des raisons de sécurité.",
+        "Pour améliorer significativement les performances (évite la re-génération des fichiers de cache à chaque requête).",
+        "Parce que le mode debug casse les tests.",
+        "C'est faux, il faut toujours le mode debug."
+      ],
+      "correct_answers": [
+        "Pour améliorer significativement les performances (évite la re-génération des fichiers de cache à chaque requête)."
+      ],
+      "explanation": "Le mode debug est utile si un test échoue pour voir la stack trace, mais lent pour la suite complète."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode statique faut-il appeler pour démarrer l'application Symfony dans un `KernelTestCase` ?",
+      "type": "single_choice",
+      "options": [
+        "`self::start()`",
+        "`self::bootKernel()`",
+        "`self::createKernel()`",
+        "`self::run()`"
+      ],
+      "correct_answers": [
+        "`self::bootKernel()`"
+      ],
+      "explanation": "Cette méthode initialise le Kernel et le conteneur."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "13-tests-automatises/fonctionnels.md",
+  "title": "Tests Fonctionnels (WebTestCase)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle classe de base doit-on étendre pour écrire des tests fonctionnels (qui simulent un navigateur) ?",
+      "type": "single_choice",
+      "options": [
+        "`TestCase`",
+        "`KernelTestCase`",
+        "`WebTestCase`",
+        "`BrowserTestCase`"
+      ],
+      "correct_answers": [
+        "`WebTestCase`"
+      ],
+      "explanation": "`WebTestCase` étend `KernelTestCase` et ajoute les méthodes pour créer un Client (`createClient`)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode permet de faire une assertion sur le code de statut de la réponse HTTP ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->assertEquals(200, $response->getStatusCode())`",
+        "`$this->assertResponseIsSuccessful()` (pour 2xx) ou `$this->assertResponseStatusCodeSame(404)`.",
+        "`$client->assertStatus(200)`",
+        "`$this->checkResponse(200)`"
+      ],
+      "correct_answers": [
+        "`$this->assertResponseIsSuccessful()` (pour 2xx) ou `$this->assertResponseStatusCodeSame(404)`."
+      ],
+      "explanation": "Symfony fournit des assertions spécifiques (`assertResponse...`) qui sont plus lisibles et fournissent de meilleurs messages d'erreur."
+    },
+    {
+      "id": 3,
+      "question": "Comment vérifier qu'un élément HTML contient un texte spécifique ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->assertContains('text', $crawler->html())`",
+        "`$this->assertSelectorTextContains('selecteur_css', 'texte attendu')`",
+        "`$this->assertElementContains('selecteur', 'texte')`",
+        "`$this->seeInElement('selecteur', 'texte')`"
+      ],
+      "correct_answers": [
+        "`$this->assertSelectorTextContains('selecteur_css', 'texte attendu')`"
+      ],
+      "explanation": "Cette assertion utilise le Crawler en interne pour cibler l'élément et vérifier son contenu textuel."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode permet d'envoyer une requête HTTP avec le client ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->get('/url')`",
+        "`$client->request('GET', '/url')`",
+        "`$client->send('GET', '/url')`",
+        "`$client->call('GET', '/url')`"
+      ],
+      "correct_answers": [
+        "`$client->request('GET', '/url')`"
+      ],
+      "explanation": "Elle retourne un objet `Crawler`."
+    }
+  ]
+}

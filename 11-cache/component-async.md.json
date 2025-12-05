@@ -1,0 +1,51 @@
+{
+  "source_file": "11-cache/component-async.md",
+  "title": "Cache Asynchrone & Stampede Protection",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Qu'est-ce que le 'Cache Stampede' ?",
+      "type": "single_choice",
+      "options": [
+        "Une méthode pour vider le cache.",
+        "Une situation où une seule requête recalcule le cache.",
+        "Une situation où de nombreuses requêtes concurrentes tentent de recalculer la même valeur de cache expirée simultanément, surchargeant le backend.",
+        "Un type de cache persistant."
+      ],
+      "correct_answers": [
+        "Une situation où de nombreuses requêtes concurrentes tentent de recalculer la même valeur de cache expirée simultanément, surchargeant le backend."
+      ],
+      "explanation": "C'est un problème critique de performance. Symfony le résout via le 'Probabilistic early expiration'."
+    },
+    {
+      "id": 2,
+      "question": "Comment fonctionne le 'Probabilistic Early Expiration' de Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Il expire le cache à une heure fixe.",
+        "Il force l'expiration pour une seule requête aléatoire un peu avant la vraie fin, permettant aux autres de continuer à utiliser l'ancienne valeur pendant le recalcul.",
+        "Il utilise un Cron.",
+        "Il bloque toutes les requêtes sauf une."
+      ],
+      "correct_answers": [
+        "Il force l'expiration pour une seule requête aléatoire un peu avant la vraie fin, permettant aux autres de continuer à utiliser l'ancienne valeur pendant le recalcul."
+      ],
+      "explanation": "Cela évite le pic de charge (Stampede) tout en garantissant que la valeur est rafraîchie."
+    },
+    {
+      "id": 3,
+      "question": "Quel composant permet de déléguer le recalcul du cache à un Worker asynchrone ?",
+      "type": "single_choice",
+      "options": [
+        "EventDispatcher",
+        "Messenger",
+        "Mailer",
+        "Process"
+      ],
+      "correct_answers": [
+        "Messenger"
+      ],
+      "explanation": "En configurant `early_expiration_message_bus`, Symfony envoie un message dans le bus au lieu de recalculer en direct."
+    }
+  ]
+}

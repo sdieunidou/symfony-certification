@@ -1,0 +1,51 @@
+{
+  "source_file": "11-cache/component-features.md",
+  "title": "Fonctionnalités Avancées du Cache",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Qu'est-ce que le Chain Cache (Chaînage) ?",
+      "type": "single_choice",
+      "options": [
+        "Un cache qui crypte les données.",
+        "Une combinaison de plusieurs adapters (ex: Array + Redis) où la lecture se fait en cascade (L1 -> L2) et l'écriture partout.",
+        "Un cache blockchain.",
+        "Un cache qui ne stocke que des chaînes de caractères."
+      ],
+      "correct_answers": [
+        "Une combinaison de plusieurs adapters (ex: Array + Redis) où la lecture se fait en cascade (L1 -> L2) et l'écriture partout."
+      ],
+      "explanation": "Cela permet d'avoir la vitesse de la mémoire locale (L1) et la persistance/partage de Redis (L2)."
+    },
+    {
+      "id": 2,
+      "question": "Quel est l'avantage d'utiliser des Tags de cache ?",
+      "type": "single_choice",
+      "options": [
+        "Améliorer le SEO.",
+        "Permettre d'invalider un groupe d'items liés (ex: tous les articles d'une catégorie) sans connaître leurs clés individuelles.",
+        "Rendre le cache plus rapide.",
+        "Trier les items."
+      ],
+      "correct_answers": [
+        "Permettre d'invalider un groupe d'items liés (ex: tous les articles d'une catégorie) sans connaître leurs clés individuelles."
+      ],
+      "explanation": "C'est essentiel pour gérer l'invalidation dans les applications complexes."
+    },
+    {
+      "id": 3,
+      "question": "Peut-on chiffrer les données stockées dans le cache ?",
+      "type": "single_choice",
+      "options": [
+        "Non.",
+        "Oui, en utilisant un Marshaller chiffré (ex: `SodiumMarshaller`) pour décorer l'adapter.",
+        "Oui, mais seulement avec Redis.",
+        "Seulement en HTTPS."
+      ],
+      "correct_answers": [
+        "Oui, en utilisant un Marshaller chiffré (ex: `SodiumMarshaller`) pour décorer l'adapter."
+      ],
+      "explanation": "Cela protège les données sensibles (GDPR) en cas de compromission du serveur de cache."
+    }
+  ]
+}
