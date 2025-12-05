@@ -35,8 +35,8 @@ Exemple : `config/packages/test/web_profiler.yaml` pour activer le profiler uniq
 Une fois le kernel booté, on accède au **Test Container**.
 
 ```php
-self::bootKernel();
-$container = static::getContainer();
+    self::bootKernel();
+    $container = static::getContainer();
 $service = $container->get(MyService::class);
 ```
 
@@ -50,7 +50,7 @@ Pour remplacer un service réel par un Mock dans le conteneur :
 ```php
 $mock = $this->createMock(NewsRepositoryInterface::class);
 $mock->method('findRecent')->willReturn([...]);
-
+    
 self::bootKernel();
 $container = static::getContainer();
 

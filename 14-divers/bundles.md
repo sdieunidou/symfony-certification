@@ -41,7 +41,7 @@ class MyBundle extends AbstractBundle
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
         $container->import('../config/services.yaml');
-
+        
         // Utiliser la config pour définir des paramètres ou services
         $builder->setParameter('my_bundle.api_key', $config['api_key']);
     }

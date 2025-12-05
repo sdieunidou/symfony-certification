@@ -1,8 +1,8 @@
-# Session (Usage Contrôleur)
+# Session (Usage & Configuration)
 
 ## Concept clé
 La session permet de persister des données utilisateur d'une page à l'autre.
-Dans Symfony, la session est un "Service" accessible via la Requête.
+Dans Symfony, la session est gérée par le composant `HttpFoundation` et offre une couche orientée objet au-dessus de `$_SESSION`.
 
 ## Accès (Injection)
 Depuis Symfony 6, la manière recommandée est d'injecter `RequestStack`.
@@ -22,9 +22,13 @@ class CartController extends AbstractController
         
         // API Fluide
         $cart = $session->get('cart', []);
-        $session->set('cart', $updatedCart);
+        $session->set('cart', ['id' => 123]);
+        
+        // Supprimer
         $session->remove('cart');
-        $session->clear(); // Vide tout
+        
+        // Tout vider
+        $session->clear(); 
         
         return $this->render('...');
     }
@@ -32,25 +36,95 @@ class CartController extends AbstractController
 ```
 *On peut aussi faire `$request->getSession()` si on a injecté `Request`.*
 
-## Session Bags
-La session Symfony est divisée en "Sacs" (Bags) pour organiser les données :
-1.  **AttributeBag** : Les données générales (`get`, `set`). C'est le sac par défaut.
-2.  **FlashBag** : Messages temporaires (`addFlash`).
-3.  **MetadataBag** : Méta-données (date de création, dernière activité).
+## Session Bags (Sacs de données)
+La session est organisée en "Bags" pour éviter la pollution de namespace :
+1.  **AttributeBag** : Stockage général (`get`, `set`).
+2.  **FlashBag** : Messages temporaires (voir fiche Flash Messages).
+    *   `$session->getFlashBag()->add('success', 'Bravo')`
+    *   `peek()`, `peekAll()` : Lire sans supprimer.
+3.  **MetadataBag** : Informations techniques sur la session.
+    *   `getCreated()` : Timestamp création.
+    *   `getLastUsed()` : Timestamp dernière activité.
+    *   `getLifetime()` : Durée de vie du cookie.
 
-## Typage (Contrainte)
-La session stocke des données sérialisées (PHP serialize).
-*   On peut stocker des scalaires (int, string, array).
-*   On **PEUT** stocker des objets, **MAIS** c'est déconseillé (problèmes de dé-sérialisation si la classe change, `__PHP_Incomplete_Class`). Préférez stocker des IDs et recharger les entités depuis la DB.
+## Configuration (`framework.yaml`)
+C'est ici qu'on définit **où** et **comment** les sessions sont stockées.
+
+```yaml
+framework:
+    session:
+        enabled: true
+        # ID du service de stockage (null = fichiers PHP natifs par défaut)
+        handler_id: null 
+        
+        # Sécurité des cookies
+        cookie_secure: auto
+        cookie_samesite: lax
+        
+        # Chemin de stockage (si handler natif)
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        
+        # Garbage Collection (Probabilité 1%)
+        gc_probability: 1
+```
+
+## Stockage en Base de Données (Handlers)
+Pour une application multi-serveurs, le stockage fichier ne suffit pas. Symfony supporte nativement Redis, PDO (MySQL/PostgreSQL) et MongoDB.
+
+### Redis
+```yaml
+# config/services.yaml
+services:
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler:
+        arguments:
+            - '@Redis' # Service Redis configuré
+            - { 'ttl': 3600 }
+
+# config/packages/framework.yaml
+framework:
+    session:
+        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\RedisSessionHandler
+```
+
+### Base de données (PDO)
+Symfony fournit `PdoSessionHandler`.
+Il faut créer la table `sessions` (commande : `createTable()` ou migration).
+
+```yaml
+# config/services.yaml
+services:
+    Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler:
+        arguments:
+            - '%env(DATABASE_URL)%'
+            - { db_table: 'sessions', db_id_col: 'sess_id' }
+
+# config/packages/framework.yaml
+framework:
+    session:
+        handler_id: Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+```
+
+## Sécurité & Expiration
+1.  **Idle Timeout** : Vous pouvez vérifier manuellement l'inactivité.
+    ```php
+    if (time() - $session->getMetadataBag()->getLastUsed() > $maxIdleTime) {
+        $session->invalidate(); // Détruit et régénère l'ID
+    }
+    ```
+2.  **Chiffrement** : Il est possible de chiffrer les données de session via un Proxy (`SessionHandlerProxy`) ou un Marshaller (`SodiumMarshaller`).
+
+## Sticky Locale
+La locale (`_locale`) est stockée dans la requête, mais pas automatiquement persistée.
+Pour la rendre "sticky" (persistante), on stocke souvent `_locale` en session via un `EventSubscriber` sur `kernel.request`.
 
 ## 🧠 Concepts Clés
-1.  **Lazy Start** : La session ne démarre (`session_start()`) que si vous lisez ou écrivez dedans. Si vous n'y touchez pas, aucun cookie `PHPSESSID` n'est créé (perf + cache friendly).
-2.  **Invalidate** : `$session->invalidate()` détruit la session et en recrée une nouvelle (nouvel ID). Recommandé après le Login/Logout pour éviter la fixation de session.
-3.  **Stateless** : Une application Stateless (API REST) ne doit pas utiliser la session.
+1.  **Lazy Start** : La session ne démarre (`session_start()`) que si vous lisez ou écrivez dedans.
+2.  **Sérialisation** : Les données sont sérialisées. Évitez de stocker des objets complexes (Entités Doctrine) -> Stockez les IDs.
+3.  **Migration** : `MigratingSessionHandler` permet de changer de stockage (Fichier -> Redis) sans déconnecter les utilisateurs actifs (Double écriture).
 
 ## ⚠️ Points de vigilance (Certification)
-*   **Service `session`** : Le service `session` est déprécié en injection directe. Il faut passer par `RequestStack`.
-*   **Unit Testing** : En test unitaire, la session est souvent un `MockArraySessionStorage` qui simule le comportement en mémoire.
+*   **Service `session`** : Déprécié en injection directe. Utilisez `RequestStack`.
+*   **Headers** : Les sessions envoient des headers (Cookies, Cache-Control: private). Une page utilisant la session est difficilement cachable publiquement.
 
 ## Ressources
 *   [Symfony Docs - Sessions](https://symfony.com/doc/current/session.html)

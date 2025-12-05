@@ -25,9 +25,9 @@ class ProductFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $product = new Product();
+            $product = new Product();
         $product->setName('Widget');
-        $manager->persist($product);
+            $manager->persist($product);
         $manager->flush();
     }
 }

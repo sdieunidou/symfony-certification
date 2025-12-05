@@ -193,6 +193,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 ### [14. Divers](./14-divers/)
 * [Configuration](./14-divers/configuration.md)
 * [Bonnes Pratiques](./14-divers/best-practices.md)
+* [Logging (Monolog)](./14-divers/logging.md)
 * [Gestion erreurs](./14-divers/errors.md)
 * [Débogage](./14-divers/debug.md)
 * [Déploiement](./14-divers/deployment.md)
