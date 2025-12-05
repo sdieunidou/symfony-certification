@@ -37,13 +37,13 @@
       "question": "Quelle classe utilitaire permet de manipuler les chemins de manière multiplateforme (Windows/Linux) et de gérer les chemins relatifs/absolus ?",
       "type": "single_choice",
       "options": [
-        "`Symfony\Component\Filesystem\Path`",
-        "`Symfony\Component\Filesystem\Url`",
+        "`Symfony\\Component\\Filesystem\\Path`",
+        "`Symfony\\Component\\Filesystem\\Url`",
         "`DirectoryIterator`",
         "`SplFileInfo`"
       ],
       "correct_answers": [
-        "`Symfony\Component\Filesystem\Path`"
+        "`Symfony\\Component\\Filesystem\\Path`"
       ],
       "explanation": "La classe `Path` (introduite récemment) fournit des méthodes statiques comme `join`, `makeAbsolute`, `normalize`..."
     },
@@ -52,13 +52,13 @@
       "question": "Quelle exception spécifique le composant lance-t-il en cas d'erreur (ex: permission refusée) ?",
       "type": "single_choice",
       "options": [
-        "`\Exception`",
-        "`\RuntimeException`",
-        "`Symfony\Component\Filesystem\Exception\IOException`",
-        "`\Error`"
+        "`\\Exception`",
+        "`\\RuntimeException`",
+        "`Symfony\\Component\\Filesystem\\Exception\\IOException`",
+        "`\\Error`"
       ],
       "correct_answers": [
-        "`Symfony\Component\Filesystem\Exception\IOException`"
+        "`Symfony\\Component\\Filesystem\\Exception\\IOException`"
       ],
       "explanation": "Contrairement aux fonctions natives PHP qui émettent des Warnings, le composant utilise des Exceptions typées pour une gestion d'erreur propre."
     }

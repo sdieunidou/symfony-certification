@@ -37,13 +37,13 @@
       "question": "Dans quel namespace se trouvent par défaut les contrôleurs ?",
       "type": "single_choice",
       "options": [
-        "`App\Controllers`",
-        "`App\Controller`",
-        "`App\Http\Controllers`",
-        "`App\Action`"
+        "`App\\Controllers`",
+        "`App\\Controller`",
+        "`App\\Http\\Controllers`",
+        "`App\\Action`"
       ],
       "correct_answers": [
-        "`App\Controller`"
+        "`App\\Controller`"
       ],
       "explanation": "C'est le standard PSR-4 défini par la recette Flex."
     },

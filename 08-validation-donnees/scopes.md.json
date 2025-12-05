@@ -22,13 +22,13 @@
       "question": "Quelle contrainte permet d'activer la validation en cascade sur une propriété (objet ou collection) ?",
       "type": "single_choice",
       "options": [
-        "`#[Assert\Cascade]`",
-        "`#[Assert\Recursive]`",
-        "`#[Assert\Valid]`",
-        "`#[Assert\Deep]`"
+        "`#[Assert\\Cascade]`",
+        "`#[Assert\\Recursive]`",
+        "`#[Assert\\Valid]`",
+        "`#[Assert\\Deep]`"
       ],
       "correct_answers": [
-        "`#[Assert\Valid]`"
+        "`#[Assert\\Valid]`"
       ],
       "explanation": "Cette contrainte dit au validateur de traverser la propriété et de valider l'objet cible."
     },
@@ -49,7 +49,7 @@
     },
     {
       "id": 4,
-      "question": "Dans un formulaire imbriqué (Embedded Form), faut-il ajouter manuellement `#[Assert\Valid]` sur la propriété liée ?",
+      "question": "Dans un formulaire imbriqué (Embedded Form), faut-il ajouter manuellement `#[Assert\\Valid]` sur la propriété liée ?",
       "type": "single_choice",
       "options": [
         "Oui, toujours.",

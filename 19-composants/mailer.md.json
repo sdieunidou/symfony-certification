@@ -7,13 +7,13 @@
       "question": "Quelle est la classe recommandée pour envoyer des emails utilisant des templates Twig dans Symfony ?",
       "type": "single_choice",
       "options": [
-        "`Symfony\Component\Mime\Email`",
-        "`Symfony\Bridge\Twig\Mime\TemplatedEmail`",
+        "`Symfony\\Component\\Mime\\Email`",
+        "`Symfony\\Bridge\\Twig\\Mime\\TemplatedEmail`",
         "`Swift_Message`",
-        "`Symfony\Component\Mailer\TwigEmail`"
+        "`Symfony\\Component\\Mailer\\TwigEmail`"
       ],
       "correct_answers": [
-        "`Symfony\Bridge\Twig\Mime\TemplatedEmail`"
+        "`Symfony\\Bridge\\Twig\\Mime\\TemplatedEmail`"
       ],
       "explanation": "`TemplatedEmail` étend la classe de base `Email` en ajoutant des méthodes pour le contexte Twig (`context`, `htmlTemplate`)."
     },

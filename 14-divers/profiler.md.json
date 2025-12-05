@@ -60,7 +60,7 @@
       "correct_answers": [
         "`$client->getProfile()`"
       ],
-      "explanation": "Cette méthode retourne l'objet `Symfony\Component\HttpKernel\Profiler\Profile` associé à la dernière requête."
+      "explanation": "Cette méthode retourne l'objet `Symfony\\Component\\HttpKernel\\Profiler\\Profile` associé à la dernière requête."
     }
   ]
 }

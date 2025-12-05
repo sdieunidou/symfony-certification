@@ -45,7 +45,7 @@
       "correct_answers": [
         "`All`"
       ],
-      "explanation": "`#[Assert\All([new Assert\Email()])]` applique la contrainte Email à chaque entrée du tableau."
+      "explanation": "`#[Assert\\All([new Assert\\Email()])]` applique la contrainte Email à chaque entrée du tableau."
     },
     {
       "id": 4,

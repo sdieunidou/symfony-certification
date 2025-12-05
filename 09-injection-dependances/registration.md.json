@@ -34,7 +34,7 @@
     },
     {
       "id": 3,
-      "question": "À quoi sert la section `App\` dans `services.yaml` ?",
+      "question": "À quoi sert la section `App\\` dans `services.yaml` ?",
       "type": "single_choice",
       "options": [
         "À définir le namespace de l'application.",

@@ -15,7 +15,7 @@
       "correct_answers": [
         "`$client->getResponse()`"
       ],
-      "explanation": "Cela retourne une instance de `Symfony\Component\HttpFoundation\Response`."
+      "explanation": "Cela retourne une instance de `Symfony\\Component\\HttpFoundation\\Response`."
     },
     {
       "id": 2,

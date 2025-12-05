@@ -37,13 +37,13 @@
       "question": "Quelle classe de test Symfony permet de tester un Repository Doctrine en accédant au conteneur de services ?",
       "type": "single_choice",
       "options": [
-        "`PHPUnit\Framework\TestCase`",
-        "`Symfony\Bundle\FrameworkBundle\Test\KernelTestCase`",
-        "`Symfony\Component\Panther\PantherTestCase`",
-        "`Doctrine\Test\OrmTestCase`"
+        "`PHPUnit\\Framework\\TestCase`",
+        "`Symfony\\Bundle\\FrameworkBundle\\Test\\KernelTestCase`",
+        "`Symfony\\Component\\Panther\\PantherTestCase`",
+        "`Doctrine\\Test\\OrmTestCase`"
       ],
       "correct_answers": [
-        "`Symfony\Bundle\FrameworkBundle\Test\KernelTestCase`"
+        "`Symfony\\Bundle\\FrameworkBundle\\Test\\KernelTestCase`"
       ],
       "explanation": "`KernelTestCase` permet de booter le kernel et d'accéder au vrai service Repository connecté à la base de test."
     },

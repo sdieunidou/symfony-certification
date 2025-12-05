@@ -19,7 +19,7 @@
     },
     {
       "id": 2,
-      "question": "À quoi correspond le groupe de validation portant le nom de la classe (ex: `App\Entity\User` ou juste `User`) ?",
+      "question": "À quoi correspond le groupe de validation portant le nom de la classe (ex: `App\\Entity\\User` ou juste `User`) ?",
       "type": "single_choice",
       "options": [
         "À un groupe personnalisé qu'il faut créer.",

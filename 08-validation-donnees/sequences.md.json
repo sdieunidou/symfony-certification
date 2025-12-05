@@ -23,12 +23,12 @@
       "type": "single_choice",
       "options": [
         "Dans le fichier `validation.yaml`.",
-        "Avec l'attribut `#[Assert\GroupSequence]` sur la classe de l'entité.",
+        "Avec l'attribut `#[Assert\\GroupSequence]` sur la classe de l'entité.",
         "Dans le contrôleur.",
         "Sur chaque propriété."
       ],
       "correct_answers": [
-        "Avec l'attribut `#[Assert\GroupSequence]` sur la classe de l'entité."
+        "Avec l'attribut `#[Assert\\GroupSequence]` sur la classe de l'entité."
       ],
       "explanation": "Cela remplace le comportement du groupe `Default`."
     },

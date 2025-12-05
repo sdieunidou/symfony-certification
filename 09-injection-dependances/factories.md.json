@@ -30,7 +30,7 @@
       "correct_answers": [
         "Il suffit de créer une méthode qui retourne l'objet souhaité, et de configurer le service pour utiliser cette méthode comme factory dans `services.yaml` (ou via un attribut si disponible)."
       ],
-      "explanation": "La configuration YAML `factory: ['@App\Factory\MyFactory', 'create']` reste la norme pour lier la factory au service produit."
+      "explanation": "La configuration YAML `factory: ['@App\\Factory\\MyFactory', 'create']` reste la norme pour lier la factory au service produit."
     },
     {
       "id": 3,

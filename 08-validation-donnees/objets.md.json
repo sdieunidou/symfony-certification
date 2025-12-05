@@ -7,13 +7,13 @@
       "question": "Quel service faut-il injecter pour valider un objet manuellement ?",
       "type": "single_choice",
       "options": [
-        "`Symfony\Component\Validator\Validator\ValidatorInterface`",
-        "`Symfony\Component\Form\FormValidator`",
-        "`Doctrine\ORM\Validator`",
-        "`App\Service\Validator`"
+        "`Symfony\\Component\\Validator\\Validator\\ValidatorInterface`",
+        "`Symfony\\Component\\Form\\FormValidator`",
+        "`Doctrine\\ORM\\Validator`",
+        "`App\\Service\\Validator`"
       ],
       "correct_answers": [
-        "`Symfony\Component\Validator\Validator\ValidatorInterface`"
+        "`Symfony\\Component\\Validator\\Validator\\ValidatorInterface`"
       ],
       "explanation": "C'est le point d'entrée principal du composant Validator."
     },

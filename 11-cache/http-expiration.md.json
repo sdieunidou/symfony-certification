@@ -45,7 +45,7 @@
       "correct_answers": [
         "En utilisant l'attribut `#[Cache]` (ex: `#[Cache(public: true, maxage: 3600)]`)."
       ],
-      "explanation": "L'attribut `#[Cache]` (du namespace `Symfony\Component\HttpKernel\Attribute\Cache`) est la méthode recommandée et moderne pour configurer le cache par contrôleur."
+      "explanation": "L'attribut `#[Cache]` (du namespace `Symfony\\Component\\HttpKernel\\Attribute\\Cache`) est la méthode recommandée et moderne pour configurer le cache par contrôleur."
     },
     {
       "id": 4,

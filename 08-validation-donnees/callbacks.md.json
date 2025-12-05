@@ -4,7 +4,7 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est l'intérêt d'utiliser une contrainte Callback (`#[Assert\Callback]`) ?",
+      "question": "Quel est l'intérêt d'utiliser une contrainte Callback (`#[Assert\\Callback]`) ?",
       "type": "single_choice",
       "options": [
         "Valider un email.",

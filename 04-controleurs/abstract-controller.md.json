@@ -19,11 +19,11 @@
     },
     {
       "id": 2,
-      "question": "Comment accéder à un service personnalisé (ex: `App\Service\Mailer`) dans un contrôleur étendant `AbstractController` ?",
+      "question": "Comment accéder à un service personnalisé (ex: `App\\Service\\Mailer`) dans un contrôleur étendant `AbstractController` ?",
       "type": "single_choice",
       "options": [
-        "Via `$this->get('App\\Service\\Mailer')`.",
-        "Via `$this->container->get('App\\Service\\Mailer')`.",
+        "Via `$this->get('App\\\Service\\\Mailer')`.",
+        "Via `$this->container->get('App\\\Service\\\Mailer')`.",
         "En l'injectant dans le constructeur ou dans la méthode du contrôleur (Action).",
         "Via une variable globale."
       ],

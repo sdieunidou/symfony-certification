@@ -38,12 +38,12 @@
       "type": "single_choice",
       "options": [
         "C'est impossible.",
-        "En créant une classe étendant `Doctrine\DBAL\Types\Type` et en l'enregistrant dans la config `dbal.types`.",
+        "En créant une classe étendant `Doctrine\\DBAL\\Types\\Type` et en l'enregistrant dans la config `dbal.types`.",
         "En modifiant le code source de Doctrine.",
         "En utilisant le type `string`."
       ],
       "correct_answers": [
-        "En créant une classe étendant `Doctrine\DBAL\Types\Type` et en l'enregistrant dans la config `dbal.types`."
+        "En créant une classe étendant `Doctrine\\DBAL\\Types\\Type` et en l'enregistrant dans la config `dbal.types`."
       ],
       "explanation": "Doctrine est extensible et permet de mapper n'importe quel type SQL vers un type PHP via des Types personnalisés."
     },

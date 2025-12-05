@@ -15,7 +15,7 @@
       "correct_answers": [
         "Un mini-conteneur qui donne accès uniquement à une liste restreinte de services."
       ],
-      "explanation": "C'est une implémentation de `Psr\Container\ContainerInterface` qui contient une sous-sélection de services."
+      "explanation": "C'est une implémentation de `Psr\\Container\\ContainerInterface` qui contient une sous-sélection de services."
     },
     {
       "id": 2,

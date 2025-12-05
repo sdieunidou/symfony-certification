@@ -7,13 +7,13 @@
       "question": "Quelle est la syntaxe inline recommandée pour définir un prérequis (regex) sur un paramètre de route ?",
       "type": "single_choice",
       "options": [
-        "`/blog/{id}`, requirements={'id': '\d+'}`",
-        "`/blog/{id<\d+>}`",
-        "`/blog/{id:\d+}`",
+        "`/blog/{id}`, requirements={'id': '\\d+'}`",
+        "`/blog/{id<\\d+>}`",
+        "`/blog/{id:\\d+}`",
         "`/blog/{id}` (Symfony devine tout seul)"
       ],
       "correct_answers": [
-        "`/blog/{id<\d+>}`"
+        "`/blog/{id<\\d+>}`"
       ],
       "explanation": "La syntaxe `<regex>` directement dans le placeholder est plus concise et lisible."
     },
@@ -39,7 +39,7 @@
       "options": [
         "`.*`",
         "`.+`",
-        "`\w+`",
+        "`\\w+`",
         "`/`"
       ],
       "correct_answers": [

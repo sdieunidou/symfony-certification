@@ -7,13 +7,13 @@
       "question": "Quelle interface standard (PSR) Symfony utilise-t-il pour le logging ?",
       "type": "single_choice",
       "options": [
-        "`Psr\Log\LoggerInterface`",
-        "`Symfony\Component\Logging\Logger`",
-        "`Monolog\Logger`",
-        "`Psr\Http\Message\LoggerInterface`"
+        "`Psr\\Log\\LoggerInterface`",
+        "`Symfony\\Component\\Logging\\Logger`",
+        "`Monolog\\Logger`",
+        "`Psr\\Http\\Message\\LoggerInterface`"
       ],
       "correct_answers": [
-        "`Psr\Log\LoggerInterface`"
+        "`Psr\\Log\\LoggerInterface`"
       ],
       "explanation": "Symfony suit le standard PSR-3. L'interface `LoggerInterface` permet de typer les dépendances sans se coupler à Monolog directement."
     },

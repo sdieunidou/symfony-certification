@@ -7,13 +7,13 @@
       "question": "Quelle est la classe recommandée (depuis Symfony 6.1) à étendre pour créer un Bundle moderne ?",
       "type": "single_choice",
       "options": [
-        "`Symfony\\Component\\HttpKernel\\Bundle\\Bundle`",
-        "`Symfony\\Component\\HttpKernel\\Bundle\\AbstractBundle`",
-        "`Symfony\\Component\\DependencyInjection\\Extension\\Extension`",
-        "`Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController`"
+        "`Symfony\\\Component\\\HttpKernel\\\Bundle\\\Bundle`",
+        "`Symfony\\\Component\\\HttpKernel\\\Bundle\\\AbstractBundle`",
+        "`Symfony\\\Component\\\DependencyInjection\\\Extension\\\Extension`",
+        "`Symfony\\\Bundle\\\FrameworkBundle\\\Controller\\\AbstractController`"
       ],
       "correct_answers": [
-        "`Symfony\\Component\\HttpKernel\\Bundle\\AbstractBundle`"
+        "`Symfony\\\Component\\\HttpKernel\\\Bundle\\\AbstractBundle`"
       ],
       "explanation": "`AbstractBundle` simplifie la structure en regroupant la définition du bundle, le chargement de l'extension et la configuration sémantique dans une seule classe."
     },

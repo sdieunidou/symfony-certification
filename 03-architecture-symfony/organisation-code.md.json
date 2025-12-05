@@ -4,7 +4,7 @@
   "questions": [
     {
       "id": 1,
-      "question": "Dans quel dossier doit se trouver le code source PHP de l'application (Namespaces `App\...`) ?",
+      "question": "Dans quel dossier doit se trouver le code source PHP de l'application (Namespaces `App\\...`) ?",
       "type": "single_choice",
       "options": [
         "app/",

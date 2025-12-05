@@ -7,13 +7,13 @@
       "question": "Quelle classe de base utiliser pour un test unitaire pur (sans framework Symfony) ?",
       "type": "single_choice",
       "options": [
-        "`Symfony\Bundle\FrameworkBundle\Test\KernelTestCase`",
-        "`PHPUnit\Framework\TestCase`",
-        "`Symfony\Bundle\FrameworkBundle\Test\WebTestCase`",
+        "`Symfony\\Bundle\\FrameworkBundle\\Test\\KernelTestCase`",
+        "`PHPUnit\\Framework\\TestCase`",
+        "`Symfony\\Bundle\\FrameworkBundle\\Test\\WebTestCase`",
         "`SymfonyTest`"
       ],
       "correct_answers": [
-        "`PHPUnit\Framework\TestCase`"
+        "`PHPUnit\\Framework\\TestCase`"
       ],
       "explanation": "Pour tester une classe isolée (Service, DTO), le framework PHPUnit standard suffit et est le plus rapide."
     },

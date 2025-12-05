@@ -30,7 +30,7 @@
       "correct_answers": [
         "DQL manipule des objets (Classes et Propriétés) alors que SQL manipule des relations (Tables et Colonnes)."
       ],
-      "explanation": "DQL permet de faire abstraction du schéma physique. `SELECT p FROM App\Entity\Product p` fonctionne quelle que soit la table sous-jacente."
+      "explanation": "DQL permet de faire abstraction du schéma physique. `SELECT p FROM App\\Entity\\Product p` fonctionne quelle que soit la table sous-jacente."
     },
     {
       "id": 3,

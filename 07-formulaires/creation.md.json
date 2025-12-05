@@ -7,13 +7,13 @@
       "question": "Quelle classe de base doit-on étendre pour créer un formulaire réutilisable ?",
       "type": "single_choice",
       "options": [
-        "`Symfony\\Component\\Form\\FormType`",
-        "`Symfony\\Component\\Form\\AbstractType`",
-        "`Symfony\\Component\\Form\\BaseType`",
-        "`App\\Form\\Type`"
+        "`Symfony\\\Component\\\Form\\\FormType`",
+        "`Symfony\\\Component\\\Form\\\AbstractType`",
+        "`Symfony\\\Component\\\Form\\\BaseType`",
+        "`App\\\Form\\\Type`"
       ],
       "correct_answers": [
-        "`Symfony\\Component\\Form\\AbstractType`"
+        "`Symfony\\\Component\\\Form\\\AbstractType`"
       ],
       "explanation": "C'est la classe standard pour définir la structure (`buildForm`) et la configuration (`configureOptions`) d'un formulaire."
     },
@@ -60,7 +60,7 @@
       "correct_answers": [
         "Il essaie de deviner le type (Type Guessing) en analysant les métadonnées de validation et de l'ORM."
       ],
-      "explanation": "Si la propriété est un `bool` ou a une annotation `@ORM\Column(type='boolean')`, Symfony utilisera `CheckboxType`."
+      "explanation": "Si la propriété est un `bool` ou a une annotation `@ORM\\Column(type='boolean')`, Symfony utilisera `CheckboxType`."
     }
   ]
 }

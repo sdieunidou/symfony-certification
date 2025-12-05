@@ -15,7 +15,7 @@
       "correct_answers": [
         "`Sequentially`"
       ],
-      "explanation": "`#[Assert\Sequentially([...])]` exécute les contraintes dans l'ordre et s'arrête au premier échec."
+      "explanation": "`#[Assert\\Sequentially([...])]` exécute les contraintes dans l'ordre et s'arrête au premier échec."
     },
     {
       "id": 2,
@@ -30,7 +30,7 @@
       "correct_answers": [
         "`When`"
       ],
-      "explanation": "`#[Assert\When(expression: 'this.isShipped', constraints: [...])]`."
+      "explanation": "`#[Assert\\When(expression: 'this.isShipped', constraints: [...])]`."
     },
     {
       "id": 3,

@@ -90,7 +90,7 @@
       "correct_answers": [
         "PSR-20 (Clock)"
       ],
-      "explanation": "L'interface `Psr\\Clock\\ClockInterface` permet d'injecter une horloge système en prod et une horloge figée (MockClock) en test."
+      "explanation": "L'interface `Psr\\\Clock\\\ClockInterface` permet d'injecter une horloge système en prod et une horloge figée (MockClock) en test."
     }
   ]
 }

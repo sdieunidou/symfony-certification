@@ -19,7 +19,7 @@
     },
     {
       "id": 2,
-      "question": "Par défaut, `TypeTestCase` valide-t-il les contraintes de validation (`Assert\...`) ?",
+      "question": "Par défaut, `TypeTestCase` valide-t-il les contraintes de validation (`Assert\\...`) ?",
       "type": "single_choice",
       "options": [
         "Oui, toujours.",

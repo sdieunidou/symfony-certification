@@ -9,11 +9,11 @@
       "options": [
         "PSR-6 (CacheItemPoolInterface)",
         "PSR-16 (SimpleCache)",
-        "Cache Contracts (`Symfony\Contracts\Cache\CacheInterface` / `ItemInterface`)",
+        "Cache Contracts (`Symfony\\Contracts\\Cache\\CacheInterface` / `ItemInterface`)",
         "Doctrine Cache"
       ],
       "correct_answers": [
-        "Cache Contracts (`Symfony\Contracts\Cache\CacheInterface` / `ItemInterface`)"
+        "Cache Contracts (`Symfony\\Contracts\\Cache\\CacheInterface` / `ItemInterface`)"
       ],
       "explanation": "Les Cache Contracts simplifient l'usage (callback pour le recalcul) et intègrent la protection contre le Stampede."
     },

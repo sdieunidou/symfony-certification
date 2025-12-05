@@ -4,7 +4,7 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est l'avantage principal d'utiliser le composant `Clock` (et l'interface `ClockInterface`) plutôt que `new \DateTime()` directement dans votre code ?",
+      "question": "Quel est l'avantage principal d'utiliser le composant `Clock` (et l'interface `ClockInterface`) plutôt que `new \\DateTime()` directement dans votre code ?",
       "type": "single_choice",
       "options": [
         "C'est plus rapide.",
@@ -37,13 +37,13 @@
       "question": "Quelle interface standardisée (PSR-20) le composant Clock implémente-t-il ?",
       "type": "single_choice",
       "options": [
-        "`Psr\Log\LoggerInterface`",
-        "`Psr\Clock\ClockInterface`",
-        "`Psr\Date\DateInterface`",
-        "`Psr\Time\TimeInterface`"
+        "`Psr\\Log\\LoggerInterface`",
+        "`Psr\\Clock\\ClockInterface`",
+        "`Psr\\Date\\DateInterface`",
+        "`Psr\\Time\\TimeInterface`"
       ],
       "correct_answers": [
-        "`Psr\Clock\ClockInterface`"
+        "`Psr\\Clock\\ClockInterface`"
       ],
       "explanation": "Symfony 7 adopte le standard PSR-20 pour l'interopérabilité des horloges."
     },

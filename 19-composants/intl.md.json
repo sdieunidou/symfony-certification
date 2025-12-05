@@ -22,13 +22,13 @@
       "question": "Quelle classe permet d'obtenir la liste des noms de pays traduits dans une langue donnée ?",
       "type": "single_choice",
       "options": [
-        "`Symfony\Component\Intl\Countries`",
-        "`Symfony\Component\Intl\Region`",
+        "`Symfony\\Component\\Intl\\Countries`",
+        "`Symfony\\Component\\Intl\\Region`",
         "`Locale::getDisplayCountries()`",
         "`IntlDateFormatter`"
       ],
       "correct_answers": [
-        "`Symfony\Component\Intl\Countries`"
+        "`Symfony\\Component\\Intl\\Countries`"
       ],
       "explanation": "`Countries::getNames('fr')` retourne la liste des pays en français."
     },

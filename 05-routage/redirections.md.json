@@ -15,7 +15,7 @@
       "correct_answers": [
         "Utiliser le `RedirectController` fourni par le FrameworkBundle."
       ],
-      "explanation": "Le contrôleur générique `Symfony\Bundle\FrameworkBundle\Controller\RedirectController` est fait pour ça."
+      "explanation": "Le contrôleur générique `Symfony\\Bundle\\FrameworkBundle\\Controller\\RedirectController` est fait pour ça."
     },
     {
       "id": 2,

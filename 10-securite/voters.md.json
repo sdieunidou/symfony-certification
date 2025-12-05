@@ -38,12 +38,12 @@
       "type": "single_choice",
       "options": [
         "`vote()`",
-        "`supports(string \$attribute, mixed \$subject)`",
+        "`supports(string \\$attribute, mixed \\$subject)`",
         "`canVote()`",
         "`decide()`"
       ],
       "correct_answers": [
-        "`supports(string \$attribute, mixed \$subject)`"
+        "`supports(string \\$attribute, mixed \\$subject)`"
       ],
       "explanation": "Si `supports` retourne false, le voter retourne `ACCESS_ABSTAIN`."
     },

@@ -24,7 +24,7 @@
       "options": [
         "`#[Route]`",
         "`#[ApiResource]`",
-        "`#[ORM\Entity]`",
+        "`#[ORM\\Entity]`",
         "`#[REST]`"
       ],
       "correct_answers": [

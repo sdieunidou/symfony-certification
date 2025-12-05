@@ -30,7 +30,7 @@
       "correct_answers": [
         "`UploadedFile`"
       ],
-      "explanation": "`Symfony\Component\HttpFoundation\File\UploadedFile`."
+      "explanation": "`Symfony\\Component\\HttpFoundation\\File\\UploadedFile`."
     },
     {
       "id": 3,

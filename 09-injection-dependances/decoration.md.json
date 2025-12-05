@@ -49,7 +49,7 @@
     },
     {
       "id": 4,
-      "question": "Que se passe-t-il pour le reste de l'application quand vous décorez `App\Service\Mailer` ?",
+      "question": "Que se passe-t-il pour le reste de l'application quand vous décorez `App\\Service\\Mailer` ?",
       "type": "single_choice",
       "options": [
         "Rien, il faut modifier tous les contrôleurs pour utiliser le nouveau service.",

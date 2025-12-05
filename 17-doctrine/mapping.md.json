@@ -10,16 +10,16 @@
         "Les fichiers XML.",
         "Les fichiers YAML.",
         "Les Annotations PHPDoc (`/** @ORM... */`).",
-        "Les Attributs PHP (`#[ORM\...]`)."
+        "Les Attributs PHP (`#[ORM\\...]`)."
       ],
       "correct_answers": [
-        "Les Attributs PHP (`#[ORM\...]`)."
+        "Les Attributs PHP (`#[ORM\\...]`)."
       ],
       "explanation": "Les Attributs sont natifs au langage, plus performants et offrent une meilleure analyse statique que les annotations."
     },
     {
       "id": 2,
-      "question": "Si vous définissez une propriété `#[ORM\Column] private string $name;`, la colonne en base sera-t-elle nullable ?",
+      "question": "Si vous définissez une propriété `#[ORM\\Column] private string $name;`, la colonne en base sera-t-elle nullable ?",
       "type": "single_choice",
       "options": [
         "Oui, par défaut tout est nullable.",
@@ -53,12 +53,12 @@
       "type": "single_choice",
       "options": [
         "Ce n'est pas supporté.",
-        "En utilisant l'option `enumType: MaClasseEnum::class` dans l'attribut `#[ORM\Column]`.",
+        "En utilisant l'option `enumType: MaClasseEnum::class` dans l'attribut `#[ORM\\Column]`.",
         "En créant un Type DBAL personnalisé obligatoirement.",
         "En convertissant l'enum en string dans les getters/setters."
       ],
       "correct_answers": [
-        "En utilisant l'option `enumType: MaClasseEnum::class` dans l'attribut `#[ORM\Column]`."
+        "En utilisant l'option `enumType: MaClasseEnum::class` dans l'attribut `#[ORM\\Column]`."
       ],
       "explanation": "Doctrine supporte nativement les Backed Enums via cette option simple."
     }

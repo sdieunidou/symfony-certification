@@ -53,12 +53,12 @@
       "type": "single_choice",
       "options": [
         "`DoctrineFixture`",
-        "`Fixture` (du namespace `Doctrine\Bundle\FixturesBundle\Fixture`)",
+        "`Fixture` (du namespace `Doctrine\\Bundle\\FixturesBundle\\Fixture`)",
         "`BaseFixture`",
         "`DataFixture`"
       ],
       "correct_answers": [
-        "`Fixture` (du namespace `Doctrine\Bundle\FixturesBundle\Fixture`)"
+        "`Fixture` (du namespace `Doctrine\\Bundle\\FixturesBundle\\Fixture`)"
       ],
       "explanation": "Cette classe impose d'implémenter la méthode `load(ObjectManager $manager)`."
     }

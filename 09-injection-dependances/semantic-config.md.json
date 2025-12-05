@@ -23,12 +23,12 @@
       "type": "single_choice",
       "options": [
         "La classe du Bundle (`MyBundle`).",
-        "L'Extension du Bundle (`DependencyInjection\MyBundleExtension`).",
+        "L'Extension du Bundle (`DependencyInjection\\MyBundleExtension`).",
         "La classe Configuration.",
         "Le Kernel."
       ],
       "correct_answers": [
-        "L'Extension du Bundle (`DependencyInjection\MyBundleExtension`)."
+        "L'Extension du Bundle (`DependencyInjection\\MyBundleExtension`)."
       ],
       "explanation": "La méthode `load()` de l'extension reçoit les configurations fusionnées et manipule le conteneur."
     },

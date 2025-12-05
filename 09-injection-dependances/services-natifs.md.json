@@ -7,13 +7,13 @@
       "question": "Quelle interface faut-il utiliser pour injecter le Logger ?",
       "type": "single_choice",
       "options": [
-        "`Monolog\Logger`",
-        "`Psr\Log\LoggerInterface`",
-        "`Symfony\Component\HttpKernel\Log\LoggerInterface`",
-        "`App\Service\Logger`"
+        "`Monolog\\Logger`",
+        "`Psr\\Log\\LoggerInterface`",
+        "`Symfony\\Component\\HttpKernel\\Log\\LoggerInterface`",
+        "`App\\Service\\Logger`"
       ],
       "correct_answers": [
-        "`Psr\Log\LoggerInterface`"
+        "`Psr\\Log\\LoggerInterface`"
       ],
       "explanation": "Symfony privilégie les interfaces PSR pour le découplage."
     },
@@ -22,13 +22,13 @@
       "question": "Quel service permet d'accéder à la requête courante et à la session ?",
       "type": "single_choice",
       "options": [
-        "`Symfony\Component\HttpFoundation\Request`",
-        "`Symfony\Component\HttpFoundation\Session\Session`",
-        "`Symfony\Component\HttpFoundation\RequestStack`",
+        "`Symfony\\Component\\HttpFoundation\\Request`",
+        "`Symfony\\Component\\HttpFoundation\\Session\\Session`",
+        "`Symfony\\Component\\HttpFoundation\\RequestStack`",
         "`request_stack` (string)"
       ],
       "correct_answers": [
-        "`Symfony\Component\HttpFoundation\RequestStack`"
+        "`Symfony\\Component\\HttpFoundation\\RequestStack`"
       ],
       "explanation": "`Request` n'est pas un service. Il faut passer par le `RequestStack` pour récupérer la `Request` ou la `Session`."
     },
@@ -37,13 +37,13 @@
       "question": "Quelle interface permet d'injecter l'EntityManager de Doctrine ?",
       "type": "single_choice",
       "options": [
-        "`Doctrine\ORM\EntityManager`",
-        "`Doctrine\ORM\EntityManagerInterface`",
-        "`Doctrine\Persistence\ObjectManager`",
-        "`App\Repository\Manager`"
+        "`Doctrine\\ORM\\EntityManager`",
+        "`Doctrine\\ORM\\EntityManagerInterface`",
+        "`Doctrine\\Persistence\\ObjectManager`",
+        "`App\\Repository\\Manager`"
       ],
       "correct_answers": [
-        "`Doctrine\ORM\EntityManagerInterface`"
+        "`Doctrine\\ORM\\EntityManagerInterface`"
       ],
       "explanation": "L'interface est préférée à la classe concrète pour faciliter les mocks et le découplage."
     },
@@ -53,12 +53,12 @@
       "type": "single_choice",
       "options": [
         "`SecurityContext`",
-        "`Symfony\Bundle\SecurityBundle\Security`",
+        "`Symfony\\Bundle\\SecurityBundle\\Security`",
         "`UserProvider`",
         "`AccessControl`"
       ],
       "correct_answers": [
-        "`Symfony\Bundle\SecurityBundle\Security`"
+        "`Symfony\\Bundle\\SecurityBundle\\Security`"
       ],
       "explanation": "La classe `Security` remplace l'injection combinée de `UserStorage` et `AuthorizationChecker` pour les cas courants."
     }

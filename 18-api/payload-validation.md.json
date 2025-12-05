@@ -7,15 +7,15 @@
       "question": "Quelle contrainte de validation est cruciale pour activer la validation en cascade sur les sous-objets (ex: valider l'objet `Address` imbriqué dans l'objet `User`) ?",
       "type": "single_choice",
       "options": [
-        "`#[Assert\Cascade]`",
-        "`#[Assert\Valid]`",
-        "`#[Assert\Recursive]`",
-        "`#[Assert\All]`"
+        "`#[Assert\\Cascade]`",
+        "`#[Assert\\Valid]`",
+        "`#[Assert\\Recursive]`",
+        "`#[Assert\\All]`"
       ],
       "correct_answers": [
-        "`#[Assert\Valid]`"
+        "`#[Assert\\Valid]`"
       ],
-      "explanation": "Sans `#[Assert\Valid]`, le validateur ne descendra pas dans les propriétés objet pour vérifier leurs propres contraintes."
+      "explanation": "Sans `#[Assert\\Valid]`, le validateur ne descendra pas dans les propriétés objet pour vérifier leurs propres contraintes."
     },
     {
       "id": 2,

@@ -8,12 +8,12 @@
       "type": "single_choice",
       "options": [
         "En ajoutant des règles dans le contrôleur.",
-        "C'est automatique : le formulaire lit les métadonnées de validation (Attributs `#[Assert\...]`) définies dans la classe de l'entité.",
+        "C'est automatique : le formulaire lit les métadonnées de validation (Attributs `#[Assert\\...]`) définies dans la classe de l'entité.",
         "En utilisant un fichier `validation.yaml` spécifique au formulaire.",
         "Il faut appeler `$form->validate()`."
       ],
       "correct_answers": [
-        "C'est automatique : le formulaire lit les métadonnées de validation (Attributs `#[Assert\...]`) définies dans la classe de l'entité."
+        "C'est automatique : le formulaire lit les métadonnées de validation (Attributs `#[Assert\\...]`) définies dans la classe de l'entité."
       ],
       "explanation": "Le composant Form utilise le `ValidatorExtension` pour faire le pont."
     },

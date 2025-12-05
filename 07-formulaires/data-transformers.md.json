@@ -52,7 +52,7 @@
       "question": "Quelle exception faut-il lancer dans un Data Transformer si la conversion échoue (ex: ID introuvable) ?",
       "type": "single_choice",
       "options": [
-        "`\Exception`",
+        "`\\Exception`",
         "`TransformationFailedException`",
         "`InvalidArgumentException`",
         "`NotFoundHttpException`"

@@ -37,15 +37,15 @@
       "question": "Comment configure-t-on le champ source pour générer un slug avec l'extension Sluggable via des attributs ?",
       "type": "single_choice",
       "options": [
-        "`#[Gedmo\Slug(fields: ['name'])]`",
+        "`#[Gedmo\\Slug(fields: ['name'])]`",
         "`#[Slug(source: 'name')]`",
-        "`#[ORM\Slug(target: 'name')]`",
+        "`#[ORM\\Slug(target: 'name')]`",
         "`@Gedmo:Slug(on='name')`"
       ],
       "correct_answers": [
-        "`#[Gedmo\Slug(fields: ['name'])]`"
+        "`#[Gedmo\\Slug(fields: ['name'])]`"
       ],
-      "explanation": "L'attribut `#[Gedmo\Slug]` permet de définir quels champs sont utilisés pour construire la chaîne URL-friendly."
+      "explanation": "L'attribut `#[Gedmo\\Slug]` permet de définir quels champs sont utilisés pour construire la chaîne URL-friendly."
     },
     {
       "id": 4,
