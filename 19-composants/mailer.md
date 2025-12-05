@@ -51,6 +51,13 @@ $email = (new TemplatedEmail())
 #### Inlining CSS
 Avec le package `twig/cssinliner-extra` (`composer require twig/cssinliner-extra`), vous pouvez écrire du CSS dans une balise `<style>` ou lier un fichier CSS, et il sera automatiquement converti en attributs `style="..."` sur chaque balise HTML, car les clients mails (Gmail, Outlook) supportent mal les feuilles de style externes.
 
+#### Intégration d'images (Twig)
+```twig
+{# Référence une image locale via un namespace Twig #}
+<img src="{{ email.image('@images/logo.png') }}" alt="Logo">
+```
+Cela embarque l'image directement dans l'email (CID attachment) pour éviter le blocage des images externes.
+
 ---
 
 ## 3. Configuration des Transports
@@ -63,12 +70,17 @@ La configuration se fait via la variable d'environnement `MAILER_DSN`.
 *   **Local (Dev)** : `null://null` (ne rien envoyer) ou `native://default` (sendmail).
 *   **Mailpit / MailHog** : `smtp://localhost:1025`
 
+### Options TLS (DSN)
+*   `verify_peer=0` : Désactiver la vérification du certificat (Dev uniquement).
+*   `auto_tls=false` : Désactiver le STARTTLS automatique.
+*   `require_tls=true` : Forcer le TLS.
+
 ### Haute Disponibilité (Failover & Load Balancing)
 Symfony supporte nativement ces stratégies dans le DSN.
 
 ```env
-# Failover : Essaie le premier, si échec, essaie le second
-MAILER_DSN="failover(sendgrid://... postmark://...)"
+# Failover : Essaie le premier, si échec, essaie le second (retry_period configurable)
+MAILER_DSN="failover(sendgrid://... postmark://...)?retry_period=60"
 
 # Round Robin : Alterne entre les transports (répartition de charge)
 MAILER_DSN="roundrobin(sendgrid://... postmark://...)"
@@ -76,7 +88,47 @@ MAILER_DSN="roundrobin(sendgrid://... postmark://...)"
 
 ---
 
-## 4. Envoi Asynchrone (Messenger)
+## 4. Fonctionnalités Avancées
+
+### Signature et Chiffrement (S/MIME)
+Pour sécuriser vos emails (intégrité et confidentialité).
+
+```php
+use Symfony\Component\Mime\Crypto\SMimeSigner;
+use Symfony\Component\Mime\Crypto\SMimeEncrypter;
+
+// Signature
+$signer = new SMimeSigner('/path/to/cert.crt', '/path/to/key.key');
+$signedEmail = $signer->sign($email);
+
+// Chiffrement
+$encrypter = new SMimeEncrypter('/path/to/recipient.crt');
+$encryptedEmail = $encrypter->encrypt($email);
+```
+*Note : Peut aussi être configuré globalement dans `mailer.yaml`.*
+
+### Tags & Métadonnées
+Certains transports tiers (Sendgrid, Mailgun...) supportent les tags pour le tracking.
+
+```php
+use Symfony\Component\Mailer\Header\TagHeader;
+use Symfony\Component\Mailer\Header\MetadataHeader;
+
+$email->getHeaders()->add(new TagHeader('password-reset'));
+$email->getHeaders()->add(new MetadataHeader('ClientId', '12345'));
+```
+
+### Draft Email
+Pour générer un email "Brouillon" téléchargeable (format `.eml`) sans l'envoyer.
+
+```php
+use Symfony\Component\Mime\DraftEmail;
+$draft = (new DraftEmail())->html('...')->toString(); // Retourne le contenu raw
+```
+
+---
+
+## 5. Envoi Asynchrone (Messenger)
 
 Si le composant **Messenger** est installé (`composer require symfony/messenger`), le Mailer détecte automatiquement la configuration.
 
@@ -90,16 +142,17 @@ framework:
             'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
 ```
 
-C'est transparent pour le développeur.
-
 ---
 
-## 5. Événements et Personnalisation
+## 6. Événements et Personnalisation
 
-Le Mailer dispatch un événement `MessageEvent` avant chaque envoi.
+Le Mailer dispatch plusieurs événements :
+1.  `MessageEvent` : Avant l'envoi. Permet de modifier le message ou l'enveloppe.
+2.  `SentMessageEvent` : Après l'envoi (contient les infos de debug et l'ID du message).
+3.  `FailedMessageEvent` : En cas d'erreur.
 
 **Cas d'usage : L'Interceptor en Dev**
-En développement, on veut souvent intercepter tous les mails pour ne pas spammer les vrais utilisateurs, tout en les envoyant à une adresse de test.
+En développement, on veut souvent intercepter tous les mails pour ne pas spammer les vrais utilisateurs.
 Symfony le fait nativement via la config `envelope` listener :
 
 ```yaml
@@ -112,8 +165,8 @@ framework:
 
 ---
 
-## 6. Points de vigilance pour la Certification
+## 7. Points de vigilance pour la Certification
 
-*   **Envelope vs Header** : L'enveloppe SMTP (MAIL FROM / RCPT TO) peut être différente des headers MIME (From / To). Par défaut, Mailer copie les headers dans l'enveloppe, mais on peut les dissocier.
+*   **Envelope vs Header** : L'enveloppe SMTP (MAIL FROM / RCPT TO) peut être différente des headers MIME (From / To). Par défaut, Mailer copie les headers dans l'enveloppe, mais on peut les dissocier via `MessageEvent`.
 *   **Attachments** : `attachFromPath()` (fichier disque) vs `attach()` (contenu string en mémoire).
-*   **Embed Images** : Dans Twig, `<img src="{{ email.image('@images/logo.png') }}">` permet d'embarquer l'image directement dans le mail (CID attachment), ce qui évite le blocage des images externes par les clients mails.
+*   **Exceptions** : `TransportExceptionInterface` est levée si l'envoi échoue (ex: serveur SMTP injoignable).

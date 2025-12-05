@@ -47,6 +47,8 @@ class SmsNotificationHandler
 }
 ```
 
+*Note : Vous pouvez avoir plusieurs handlers pour un même message. Dans ce cas, le bus doit être configuré pour autoriser plusieurs handlers (pattern Event).*
+
 ### Dispatch
 
 ```php
