@@ -10,37 +10,6 @@ Le composant `ErrorHandler` gère la capture des erreurs PHP (Exceptions et erre
     *   En **Dev** : Une page HTML riche avec la stack trace, les logs, les arguments (Ghost page).
     *   En **Prod** : Une page d'erreur générique ("Oops! An Error Occurred").
 
-## Exceptions HTTP Standard (HttpKernel)
-Symfony mappe certaines exceptions à des codes HTTP spécifiques via `HttpKernel`. Cela permet de contrôler le code de retour HTTP simplement en lançant la bonne exception.
-
-| Exception (Symfony\Component\HttpKernel\Exception) | Code HTTP | Usage |
-| :--- | :--- | :--- |
-| `NotFoundHttpException` | 404 | Ressource inexistante (`$this->createNotFoundException()`). |
-| `AccessDeniedHttpException` | 403 | Accès interdit (souvent géré via `AccessDeniedException` de Security). |
-| `BadRequestHttpException` | 400 | Requête mal formée, paramètres manquants. |
-| `UnauthorizedHttpException` | 401 | Authentification requise (API). |
-| `MethodNotAllowedHttpException` | 405 | Méthode HTTP incorrecte (ex: GET sur une route POST). |
-| `ConflictHttpException` | 409 | Conflit d'état (ex: ressource déjà existante). |
-
-## Attributs PHP 8 (Symfony 6.3+)
-Au lieu de configurer les statuts HTTP dans `framework.yaml`, on peut désormais utiliser des attributs directement sur les classes d'exception personnalisées.
-
-```php
-namespace App\Exception;
-
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\WithHttpStatus;
-use Symfony\Component\HttpKernel\Attribute\WithLogLevel;
-use Psr\Log\LogLevel;
-
-#[WithHttpStatus(Response::HTTP_NOT_FOUND, headers: ['X-Error-Code' => 'ORDER_MISSING'])]
-#[WithLogLevel(LogLevel::WARNING)]
-class OrderNotFoundException extends \Exception
-{
-    // Symfony renverra automatiquement une 404 et loggera en WARNING
-}
-```
-
 ## Personnalisation (Twig)
 Pour changer le look des pages d'erreur en production (404, 403, 500), il suffit de créer des templates Twig spécifiques.
 Symfony (TwigBundle) cherche dans `templates/bundles/TwigBundle/Exception/`.
