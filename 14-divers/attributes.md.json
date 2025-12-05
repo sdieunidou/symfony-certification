@@ -1,0 +1,81 @@
+{
+  "source_file": "14-divers/attributes.md",
+  "title": "Attributs PHP natifs de Symfony 7",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel attribut permet de mapper et valider automatiquement le corps d'une requête (JSON/XML) vers un objet DTO typé dans un contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "`#[MapEntity]`",
+        "`#[MapRequestPayload]`",
+        "`#[MapQueryString]`",
+        "`#[Deserialize]`"
+      ],
+      "correct_answers": [
+        "`#[MapRequestPayload]`"
+      ],
+      "explanation": "`#[MapRequestPayload]` désérialise le body de la requête et applique les règles de validation du Validator sur l'objet résultant."
+    },
+    {
+      "id": 2,
+      "question": "Comment injecter la valeur d'une variable d'environnement directement dans un paramètre de constructeur via un attribut ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Env('VAR_NAME')]`",
+        "`#[Autowire(env: 'VAR_NAME')]`",
+        "`#[Value('%env(VAR_NAME)%')]`",
+        "`#[Inject('VAR_NAME')]`"
+      ],
+      "correct_answers": [
+        "`#[Autowire(env: 'VAR_NAME')]`"
+      ],
+      "explanation": "L'attribut `#[Autowire]` permet de spécifier une valeur précise, une expression ou une variable d'environnement à injecter."
+    },
+    {
+      "id": 3,
+      "question": "Quel attribut utiliser pour définir le code de statut HTTP (ex: 404) qu'une exception personnalisée doit déclencher ?",
+      "type": "single_choice",
+      "options": [
+        "`#[ResponseStatus(404)]`",
+        "`#[WithHttpStatus(404)]`",
+        "`#[Route(status: 404)]`",
+        "`#[HttpCode(404)]`"
+      ],
+      "correct_answers": [
+        "`#[WithHttpStatus(404)]`"
+      ],
+      "explanation": "`#[WithHttpStatus]` permet d'associer un code HTTP (et éventuellement des headers) à une classe d'Exception."
+    },
+    {
+      "id": 4,
+      "question": "Si vous avez plusieurs implémentations d'une interface, quel attribut permet de choisir celle à injecter (cibler un alias nommé) ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Named('alias')]`",
+        "`#[Target('alias')]`",
+        "`#[Service('alias')]`",
+        "`#[Select('alias')]`"
+      ],
+      "correct_answers": [
+        "`#[Target('alias')]`"
+      ],
+      "explanation": "`#[Target]` indique à l'autowiring quel service (par son nom/id) doit être injecté lorsque le type est ambigu."
+    },
+    {
+      "id": 5,
+      "question": "Quel attribut remplace l'annotation `@IsGranted` pour sécuriser une méthode de contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Security('ROLE_ADMIN')]`",
+        "`#[IsGranted('ROLE_ADMIN')]`",
+        "`#[DenyUnlessGranted('ROLE_ADMIN')]`",
+        "`#[RequireRole('ROLE_ADMIN')]`"
+      ],
+      "correct_answers": [
+        "`#[IsGranted('ROLE_ADMIN')]`"
+      ],
+      "explanation": "L'attribut `#[IsGranted]` fonctionne de manière identique à l'ancienne annotation pour restreindre l'accès."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "14-divers/bundles.md",
+  "title": "Création de Bundle",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la classe recommandée (depuis Symfony 6.1) à étendre pour créer un Bundle moderne ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\\Component\\HttpKernel\\Bundle\\Bundle`",
+        "`Symfony\\Component\\HttpKernel\\Bundle\\AbstractBundle`",
+        "`Symfony\\Component\\DependencyInjection\\Extension\\Extension`",
+        "`Symfony\\Bundle\\FrameworkBundle\\Controller\\AbstractController`"
+      ],
+      "correct_answers": [
+        "`Symfony\\Component\\HttpKernel\\Bundle\\AbstractBundle`"
+      ],
+      "explanation": "`AbstractBundle` simplifie la structure en regroupant la définition du bundle, le chargement de l'extension et la configuration sémantique dans une seule classe."
+    },
+    {
+      "id": 2,
+      "question": "Si votre Bundle doit configurer automatiquement un autre Bundle (ex: ajouter des variables globales Twig), quelle méthode (ou interface) utiliser ?",
+      "type": "single_choice",
+      "options": [
+        "`loadExtension`",
+        "`prependExtension` (ou `PrependExtensionInterface`)",
+        "`build`",
+        "`configure`"
+      ],
+      "correct_answers": [
+        "`prependExtension` (ou `PrependExtensionInterface`)"
+      ],
+      "explanation": "Cette méthode permet de modifier la configuration d'autres bundles avant que le conteneur ne soit compilé."
+    },
+    {
+      "id": 3,
+      "question": "Quelle est la bonne pratique pour le nommage des services à l'intérieur d'un Bundle partagé ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser des noms courts comme `mailer` ou `logger`.",
+        "Préfixer tous les IDs de services par le nom du bundle (ex: `acme_blog.mailer`).",
+        "Ne pas donner d'ID, utiliser uniquement l'autowiring.",
+        "Utiliser le namespace complet de la classe."
+      ],
+      "correct_answers": [
+        "Préfixer tous les IDs de services par le nom du bundle (ex: `acme_blog.mailer`)."
+      ],
+      "explanation": "Cela évite les collisions de noms avec les services de l'application ou d'autres bundles."
+    },
+    {
+      "id": 4,
+      "question": "Qu'est-ce qu'une 'Recette Symfony Flex' (Recipe) ?",
+      "type": "single_choice",
+      "options": [
+        "Un fichier de documentation.",
+        "Un script d'installation automatique qui configure le bundle (fichiers par défaut, variables d'env, ajout dans `bundles.php`) lors du `composer require`.",
+        "Un gestionnaire de dépendances JS.",
+        "Un outil de test de performance."
+      ],
+      "correct_answers": [
+        "Un script d'installation automatique qui configure le bundle (fichiers par défaut, variables d'env, ajout dans `bundles.php`) lors du `composer require`."
+      ],
+      "explanation": "Les recettes permettent une expérience d'installation 'Zero Config' pour l'utilisateur final."
+    }
+  ]
+}

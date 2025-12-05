@@ -1,0 +1,81 @@
+{
+  "source_file": "14-divers/best-practices.md",
+  "title": "Bonnes Pratiques Officielles (Best Practices)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Selon les Best Practices Symfony, comment doit-on organiser la logique métier de l'application ?",
+      "type": "single_choice",
+      "options": [
+        "En créant un Bundle pour chaque fonctionnalité (UserBundle, ProductBundle).",
+        "En utilisant un seul AppBundle.",
+        "En n'utilisant pas de Bundles, mais en organisant le code dans `src/` avec les namespaces PHP standards.",
+        "En mettant tout dans les contrôleurs."
+      ],
+      "correct_answers": [
+        "En n'utilisant pas de Bundles, mais en organisant le code dans `src/` avec les namespaces PHP standards."
+      ],
+      "explanation": "Les Bundles sont réservés au partage de code entre projets (librairies). Le code applicatif doit résider simplement dans `src/`."
+    },
+    {
+      "id": 2,
+      "question": "Où doit-on définir les paramètres sensibles comme les clés d'API en production ?",
+      "type": "single_choice",
+      "options": [
+        "Dans `config/services.yaml`.",
+        "Dans des constantes de classe.",
+        "Dans le gestionnaire de secrets de Symfony (`bin/console secrets:set`) ou des variables d'environnement réelles.",
+        "Dans un fichier `.env` commité sur git."
+      ],
+      "correct_answers": [
+        "Dans le gestionnaire de secrets de Symfony (`bin/console secrets:set`) ou des variables d'environnement réelles."
+      ],
+      "explanation": "Les secrets ne doivent jamais être commités. Le Vault Symfony permet de les chiffrer et de les commiter en toute sécurité, ou alors d'utiliser des variables d'env serveur."
+    },
+    {
+      "id": 3,
+      "question": "Quelle est la bonne pratique concernant la définition des formulaires ?",
+      "type": "single_choice",
+      "options": [
+        "Créer le formulaire directement dans le contrôleur (`createFormBuilder`).",
+        "Définir chaque formulaire dans une classe PHP dédiée dans `src/Form`.",
+        "Définir le formulaire en YAML.",
+        "Générer le HTML manuellement."
+      ],
+      "correct_answers": [
+        "Définir chaque formulaire dans une classe PHP dédiée dans `src/Form`."
+      ],
+      "explanation": "Cela permet la réutilisation, facilite les tests et sépare la logique de présentation de la logique du contrôleur."
+    },
+    {
+      "id": 4,
+      "question": "Pourquoi les URLs doivent-elles être écrites 'en dur' (ex: `/login`) dans les tests fonctionnels plutôt que générées via le routeur ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que le routeur n'est pas disponible en test.",
+        "Parce que c'est plus rapide.",
+        "Parce que si l'URL change, le test doit échouer pour alerter que les liens externes (bookmarks, emails) seront cassés.",
+        "C'est une erreur, il faut toujours utiliser le routeur."
+      ],
+      "correct_answers": [
+        "Parce que si l'URL change, le test doit échouer pour alerter que les liens externes (bookmarks, emails) seront cassés."
+      ],
+      "explanation": "L'URL publique fait partie du contrat de l'application. Un changement d'URL est un changement majeur qui doit être détecté."
+    },
+    {
+      "id": 5,
+      "question": "Quel format de fichier est recommandé pour les traductions (i18n) ?",
+      "type": "single_choice",
+      "options": [
+        "YAML (`.yaml`)",
+        "PHP (`.php`)",
+        "XLIFF (`.xlf`)",
+        "JSON (`.json`)"
+      ],
+      "correct_answers": [
+        "XLIFF (`.xlf`)"
+      ],
+      "explanation": "XLIFF est le standard industriel supporté par tous les outils de traduction professionnels."
+    }
+  ]
+}
