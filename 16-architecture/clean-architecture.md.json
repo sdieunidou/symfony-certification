@@ -1,0 +1,66 @@
+{
+  "source_file": "16-architecture/clean-architecture.md",
+  "title": "Clean Architecture (Hexagonale / Onion)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la règle d'or (The Dependency Rule) de la Clean Architecture ?",
+      "type": "single_choice",
+      "options": [
+        "Les dépendances doivent toujours aller de l'intérieur (Domaine) vers l'extérieur (Infrastructure).",
+        "Les dépendances doivent toujours aller de l'extérieur (Infrastructure) vers l'intérieur (Domaine).",
+        "Toutes les couches peuvent dépendre les unes des autres.",
+        "La base de données est le centre de l'application."
+      ],
+      "correct_answers": [
+        "Les dépendances doivent toujours aller de l'extérieur (Infrastructure) vers l'intérieur (Domaine)."
+      ],
+      "explanation": "Le code source des couches internes (Domaine, Application) ne doit jamais connaître, ni dépendre, des couches externes (Framework, UI, DB)."
+    },
+    {
+      "id": 2,
+      "question": "Dans le pattern 'Ports & Adapters', que représente un 'Output Port' ?",
+      "type": "single_choice",
+      "options": [
+        "Une prise HDMI.",
+        "Une interface définie dans la couche Application/Domaine que l'infrastructure doit implémenter (ex: `UserRepositoryInterface`).",
+        "Une classe concrète d'accès aux données.",
+        "Un contrôleur Symfony."
+      ],
+      "correct_answers": [
+        "Une interface définie dans la couche Application/Domaine que l'infrastructure doit implémenter (ex: `UserRepositoryInterface`)."
+      ],
+      "explanation": "C'est le mécanisme d'Inversion de Dépendance : le Domaine exprime un besoin (Port) que l'Infrastructure satisfait (Adapter)."
+    },
+    {
+      "id": 3,
+      "question": "Quel objet doit traverser les frontières (Boundaries) entre le Contrôleur et le Use Case (Application) ?",
+      "type": "single_choice",
+      "options": [
+        "L'Entité Doctrine directement (pour le Lazy Loading).",
+        "La Request HTTP brute.",
+        "Un DTO (Data Transfer Object) ou un Request Model.",
+        "Un tableau associatif non typé."
+      ],
+      "correct_answers": [
+        "Un DTO (Data Transfer Object) ou un Request Model."
+      ],
+      "explanation": "L'utilisation de DTOs simples (POPO) découple le cœur de l'application des objets spécifiques au framework (Request) ou à la persistance (Entity gérée)."
+    },
+    {
+      "id": 4,
+      "question": "Grâce à la Clean Architecture, comment peut-on tester les règles métier (Use Cases) ?",
+      "type": "single_choice",
+      "options": [
+        "Uniquement avec des tests E2E Selenium.",
+        "Avec des Tests Unitaires purs, sans démarrer le Kernel Symfony ni la Base de Données, en mockant les interfaces (Ports).",
+        "En déployant sur un environnement de staging.",
+        "C'est impossible sans base de données."
+      ],
+      "correct_answers": [
+        "Avec des Tests Unitaires purs, sans démarrer le Kernel Symfony ni la Base de Données, en mockant les interfaces (Ports)."
+      ],
+      "explanation": "Puisque le métier ne dépend de rien d'externe, il est testable en isolation totale, ce qui est extrêmement rapide."
+    }
+  ]
+}

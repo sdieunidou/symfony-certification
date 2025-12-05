@@ -1,0 +1,66 @@
+{
+  "source_file": "16-architecture/ddd.md",
+  "title": "Domain Driven Design (DDD) dans Symfony",
+  "questions": [
+    {
+      "id": 1,
+      "question": "En DDD, qu'est-ce qu'un 'Value Object' (VO) ?",
+      "type": "single_choice",
+      "options": [
+        "Une entité avec un ID.",
+        "Un objet défini uniquement par ses attributs, sans identité propre, et immuable (ex: une coordonnée GPS, une somme d'argent).",
+        "Un service Symfony.",
+        "Un tableau PHP."
+      ],
+      "correct_answers": [
+        "Un objet défini uniquement par ses attributs, sans identité propre, et immuable (ex: une coordonnée GPS, une somme d'argent)."
+      ],
+      "explanation": "Deux VOs sont identiques s'ils ont les mêmes valeurs. Ils ne changent jamais : pour modifier une valeur, on crée un nouveau VO."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la règle fondamentale concernant les Agrégats (Aggregates) ?",
+      "type": "single_choice",
+      "options": [
+        "Ils doivent être le plus gros possible.",
+        "On ne doit manipuler les objets internes (enfants) qu'en passant par la Racine de l'Agrégat (Aggregate Root).",
+        "On peut sauvegarder n'importe quel objet de l'agrégat indépendamment.",
+        "Ils ne doivent pas contenir d'entités."
+      ],
+      "correct_answers": [
+        "On ne doit manipuler les objets internes (enfants) qu'en passant par la Racine de l'Agrégat (Aggregate Root)."
+      ],
+      "explanation": "La Racine est garante de la cohérence de tout l'agrégat (invariants transactionnels). Accéder aux enfants directement contournerait ces règles."
+    },
+    {
+      "id": 3,
+      "question": "Qu'est-ce que le 'Ubiquitous Language' (Langage Omniprésent) ?",
+      "type": "single_choice",
+      "options": [
+        "L'anglais.",
+        "Le PHP.",
+        "Un vocabulaire commun rigoureux partagé entre les experts métier et les développeurs, utilisé tel quel dans le code.",
+        "Le langage SQL."
+      ],
+      "correct_answers": [
+        "Un vocabulaire commun rigoureux partagé entre les experts métier et les développeurs, utilisé tel quel dans le code."
+      ],
+      "explanation": "Le code doit refléter le métier. Si l'expert dit 'Passer commande', la méthode doit s'appeler `placeOrder()`, pas `save()`."
+    },
+    {
+      "id": 4,
+      "question": "À quoi sert une 'Anti-Corruption Layer' (ACL) ?",
+      "type": "single_choice",
+      "options": [
+        "À scanner les virus.",
+        "À traduire les modèles d'un système externe (ou legacy) vers votre propre modèle de domaine, pour éviter de polluer votre code avec des concepts étrangers.",
+        "À empêcher les injections SQL.",
+        "À crypter les données."
+      ],
+      "correct_answers": [
+        "À traduire les modèles d'un système externe (ou legacy) vers votre propre modèle de domaine, pour éviter de polluer votre code avec des concepts étrangers."
+      ],
+      "explanation": "L'ACL agit comme un adaptateur/traducteur protecteur aux frontières d'un Bounded Context."
+    }
+  ]
+}
