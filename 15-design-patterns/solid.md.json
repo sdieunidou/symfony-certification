@@ -4,63 +4,78 @@
   "questions": [
     {
       "id": 1,
-      "question": "Que signifie le principe SRP (Single Responsibility Principle) ?",
+      "question": "Dans l'exemple du principe de Responsabilité Unique (SRP), pourquoi la classe `UserService` initiale est-elle problématique ?",
       "type": "single_choice",
       "options": [
-        "Une classe ne doit être instanciée qu'une seule fois.",
-        "Une classe ne doit avoir qu'une seule raison de changer (une seule responsabilité).",
-        "Une fonction ne doit pas dépasser 20 lignes.",
-        "Un projet ne doit avoir qu'un seul développeur."
+        "Parce qu'elle utilise l'injection de dépendance.",
+        "Parce qu'elle gère à la fois la validation, la persistance et l'envoi d'emails.",
+        "Parce qu'elle est déclarée `final`.",
+        "Parce qu'elle n'implémente pas d'interface."
       ],
       "correct_answers": [
-        "Une classe ne doit avoir qu'une seule raison de changer (une seule responsabilité)."
+        "Parce qu'elle gère à la fois la validation, la persistance et l'envoi d'emails."
       ],
-      "explanation": "Si une classe gère à la fois la validation, la persistance et l'envoi d'emails, elle a trop de raisons de changer. Il faut déléguer."
+      "explanation": "Le SRP stipule qu'une classe ne doit avoir qu'une seule raison de changer. Cumuler validation, persistance et notification viole ce principe."
     },
     {
       "id": 2,
-      "question": "Quel principe est illustré par l'utilisation de l'EventDispatcher pour étendre le comportement d'un service sans modifier son code source ?",
+      "question": "Selon le principe Ouvert/Fermé (OCP), comment devrions-nous gérer l'ajout d'un nouveau moyen de paiement (ex: Bitcoin) ?",
       "type": "single_choice",
       "options": [
-        "SRP (Single Responsibility)",
-        "OCP (Open/Closed Principle)",
-        "LSP (Liskov Substitution)",
-        "DIP (Dependency Inversion)"
+        "En ajoutant une condition `elseif ($method === 'bitcoin')` dans la classe `PaymentService`.",
+        "En créant une nouvelle classe `BitcoinPayment` implémentant une interface commune, sans modifier `PaymentService`.",
+        "En modifiant directement la classe `Order`.",
+        "En créant un nouveau contrôleur dédié."
       ],
       "correct_answers": [
-        "OCP (Open/Closed Principle)"
+        "En créant une nouvelle classe `BitcoinPayment` implémentant une interface commune, sans modifier `PaymentService`."
       ],
-      "explanation": "Le code est ouvert à l'extension (via les listeners) mais fermé à la modification (on ne touche pas au cœur du service)."
+      "explanation": "OCP vise à permettre l'extension (nouvelle classe) sans modification du code existant (`PaymentService`)."
     },
     {
       "id": 3,
-      "question": "Pourquoi le principe d'Inversion de Dépendance (DIP) recommande-t-il de dépendre des abstractions (interfaces) plutôt que des implémentations ?",
+      "question": "Quel problème illustre l'exemple de la classe `ArticleEnVedette` qui modifie le retour de `getTitle()` ?",
       "type": "single_choice",
       "options": [
-        "Pour rendre le code plus complexe.",
-        "Pour réduire le couplage, faciliter les tests (mocking) et permettre de changer d'implémentation facilement.",
-        "Pour améliorer les performances de compilation.",
-        "C'est une obligation de PHP."
+        "Une violation du principe de Substitution de Liskov (LSP).",
+        "Une violation du principe de Responsabilité Unique (SRP).",
+        "Une erreur de syntaxe PHP.",
+        "Une mauvaise utilisation de Doctrine."
       ],
       "correct_answers": [
-        "Pour réduire le couplage, faciliter les tests (mocking) et permettre de changer d'implémentation facilement."
+        "Une violation du principe de Substitution de Liskov (LSP)."
       ],
-      "explanation": "Si on dépend d'une classe concrète `MySQLDatabase`, on ne peut pas tester sans base de données ni changer pour `PostgreSQL` sans tout réécrire."
+      "explanation": "La sous-classe change le comportement attendu (le contrat) de la méthode parent. Elle ne peut plus se substituer au parent de manière transparente."
     },
     {
       "id": 4,
-      "question": "Quel principe est violé si une classe enfant lance une exception inattendue là où la classe parente ne le faisait pas, cassant ainsi le code client ?",
+      "question": "Comment le principe de Ségrégation des Interfaces (ISP) suggère-t-il de gérer une interface `DataExportInterface` contenant des méthodes pour CSV, JSON et XML ?",
       "type": "single_choice",
       "options": [
-        "LSP (Liskov Substitution Principle)",
-        "ISP (Interface Segregation Principle)",
-        "SRP (Single Responsibility Principle)",
-        "OCP (Open/Closed Principle)"
+        "Garder une seule interface pour centraliser le code.",
+        "Implémenter toutes les méthodes dans toutes les classes, même vides.",
+        "Découper l'interface en `CsvExportable`, `JsonExportable`, etc.",
+        "Utiliser une classe abstraite au lieu d'une interface."
       ],
       "correct_answers": [
-        "LSP (Liskov Substitution Principle)"
+        "Découper l'interface en `CsvExportable`, `JsonExportable`, etc."
       ],
-      "explanation": "Le principe de Liskov exige qu'une sous-classe puisse remplacer la classe parente sans altérer la cohérence du programme."
+      "explanation": "ISP recommande plusieurs petites interfaces spécifiques plutôt qu'une interface globale qui force l'implémentation de méthodes inutiles."
+    },
+    {
+      "id": 5,
+      "question": "Dans l'exemple du principe d'Inversion des Dépendances (DIP), quelle est la bonne pratique pour le `NotificationManager` ?",
+      "type": "single_choice",
+      "options": [
+        "Faire `new EmailService()` directement dans la méthode.",
+        "Injecter une collection de services implémentant `NotificationServiceInterface`.",
+        "Utiliser des méthodes statiques pour envoyer les emails.",
+        "Étendre la classe `EmailService`."
+      ],
+      "correct_answers": [
+        "Injecter une collection de services implémentant `NotificationServiceInterface`."
+      ],
+      "explanation": "DIP préconise de dépendre d'abstractions (interfaces) injectées plutôt que d'instancier des classes concrètes (via `new`)."
     }
   ]
 }
