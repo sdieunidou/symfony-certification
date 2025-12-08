@@ -44,8 +44,40 @@ class ZipCodeType extends AbstractType
         // Ajoute une variable {{ is_metropolitan }} au template du widget
         $view->vars['is_metropolitan'] = true; 
     }
+
+    // 5. Finalisation de la vue (Après que les enfants aient été construits)
+    public function finishView(FormView $view, FormInterface $form, array $options): void
+    {
+        // Utile pour modifier les attributs finaux (ex: trier les choix, ajouter une classe selon les enfants)
+        $view->vars['attr']['class'] .= ' final-class';
+    }
 }
 ```
+
+## Liste des Options Communes (`FormType`)
+Tous les types héritant de `FormType` (la quasi-totalité) partagent ces options :
+
+### Options de Données
+*   **`data`** : Valeur initiale (écrase l'entité sous-jacente, attention !).
+*   **`data_class`** : Classe de l'objet mappé (ex: `User::class`).
+*   **`empty_data`** : Valeur par défaut si le champ est vide à la soumission.
+*   **`required`** : HTML5 required attribute (true par défaut).
+*   **`mapped`** : Si `false`, le champ est ignoré lors de la lecture/écriture de l'objet.
+*   **`trim`** : Supprime les espaces (true par défaut).
+
+### Options d'Affichage
+*   **`label`** : Texte du label (ou `false` pour masquer).
+*   **`label_attr`** : Attributs HTML du label (`['class' => 'bold']`).
+*   **`help`** : Texte d'aide sous le champ.
+*   **`attr`** : Attributs HTML du widget (`['placeholder' => '...']`).
+*   **`row_attr`** : Attributs HTML de la ligne entière (`div` conteneur).
+*   **`translation_domain`** : Domaine de traduction.
+
+### Options de Validation & Logique
+*   **`constraints`** : Liste de contraintes de validation spécifiques au champ.
+*   **`error_bubbling`** : Si `true`, l'erreur remonte au parent.
+*   **`disabled`** : Champ non modifiable (ignoré à la soumission).
+*   **`by_reference`** : Si `false`, force l'appel aux setters (`setAuthor`) au lieu de modifier l'objet directement ou via `addAuthor`. Crucial pour les collections Doctrine.
 
 ## Système de Parenté (`getParent`)
 
