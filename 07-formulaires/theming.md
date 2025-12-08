@@ -1,78 +1,116 @@
 # Thématisation des Formulaires (Theming)
 
 ## Concept clé
-Le "Form Theming" est le mécanisme puissant de Symfony pour personnaliser le HTML généré par les helpers de formulaire.
-Il repose sur l'héritage de blocs Twig.
+Le "Form Theming" est le mécanisme puissant de Symfony pour personnaliser le HTML généré par les helpers de formulaire (`form_row`, `form_widget`, etc.).
+Il repose sur l'héritage et la surcharge de blocs Twig.
 
-## Architecture des Blocs
-Chaque partie d'un formulaire correspond à un bloc Twig spécifique.
-Nommage : `_{nom_du_champ}_{partie}` ou `{type}_{partie}`.
+## Architecture des Blocs (Anatomie)
 
-Exemple pour un champ `age` de type `integer` :
-1.  `_customer_age_widget` (Le plus spécifique : champ 'age' du form 'customer')
-2.  `integer_widget` (Pour tous les entiers)
-3.  `number_widget` (Parent de integer)
-4.  `form_widget_simple` (Base pour les inputs)
-5.  `form_widget` (Base générique)
+Chaque partie d'un formulaire correspond à un bloc Twig.
+Pour afficher une ligne complète (`form_row`), Symfony combine 4 sous-blocs :
 
-## Application d'un Thème
+1.  `form_label` : Le `<label>`
+2.  `form_widget` : L'élément de saisie (`<input>`, `<select>`, `<textarea>`)
+3.  `form_errors` : Les erreurs de validation (`<ul><li>...`)
+4.  `form_help` : Le texte d'aide
 
-### 1. Global (config/packages/twig.yaml)
-Pour tout le site (ex: Bootstrap 5).
+## Surcharge et Conventions de Nommage
+
+### 1. Hiérarchie des Blocs
+Un formulaire est un arbre. Pour afficher un champ, Symfony cherche le bloc le plus spécifique possible.
+L'ordre de recherche est (pour un champ `age` de type `IntegerType` dans un formulaire nommé `user`) :
+
+1.  `_user_age_widget` (Spécifique à ce champ précis)
+2.  `integer_widget` (Spécifique au type)
+3.  `number_widget` (Parent du type)
+4.  `form_widget_simple` (Type générique pour les inputs textuels)
+5.  `form_widget` (Base absolue)
+
+### 2. Les parties du champ
+Chaque champ (`row`) est composé de 4 sous-parties que vous pouvez surcharger individuellement :
+*   `_user_age_label`
+*   `_user_age_widget`
+*   `_user_age_errors`
+*   `_user_age_help`
+*   `_user_age_row` (Le conteneur global qui appelle les 4 autres)
+
+## Méthodes d'Application
+
+### 1. Thème Global (`config/packages/twig.yaml`)
+Appliqué à tous les formulaires du site (ex: Bootstrap).
 
 ```yaml
 twig:
     form_themes: ['bootstrap_5_layout.html.twig']
 ```
 
-### 2. Local (Dans le template)
-Pour un formulaire spécifique.
+### 2. Thème Local (Fichier externe)
+Appliqué à un formulaire spécifique via le tag `form_theme`.
 
 ```twig
-{% form_theme form 'form/my_theme.html.twig' %}
-{# ou plusieurs #}
-{% form_theme form 'theme1.html.twig' 'theme2.html.twig' %}
+{# templates/registration/register.html.twig #}
+{% form_theme form 'form/my_custom_theme.html.twig' %}
+
+{{ form_widget(form) }}
 ```
 
-### 3. Inline (`_self`)
-Pour une surcharge rapide dans la page même.
+### 3. Thème Inline (`_self`)
+Le plus rapide pour une petite modification (ex: ajouter une classe ou une icône sur un champ précis). On définit le bloc directement dans le template qui affiche le formulaire.
 
 ```twig
+{% extends 'base.html.twig' %}
+
 {% form_theme form _self %}
 
-{% block integer_widget %}
-    <div class="input-wrapper">
+{# Surcharge du widget pour le champ 'zipcode' du formulaire 'address' #}
+{% block _address_zipcode_widget %}
+    <div class="input-group">
+        <span class="input-group-text">ZIP</span>
+        {# parent() affiche le <input> standard généré par Symfony #}
         {{ parent() }}
-        <span>ans</span>
     </div>
 {% endblock %}
 
-{{ form_widget(form.age) }}
+{% block body %}
+    {{ form_widget(form.zipcode) }}
+{% endblock %}
 ```
 
-## Créer un Thème Personnalisé
-Créez un fichier `templates/form/my_theme.html.twig` qui étend un thème existant (ou aucun).
+## Création d'un Thème Personnalisé
+
+Créez un fichier `templates/form/fields.html.twig`.
 
 ```twig
-{# On peut étendre un thème existant #}
+{# On peut hériter d'un thème existant pour ne modifier que ce qu'on veut #}
 {% use 'bootstrap_5_layout.html.twig' %}
 
-{% block form_row %}
-    <div class="custom-row">
-        {{ form_label(form) }}
-        {{ form_widget(form) }}
-        {{ form_errors(form) }}
-    </div>
+{# Personnalisation de tous les labels #}
+{% block form_label %}
+    <label class="my-custom-label" {% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
+        {{ label|trans }}
+        {% if required %}<span class="required">*</span>{% endif %}
+    </label>
 {% endblock %}
 ```
 
+## Accès aux Variables
+
+Dans un bloc de thème, vous avez accès à toutes les options du champ :
+*   `value` : La valeur du champ.
+*   `attr` : Les attributs HTML (`class`, `placeholder`...).
+*   `id`, `name`, `full_name`.
+*   `required`, `disabled`, `readonly`.
+*   `errors` : Liste des erreurs.
+*   `form` : L'objet `FormView`.
+
 ## 🧠 Concepts Clés
-1.  **Fragment** : Chaque bloc est un petit morceau de HTML. `form_widget(form.age)` appelle le bloc `integer_widget` avec les variables du champ `age`.
-2.  **Variables** : Dans un bloc de thème, vous avez accès aux variables du champ (`value`, `attr`, `id`, `full_name`...).
+1.  **Fragment** : Chaque bloc est un petit morceau de HTML indépendant.
+2.  **Priorité** : Les thèmes définis dans `form_theme` (template) surchargent les thèmes globaux (config).
+3.  **Block Name** : Vous pouvez forcer le nom du bloc utilisé via l'option `block_name` dans le FormType PHP, pour partager une personnalisation entre plusieurs champs qui n'ont pas le même type.
 
 ## ⚠️ Points de vigilance (Certification)
-*   **form_theme tag** : Il doit être placé **avant** le premier rendu de champ du formulaire.
-*   **Héritage** : Pour garder le comportement par défaut tout en ajoutant quelque chose, utilisez `{{ parent() }}` à l'intérieur du bloc, mais cela ne marche que si vous utilisez `extends` (rare pour les thèmes de form qui utilisent plutôt `use`).
+*   **Position** : Le tag `{% form_theme %}` doit être placé **avant** le premier rendu de champ.
+*   **Parent()** : Dans un thème inline (`_self`), `{{ parent() }}` fonctionne car on est dans le même contexte d'héritage. Dans un fichier externe importé via `use`, c'est plus subtil (mécanisme de traits Twig).
 
 ## Ressources
 *   [Symfony Docs - Form Theming](https://symfony.com/doc/current/form/form_themes.html)

@@ -49,18 +49,48 @@
     },
     {
       "id": 4,
-      "question": "Comment personnaliser un champ unique (ex: le champ 'age' du formulaire 'profile') sans créer un fichier de thème externe ?",
+      "question": "Quelle est la convention de nommage pour surcharger le widget du champ `email` du formulaire `registration` via un thème inline (`_self`) ?",
       "type": "single_choice",
       "options": [
-        "En utilisant `_self` comme thème : `{% form_theme form _self %}` et en définissant le bloc `_profile_age_widget` dans le même fichier.",
-        "En utilisant du CSS.",
-        "En modifiant le FormType.",
-        "C'est impossible."
+        "`block email_widget`",
+        "`block _registration_email_widget`",
+        "`block widget_registration_email`",
+        "`block registration_email`"
       ],
       "correct_answers": [
-        "En utilisant `_self` comme thème : `{% form_theme form _self %}` et en définissant le bloc `_profile_age_widget` dans le même fichier."
+        "`block _registration_email_widget`"
       ],
-      "explanation": "Le nom du bloc suit la structure `_nomformulaire_nomchamp_partie`."
+      "explanation": "La structure est `_` + `nom_formulaire` + `_` + `nom_champ` + `_` + `partie` (widget, row, label...)."
+    },
+    {
+      "id": 5,
+      "question": "Dans un bloc de thème personnalisé, comment afficher l'input par défaut tout en l'enveloppant dans une div ?",
+      "type": "single_choice",
+      "options": [
+        "Impossible, il faut réécrire tout le HTML de l'input.",
+        "En appelant `{{ parent() }}`.",
+        "En utilisant `{{ block('form_widget_simple') }}`.",
+        "En utilisant `super()`."
+      ],
+      "correct_answers": [
+        "En appelant `{{ parent() }}`."
+      ],
+      "explanation": "Comme pour l'héritage standard Twig, `parent()` rend le contenu du bloc parent (celui qu'on surcharge)."
+    },
+    {
+      "id": 6,
+      "question": "Quelle partie du formulaire faut-il surcharger pour modifier uniquement la structure HTML globale d'un champ (le div conteneur) sans toucher à l'input lui-même ?",
+      "type": "single_choice",
+      "options": [
+        "Le bloc `_widget`.",
+        "Le bloc `_row`.",
+        "Le bloc `_label`.",
+        "Le bloc `_errors`."
+      ],
+      "correct_answers": [
+        "Le bloc `_row`."
+      ],
+      "explanation": "Le bloc `row` est le conteneur qui appelle ensuite `form_label`, `form_widget` et `form_errors`."
     }
   ]
 }

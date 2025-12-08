@@ -237,7 +237,7 @@ $builder->get('price')
 
 ## 7. Tests Unitaires des Transformateurs
 
-Pour un projet expert, tester la logique de transformation est obligatoire. Comme les DataTransformers sont des classes pures (ou avec peu de dépendances), ils sont faciles à tester unitairement avec PHPUnit.
+Pour un projet, tester la logique de transformation est obligatoire. Comme les DataTransformers sont des classes pures (ou avec peu de dépendances), ils sont faciles à tester unitairement avec PHPUnit.
 
 ```php
 namespace App\Tests\Form\DataTransformer;
