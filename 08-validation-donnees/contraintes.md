@@ -60,7 +60,6 @@ Elles s'utilisent via des Attributs PHP 8 (`#[Assert\Name]`).
 *   `#[Assert\AtLeastOneOf]`.
 *   `#[Assert\Sequentially]`.
 *   `#[Assert\When]`.
-*   *(Voir le fichier logic.md pour les détails)*
 
 ## 🧠 Concepts Clés
 1.  **Nullabilité** : Par défaut, la plupart des contraintes (Email, Length, Regex) **ignorent** les valeurs `null`. Si vous voulez qu'un champ soit obligatoire, vous **DEVEZ** ajouter `#[Assert\NotBlank]` ou `#[Assert\NotNull]`.
