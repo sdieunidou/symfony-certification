@@ -91,6 +91,21 @@
         "Rien ne change, Symfony scanne récursivement le dossier `src/Controller` pour trouver les attributs `#[Route]`."
       ],
       "explanation": "L'organisation en sous-dossiers est purement organisationnelle pour le développeur, le Routing charge tout ce qu'il trouve."
+    },
+    {
+      "id": 7,
+      "question": "Quelle est la syntaxe correcte dans `routes.yaml` pour pointer vers la méthode `show` du `BlogController` ?",
+      "type": "single_choice",
+      "options": [
+        "controller: App\\Controller\\BlogController::show",
+        "controller: App\\Controller\\BlogController:show",
+        "controller: App\\Controller\\BlogController->show",
+        "action: App\\Controller\\BlogController::show"
+      ],
+      "correct_answers": [
+        "controller: App\\Controller\\BlogController::show"
+      ],
+      "explanation": "On utilise le double deux-points `::` pour séparer la classe et la méthode dans la configuration YAML."
     }
   ]
 }

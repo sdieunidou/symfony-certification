@@ -24,6 +24,35 @@ Utilisez `#[Route]` directement au-dessus de la méthode.
 public function show(string $slug): Response
 ```
 
+### 3.1 Alternative : Configuration YAML
+Bien que les attributs PHP soient recommandés, vous pouvez définir vos routes dans `config/routes.yaml` pointant vers un contrôleur.
+
+**Exemple de contrôleur :**
+```php
+// src/Controller/BlogController.php
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+
+class BlogController extends AbstractController
+{
+    public function show(string $slug): Response
+    {
+        // ...
+    }
+}
+```
+
+**Configuration YAML correspondante :**
+```yaml
+# config/routes.yaml
+blog_show:
+    path: /blog/{slug}
+    controller: App\Controller\BlogController::show
+    methods: GET
+```
+
 ### 4. Single Action Controller (Invokable)
 Pour les contrôleurs ne faisant qu'une seule chose, utilisez la méthode magique `__invoke`.
 
