@@ -8,7 +8,7 @@ Par défaut, tous les templates de l'application résident dans le dossier `temp
 *   Le chemin est relatif à ce dossier.
 *   `$this->render('blog/index.html.twig')` cherche dans `templates/blog/index.html.twig`.
 
-On peut configurer d'autres chemins via `twig.paths` (voir `namespaces.md`).
+On peut configurer d'autres chemins via `twig.paths`.
 
 ## 2. Nommage
 Convention : `nom_du_fichier.format.moteur`
