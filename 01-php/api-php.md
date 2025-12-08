@@ -78,7 +78,7 @@ $message = match($dto->status) {
 
 // PHP 8.0 : Nullsafe operator
 // Si $dto est null, ou author est null, $name sera null sans erreur
-// $name = $dto?->author?->getName();
+$name = $dto?->author?->getName();
 
 // PHP 8.2 : Sensitive Parameter
 function login(
