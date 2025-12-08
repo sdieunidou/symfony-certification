@@ -34,21 +34,6 @@
     },
     {
       "id": 3,
-      "question": "Comment accéder à une propriété d'objet (`$user->name`) dans Twig ?",
-      "type": "single_choice",
-      "options": [
-        "`user->name`",
-        "`user['name']`",
-        "`user.name`",
-        "`user::name`"
-      ],
-      "correct_answers": [
-        "`user.name`"
-      ],
-      "explanation": "L'opérateur point `.` est magique : il teste les propriétés, les méthodes, les getters (`getName`), les issers, etc."
-    },
-    {
-      "id": 4,
       "question": "Si vous accédez à une variable qui n'existe pas en environnement de Production, que se passe-t-il ?",
       "type": "single_choice",
       "options": [
