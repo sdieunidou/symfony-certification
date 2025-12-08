@@ -51,7 +51,7 @@ Pour utiliser `PUT` ou `DELETE` depuis un formulaire HTML classique, Symfony uti
 
 *Note : Cette fonctionnalité doit être activée explicitement via `http_method_override` dans `framework.yaml` ou via la méthode `Request::enableHttpMethodParameterOverride()` (bien que Symfony Flex le configure souvent par défaut).*
 
-### 3. PATCH vs PUT
+### 3. PATCH vs PUT (API)
 *   **PUT** : Remplace **toute** la ressource. Si vous envoyez `{ "nom": "A" }` pour un objet qui avait `{ "nom": "B", "age": 10 }`, l'âge est perdu (devient null).
 *   **PATCH** : Modifie uniquement les champs envoyés. `{ "nom": "A" }` ne touche pas à l'âge.
 
