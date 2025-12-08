@@ -14,7 +14,7 @@ Il est crucial pour :
 *   **4xx (Erreur Client)** : Le client a fait une erreur (syntaxe, droits, ressource inexistante).
 *   **5xx (Erreur Serveur)** : Le serveur a échoué (bug, surcharge).
 
-## Codes Importants pour un Expert Symfony
+## Codes Importants
 
 | Code | Constante Symfony `Response::` | Signification & Usage |
 | :--- | :--- | :--- |
