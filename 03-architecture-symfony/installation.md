@@ -3,7 +3,7 @@
 ## Prérequis Techniques
 Avant de démarrer, l'environnement doit disposer de :
 *   **PHP 8.2+**
-*   Extensions PHP : Ctype, iconv, PCRE, Session, SimpleXML, Tokenizer.
+*   **Extensions PHP** : Ctype, iconv, PCRE, Session, SimpleXML, Tokenizer.
 *   **Composer** : Gestionnaire de paquets.
 *   **Symfony CLI** (Optionnel mais recommandé) : Outil binaire pour créer, gérer et servir l'application.
 
