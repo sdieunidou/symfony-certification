@@ -21,7 +21,7 @@ Flex interroge directement des fichiers JSON statiques hébergés sur l'infrastr
 
 **Actions d'une recette :**
 Une fois téléchargée, la recette automatise l'intégration :
-*   **Copie de fichiers** : Crée des fichiers de config par défaut (`config/packages/monolog.yaml`).
+*   **Copie de fichiers** : Crée des fichiers de config par défaut (ex: `config/packages/monolog.yaml`).
 *   **Variables d'env** : Ajoute des entrées dans `.env` (ex: `DATABASE_URL`).
 *   **Bundles** : Modifie `config/bundles.php` pour activer le bundle.
 *   **Structure** : Crée des dossiers (ex: `templates/`).
