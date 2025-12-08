@@ -61,6 +61,21 @@
         "Parce que les APIs sont souvent Stateless (sans session) et utilisent d'autres mécanismes d'authentification (Token Bearer) qui ne sont pas vulnérables aux CSRF classiques."
       ],
       "explanation": "La CSRF exploite la confiance implicite du navigateur (cookies de session). Sans cookie de session, pas de CSRF."
+    },
+    {
+      "id": 5,
+      "question": "Comment désactiver la protection CSRF pour **tous** les formulaires de l'application (ex: une API complète) ?",
+      "type": "single_choice",
+      "options": [
+        "En modifiant chaque FormType un par un.",
+        "En configurant `framework.form.csrf_protection: false` dans `framework.yaml`.",
+        "En désactivant le pare-feu.",
+        "En supprimant le package `symfony/security-csrf`."
+      ],
+      "correct_answers": [
+        "En configurant `framework.form.csrf_protection: false` dans `framework.yaml`."
+      ],
+      "explanation": "C'est la méthode recommandée pour configurer le comportement par défaut globalement."
     }
   ]
 }

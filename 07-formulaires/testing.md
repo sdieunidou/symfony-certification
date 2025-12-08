@@ -76,7 +76,7 @@ protected function getExtensions(): array
 ```
 
 ## Tester les DataTransformers
-Il est souvent plus simple de tester les DataTransformers isolément (comme une classe PHP normale) plutôt que via le formulaire complet. Voir `data-transformers.md`.
+Il est souvent plus simple de tester les DataTransformers isolément (comme une classe PHP normale) plutôt que via le formulaire complet.
 
 ## 🧠 Concepts Clés
 1.  **Isolation** : `TypeTestCase` n'utilise pas le Kernel complet. C'est très rapide.

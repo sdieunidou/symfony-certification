@@ -47,6 +47,24 @@ class ZipCodeType extends AbstractType
 }
 ```
 
+## Système de Parenté (`getParent`)
+
+L'héritage est fondamental dans le système de types. La méthode `getParent()` définit de qui votre type hérite :
+
+1.  **Retourner `TextType::class`** (ou `IntegerType`, etc.) : Votre type **EST** un champ texte. Il hérite de toutes ses options (required, trim, etc.) et de son rendu (`form_widget_simple`). Vous pouvez ajouter des classes CSS par défaut ou un DataTransformer.
+2.  **Retourner `FormType::class`** (ou ne rien retourner) : Votre type est un **Formulaire Composite** (un groupe de champs). C'est le cas standard pour une classe `UserType` qui contient `username`, `password`, etc.
+
+```php
+// Un type qui modifie juste l'affichage d'un ChoiceType (ex: Select2)
+class Select2Type extends AbstractType
+{
+    public function getParent(): string
+    {
+        return ChoiceType::class;
+    }
+}
+```
+
 ## Nom du Bloc (Block Prefix)
 Par défaut, le nom du bloc pour le theming est dérivé du nom de la classe.
 `App\Form\Type\ZipCodeType` -> `zip_code` (snake case sans "Type").

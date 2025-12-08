@@ -32,6 +32,7 @@ Si vous fermez la balise `</form>` manuellement, vous devez afficher le token ma
 ## Désactiver CSRF (APIs)
 Pour une API REST sans session (Stateless), la protection CSRF basée sur la session est inutile (et impossible).
 
+### 1. Désactivation par Formulaire (FormType)
 ```php
 public function configureOptions(OptionsResolver $resolver): void
 {
@@ -40,6 +41,24 @@ public function configureOptions(OptionsResolver $resolver): void
     ]);
 }
 ```
+
+### 2. Désactivation Globale (YAML)
+Si toute votre application est une API, ou si vous voulez désactiver le CSRF par défaut pour tous les formulaires (pour les réactiver au cas par cas) :
+
+```yaml
+# config/packages/framework.yaml
+framework:
+    form:
+        csrf_protection: false
+    # ou
+    csrf_protection: false # Désactive le composant complet
+```
+
+### 3. Désactivation Conditionnelle (Ex: API Platform)
+Souvent, on veut garder CSRF pour le front (Admin, App) mais le désactiver pour `/api`.
+Le plus simple est de désactiver CSRF globalement et de l'activer manuellement dans les formulaires Web, OU d'utiliser des DTOs sans CSRF pour l'API.
+
+Cependant, Symfony ne permet pas nativement de désactiver CSRF par URL via `framework.yaml`. Il faut utiliser une extension de formulaire ou configurer les `options` par défaut.
 
 ## 🧠 Concepts Clés
 1.  **Token ID** : Chaque formulaire a un ID différent. Un token généré pour le formulaire de login ne fonctionnera pas pour le formulaire de contact.

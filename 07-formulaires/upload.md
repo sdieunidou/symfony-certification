@@ -4,7 +4,23 @@
 L'upload est géré par le type `FileType`.
 Le défi principal est la **gestion de l'entité** : l'entité stocke le **nom** du fichier (string) en base de données, mais le formulaire manipule un objet **UploadedFile**.
 
-## Stratégie `mapped: false` (Recommandée)
+## Stratégie `MapUploadedFile` (Symfony 6.3+)
+Une nouvelle approche simplifiée utilisant un attribut PHP sur la propriété du contrôleur (pas besoin de FormType complexe pour des cas simples).
+
+```php
+use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
+public function upload(
+    #[MapUploadedFile] UploadedFile $file
+): Response
+{
+    // Le fichier est automatiquement validé et injecté
+    // ...
+}
+```
+
+## Stratégie `mapped: false` (Recommandée pour les Entités)
 On ne mappe pas directement le champ file à l'entité pour éviter que Symfony essaie de mettre l'objet `UploadedFile` dans la propriété `string $filename` de l'entité.
 
 ### 1. Le Formulaire
