@@ -34,7 +34,7 @@ Symfony modélise ce flux objet : `Request -> Kernel -> Response`.
     *   La réponse a été envoyée au client.
     *   Traitement lourd post-réponse (envoi d'emails non bloquants, logs).
 
-## Exemple de code : Front Controller
+## Front Controller
 
 C'est le point d'entrée unique (`public/index.php`).
 
@@ -52,7 +52,7 @@ return function (array $context) {
 };
 ```
 
-## Exemple de code : Simulation du cycle
+## Simulation du cycle
 
 ```php
 use Symfony\Component\HttpFoundation\Request;
