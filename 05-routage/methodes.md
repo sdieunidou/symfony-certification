@@ -34,7 +34,7 @@ Utilisez l'option `methods`.
 
 ## ⚠️ Points de vigilance (Certification)
 *   **Par défaut** : Si `methods` n'est pas spécifié, la route accepte **TOUTES** les méthodes.
-*   **Formulaire** : Un formulaire HTML `<form method="POST">` ne peut faire que POST. Pour simuler PUT/DELETE, Symfony utilise le champ caché `_method` (voir 02-http/methodes-http.md). Le routeur, lui, verra bien du PUT ou DELETE grâce à cette surcharge.
+*   **Formulaire** : Un formulaire HTML `<form method="POST">` ne peut faire que POST. Pour simuler PUT/DELETE, Symfony utilise le champ caché `_method`. Le routeur, lui, verra bien du PUT ou DELETE grâce à cette surcharge.
 
 ## Ressources
 *   [Symfony Docs - Method Restriction](https://symfony.com/doc/current/routing.html#matching-http-methods)
