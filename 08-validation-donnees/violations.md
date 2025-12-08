@@ -36,13 +36,30 @@ class ContainsAlphanumeric extends Constraint
 }
 ```
 
+**Pourquoi `HasNamedArguments` ?**
+Sans cet attribut, Symfony pourrait tenter de passer les options comme un tableau unique `$options` au constructeur. `HasNamedArguments` indique au Validateur de mapper directement les arguments nommés de l'attribut PHP (ex: `#[ContainsAlphanumeric(mode: 'loose')]`) aux arguments du constructeur de la classe (`$mode`). Cela rend le code plus strict et lisible.
+
 ### Propriétés Privées et Cache
-Les contraintes sont mises en cache. La classe de base `Constraint` utilise `get_object_vars()` pour la sérialisation, ce qui exclut les propriétés privées des classes enfants.
-Si vous utilisez des **propriétés privées**, vous devez implémenter `__sleep()` :
+Le composant Validator met en cache les objets de contrainte pour optimiser les performances.
+La classe parente `Constraint` utilise `get_object_vars()` pour savoir quelles propriétés sérialiser. **Problème :** Cette fonction ne voit pas les propriétés **privées** des classes enfants.
+
+**Exemple du problème :**
+Si vous avez `private string $mode` et que vous ne faites rien, après la mise en cache, la propriété `$mode` sera vide/perdue lors de la prochaine utilisation.
+
+**Solution :** Implémenter `__sleep()` pour inclure explicitement les propriétés privées.
 
 ```php
+    // Dans la classe de Contrainte
+    private string $mode;
+
+    public function __construct(string $mode = 'strict', ...) {
+        $this->mode = $mode;
+        // ...
+    }
+
     public function __sleep(): array
     {
+        // On fusionne les propriétés de la classe parent avec notre propriété privée 'mode'
         return array_merge(parent::__sleep(), ['mode']);
     }
 ```
@@ -141,7 +158,7 @@ public function validate(mixed $value, Constraint $constraint): void
     if ($value->getEmail() !== $value->getConfirmationEmail()) {
         $this->context->buildViolation($constraint->message)
             ->atPath('email') // L'erreur apparaitra sur le champ 'email'
-            ->addViolation();
+    ->addViolation();
     }
 }
 ```
