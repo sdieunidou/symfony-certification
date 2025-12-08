@@ -76,6 +76,36 @@
         "Oui, mais c'est déconseillé (l'objet doit être considéré comme immuable/état initial)."
       ],
       "explanation": "Bien que techniquement possible, modifier la Request rend le code difficile à déboguer. Utilisez des variables locales ou des DTOs."
+    },
+    {
+      "id": 6,
+      "question": "Comment accéder à l'objet Request dans un Service (hors contrôleur) ?",
+      "type": "single_choice",
+      "options": [
+        "En injectant `Symfony\\Component\\HttpFoundation\\Request` directement.",
+        "En injectant `RequestStack` et en appelant `$requestStack->getCurrentRequest()`.",
+        "En utilisant la globale `$_REQUEST`.",
+        "Impossible, les services ne peuvent pas accéder à la requête."
+      ],
+      "correct_answers": [
+        "En injectant `RequestStack` et en appelant `$requestStack->getCurrentRequest()`."
+      ],
+      "explanation": "L'objet `Request` n'est pas un service injectable directement car il change à chaque requête. `RequestStack` permet d'accéder à la requête courante."
+    },
+    {
+      "id": 7,
+      "question": "Quelle méthode de `RequestStack` permet d'accéder à la requête initiale, même lors d'une sous-requête (ex: rendu Twig partiel) ?",
+      "type": "single_choice",
+      "options": [
+        "`getMasterRequest()`",
+        "`getParentRequest()`",
+        "`getMainRequest()`",
+        "`getRootRequest()`"
+      ],
+      "correct_answers": [
+        "`getMainRequest()`"
+      ],
+      "explanation": "`getMainRequest()` a remplacé `getMasterRequest()` (déprécié) pour désigner la requête principale."
     }
   ]
 }

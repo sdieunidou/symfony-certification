@@ -43,6 +43,35 @@ Confusion classique :
 *   `$request->attributes->get('id')` -> `123` (Routing)
 *   `$request->query->get('sort')` -> `price` (Query String)
 
+## RequestStack
+Si vous avez besoin d'accéder à la requête **en dehors d'un contrôleur** (ex: dans un Service, une Extension Twig ou un Listener), vous ne devez pas injecter `Request` mais **`RequestStack`**.
+
+```php
+use Symfony\Component\HttpFoundation\RequestStack;
+
+class MyService
+{
+    public function __construct(
+        private RequestStack $requestStack
+    ) {}
+
+    public function doSomething(): void
+    {
+        $request = $this->requestStack->getCurrentRequest();
+        
+        if (!$request) {
+            return; // Pas de requête (ex: contexte CLI)
+        }
+        
+        // ...
+    }
+}
+```
+
+### Méthodes Clés
+*   **`getCurrentRequest()`** : Retourne la requête active (peut être une sous-requête). Retourne `null` en CLI.
+*   **`getMainRequest()`** : Retourne la requête principale (Master Request), même si on est dans une sous-requête (ex: `{{ render(controller(...)) }}`).
+
 ## 🧠 Concepts Clés
 1.  **Stateless** : L'objet Request est recréé à chaque requête.
 2.  **Immutabilité** : Ne modifiez pas l'objet Request manuellement (sauf cas très avancés). Considérez-le comme "Read-Only".
