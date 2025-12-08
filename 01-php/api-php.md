@@ -122,7 +122,7 @@ Cela transforme les erreurs de type en `TypeError` (Exception).
     *   `callable` dans les propriétés typées n'est pas supporté (car context-dependent).
 *   **Comparaisons** : Les changements de comportement dans les comparaisons (ex: `0 == "foo"` est `false` depuis PHP 8.0, c'était `true` avant).
 *   **Priorité des opérateurs** : Des changements subtils ont eu lieu (ex: concaténation vs addition).
-*   **Performance** : PHP 8 introduit le JIT (Just In Time) Compiler. Bien que peu impactant pour une app web standard (I/O bound), il est crucial pour les tâches CPU-intensive. Savoir qu'il existe.
+*   **Performance** : PHP 8 introduit le JIT (Just In Time) Compiler. Bien que peu impactant pour une app web standard (I/O bound), il est crucial pour les tâches CPU-intensive.
 
 ## Ressources
 *   [PHP 8.0 Released](https://www.php.net/releases/8.0/fr.php)
