@@ -1,7 +1,7 @@
 # Fonctions anonymes et Fermetures (Closures)
 
 ## Concept clé
-En PHP, les fonctions sont des citoyens de première classe.
+
 *   **Fonction anonyme** : Une fonction déclarée sans nom, souvent assignée à une variable ou passée en argument.
 *   **Closure (Fermeture)** : Instance de la classe interne `Closure`. C'est l'objet qui représente la fonction anonyme. Elle a la capacité de **capturer** (enclose) des variables de son contexte parent grâce au mot-clé `use`.
 *   **Arrow Functions (Fonctions fléchées)** : Syntaxe plus concis introduite en PHP 7.4 (`fn() => ...`), optimisée pour les opérations simples (getter, mapper).
