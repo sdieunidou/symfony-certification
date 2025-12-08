@@ -4,22 +4,22 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quels sont les deux éléments nécessaires pour créer une contrainte de validation personnalisée ?",
+      "question": "Quels sont les deux composants principaux nécessaires pour créer une contrainte de validation personnalisée classique (non composée) ?",
       "type": "single_choice",
       "options": [
-        "Une classe `Constraint` (DTO de configuration) et une classe `ConstraintValidator` (Logique).",
+        "Une classe de Contrainte (DTO) et une classe de Validateur (Logique).",
         "Une Interface et un Trait.",
         "Un Service et un EventListener.",
         "Une Entité et un Repository."
       ],
       "correct_answers": [
-        "Une classe `Constraint` (DTO de configuration) et une classe `ConstraintValidator` (Logique)."
+        "Une classe de Contrainte (DTO) et une classe de Validateur (Logique)."
       ],
-      "explanation": "La classe de contrainte définit les options (message, mode), le validateur effectue la vérification."
+      "explanation": "La classe de contrainte définit la configuration (message, options) et le validateur contient la logique de validation (`validate()`)."
     },
     {
       "id": 2,
-      "question": "Dans le `ConstraintValidator`, quel objet permet d'ajouter une erreur ?",
+      "question": "Dans un `ConstraintValidator`, quel objet est utilisé pour ajouter une violation ?",
       "type": "single_choice",
       "options": [
         "`$this->violations`",
@@ -34,33 +34,78 @@
     },
     {
       "id": 3,
-      "question": "Comment Symfony associe-t-il une classe `Constraint` à son `ConstraintValidator` ?",
+      "question": "Quelle est la bonne pratique concernant les valeurs `null` ou vides dans une contrainte personnalisée ?",
       "type": "single_choice",
       "options": [
-        "Par magie.",
-        "Par convention de nommage : `MyConstraint` -> `MyConstraintValidator`.",
-        "Il faut le configurer manuellement dans `services.yaml`.",
-        "Via l'attribut `#[Validator]`."
+        "Il faut toujours retourner une erreur si la valeur est vide.",
+        "Il faut les ignorer (`return` immédiat) et laisser `NotNull` ou `NotBlank` gérer cela.",
+        "Il faut lancer une exception.",
+        "Il faut les convertir en chaîne vide."
       ],
       "correct_answers": [
-        "Par convention de nommage : `MyConstraint` -> `MyConstraintValidator`."
+        "Il faut les ignorer (`return` immédiat) et laisser `NotNull` ou `NotBlank` gérer cela."
       ],
-      "explanation": "Si vous respectez la convention, c'est automatique. Sinon, la méthode `validatedBy()` de la contrainte doit retourner le FQCN du validateur."
+      "explanation": "Cela permet de composer les contraintes. Si un champ est optionnel, votre contrainte ne doit pas échouer s'il est vide."
     },
     {
       "id": 4,
-      "question": "Comment gérer les traductions des messages de validation personnalisés ?",
+      "question": "Si votre classe de contrainte contient des propriétés privées, quelle méthode magique devez-vous implémenter pour qu'elles soient mises en cache correctement ?",
       "type": "single_choice",
       "options": [
-        "En utilisant `trans()` dans le validateur.",
-        "En créant un fichier `translations/validators.fr.yaml` et en utilisant la clé du message.",
-        "C'est automatique via Google Translate.",
-        "On ne peut pas traduire les messages custom."
+        "`__wakeup()`",
+        "`__sleep()`",
+        "`__toString()`",
+        "`__serialize()`"
       ],
       "correct_answers": [
-        "En créant un fichier `translations/validators.fr.yaml` et en utilisant la clé du message."
+        "`__sleep()`"
       ],
-      "explanation": "Le domaine de traduction par défaut pour la validation est `validators`."
+      "explanation": "La classe parente `Constraint` utilise `get_object_vars` qui ne voit pas les propriétés privées des enfants. Il faut les retourner explicitement dans `__sleep`."
+    },
+    {
+      "id": 5,
+      "question": "Qu'est-ce qu'une 'Compound Constraint' (Contrainte Composée) ?",
+      "type": "single_choice",
+      "options": [
+        "Une contrainte qui s'applique à plusieurs classes.",
+        "Une contrainte définie par une collection d'autres contraintes existantes, sans validateur spécifique.",
+        "Une contrainte qui lance une exception au lieu d'une violation.",
+        "Une contrainte qui nécessite une base de données."
+      ],
+      "correct_answers": [
+        "Une contrainte définie par une collection d'autres contraintes existantes, sans validateur spécifique."
+      ],
+      "explanation": "Elle étend `Compound` et définit `getConstraints()`. Elle permet de regrouper des règles (ex: PasswordRequirements)."
+    },
+    {
+      "id": 6,
+      "question": "Quelle classe de test utiliser pour tester un validateur personnalisé ?",
+      "type": "single_choice",
+      "options": [
+        "`KernelTestCase`",
+        "`WebTestCase`",
+        "`ConstraintValidatorTestCase`",
+        "`PHPUnit\\Framework\\TestCase`"
+      ],
+      "correct_answers": [
+        "`ConstraintValidatorTestCase`"
+      ],
+      "explanation": "C'est une classe utilitaire fournie par Symfony pour tester un validateur de manière isolée."
+    },
+    {
+      "id": 7,
+      "question": "Comment faire en sorte qu'une contrainte s'applique à la classe entière (et non à une propriété) ?",
+      "type": "single_choice",
+      "options": [
+        "En surchargeant la méthode `getTargets()` pour retourner `self::CLASS_CONSTRAINT`.",
+        "En mettant l'attribut sur une méthode `__construct`.",
+        "En utilisant l'option `global: true`.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "En surchargeant la méthode `getTargets()` pour retourner `self::CLASS_CONSTRAINT`."
+      ],
+      "explanation": "Le validateur recevra alors l'instance de l'objet complet dans `$value`."
     }
   ]
 }
