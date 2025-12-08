@@ -1,0 +1,81 @@
+{
+  "source_file": "03-architecture-symfony/environnements.md",
+  "title": "Les Environnements & Configuration",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle variable d'environnement définit l'environnement actif de l'application Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "SYMFONY_ENV",
+        "APP_ENV",
+        "ENV",
+        "APP_DEBUG"
+      ],
+      "correct_answers": [
+        "APP_ENV"
+      ],
+      "explanation": "C'est la variable standard utilisée par le Kernel de Symfony pour charger la configuration correspondante."
+    },
+    {
+      "id": 2,
+      "question": "Quel fichier a la priorité la plus élevée pour définir une variable d'environnement (hors variables système réelles) ?",
+      "type": "single_choice",
+      "options": [
+        ".env",
+        ".env.local",
+        ".env.prod",
+        ".env.dist"
+      ],
+      "correct_answers": [
+        ".env.local"
+      ],
+      "explanation": "Le fichier `.env.local` surcharge les valeurs de `.env`. Cependant, `.env.{env}.local` (ex: `.env.test.local`) serait encore plus prioritaire si l'environnement correspond."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert la variable `APP_DEBUG` ?",
+      "type": "single_choice",
+      "options": [
+        "À définir si on est en environnement de développement.",
+        "À activer/désactiver le mode debug (affichage des erreurs détaillées, invalidation automatique du cache).",
+        "À activer le Web Profiler uniquement.",
+        "À permettre l'installation de nouveaux paquets."
+      ],
+      "correct_answers": [
+        "À activer/désactiver le mode debug (affichage des erreurs détaillées, invalidation automatique du cache)."
+      ],
+      "explanation": "Elle est indépendante de `APP_ENV`. On peut être en `prod` avec `APP_DEBUG=1` (bien que déconseillé pour les performances)."
+    },
+    {
+      "id": 4,
+      "question": "Dans quel dossier sont stockés les caches spécifiques à l'environnement 'prod' ?",
+      "type": "single_choice",
+      "options": [
+        "var/cache/",
+        "var/cache/prod/",
+        "var/logs/prod/",
+        "tmp/symfony/prod/"
+      ],
+      "correct_answers": [
+        "var/cache/prod/"
+      ],
+      "explanation": "Symfony isole les caches par environnement pour éviter les conflits de configuration."
+    },
+    {
+      "id": 5,
+      "question": "Si une variable d'environnement est définie à la fois dans `.env.local` et dans la configuration du serveur web (Apache/Nginx/Docker), laquelle l'emporte ?",
+      "type": "single_choice",
+      "options": [
+        "Celle de `.env.local`.",
+        "Celle du serveur web (variable système réelle).",
+        "Cela dépend de l'ordre de chargement.",
+        "Symfony lance une erreur de conflit."
+      ],
+      "correct_answers": [
+        "Celle du serveur web (variable système réelle)."
+      ],
+      "explanation": "Les 'vraies' variables d'environnement système ont toujours la priorité absolue sur les fichiers chargés par le composant Dotenv."
+    }
+  ]
+}

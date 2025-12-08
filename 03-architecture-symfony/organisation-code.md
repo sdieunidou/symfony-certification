@@ -46,8 +46,7 @@ Organisation par **Domaine Métier** (Feature).
 C'est le cœur de l'application.
 *   Il utilise le trait `MicroKernelTrait`.
 *   Il configure le ContainerBuilder.
-*   Il charge les routes.
-*   C'est ici qu'on enregistre les `CompilerPass` personnalisés.
+*   Il charge les routes, etc
 
 ## 🧠 Concepts Clés
 1.  **Front Controller Pattern** : Tout le trafic passe par `public/index.php`. Cela centralise la sécurité et l'initialisation.

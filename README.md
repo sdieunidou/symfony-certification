@@ -45,6 +45,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Licence](./03-architecture-symfony/licence.md)
 * [Composants](./03-architecture-symfony/composants.md)
 * [Organisation du code](./03-architecture-symfony/organisation-code.md)
+* [Environnements](./03-architecture-symfony/environnements.md)
 * [Bridges](./03-architecture-symfony/bridges.md)
 * [Traitement de la requête](./03-architecture-symfony/request-handling.md)
 * [Gestion des exceptions](./03-architecture-symfony/exception-handling.md)
