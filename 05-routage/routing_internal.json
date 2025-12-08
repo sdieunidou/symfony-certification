@@ -1,0 +1,81 @@
+{
+  "source_file": "05-routage/readme.md",
+  "title": "Composant Routing : Fonctionnement Interne",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel objet contient les définitions de toutes les routes de l'application ?",
+      "type": "single_choice",
+      "options": [
+        "RouteCollection",
+        "RouteMap",
+        "UrlMatcher",
+        "RouterContainer"
+      ],
+      "correct_answers": [
+        "RouteCollection"
+      ],
+      "explanation": "La `RouteCollection` est l'objet qui agrège toutes les instances de `Route` chargées depuis les fichiers de configuration."
+    },
+    {
+      "id": 2,
+      "question": "Quel composant est responsable de transformer une URL entrante en un tableau de paramètres (dont le contrôleur) ?",
+      "type": "single_choice",
+      "options": [
+        "UrlGenerator",
+        "UrlMatcher",
+        "RequestContext",
+        "ControllerResolver"
+      ],
+      "correct_answers": [
+        "UrlMatcher"
+      ],
+      "explanation": "Le `UrlMatcher` compare le chemin de l'URL (pathinfo) aux routes définies pour trouver une correspondance."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert l'objet `RequestContext` dans le processus de routage ?",
+      "type": "single_choice",
+      "options": [
+        "À stocker les variables de session.",
+        "À fournir des informations sur la requête courante (host, scheme, method) nécessaires au matching et à la génération d'URLs.",
+        "À définir les paramètres par défaut des routes.",
+        "À logger les erreurs 404."
+      ],
+      "correct_answers": [
+        "À fournir des informations sur la requête courante (host, scheme, method) nécessaires au matching et à la génération d'URLs."
+      ],
+      "explanation": "Sans lui, le routeur ne saurait pas par exemple si la requête est en HTTPS ou quel est le nom de domaine actuel."
+    },
+    {
+      "id": 4,
+      "question": "Lors du cycle de vie d'une requête, quel Listener appelle le routeur ?",
+      "type": "single_choice",
+      "options": [
+        "ControllerListener",
+        "RouterListener",
+        "FirewallListener",
+        "ExceptionListener"
+      ],
+      "correct_answers": [
+        "RouterListener"
+      ],
+      "explanation": "Le `RouterListener` écoute l'événement `kernel.request`, appelle le matcher, et stocke le résultat dans `$request->attributes`."
+    },
+    {
+      "id": 5,
+      "question": "Où sont stockés les paramètres de la route (ex: `_controller`, `id`) une fois la route matchée ?",
+      "type": "single_choice",
+      "options": [
+        "Dans `$request->query` ($_GET).",
+        "Dans `$request->request` ($_POST).",
+        "Dans `$request->attributes`.",
+        "Dans la session."
+      ],
+      "correct_answers": [
+        "Dans `$request->attributes`."
+      ],
+      "explanation": "C'est l'espace réservé par Symfony pour les données internes liées à la requête courante."
+    }
+  ]
+}

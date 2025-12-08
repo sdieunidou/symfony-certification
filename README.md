@@ -74,6 +74,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Argument Value Resolvers](./04-controleurs/argument-resolvers.md)
 
 ### [6. Routage](./05-routage/)
+* [Fonctionnement Interne](./05-routage/routing_internal.md)
 * [Configuration (YAML/Attributs)](./05-routage/configuration.md)
 * [Paramètres d'URL](./05-routage/parametres.md)
 * [Valeurs par défaut](./05-routage/defaults.md)
