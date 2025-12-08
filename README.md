@@ -108,6 +108,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Débogage](./06-templating-twig/debug.md)
 
 ### [8. Formulaires](./07-formulaires/)
+* [Fonctionnement Interne](./07-formulaires/form_internals.md)
 * [Création](./07-formulaires/creation.md)
 * [Traitement](./07-formulaires/processing.md)
 * [Validation](./07-formulaires/validation.md)
@@ -125,6 +126,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Tests Unitaires](./07-formulaires/testing.md)
 
 ### [9. Validation](./08-validation-donnees/)
+* [Fonctionnement Interne](./08-validation-donnees/validation_internals.md)
 * [Contraintes Natives](./08-validation-donnees/contraintes.md)
 * [Validation d'Objets](./08-validation-donnees/objets.md)
 * [Violations et Contraintes Custom](./08-validation-donnees/violations.md)
@@ -135,6 +137,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Callbacks](./08-validation-donnees/callbacks.md)
 
 ### [10. Injection de Dépendances](./09-injection-dependances/)
+* [Fonctionnement Interne](./09-injection-dependances/di_internals.md)
 * [Service Container](./09-injection-dependances/container.md)
 * [Services natifs](./09-injection-dependances/services-natifs.md)
 * [Paramètres](./09-injection-dependances/parametres.md)
@@ -148,6 +151,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Service Locators](./09-injection-dependances/service-locators.md)
 
 ### [11. Sécurité](./10-securite/)
+* [Fonctionnement Interne](./10-securite/security_internals.md)
 * [Authentification](./10-securite/authentication.md)
 * [Autorisation](./10-securite/authorization.md)
 * [Configuration](./10-securite/configuration.md)
@@ -162,6 +166,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Protection CSRF](./10-securite/csrf.md)
 
 ### [12. Cache (HTTP & Composant)](./11-cache/)
+* [Fonctionnement Interne](./11-cache/cache_internals.md)
 * [Types de cache](./11-cache/http-types.md)
 * [Expiration](./11-cache/http-expiration.md)
 * [Validation](./11-cache/http-validation.md)
@@ -176,6 +181,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Commandes Console](./11-cache/component-commands.md)
 
 ### [13. Console](./12-console/)
+* [Fonctionnement Interne](./12-console/console_internals.md)
 * [Commandes natives](./12-console/native.md)
 * [Commandes personnalisées](./12-console/custom.md)
 * [Configuration](./12-console/configuration.md)
@@ -221,6 +227,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Clean Architecture](./16-architecture/clean-architecture.md)
 
 ### [17. Doctrine](./17-doctrine/)
+* [Fonctionnement Interne](./17-doctrine/doctrine_internals.md)
 * [Mapping ORM (Attributs)](./17-doctrine/mapping.md)
 * [Configuration](./17-doctrine/configuration.md)
 * [Associations & Relations](./17-doctrine/associations.md)

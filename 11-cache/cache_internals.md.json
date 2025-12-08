@@ -1,0 +1,66 @@
+{
+  "source_file": "11-cache/cache_internals.md",
+  "title": "Cache : Fonctionnement Interne",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel standard PHP (PSR) définit l'interface `CacheItemPoolInterface` et le concept d'items de cache ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-4",
+        "PSR-6",
+        "PSR-16",
+        "PSR-7"
+      ],
+      "correct_answers": [
+        "PSR-6"
+      ],
+      "explanation": "PSR-6 est le 'Caching Interface' complet. PSR-16 est le 'Simple Cache' (plus direct)."
+    },
+    {
+      "id": 2,
+      "question": "Dans le modèle PSR-6, comment savoir si une donnée a été trouvée dans le cache ?",
+      "type": "single_choice",
+      "options": [
+        "En vérifiant si `$item->get()` retourne null.",
+        "En appelant `$item->isHit()`.",
+        "Le cache lance une exception si la donnée manque.",
+        "En vérifiant `$pool->hasItem($key)` avant."
+      ],
+      "correct_answers": [
+        "En appelant `$item->isHit()`."
+      ],
+      "explanation": "`isHit()` est la seule méthode fiable, car la valeur stockée pourrait être `null` ou `false` légitimement."
+    },
+    {
+      "id": 3,
+      "question": "Quelle fonctionnalité permet de supprimer un groupe d'items de cache en une seule fois sans connaître leurs clés ?",
+      "type": "single_choice",
+      "options": [
+        "Le Versioning.",
+        "Les Tags (TagAwareAdapter).",
+        "L'expiration.",
+        "Le Namespace."
+      ],
+      "correct_answers": [
+        "Les Tags (TagAwareAdapter)."
+      ],
+      "explanation": "On associe des tags aux items lors de la sauvegarde, puis on appelle `invalidateTags(['mon_tag'])`."
+    },
+    {
+      "id": 4,
+      "question": "Quel est l'avantage d'utiliser la méthode `$cache->get()` des Cache Contracts (Symfony) plutôt que le flux PSR-6 standard ?",
+      "type": "single_choice",
+      "options": [
+        "Elle est plus rapide.",
+        "Elle gère automatiquement le 'Stampede Protection' (verrouillage) et la logique 'Get or Compute' via un callback.",
+        "Elle ne nécessite pas d'adapter.",
+        "Elle crypte les données."
+      ],
+      "correct_answers": [
+        "Elle gère automatiquement le 'Stampede Protection' (verrouillage) et la logique 'Get or Compute' via un callback."
+      ],
+      "explanation": "C'est une abstraction plus robuste pour les environnements à fort trafic."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "07-formulaires/form_internals.md",
+  "title": "Formulaires : Fonctionnement Interne",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel composant est responsable de transférer les données du formulaire vers les propriétés de l'objet (et inversement) ?",
+      "type": "single_choice",
+      "options": [
+        "DataTransformer",
+        "DataMapper",
+        "FormBuilder",
+        "TypeExtension"
+      ],
+      "correct_answers": [
+        "DataMapper"
+      ],
+      "explanation": "Le `DataMapper` (par défaut `PropertyPathMapper`) lit et écrit dans l'objet via les accesseurs (Getters/Setters)."
+    },
+    {
+      "id": 2,
+      "question": "À quoi servent les **Data Transformers** ?",
+      "type": "single_choice",
+      "options": [
+        "À valider les données.",
+        "À convertir les données entre le format de l'objet (Model), le format normalisé (Norm) et le format d'affichage (View).",
+        "À mapper les données vers la base de données.",
+        "À sécuriser le formulaire contre les failles CSRF."
+      ],
+      "correct_answers": [
+        "À convertir les données entre le format de l'objet (Model), le format normalisé (Norm) et le format d'affichage (View)."
+      ],
+      "explanation": "Exemple typique : convertir un objet `Entity` en son `ID` (entier) pour l'afficher dans une liste déroulante."
+    },
+    {
+      "id": 3,
+      "question": "Si vous devez ajouter un champ dynamiquement en fonction des données de l'objet initial (avant l'affichage), quel événement utiliser ?",
+      "type": "single_choice",
+      "options": [
+        "PRE_SUBMIT",
+        "POST_SUBMIT",
+        "PRE_SET_DATA",
+        "ON_SUBMIT"
+      ],
+      "correct_answers": [
+        "PRE_SET_DATA"
+      ],
+      "explanation": "Cet événement est déclenché lors de l'initialisation du formulaire avec les données de l'objet."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode du contrôleur déclenche tout le processus de traitement, mapping et validation du formulaire ?",
+      "type": "single_choice",
+      "options": [
+        "`$form->createView()`",
+        "`$form->handleRequest($request)`",
+        "`$form->submit($data)`",
+        "`$form->isValid()`"
+      ],
+      "correct_answers": [
+        "`$form->handleRequest($request)`"
+      ],
+      "explanation": "Cette méthode inspecte la requête pour voir si le formulaire a été soumis et lance le processus."
+    }
+  ]
+}

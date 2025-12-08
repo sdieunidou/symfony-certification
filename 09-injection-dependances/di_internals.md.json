@@ -1,0 +1,66 @@
+{
+  "source_file": "09-injection-dependances/di_internals.md",
+  "title": "Injection de Dépendances : Fonctionnement Interne",
+  "questions": [
+    {
+      "id": 1,
+      "question": "À quel moment les **Compiler Passes** sont-elles exécutées ?",
+      "type": "single_choice",
+      "options": [
+        "À chaque requête HTTP.",
+        "Uniquement lors de la phase de compilation du container (cache warmup ou premier chargement).",
+        "Lors de l'instanciation d'un service.",
+        "Au moment du `composer install`."
+      ],
+      "correct_answers": [
+        "Uniquement lors de la phase de compilation du container (cache warmup ou premier chargement)."
+      ],
+      "explanation": "C'est une étape lourde qui prépare la structure optimisée du container. Elle ne se produit pas au runtime en prod."
+    },
+    {
+      "id": 2,
+      "question": "Qu'est-ce qu'une `Definition` dans le contexte du container ?",
+      "type": "single_choice",
+      "options": [
+        "L'instance finale du service.",
+        "La configuration (recette) expliquant comment créer le service (classe, arguments, tags).",
+        "Une interface PHP.",
+        "Un fichier YAML."
+      ],
+      "correct_answers": [
+        "La configuration (recette) expliquant comment créer le service (classe, arguments, tags)."
+      ],
+      "explanation": "Le container manipule des définitions lors de la compilation, et crée des instances (objets) lors de l'exécution."
+    },
+    {
+      "id": 3,
+      "question": "Pourquoi le container est-il dit 'Frozen' (gelé) au runtime ?",
+      "type": "single_choice",
+      "options": [
+        "Car il est stocké dans Redis.",
+        "Pour des raisons de performance, on ne peut plus modifier la structure (ajouter des services/definitions) une fois compilé.",
+        "Car il ne contient que des constantes.",
+        "C'est faux, on peut toujours ajouter des services."
+      ],
+      "correct_answers": [
+        "Pour des raisons de performance, on ne peut plus modifier la structure (ajouter des services/definitions) une fois compilé."
+      ],
+      "explanation": "La classe PHP générée est statique. On ne peut pas ajouter dynamiquement des méthodes à une classe compilée."
+    },
+    {
+      "id": 4,
+      "question": "Comment résoudre une référence circulaire (A a besoin de B qui a besoin de A) ?",
+      "type": "single_choice",
+      "options": [
+        "C'est impossible dans Symfony.",
+        "En utilisant l'injection par Setter (au lieu du constructeur) ou un `ServiceLocator` (Lazy Loading).",
+        "En mettant les services en `public: true`.",
+        "En désactivant l'autowiring."
+      ],
+      "correct_answers": [
+        "En utilisant l'injection par Setter (au lieu du constructeur) ou un `ServiceLocator` (Lazy Loading)."
+      ],
+      "explanation": "Cela permet de retarder l'instanciation de l'une des dépendances."
+    }
+  ]
+}

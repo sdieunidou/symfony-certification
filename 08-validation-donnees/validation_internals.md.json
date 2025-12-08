@@ -1,0 +1,66 @@
+{
+  "source_file": "08-validation-donnees/validation_internals.md",
+  "title": "Validation : Fonctionnement Interne",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle classe contient la logique métier de validation pour une contrainte donnée (ex: vérifier qu'un email est valide) ?",
+      "type": "single_choice",
+      "options": [
+        "Constraint",
+        "ConstraintValidator",
+        "Validator",
+        "MetadataFactory"
+      ],
+      "correct_answers": [
+        "ConstraintValidator"
+      ],
+      "explanation": "La classe `Constraint` ne contient que les options. C'est le `ConstraintValidator` associé qui effectue le travail."
+    },
+    {
+      "id": 2,
+      "question": "Que retourne la méthode `$validator->validate($object)` ?",
+      "type": "single_choice",
+      "options": [
+        "Un booléen (`true` ou `false`).",
+        "Une exception si invalide.",
+        "Un objet `ConstraintViolationListInterface`.",
+        "Un tableau de chaînes de caractères."
+      ],
+      "correct_answers": [
+        "Un objet `ConstraintViolationListInterface`."
+      ],
+      "explanation": "C'est une liste (itérable) d'objets `ConstraintViolation`. Si la liste est vide, l'objet est valide."
+    },
+    {
+      "id": 3,
+      "question": "Quel composant est responsable de lire la configuration (Attributs, YAML) pour savoir quelles contraintes appliquer ?",
+      "type": "single_choice",
+      "options": [
+        "ExecutionContext",
+        "ConstraintManager",
+        "MetadataFactory",
+        "AnnotationReader"
+      ],
+      "correct_answers": [
+        "MetadataFactory"
+      ],
+      "explanation": "Il charge les métadonnées de la classe et les transforme en objets `ClassMetadata` utilisables par le Validator."
+    },
+    {
+      "id": 4,
+      "question": "Comment le Validator gère-t-il la validation d'un objet imbriqué (ex: une propriété `$address` dans un objet `User`) ?",
+      "type": "single_choice",
+      "options": [
+        "Il le fait automatiquement par défaut.",
+        "Il ne le fait que si la contrainte `#[Valid]` est présente sur la propriété.",
+        "Il faut appeler le validateur manuellement pour chaque sous-objet.",
+        "Ce n'est pas supporté."
+      ],
+      "correct_answers": [
+        "Il ne le fait que si la contrainte `#[Valid]` est présente sur la propriété."
+      ],
+      "explanation": "C'est ce qu'on appelle la validation en cascade (Cascading Validation)."
+    }
+  ]
+}

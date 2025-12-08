@@ -1,0 +1,66 @@
+{
+  "source_file": "10-securite/security_internals.md",
+  "title": "Sécurité : Fonctionnement Interne",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel service est responsable de stocker l'objet représentant l'utilisateur authentifié (Token) pendant la requête ?",
+      "type": "single_choice",
+      "options": [
+        "AuthenticationManager",
+        "TokenStorage",
+        "Session",
+        "UserProvider"
+      ],
+      "correct_answers": [
+        "TokenStorage"
+      ],
+      "explanation": "C'est le service `security.token_storage` qui détient le token courant."
+    },
+    {
+      "id": 2,
+      "question": "Quel est le rôle d'un `UserProvider` ?",
+      "type": "single_choice",
+      "options": [
+        "Vérifier le mot de passe.",
+        "Décider si l'utilisateur a accès à une page.",
+        "Charger l'objet User à partir d'un identifiant (ex: email).",
+        "Hasher les mots de passe."
+      ],
+      "correct_answers": [
+        "Charger l'objet User à partir d'un identifiant (ex: email)."
+      ],
+      "explanation": "Il fait le pont entre le système de sécurité et votre stockage de données (Doctrine, LDAP, etc.)."
+    },
+    {
+      "id": 3,
+      "question": "Qui prend la décision finale d'accorder ou non l'accès lors d'un appel à `is_granted` (basé sur les votes des Voters) ?",
+      "type": "single_choice",
+      "options": [
+        "AccessDecisionManager",
+        "Firewall",
+        "AuthorizationChecker",
+        "Kernel"
+      ],
+      "correct_answers": [
+        "AccessDecisionManager"
+      ],
+      "explanation": "Il collecte les votes de tous les Voters applicables et applique la stratégie (ex: affirmative = un seul OUI suffit)."
+    },
+    {
+      "id": 4,
+      "question": "Qu'est-ce qu'un `Passport` dans le nouveau système d'authentification ?",
+      "type": "single_choice",
+      "options": [
+        "Un document de voyage.",
+        "Un objet DTO retourné par `authenticate()` contenant l'utilisateur et les preuves (badges) de son identité.",
+        "Le token stocké en session.",
+        "Une clé API."
+      ],
+      "correct_answers": [
+        "Un objet DTO retourné par `authenticate()` contenant l'utilisateur et les preuves (badges) de son identité."
+      ],
+      "explanation": "Le Passport simplifie la gestion des différentes étapes (Check CSRF, Check Password, Remember Me) via des 'Badges'."
+    }
+  ]
+}

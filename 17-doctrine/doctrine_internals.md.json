@@ -1,0 +1,66 @@
+{
+  "source_file": "17-doctrine/doctrine_internals.md",
+  "title": "Doctrine : Fonctionnement Interne",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel pattern d'architecture utilise Doctrine ORM ?",
+      "type": "single_choice",
+      "options": [
+        "Active Record",
+        "Data Mapper",
+        "MVC",
+        "Event Sourcing"
+      ],
+      "correct_answers": [
+        "Data Mapper"
+      ],
+      "explanation": "L'entité et la couche de persistance sont séparées. L'EntityManager fait le lien."
+    },
+    {
+      "id": 2,
+      "question": "Quel composant interne de Doctrine est responsable de calculer les changements (diff) sur les entités avant de générer le SQL ?",
+      "type": "single_choice",
+      "options": [
+        "MetadataFactory",
+        "UnitOfWork",
+        "QueryBuilder",
+        "ProxyFactory"
+      ],
+      "correct_answers": [
+        "UnitOfWork"
+      ],
+      "explanation": "La UnitOfWork maintient la liste des objets gérés et compare leur état actuel avec l'état lors du chargement."
+    },
+    {
+      "id": 3,
+      "question": "Que se passe-t-il exactement quand on appelle `$entityManager->persist($entity)` ?",
+      "type": "single_choice",
+      "options": [
+        "Une requête INSERT est envoyée immédiatement à la BDD.",
+        "L'objet est sauvegardé dans le fichier de log.",
+        "Doctrine commence à gérer l'objet (il devient 'Managed') et prépare son insertion pour le prochain flush.",
+        "Rien si l'objet a déjà un ID."
+      ],
+      "correct_answers": [
+        "Doctrine commence à gérer l'objet (il devient 'Managed') et prépare son insertion pour le prochain flush."
+      ],
+      "explanation": "Le SQL n'est généré qu'au moment du `flush()`."
+    },
+    {
+      "id": 4,
+      "question": "À quoi sert un objet **Proxy** dans Doctrine ?",
+      "type": "single_choice",
+      "options": [
+        "À se connecter via un proxy HTTP.",
+        "À permettre le Lazy Loading (chargement différé) des relations.",
+        "À valider les données.",
+        "À crypter les données."
+      ],
+      "correct_answers": [
+        "À permettre le Lazy Loading (chargement différé) des relations."
+      ],
+      "explanation": "C'est une sous-classe générée qui remplace l'entité réelle tant qu'on n'accède pas à ses propriétés, évitant des requêtes SQL inutiles."
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+{
+  "source_file": "12-console/console_internals.md",
+  "title": "Console : Fonctionnement Interne",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle méthode de la classe `Command` contient la logique principale à exécuter ?",
+      "type": "single_choice",
+      "options": [
+        "run()",
+        "configure()",
+        "execute()",
+        "interact()"
+      ],
+      "correct_answers": [
+        "execute()"
+      ],
+      "explanation": "C'est le cœur de la commande. Elle prend `InputInterface` et `OutputInterface` en arguments."
+    },
+    {
+      "id": 2,
+      "question": "Que doit retourner la méthode `execute()` d'une commande ?",
+      "type": "single_choice",
+      "options": [
+        "Rien (void).",
+        "Un booléen (true/false).",
+        "Un entier (Exit Code).",
+        "Une chaîne de caractères (Output)."
+      ],
+      "correct_answers": [
+        "Un entier (Exit Code)."
+      ],
+      "explanation": "Ce code est renvoyé au système d'exploitation. 0 signifie succès (`Command::SUCCESS`), tout autre chiffre signifie erreur."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert la classe `SymfonyStyle` ($io) ?",
+      "type": "single_choice",
+      "options": [
+        "À ajouter du CSS à la console.",
+        "À fournir des helpers de formatage (titres, tableaux, barres de progression) et d'interaction simplifiés.",
+        "À parser les arguments.",
+        "À colorer le code PHP."
+      ],
+      "correct_answers": [
+        "À fournir des helpers de formatage (titres, tableaux, barres de progression) et d'interaction simplifiés."
+      ],
+      "explanation": "C'est la manière recommandée de gérer les entrées/sorties pour avoir une interface utilisateur cohérente et jolie."
+    },
+    {
+      "id": 4,
+      "question": "Quelle méthode permet de demander des informations manquantes à l'utilisateur AVANT l'exécution (mode interactif) ?",
+      "type": "single_choice",
+      "options": [
+        "configure()",
+        "initialize()",
+        "interact()",
+        "ask()"
+      ],
+      "correct_answers": [
+        "interact()"
+      ],
+      "explanation": "Cette méthode est appelée juste avant `execute()`. Elle permet de vérifier si des arguments manquent et de lancer des questions `$io->ask()` pour remplir l'objet `$input`."
+    }
+  ]
+}
