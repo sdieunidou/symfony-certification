@@ -30,7 +30,7 @@ spl_autoload_register(function ($class) {
 ```
 
 ## Les Itérateurs (Iterators)
-La gestion des itérateurs et des générateurs est traitée en détail dans le fichier dédié : **[Itérables et Générateurs](iterables.md)**.
+La gestion des itérateurs et des générateurs est traitée en détail dans le cours dédié.
 
 La SPL fournit néanmoins les implémentations concrètes (comme `DirectoryIterator` ou `ArrayIterator`).
 
