@@ -61,6 +61,21 @@
         "`{{ include('template.html.twig', { 'var': 'value' }) }}`"
       ],
       "explanation": "Le deuxième argument de `include` est un tableau de variables qui seront disponibles dans le template inclus."
+    },
+    {
+      "id": 5,
+      "question": "Quel est l'avantage principal de `render_esi` ?",
+      "type": "single_choice",
+      "options": [
+        "C'est plus rapide à écrire.",
+        "Cela permet à un Reverse Proxy (Varnish, Symfony HttpCache) d'assembler des fragments de page ayant des durées de cache différentes.",
+        "Cela exécute le code JavaScript.",
+        "C'est la seule façon d'inclure un contrôleur."
+      ],
+      "correct_answers": [
+        "Cela permet à un Reverse Proxy (Varnish, Symfony HttpCache) d'assembler des fragments de page ayant des durées de cache différentes."
+      ],
+      "explanation": "Si aucun proxy compatible n'est présent, `render_esi` retombe automatiquement sur un comportement `render` classique."
     }
   ]
 }

@@ -50,11 +50,24 @@ framework:
     fragments: { path: /_fragment }
 ```
 
+## 5. Edge Side Includes (`render_esi`)
+Si vous utilisez un cache HTTP (Varnish) ou le Symfony HttpCache (Reverse Proxy), vous pouvez utiliser **ESI**.
+Le principe est de dire au proxy : "Sers la page, mais pour ce petit bout, fais une requête séparée et assemble-le toi-même".
+
+Cela permet de mettre en cache une page entière tout en gardant des parties dynamiques (User bar, Panier).
+
+```twig
+{# Génère une balise <esi:include src="..."> interprétée par le Proxy #}
+{{ render_esi(controller('App\\Controller\\WidgetController::userBar')) }}
+```
+
+*   **Fallback** : Si aucun proxy ESI n'est détecté, `render_esi` se comporte comme un `render` standard (synchrone).
+
 ## 🧠 Concepts Clés
 1.  **Convention** : Préfixez les templates partiels par `_` (ex: `_form.html.twig`).
 2.  **Hinclude vs ESI** :
     *   **Hinclude** : Client-side (AJAX). Le navigateur fait 2 requêtes. Bon pour l'expérience utilisateur si le widget est lent.
-    *   **ESI** : Server-side (Varnish). Le proxy assemble la page. Plus complexe à mettre en place.
+    *   **ESI** : Server-side (Varnish/Proxy). Le proxy assemble la page. Idéal pour le cache fragmenté.
 
 ## ⚠️ Points de vigilance (Certification)
 *   **Include missing** : `ignore_missing: true` permet d'éviter une erreur 500 si le template n'existe pas.
