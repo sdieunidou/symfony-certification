@@ -13,9 +13,8 @@ Permet d'installer des paquets via des noms courts.
 
 ### 2. Recipes (Recettes)
 Quand un paquet est installé, Flex cherche s'il existe une "Recette" pour ce paquet.
-Contrairement aux débuts de Symfony 4, il n'y a plus de serveur API centralisé (`flex.symfony.com` est devenu un endpoint statique).
 
-**Fonctionnement moderne (Serverless) :**
+**Fonctionnement :**
 Flex interroge directement des fichiers JSON statiques hébergés sur l'infrastructure de GitHub (via les dépôts `symfony/recipes` et `symfony/recipes-contrib`).
 1.  **Index** : Flex télécharge un index léger listant les recettes disponibles.
 2.  **Manifest** : Si une recette existe pour le paquet, Flex télécharge le fichier `manifest.json` spécifique.
