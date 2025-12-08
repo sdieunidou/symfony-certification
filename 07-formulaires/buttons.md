@@ -32,7 +32,7 @@ if ($form->isSubmitted() && $form->isValid()) {
 ## Options Utiles
 *   `attr` : Classes CSS (`btn btn-primary`).
 *   `label` : Texte du bouton.
-*   `validation_groups` : Groupes de validation spécifiques à ce bouton (voir `validation.md`).
+*   `validation_groups` : Groupes de validation spécifiques à ce bouton.
 
 ## Bonnes Pratiques
 Bien qu'on puisse ajouter les boutons dans la classe `FormType`, il est souvent recommandé de les ajouter **dans le template Twig** ou dans le **Builder du Contrôleur**.
