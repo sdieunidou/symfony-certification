@@ -285,4 +285,5 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Workflow](./19-composants/workflow.md)
 * [UID (UUID/ULID)](./19-composants/uid.md)
 * [Webhook](./19-composants/webhook.md)
+* [Translation (i18n)](./19-composants/translation.md)
 * [Yaml](./19-composants/yaml.md)

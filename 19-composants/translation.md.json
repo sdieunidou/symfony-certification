@@ -1,0 +1,81 @@
+{
+  "source_file": "19-composants/translation.md",
+  "title": "Composant Translation",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la classe ou fonction recommandée pour créer un message qui sera traduit plus tard (ex: dans une Entité ou DTO) ?",
+      "type": "single_choice",
+      "options": [
+        "Translator::defer()",
+        "`TranslatableMessage` ou la fonction helper `t()`",
+        "StringReader",
+        "DeferredTranslation"
+      ],
+      "correct_answers": [
+        "`TranslatableMessage` ou la fonction helper `t()`"
+      ],
+      "explanation": "Ces objets stockent l'ID, les paramètres et le domaine, et sont traduits automatiquement lorsqu'ils sont passés au filtre `trans` de Twig ou au Translator."
+    },
+    {
+      "id": 2,
+      "question": "Quel format standard Symfony utilise-t-il pour gérer la pluralisation complexe (ex: `one`, `other`) ?",
+      "type": "single_choice",
+      "options": [
+        "Gettext",
+        "ICU MessageFormat",
+        "ArrayChoice",
+        "SwitchCase"
+      ],
+      "correct_answers": [
+        "ICU MessageFormat"
+      ],
+      "explanation": "C'est le standard industriel utilisé par l'extension Intl de PHP. Syntaxe : `{count, plural, =0 {Rien} other {# objets}}`."
+    },
+    {
+      "id": 3,
+      "question": "Dans quel ordre le Translator cherche-t-il une traduction si la locale demandée est 'fr_CA' ?",
+      "type": "single_choice",
+      "options": [
+        "Uniquement `fr_CA`.",
+        "`fr_CA` puis `fr` puis la locale de fallback (ex: `en`).",
+        "`fr` puis `fr_CA`.",
+        "Uniquement dans la locale définie dans `framework.yaml`."
+      ],
+      "correct_answers": [
+        "`fr_CA` puis `fr` puis la locale de fallback (ex: `en`)."
+      ],
+      "explanation": "Symfony gère automatiquement le fallback vers la langue parente (`fr`) puis vers la configuration `fallbacks`."
+    },
+    {
+      "id": 4,
+      "question": "Quelle commande permet de scanner les templates et classes PHP pour mettre à jour les fichiers de traduction ?",
+      "type": "single_choice",
+      "options": [
+        "translation:update",
+        "translation:extract",
+        "translation:dump",
+        "translation:scan"
+      ],
+      "correct_answers": [
+        "translation:extract"
+      ],
+      "explanation": "`php bin/console translation:extract --force fr` extrait les nouvelles clés et les ajoute aux fichiers existants."
+    },
+    {
+      "id": 5,
+      "question": "Quel composant interne contient l'ensemble des traductions chargées pour une locale donnée ?",
+      "type": "single_choice",
+      "options": [
+        "TranslationBag",
+        "MessageCatalogue",
+        "LoaderResolver",
+        "Dictionary"
+      ],
+      "correct_answers": [
+        "MessageCatalogue"
+      ],
+      "explanation": "Le `MessageCatalogue` stocke toutes les paires clé-valeur pour une locale et fusionne les catalogues de fallback."
+    }
+  ]
+}
