@@ -166,8 +166,8 @@ class SoigneurGeneraliste implements SoigneurDeChats {
 
 Pour respecter le principe de substitution de Liskov (SOLID), une classe enfant doit être :
 
-*   **Plus exigeante sur ce qu'elle fournit** (Sortie / Return) $\rightarrow$ Covariance.
-*   **Moins exigeante sur ce qu'elle reçoit** (Entrée / Arguments) $\rightarrow$ Contravariance.
+*   **Plus exigeante sur ce qu'elle fournit** (Sortie / Return) -> Covariance.
+*   **Moins exigeante sur ce qu'elle reçoit** (Entrée / Arguments) -> Contravariance.
 
 Voulez-vous voir comment cela s'articule avec les **Types d'Union** (PHP 8.0) qui permettent d'aller encore plus loin dans cette logique ?
 
