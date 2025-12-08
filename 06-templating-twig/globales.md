@@ -48,6 +48,27 @@ Usage :
 Total panier : {{ cart_manager.total }} €
 ```
 
+## Définition Programmatique (Extension Twig)
+Si la valeur de la globale est dynamique ou complexe à calculer, vous pouvez utiliser une Extension Twig implémentant `GlobalsInterface`.
+
+```php
+namespace App\Twig;
+
+use Twig\Extension\AbstractExtension;
+use Twig\Extension\GlobalsInterface;
+
+class AppExtension extends AbstractExtension implements GlobalsInterface
+{
+    public function getGlobals(): array
+    {
+        return [
+            'now' => new \DateTime(),
+            'uuid' => uniqid(),
+        ];
+    }
+}
+```
+
 ## 🧠 Concepts Clés
 1.  **Injection** : Les globales sont injectées avant le rendu du template.
 2.  **Contexte** : Elles sont disponibles partout, y compris dans les templates inclus ou étendus.

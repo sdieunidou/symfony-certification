@@ -61,6 +61,21 @@
         "La variable du contrôleur (elle surcharge la globale)."
       ],
       "explanation": "Le contexte spécifique (Contrôleur) a la priorité sur le contexte global."
+    },
+    {
+      "id": 5,
+      "question": "Quelle interface une Extension Twig doit-elle implémenter pour injecter des variables globales dynamiquement via PHP ?",
+      "type": "single_choice",
+      "options": [
+        "`Twig\\Extension\\RuntimeExtensionInterface`",
+        "`Twig\\Extension\\GlobalsInterface`",
+        "`Twig\\Extension\\VariableExtensionInterface`",
+        "`Symfony\\Component\\DependencyInjection\\ContainerAwareInterface`"
+      ],
+      "correct_answers": [
+        "`Twig\\Extension\\GlobalsInterface`"
+      ],
+      "explanation": "Cette interface force l'implémentation de la méthode `getGlobals(): array`."
     }
   ]
 }
