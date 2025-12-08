@@ -1,0 +1,66 @@
+{
+  "source_file": "06-templating-twig/macros.md",
+  "title": "Macros Twig",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la principale différence entre une Macro et un Include dans Twig ?",
+      "type": "single_choice",
+      "options": [
+        "Aucune, c'est la même chose.",
+        "L'include a accès à toutes les variables du contexte courant, alors que la Macro est isolée et ne reçoit que ses arguments.",
+        "La Macro est plus lente.",
+        "L'include ne peut pas être utilisé dans une boucle."
+      ],
+      "correct_answers": [
+        "L'include a accès à toutes les variables du contexte courant, alors que la Macro est isolée et ne reçoit que ses arguments."
+      ],
+      "explanation": "Les macros fonctionnent comme des fonctions PHP : scope privé."
+    },
+    {
+      "id": 2,
+      "question": "Comment appeler une macro définie dans le **même** fichier template ?",
+      "type": "single_choice",
+      "options": [
+        "{{ this.nomMacro() }}",
+        "{{ self.nomMacro() }}",
+        "{{ _self.nomMacro() }}",
+        "{{ macro.nomMacro() }}"
+      ],
+      "correct_answers": [
+        "{{ _self.nomMacro() }}"
+      ],
+      "explanation": "La variable spéciale `_self` référence le template courant."
+    },
+    {
+      "id": 3,
+      "question": "Quelle balise est utilisée pour charger les macros d'un autre fichier ?",
+      "type": "single_choice",
+      "options": [
+        "{% include %}",
+        "{% use %}",
+        "{% import %}",
+        "{% require %}"
+      ],
+      "correct_answers": [
+        "{% import %}"
+      ],
+      "explanation": "Syntaxe : `{% import 'forms.html.twig' as forms %}`."
+    },
+    {
+      "id": 4,
+      "question": "Peut-on définir des blocs `{% block %}` à l'intérieur d'une macro ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, c'est recommandé pour l'héritage.",
+        "Non, les macros ne supportent pas les blocs.",
+        "Uniquement si la macro est importée avec `from`.",
+        "Oui, mais uniquement dans le fichier parent."
+      ],
+      "correct_answers": [
+        "Non, les macros ne supportent pas les blocs."
+      ],
+      "explanation": "Les macros sont pour la génération de code 'fonctionnelle', pas pour l'héritage de structure."
+    }
+  ]
+}

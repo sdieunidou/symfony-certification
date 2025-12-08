@@ -96,6 +96,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Globales](./06-templating-twig/globales.md)
 * [Filtres et Fonctions](./06-templating-twig/filtres-fonctions.md)
 * [Inclusions et Embeds](./06-templating-twig/includes.md)
+* [Macros](./06-templating-twig/macros.md)
 * [Composants Twig](./06-templating-twig/components.md)
 * [Structures de contrôle](./06-templating-twig/controles.md)
 * [URLs](./06-templating-twig/urls.md)
