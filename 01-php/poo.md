@@ -169,8 +169,6 @@ Pour respecter le principe de substitution de Liskov (SOLID), une classe enfant 
 *   **Plus exigeante sur ce qu'elle fournit** (Sortie / Return) -> Covariance.
 *   **Moins exigeante sur ce qu'elle reçoit** (Entrée / Arguments) -> Contravariance.
 
-Voulez-vous voir comment cela s'articule avec les **Types d'Union** (PHP 8.0) qui permettent d'aller encore plus loin dans cette logique ?
-
 ## 🧠 Concepts Clés
 1.  **WeakMap / WeakReference** (PHP 8.0) : Permet de référencer des objets sans empêcher le Garbage Collector de les détruire. Utilisé pour des caches ou des associations temporaires.
 2.  **Générateurs (`yield`)** : Permettent de parcourir de grands ensembles de données sans tout charger en mémoire. Une méthode avec `yield` renvoie un objet `Generator`.
