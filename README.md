@@ -8,6 +8,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 
 ### [1. PHP](./01-php/)
 * [API PHP (8.2)](./01-php/api-php.md)
+* [PSR & PHP-FIG](./01-php/psr.md)
 * [Programmation Orientée Objet](./01-php/poo.md)
 * [Namespaces](./01-php/namespaces.md)
 * [Interfaces](./01-php/interfaces.md)

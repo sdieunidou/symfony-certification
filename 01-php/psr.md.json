@@ -1,0 +1,96 @@
+{
+  "source_file": "01-php/psr.md",
+  "title": "PSR & PHP-FIG",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Que signifie l'acronyme PHP-FIG ?",
+      "type": "single_choice",
+      "options": [
+        "PHP Framework Internal Group",
+        "PHP Framework Interop Group",
+        "PHP Foundation for Internet Growth",
+        "PHP Standard Recommendation"
+      ],
+      "correct_answers": [
+        "PHP Framework Interop Group"
+      ],
+      "explanation": "Le PHP-FIG (Framework Interop Group) est l'organisation qui définit les standards PSR."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence fondamentale entre un objet Request de Symfony (HttpFoundation) et un objet Request défini par la PSR-7 ?",
+      "type": "single_choice",
+      "options": [
+        "L'objet Symfony est immuable, alors que l'objet PSR-7 est mutable.",
+        "L'objet Symfony est mutable, alors que l'objet PSR-7 est immuable.",
+        "Il n'y a aucune différence, Symfony implémente nativement PSR-7.",
+        "L'objet PSR-7 ne gère pas les uploads de fichiers."
+      ],
+      "correct_answers": [
+        "L'objet Symfony est mutable, alors que l'objet PSR-7 est immuable."
+      ],
+      "explanation": "Les objets PSR-7 sont conçus pour être immuables (les setters retournent une nouvelle instance avec `with...`), tandis que HttpFoundation utilise des objets mutables."
+    },
+    {
+      "id": 3,
+      "question": "Quelle PSR définit l'interface `LoggerInterface` largement utilisée dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-1",
+        "PSR-3",
+        "PSR-4",
+        "PSR-11"
+      ],
+      "correct_answers": [
+        "PSR-3"
+      ],
+      "explanation": "PSR-3 définit l'interface commune pour les bibliothèques de journalisation (Logging)."
+    },
+    {
+      "id": 4,
+      "question": "Quelle PSR a remplacé PSR-2 concernant le guide de style de codage étendu (Extended Coding Style) ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-1",
+        "PSR-4",
+        "PSR-12",
+        "PSR-7"
+      ],
+      "correct_answers": [
+        "PSR-12"
+      ],
+      "explanation": "PSR-12 a succédé à PSR-2 pour inclure les nouvelles fonctionnalités de PHP 7+ et moderniser les règles de formatage."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert la PSR-11 (`ContainerInterface`) ?",
+      "type": "single_choice",
+      "options": [
+        "À définir comment les classes sont chargées automatiquement.",
+        "À standardiser la façon de récupérer des dépendances depuis un conteneur de services.",
+        "À définir les réponses HTTP.",
+        "À gérer les événements."
+      ],
+      "correct_answers": [
+        "À standardiser la façon de récupérer des dépendances depuis un conteneur de services."
+      ],
+      "explanation": "PSR-11 définit une interface commune pour les conteneurs d'injection de dépendances, avec les méthodes `get()` et `has()`."
+    },
+    {
+      "id": 6,
+      "question": "Quelle PSR définit les standards pour l'Autoloading des classes à partir des chemins de fichiers ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-0",
+        "PSR-4",
+        "PSR-6",
+        "PSR-16"
+      ],
+      "correct_answers": [
+        "PSR-4"
+      ],
+      "explanation": "PSR-4 est le standard actuel pour l'autoloading, remplaçant PSR-0 qui est déprécié."
+    }
+  ]
+}
