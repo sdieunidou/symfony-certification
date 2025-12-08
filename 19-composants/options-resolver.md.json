@@ -1,0 +1,81 @@
+{
+  "source_file": "19-composants/options-resolver.md",
+  "title": "Composant OptionsResolver",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle exception est levée par `resolve()` si l'utilisateur passe une option qui n'a pas été définie dans le resolver ?",
+      "type": "single_choice",
+      "options": [
+        "`InvalidOptionsException`",
+        "`MissingOptionsException`",
+        "`UndefinedOptionsException`",
+        "`OptionNotFoundException`"
+      ],
+      "correct_answers": [
+        "`UndefinedOptionsException`"
+      ],
+      "explanation": "C'est une sécurité pour détecter les fautes de frappe. Seules les options configurées (via `setDefault`, `setRequired` ou `setDefined`) sont autorisées."
+    },
+    {
+      "id": 2,
+      "question": "Quelle méthode permet de définir une option qui **doit** être fournie par l'utilisateur (pas de valeur par défaut) ?",
+      "type": "single_choice",
+      "options": [
+        "`setDefaults()`",
+        "`setRequired()`",
+        "`setMandatory()`",
+        "`setDefined()`"
+      ],
+      "correct_answers": [
+        "`setRequired()`"
+      ],
+      "explanation": "Si une option requise manque lors de l'appel à `resolve()`, une `MissingOptionsException` est levée."
+    },
+    {
+      "id": 3,
+      "question": "À quel moment intervient un **Normalizer** (`setNormalizer`) ?",
+      "type": "single_choice",
+      "options": [
+        "Avant la validation des types.",
+        "Après la validation des types et des valeurs, pour transformer la donnée finale.",
+        "Au moment de la définition de l'option.",
+        "Avant de fusionner les tableaux."
+      ],
+      "correct_answers": [
+        "Après la validation des types et des valeurs, pour transformer la donnée finale."
+      ],
+      "explanation": "La normalisation s'exécute en dernier (ou presque), une fois qu'on est sûr que la valeur brute est valide."
+    },
+    {
+      "id": 4,
+      "question": "Dans le contexte de Symfony, où utilisez-vous le plus souvent l'OptionsResolver ?",
+      "type": "single_choice",
+      "options": [
+        "Dans les contrôleurs.",
+        "Dans les entités Doctrine.",
+        "Dans la méthode `configureOptions` des Form Types.",
+        "Dans le Kernel."
+      ],
+      "correct_answers": [
+        "Dans la méthode `configureOptions` des Form Types."
+      ],
+      "explanation": "C'est le mécanisme standard pour gérer les options des formulaires (`label`, `required`, `attr`, etc.)."
+    },
+    {
+      "id": 5,
+      "question": "Comment définir qu'une option doit être un entier OU null ?",
+      "type": "single_choice",
+      "options": [
+        "`$resolver->setAllowedTypes('port', 'int|null')` (ou `['int', 'null']`)",
+        "`$resolver->setAllowedTypes('port', '?int')`",
+        "`$resolver->setNullable('port', true)`",
+        "`$resolver->setAllowedValues('port', [null])`"
+      ],
+      "correct_answers": [
+        "`$resolver->setAllowedTypes('port', 'int|null')` (ou `['int', 'null']`)"
+      ],
+      "explanation": "La méthode `setAllowedTypes` accepte une chaîne (union type) ou un tableau de types."
+    }
+  ]
+}

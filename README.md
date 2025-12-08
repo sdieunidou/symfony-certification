@@ -287,4 +287,5 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [UID (UUID/ULID)](./19-composants/uid.md)
 * [Webhook](./19-composants/webhook.md)
 * [Translation (i18n)](./19-composants/translation.md)
+* [OptionsResolver](./19-composants/options-resolver.md)
 * [Yaml](./19-composants/yaml.md)

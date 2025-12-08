@@ -34,21 +34,6 @@
     },
     {
       "id": 3,
-      "question": "Comment définir le préfixe de bloc utilisé pour le theming (ex: `my_custom_widget`) ?",
-      "type": "single_choice",
-      "options": [
-        "Automatiquement via le nom de la classe (snake_case).",
-        "En surchargeant la méthode `getBlockPrefix()`.",
-        "Les deux réponses ci-dessus sont correctes.",
-        "Dans le fichier services.yaml."
-      ],
-      "correct_answers": [
-        "Les deux réponses ci-dessus sont correctes."
-      ],
-      "explanation": "Par défaut, `MyCustomType` donne `my_custom`. On peut le forcer avec `getBlockPrefix`."
-    },
-    {
-      "id": 4,
       "question": "Peut-on injecter des services dans un Form Type personnalisé ?",
       "type": "single_choice",
       "options": [
