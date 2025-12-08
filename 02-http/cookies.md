@@ -99,7 +99,7 @@ class PreferenceController
 3.  **Cookie Marshalling** : Depuis Symfony 5/6, on peut utiliser le `CookieMarshallerInterface` pour chiffrer ou signer automatiquement la valeur des cookies, rendant leur modification par le client impossible.
 
 ## ⚠️ Points de vigilance (Certification)
-*   **Raw vs UrlEncoded** : Par défaut, PHP et Symfony URL-encodent les valeurs de cookies (les espaces deviennent `+` ou `%20`). Si vous devez interagir avec du JS ou d'autres langages attendant du brut, utilisez `$raw = true`.
+*   **Raw vs UrlEncoded** : Par défaut, PHP et Symfony encodent les valeurs de cookies (les espaces deviennent `+` ou `%20`). Si vous devez interagir avec du JS ou d'autres langages attendant du brut, utilisez `$raw = true`.
 *   **Taille** : Limite stricte ~4KB par cookie. Pour plus de données, utilisez la Session ou le LocalStorage (JS).
 *   **Auto-Secure** : Symfony possède une option `framework.session.cookie_secure: 'auto'` qui active le flag Secure uniquement si la requête entrante est HTTPS.
 *   **Acceptance** : Réglementation RGPD (GDPR). Vous ne pouvez pas poser de cookies non-essentiels (tracking) sans consentement. Les cookies de Session/Auth/Panier sont généralement considérés comme "essentiels".
