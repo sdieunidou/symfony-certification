@@ -108,6 +108,17 @@ $base = Path::getLongestCommonBasePath(
 // => /var/www/html
 ```
 
+## Fonctionnement Interne
+
+### Architecture
+*   **Filesystem** : Façade fournissant des méthodes utilitaires (`copy`, `mkdir`, `remove`, `dumpFile`).
+*   **Error Handling** : Transforme les `warnings` PHP natifs (`fopen` failed) en `IOException` propres.
+
+### Le Flux (Atomicité)
+1.  Certaines opérations comme `dumpFile` tentent d'être atomiques.
+2.  Elles écrivent dans un fichier temporaire unique.
+3.  Si l'écriture réussit, un `rename()` (opération atomique sur POSIX) remplace le fichier cible.
+
 ## 🧠 Concepts Clés & Certification
 1.  **Atomicité** : `dumpFile()` est atomique. Elle garantit que le fichier n'est pas lu à moitié écrit par un autre processus.
 2.  **Exceptions** : Le composant lance `Symfony\Component\Filesystem\Exception\IOException` (qui implémente `IOExceptionInterface`) en cas d'erreur (permission refusée, disque plein...), contrairement aux fonctions natives qui émettent des Warnings.

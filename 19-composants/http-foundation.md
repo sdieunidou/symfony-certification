@@ -163,6 +163,18 @@ Request::setTrustedProxies(
 
 ---
 
+## Fonctionnement Interne
+
+### Architecture
+*   **Request** : Wrapper orienté objet des superglobales (`$_GET`, `$_POST`, etc.).
+*   **ParameterBag** : Stockage clé-valeur utilisé pour `query`, `request`, `attributes`.
+*   **Response** : Wrapper pour l'envoi des headers (`header()`) et du contenu (`echo`).
+
+### Le Flux (Request Factory)
+1.  `Request::createFromGlobals()` : Lit `$_SERVER` et autres.
+2.  **Normalisation** : Gestion des headers proxy (`X-Forwarded-For`), surcharge de méthodes (`_method`).
+3.  **Session** : La session n'est démarrée que si `$request->getSession()` est appelé.
+
 ## 5. Points de vigilance pour la Certification
 
 *   **ParameterBag::get() vs getAlpha() / getInt()** : Connaître les méthodes de filtrage basiques.

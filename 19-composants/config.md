@@ -162,6 +162,18 @@ Si une `FileResource` change, le cache est invalidé (en mode debug).
 
 ---
 
+## Fonctionnement Interne
+
+### Architecture
+*   **TreeBuilder** : Construit l'arbre de configuration validable.
+*   **NodeInterface** : Représente un nœud (ScalarNode, ArrayNode...).
+*   **Processor** : Normalise et valide les tableaux de config bruts par rapport à l'arbre.
+
+### Le Flux
+1.  **Load** : Les fichiers (YAML/XML) sont chargés en tableaux PHP.
+2.  **Build Tree** : Le `ConfigurationInterface` définit la structure attendue.
+3.  **Process** : Le `Processor` fusionne les configurations et lance des exceptions si la validation échoue.
+
 ## 6. Points de vigilance pour la Certification
 
 *   **PrependExtensionInterface** : Dans un Bundle, permet de modifier la configuration d'un *autre* bundle avant qu'elle ne soit traitée. Très utilisé (ex: DoctrineBundle configure Twig pour ajouter ses globales).

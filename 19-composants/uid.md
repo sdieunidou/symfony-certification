@@ -80,6 +80,19 @@ php bin/console uuid:inspect a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11
 php bin/console ulid:inspect 01F8MEZ0...
 ```
 
+## Fonctionnement Interne
+
+### Architecture
+*   **AbstractUid** : Classe de base gérant la conversion binaire/string/base32/base58.
+*   **Uuid** : Implémente la RFC 4122 (128-bit).
+*   **Ulid** : Implémente le standard ULID (128-bit, triable).
+
+### Le Flux (Génération)
+1.  **Randomness** : Utilise `random_bytes()` (CSPRNG) pour l'entropie.
+2.  **Time** : Pour UUID v7 et ULID, récupère le timestamp milliseconde.
+3.  **Binary** : Construit la chaîne de 16 octets (128 bits).
+4.  **Formatting** : Convertit en chaîne lisible (Hex avec tirets pour UUID, Base32 pour ULID).
+
 ## ⚠️ Points de vigilance (Certification)
 1.  **Performance d'indexation** : Les UUID v4 (aléatoires) fragmentent les index de base de données (Page Splitting) lors des insertions massives. **Préférez UUID v7 ou ULID** qui sont séquentiels (Time-ordered).
 2.  **Espace disque** : Stocker un UUID en `VARCHAR(36)` prend 36 octets (ou plus selon encoding). En `BINARY(16)`, c'est 16 octets. Symfony gère ça nativement avec le type Doctrine `uuid`.

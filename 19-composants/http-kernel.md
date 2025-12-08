@@ -94,6 +94,19 @@ On peut créer ses propres `ValueResolverInterface` pour injecter des objets cus
 
 ---
 
+## Fonctionnement Interne
+
+### Architecture
+*   **HttpKernel** : Le chef d'orchestre.
+*   **EventDispatcher** : Le moteur qui propulse le kernel.
+*   **ControllerResolver** : Trouve le callable PHP.
+*   **ArgumentResolver** : Trouve les arguments.
+
+### Le Flux
+1.  **handle()** : Point d'entrée.
+2.  **Dispatch Loop** : Le kernel dispatch successivement les événements `kernel.request`, `kernel.controller`, `kernel.view`, `kernel.response`.
+3.  **Exception Handling** : Le tout est wrappé dans un `try/catch` géant qui dispatch `kernel.exception` en cas de pépin.
+
 ## 4. Points de vigilance pour la Certification
 
 *   **Ordre des événements** : Il est CRUCIAL de connaître l'ordre par cœur.

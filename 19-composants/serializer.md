@@ -137,6 +137,18 @@ interface UserInterface {}
 
 ---
 
+## Fonctionnement Interne
+
+### Architecture
+*   **Serializer** : Le coordinateur qui implémente `NormalizerInterface` et `EncoderInterface`.
+*   **Normalizer** : Transforme Objet <-> Array.
+*   **Encoder** : Transforme Array <-> Format (JSON/XML).
+
+### Le Flux
+1.  **Check** : Le Serializer demande à chaque Normalizer "supportes-tu cet objet ?".
+2.  **Normalize** : Le premier Normalizer compatible (ex: `ObjectNormalizer`) transforme l'objet en tableau.
+3.  **Encode** : L'Encoder transforme le tableau en chaîne (ex: `json_encode`).
+
 ## 6. Points de vigilance pour la Certification
 
 *   **Getters/Setters** : Par défaut, `ObjectNormalizer` utilise les getters (`getNom()`, `isActif()`, `hasRole()`) et setters. Si la propriété est `public`, il l'utilise directement.

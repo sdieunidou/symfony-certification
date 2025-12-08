@@ -80,6 +80,18 @@ Cela génère :
 1.  Un **Request Parser** (pour valider la signature et transformer la Request en RemoteEvent).
 2.  Un **Consumer** (pour traiter l'événement).
 
+## Fonctionnement Interne
+
+### Architecture
+*   **RequestParser** : Extrait la payload de la requête entrante (JSON, Form).
+*   **RemoteEvent** : Un objet normalisé qui représente l'événement (indépendant du fournisseur Mailgun, Stripe, etc.).
+*   **Consumer** : Dispatch l'événement dans le système (souvent vers Messenger).
+
+### Le Flux
+1.  **Auth** : Vérifie la signature du webhook (Secret Key) pour s'assurer qu'il vient bien du fournisseur déclaré.
+2.  **Parse** : Transforme le JSON propriétaire (ex: GitHub Payload) en objet `RemoteEvent` (name, id, payload).
+3.  **Map** : Mappe le nom de l'événement (`push`) vers une classe de message ou un Event Symfony.
+
 ## 🧠 Concepts Clés
 1.  **Sécurité** : Le composant gère la validation cryptographique des signatures (via le secret configuré) avant même d'appeler votre code.
 2.  **Routing** : Le `type` dans le routing (`mailer_mailgun`) sert de clé pour lier l'URL entrante au bon parser et au bon consumer.

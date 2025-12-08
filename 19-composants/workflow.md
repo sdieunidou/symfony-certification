@@ -154,6 +154,22 @@ Pour visualiser le workflow, on peut générer un graphe.
 php bin/console workflow:dump blog_publishing | dot -Tpng -o graph.png
 ```
 
+## Fonctionnement Interne
+
+### Architecture
+*   **Definition** : La carte statique (Places + Transitions).
+*   **MarkingStore** : Le stockage de l'état (ex: colonne `status` en BDD).
+*   **Marking** : Représente l'état actuel (ensemble des places occupées).
+
+### Le Flux
+1.  **Can** : Vérifie si la transition est possible (Logique + Events `guard`).
+2.  **Apply** :
+    *   Vérifie `can()`.
+    *   Retire les jetons des places de départ (Leave).
+    *   Ajoute les jetons aux places d'arrivée (Enter).
+    *   Met à jour le MarkingStore.
+    *   Dispatch les événements (`transition`, `completed`, `announce`).
+
 ## ⚠️ Points de vigilance (Certification)
 *   **Support Multiple** : Un même objet peut être supporté par plusieurs workflows.
 *   **Enums** : Depuis PHP 8.1, les places peuvent être des Enums.

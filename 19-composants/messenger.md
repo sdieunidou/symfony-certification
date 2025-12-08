@@ -297,6 +297,19 @@ Lors d'un déploiement, il faut arrêter proprement les workers existants pour q
 
 ---
 
+## Fonctionnement Interne
+
+### Architecture
+*   **MessageBus** : Itère sur la stack de middleware.
+*   **Middleware** : Couches successives (Logging, Transaction, Handle).
+*   **Receiver** : Poll les messages depuis une source externe.
+*   **Worker** : Boucle infinie qui appelle le Receiver puis le Bus.
+
+### Le Flux (Worker)
+1.  **Get** : `Receiver->get()`.
+2.  **Dispatch** : Envoie l'`Envelope` dans le bus.
+3.  **Ack/Reject** : Si succès, `Receiver->ack()`, sinon `Receiver->reject()`.
+
 ## 10. Points d'attention pour la Certification
 
 *   **Serialization** : Par défaut, Messenger utilise le format natif PHP `serialize()`. Pour l'interopérabilité (ex: consommer par une app Node.js), utiliser le **Serializer Symfony** (JSON) en configurant `serializer: messenger.transport.symfony_serializer` dans le transport.

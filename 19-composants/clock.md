@@ -57,6 +57,17 @@ public function testTokenExpiration(): void
 }
 ```
 
+## Fonctionnement Interne
+
+### Architecture
+*   **ClockInterface** : Le contrat simple (`now()`, `sleep()`).
+*   **NativeClock** : Wrapper autour de `microtime(true)` et `usleep()`.
+*   **MockClock** : Implémentation pour les tests. Elle stocke le temps dans une propriété modifiable.
+
+### Le Flux
+1.  En prod, `NativeClock` appelle directement le système.
+2.  En test, `MockClock` permet d'avancer le temps (`sleep()`) instantanément sans faire attendre le processus PHP réel.
+
 ## 🧠 Concepts Clés
 1.  **Immutabilité** : `now()` retourne toujours un `DateTimeImmutable`. C'est une bonne pratique.
 2.  **PSR-20** : Symfony 7 utilise l'interface standard du PHP-FIG.

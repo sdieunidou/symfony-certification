@@ -106,6 +106,19 @@ $lock = $factory->createLockFromKey($unserializedKey);
 $lock->release();
 ```
 
+## Fonctionnement Interne
+
+### Architecture
+*   **Factory** : Crée les verrous.
+*   **Key** : Objet représentant la ressource à verrouiller (contient l'ID).
+*   **StoreInterface** : Le driver de stockage (Redis, Semaphore, Flock, Doctrine).
+
+### Le Flux
+1.  **Acquire** : Le Store tente d'écrire le verrou.
+    *   Si déjà présent, retourne `false` (ou attend si `blocking`).
+2.  **Refresh** : Si le verrou a un TTL (expiration), il peut être prolongé.
+3.  **Release** : Supprime le verrou du Store, libérant la ressource pour les autres processus.
+
 ## ⚠️ Points de vigilance (Certification)
 1.  **Commandes Console** : Le trait `LockableTrait` intégré aux commandes Symfony utilise ce composant pour empêcher l'exécution multiple (`$this->lock()`).
 2.  **Fiabilité** : Les verrous distants (`Redis`, `Memcached`) peuvent être perdus si le service redémarre. Pour une fiabilité absolue, préférer `PdoStore` ou `Zookeeper`.

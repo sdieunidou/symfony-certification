@@ -100,6 +100,18 @@ Pour afficher des notifications sur le bureau (Mac/Windows/Linux) lors de l'exé
 
 ---
 
+## Fonctionnement Interne
+
+### Architecture
+*   **Channel** : Abstraction du canal (SMS, Chat, Push, Email, Browser).
+*   **Transport** : Comme pour le Mailer, gère l'envoi technique (Twilio, Slack, Firebase).
+*   **Policy** : Règle qui décide quel canal utiliser selon l'importance du message (High/Low/Urgent).
+
+### Le Flux
+1.  **Send** : Le notifier analyse l'importance de la Notification.
+2.  **Channel Selection** : Il choisit les destinataires et les canaux appropriés.
+3.  **Dispatch** : Utilise le système de Transport (souvent asynchrone via Messenger).
+
 ## 5. Points de vigilance pour la Certification
 
 *   **Admin Recipient** : On peut configurer des destinataires "Admin" globaux pour recevoir les notifications système (ex: exceptions critiques).

@@ -90,6 +90,19 @@ $process->run();
 
 ---
 
+## Fonctionnement Interne
+
+### Architecture
+*   **Process** : Wrapper autour de `proc_open`.
+*   **Pipes** : Gère les flux `stdin` (0), `stdout` (1), `stderr` (2).
+*   **InputStream** : Permet d'envoyer des données au processus au fur et à mesure.
+
+### Le Flux
+1.  **Start** : Appelle `proc_open` et récupère les ressources de pipes.
+2.  **Wait** : Boucle non-bloquante (`stream_select`) qui lit les sorties stdout/stderr tant que le processus tourne.
+3.  **Callback** : Appelle la fonction de callback PHP à chaque morceau de sortie reçu.
+4.  **Close** : Ferme les pipes et récupère le code de sortie (`proc_close`).
+
 ## 4. Points de vigilance pour la Certification
 
 *   **Array vs String** : Toujours passer un tableau d'arguments au constructeur (`['grep', 'foo', 'file.txt']`). Passer une chaîne unique (`'grep foo file.txt'`) est possible via `Process::fromShellCommandline()`, mais déconseillé car moins portable et plus risqué (injection).

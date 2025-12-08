@@ -88,6 +88,18 @@ Le composant fournit une commande pour valider la syntaxe des fichiers YAML sans
 php bin/console lint:yaml config/
 ```
 
+## Fonctionnement Interne
+
+### Architecture
+*   **Parser** : Lit le fichier YAML. Gère l'indentation significative.
+*   **Dumper** : Écrit un tableau PHP en format YAML.
+*   **Inline** : Gère la syntaxe inline (ex: `[1, 2, 3]`).
+
+### Le Flux
+1.  **Lexing** : Analyse ligne par ligne, calcule l'indentation.
+2.  **Parsing** : Construit la structure de données PHP.
+3.  **Flags** : Les flags (`Yaml::PARSE_DATETIME`, `Yaml::PARSE_OBJECT`) modifient le comportement du parser pour instancier des objets spécifiques.
+
 ## ⚠️ Points de vigilance (Certification)
 *   **Indentation** : YAML interdit les tabulations. Utilisez des espaces.
 *   **Performance** : Le parsing YAML est coûteux. En prod, Symfony cache le résultat du parsing en PHP (via le Config Cache).

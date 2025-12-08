@@ -25,6 +25,18 @@ $dbUrl = $_ENV['DATABASE_URL'];
 
 Dans une application Symfony, ce code est déjà présent dans `public/index.php` ou `bin/console`.
 
+## Fonctionnement Interne
+
+### Architecture
+*   **Dotenv** : La classe principale.
+*   **Parser** : Analyse le format `KEY=VALUE`.
+
+### Le Flux
+1.  **Load** : Lit le fichier `.env`.
+2.  **Parse** : Extrait les clés/valeurs.
+3.  **Populate** : Remplit `$_ENV` et `$_SERVER`.
+4.  **Override** : Par défaut, ne touche pas aux variables qui existent déjà (les "vraies" variables d'environnement gagnent toujours).
+
 ## 🧠 Concepts Clés
 1.  **Variables réelles** : Si une vraie variable d'environnement système existe (ex: définie dans Docker ou Apache), Dotenv **ne l'écrase pas** par défaut. La prod a toujours raison.
 2.  **Référencement** : On peut référencer une variable dans une autre : `app_url=$Scheme://$Host`.

@@ -101,6 +101,17 @@ $frInflector = new FrenchInflector();
 $frInflector->pluralize('cheval'); // ['chevaux']
 ```
 
+## Fonctionnement Interne
+
+### Architecture
+*   **AbstractString** : Classe mère fluide.
+*   **ByteString** : Wrapper pour les chaînes non-Unicode (ASCII, binaire). Utilise les fonctions natives `str_*`.
+*   **UnicodeString** : Wrapper pour UTF-8. Utilise l'extension `intl` (grapheme clusters) ou fallback sur `mbstring`.
+
+### Le Flux
+1.  **Construction** : `u('string')` détecte si la chaîne contient des caractères nécessitant Unicode.
+2.  **Manipulation** : Les méthodes retournent toujours une *nouvelle* instance (Immutabilité).
+
 ## 🧠 Concepts Clés (Certification)
 1.  **Immutabilité** : Les objets String sont immutables. `$u->append('a')` ne modifie pas `$u` mais retourne un nouvel objet.
 2.  **Graphèmes vs Code Points** : `UnicodeString` travaille sur les graphèmes (ce que l'utilisateur voit).

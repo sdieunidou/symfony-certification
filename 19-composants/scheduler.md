@@ -89,6 +89,19 @@ Il est possible de modifier le schedule dynamiquement (ex: charger les tâches d
 
 ---
 
+## Fonctionnement Interne
+
+### Architecture
+*   **Schedule** : Un objet qui contient une liste de `RecurringMessage`.
+*   **ScheduleProvider** : Service qui retourne le `Schedule`.
+*   **Worker** : Le même que Messenger, mais au lieu de `Receiver->get()`, il itère sur le `Schedule` pour voir si c'est l'heure.
+
+### Le Flux
+1.  **Loop** : Le worker se réveille (toutes les secondes par défaut).
+2.  **Check** : Il vérifie pour chaque message du Schedule : `shouldRun(now) ?`.
+3.  **Dispatch** : Si oui, il dispatch le message dans le bus Messenger classique.
+4.  **State** : Il utilise un `Cache` pour se souvenir du dernier "tick" et éviter les doublons/miss en cas de redémarrage.
+
 ## 4. Points de vigilance pour la Certification
 
 *   **Différence avec Cron** :

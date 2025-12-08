@@ -190,6 +190,19 @@ $response = new MockResponse([], ['error' => 'Network unreachable']);
 ### Profiling & HAR
 Le client est intégré au Profiler Symfony. En test, vous pouvez même rejouer des fichiers `.har` (HTTP Archive) enregistrés par votre navigateur.
 
+## Fonctionnement Interne
+
+### Architecture
+*   **HttpClientInterface** : Le contrat public.
+*   **NativeHttpClient** : Utilise `stream_socket_client` (PHP natif). Léger et portable.
+*   **CurlHttpClient** : Utilise l'extension `curl`. Plus performant pour HTTP/2 et PUSH.
+*   **ResponseInterface** : Un itérateur qui yield des "Chunks" de données.
+
+### Le Flux
+1.  **Request** : Les headers et le body sont préparés mais la connexion n'est pas forcément ouverte immédiatement (Lazy).
+2.  **Stream** : Lors de l'accès au contenu, les données sont streamées (pas de chargement complet en RAM).
+3.  **Async** : `curl_multi_exec` est utilisé en interne pour gérer plusieurs requêtes en parallèle sur le même thread PHP.
+
 ## ⚠️ Points de vigilance (Certification)
 
 1.  **Exceptions** :

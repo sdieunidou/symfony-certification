@@ -32,6 +32,13 @@ Le composant Form utilise Intl pour les types :
 *   `CurrencyType`
 *   `TimezoneType`
 
+## Fonctionnement Interne
+
+### Architecture
+*   **ICU** : Le composant repose presque entièrement sur la librairie C **ICU** (International Components for Unicode) via l'extension PHP `intl`.
+*   **ResourceBundle** : Les données (noms de pays, devises) sont stockées dans des fichiers binaires `.res` compilés par ICU, que Symfony lit.
+*   **Fallback** : Si l'extension `intl` est absente, Symfony fournit (via composer `symfony/intl`) une version PHP pur avec des données extraites (fichiers PHP).
+
 ## 🧠 Concepts Clés
 1.  **ICU** : International Components for Unicode. C'est le standard industriel.
 2.  **Locale** : Les codes de locale utilisent le format `fr`, `fr_CA`, `zh_Hans_CN`.

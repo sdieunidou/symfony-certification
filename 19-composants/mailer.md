@@ -165,6 +165,19 @@ framework:
 
 ---
 
+## Fonctionnement Interne
+
+### Architecture
+*   **Transport** : L'interface d'envoi (Smtp, Api, Null).
+*   **TransportFactory** : Crée le transport à partir du DSN.
+*   **Message** : Hérite de `Mime\Email` (standard RFC).
+
+### Le Flux
+1.  **Send** : `Mailer::send($email)`.
+2.  **Render** : Si le message contient du Twig, le `BodyRenderer` compile le template.
+3.  **Dispatch** : Un événement `MessageEvent` permet de modifier le mail avant envoi.
+4.  **Transport** : Le transport délivre le message (ou l'envoie dans Messenger si configuré asynchrone).
+
 ## 7. Points de vigilance pour la Certification
 
 *   **Envelope vs Header** : L'enveloppe SMTP (MAIL FROM / RCPT TO) peut être différente des headers MIME (From / To). Par défaut, Mailer copie les headers dans l'enveloppe, mais on peut les dissocier via `MessageEvent`.

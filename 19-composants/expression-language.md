@@ -122,6 +122,18 @@ $ast = $el->parse('1 + 2', [])->getNodes();
 dump($ast->dump()); // Représentation textuelle des nœuds
 ```
 
+## Fonctionnement Interne
+
+### Architecture
+*   **Lexer** : Tokenise la chaîne (`1 + 2` -> `NUMBER`, `OPERATOR`, `NUMBER`).
+*   **Parser** : Convertit les tokens en AST (Nodes).
+*   **Compiler** : Transforme l'AST en code PHP natif (`return 1 + 2;`).
+*   **Evaluator** : Exécute l'AST à la volée (plus lent mais dynamique).
+
+### Le Flux
+1.  **Compile** : Si utilisé en cache (ex: Routing, Security), l'expression est compilée en PHP pur.
+2.  **Evaluate** : Sinon, l'évaluateur parcourt l'arbre de nœuds et résout les variables/fonctions au runtime.
+
 ## Sécurité
 Contrairement à `eval()` en PHP, `ExpressionLanguage` est sandboxé.
 *   Accès limité aux variables passées explicitement.
