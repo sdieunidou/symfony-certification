@@ -47,7 +47,7 @@ class UserManager
 ```
 
 ## Group Use (PHP 7.0+)
-Permet d'importer plusieurs classes du même namespace en une ligne. Très propre.
+Permet d'importer plusieurs classes du même namespace en une ligne.
 
 ```php
 use Symfony\Component\HttpFoundation\{Request, Response, JsonResponse};
