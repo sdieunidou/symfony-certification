@@ -85,7 +85,7 @@ if ($twig->getLoader()->exists('theme/dark.html.twig')) {
 
 ## 🧠 Concepts Clés
 1.  **Response** : `render()` retourne un objet `Response` complet (avec headers, status 200). `renderView()` retourne une chaîne.
-2.  **Auto-découverte** : Avec `#[Template]`, si on ne donne pas de nom de fichier, Symfony tente de deviner `ControllerName/method_name.html.twig` (nécessite `sensio/framework-extra-bundle` historiquement, mais maintenant intégré via le bridge ? À vérifier, mieux vaut expliciter le nom).
+2.  **Auto-découverte** : Avec `#[Template]`, si on ne donne pas de nom de fichier, Symfony tente de deviner `ControllerName/method_name.html.twig`.
 
 ## Ressources
 *   [Symfony Docs - Rendering Templates](https://symfony.com/doc/current/templates.html#rendering-templates)
