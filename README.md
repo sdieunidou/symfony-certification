@@ -88,6 +88,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Débogage](./05-routage/debug.md)
 
 ### [7. Templating Twig](./06-templating-twig/)
+* [Fonctionnement Interne](./06-templating-twig/twig_internals.md)
 * [Syntaxe (v3.8)](./06-templating-twig/syntaxe.md)
 * [Méthodes de Rendu (Rendering)](./06-templating-twig/rendering.md)
 * [Auto escaping](./06-templating-twig/escaping.md)

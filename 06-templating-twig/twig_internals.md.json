@@ -1,0 +1,81 @@
+{
+  "source_file": "06-templating-twig/twig_internals.md",
+  "title": "Twig : Fonctionnement Interne",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le rôle du **Lexer** dans le pipeline de compilation Twig ?",
+      "type": "single_choice",
+      "options": [
+        "Trouver le fichier sur le disque.",
+        "Transformer le code source en un flux de Tokens.",
+        "Générer le code PHP final.",
+        "Construire l'Abstract Syntax Tree (AST)."
+      ],
+      "correct_answers": [
+        "Transformer le code source en un flux de Tokens."
+      ],
+      "explanation": "Le Lexer découpe le texte brut en unités logiques (tokens) avant que le Parser ne les analyse."
+    },
+    {
+      "id": 2,
+      "question": "Quelle classe est le point d'entrée principal de Twig, contenant la configuration et les extensions ?",
+      "type": "single_choice",
+      "options": [
+        "Twig\\Loader",
+        "Twig\\Template",
+        "Twig\\Environment",
+        "Twig\\Compiler"
+      ],
+      "correct_answers": [
+        "Twig\\Environment"
+      ],
+      "explanation": "C'est l'objet central (souvent injecté via `Environment $twig` ou aliasé par `Twig\\Environment`) qui coordonne le chargement, la compilation et le rendu."
+    },
+    {
+      "id": 3,
+      "question": "En environnement de **Production**, comment se comporte le cache de Twig par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "Il recompile le template à chaque requête.",
+        "Il vérifie la date de modification du fichier source et recompile si nécessaire.",
+        "Il ne vérifie PAS les modifications du fichier source et utilise la version compilée existante.",
+        "Il n'utilise pas de cache."
+      ],
+      "correct_answers": [
+        "Il ne vérifie PAS les modifications du fichier source et utilise la version compilée existante."
+      ],
+      "explanation": "Pour des performances maximales, `auto_reload` est à false en prod. Il faut vider le cache manuellement lors d'un déploiement."
+    },
+    {
+      "id": 4,
+      "question": "Qu'est-ce qu'un **AST** (Abstract Syntax Tree) dans Twig ?",
+      "type": "single_choice",
+      "options": [
+        "Un fichier de cache PHP.",
+        "Une structure arborescente de Noeuds (`Node`) représentant la logique du template après parsing.",
+        "Une liste de variables globales.",
+        "Le résultat HTML final."
+      ],
+      "correct_answers": [
+        "Une structure arborescente de Noeuds (`Node`) représentant la logique du template après parsing."
+      ],
+      "explanation": "Le Parser produit l'AST, qui sera ensuite traversé par le Compiler pour générer le PHP."
+    },
+    {
+      "id": 5,
+      "question": "Si vous devez permettre à des utilisateurs d'écrire leur propre code Twig de manière sécurisée, quel outil utiliser ?",
+      "type": "single_choice",
+      "options": [
+        "Le mode `debug: true`.",
+        "Le `Sandbox` (Extension Sandbox).",
+        "Le filtre `| raw`.",
+        "L'extension `SecurityExtension`."
+      ],
+      "correct_answers": [
+        "Le `Sandbox` (Extension Sandbox)."
+      ],
+      "explanation": "Le Sandbox permet de définir une `SecurityPolicy` pour restreindre strictement les balises, filtres et méthodes accessibles."
+    }
+  ]
+}
