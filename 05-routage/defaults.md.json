@@ -61,6 +61,21 @@
         "Utiliser la valeur par défaut de l'argument de la méthode PHP : `public function index(int $page = 1)`."
       ],
       "explanation": "Symfony inspecte la signature de la méthode et applique automatiquement le défaut au routeur."
+    },
+    {
+      "id": 5,
+      "question": "Que signifie la syntaxe de route `/blog/{page?1}` (Introduite récemment) ?",
+      "type": "single_choice",
+      "options": [
+        "Que le paramètre `page` est obligatoire et doit valoir 1.",
+        "Que le paramètre `page` est optionnel et sa valeur par défaut est 1.",
+        "C'est une syntaxe invalide.",
+        "Que le paramètre est un booléen."
+      ],
+      "correct_answers": [
+        "Que le paramètre `page` est optionnel et sa valeur par défaut est 1."
+      ],
+      "explanation": "C'est une manière concise (Inline) de définir un défaut directement dans le pattern, alternative à `defaults: ['page' => 1]`."
     }
   ]
 }

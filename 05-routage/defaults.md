@@ -30,6 +30,15 @@ Si vous autorisez `null`, le paramètre est optionnel et vaut null si absent.
 public function search(?string $query): Response
 ```
 
+### 4. Syntaxe Inline (Symfony 6.2+)
+Vous pouvez définir la valeur par défaut directement dans le pattern de l'URL avec `?`.
+
+```php
+// Matche /blog (page=1) ET /blog/2 (page=2)
+#[Route('/blog/{page?1}')]
+public function list(int $page): Response
+```
+
 ## Règles de Position
 Un paramètre optionnel ne peut se trouver qu'à la **fin** du pattern (ou être suivi uniquement d'autres paramètres optionnels).
 
