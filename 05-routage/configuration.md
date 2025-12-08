@@ -74,20 +74,44 @@ use Symfony\Component\Routing\Attribute\DeprecatedAlias;
 ```
 
 ## Groupes et Préfixes
-On peut grouper des routes (par classe ou par import) pour leur appliquer des options communes :
-*   **Prefix** : `/admin`
-*   **Name Prefix** : `admin_`
-*   **Host** : `admin.example.com`
-*   **Requirements** : `_locale: en|fr`
+On peut grouper des routes pour leur appliquer des options communes.
+
+### 1. Sur la Classe (Attributs)
+Vous pouvez appliquer `#[Route]` sur la classe entière. Toutes les méthodes hériteront de ces configurations.
 
 ```php
-#[Route('/blog', name: 'blog_')]
-class BlogController extends AbstractController
+#[Route(
+    path: '/api/{_locale}', 
+    name: 'api_', 
+    requirements: [
+        '_locale' => 'en|fr',
+        'host' => 'api.example.com' // Restriction par domaine
+    ],
+    host: '{host}', // Possibilité d'avoir un host dynamique
+    priority: 10
+)]
+class ApiController extends AbstractController
 {
-    // URL: /blog/list, Name: blog_list
-    #[Route('/list', name: 'list')] 
+    // URL: api.example.com/api/en/users
+    // Name: api_users_list
+    #[Route('/users', name: 'users_list')] 
     public function list() {}
 }
+```
+
+### 2. Par Import (YAML)
+C'est très puissant pour préfixer tout un dossier de contrôleurs (ex: Admin).
+
+```yaml
+# config/routes.yaml
+admin_area:
+    resource: ../src/Controller/Admin/
+    type: attribute
+    prefix: /admin
+    name_prefix: admin_
+    host: admin.example.com
+    requirements:
+        _locale: en|fr
 ```
 
 ## 🧠 Concepts Clés

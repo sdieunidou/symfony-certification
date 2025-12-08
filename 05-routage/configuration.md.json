@@ -91,6 +91,21 @@
         "Oui, en plaçant un attribut `#[Route('/admin')]` sur la classe du contrôleur."
       ],
       "explanation": "Les routes des méthodes seront concaténées à ce préfixe."
+    },
+    {
+      "id": 7,
+      "question": "Comment restreindre toutes les routes d'un contrôleur à un domaine spécifique (ex: `api.example.com`) ?",
+      "type": "single_choice",
+      "options": [
+        "En ajoutant l'option `host: 'api.example.com'` dans l'attribut `#[Route]` de la classe.",
+        "En le configurant dans `php.ini`.",
+        "Ce n'est possible qu'en configurant le serveur web (Apache/Nginx).",
+        "En ajoutant un préfixe `/api`."
+      ],
+      "correct_answers": [
+        "En ajoutant l'option `host: 'api.example.com'` dans l'attribut `#[Route]` de la classe."
+      ],
+      "explanation": "L'attribut `#[Route]` sur la classe permet de définir un host, des requirements et un prefix communs à toutes les méthodes."
     }
   ]
 }
