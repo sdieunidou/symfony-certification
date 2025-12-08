@@ -9,7 +9,7 @@ Il remplace avantageusement l'ancien "Symfony Installer" et offre un environneme
 ## Fonctionnalités Principales
 
 ### 1. Serveur Web Local (Web Server)
-C'est la fonctionnalité phare. Il lance un serveur web haute performance (basé sur le serveur web interne de PHP mais boosté) supportant HTTP/2 et TLS automatiquement.
+C'est la fonctionnalité phare. Il lance un serveur web (basé sur le serveur web interne de PHP mais boosté) supportant HTTP/2 et TLS automatiquement.
 
 ```bash
 symfony server:start
