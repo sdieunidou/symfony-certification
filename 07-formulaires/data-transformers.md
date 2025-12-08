@@ -209,6 +209,23 @@ Symfony fournit déjà de nombreux transformateurs utiles dans `Symfony\Componen
 *   **`ChoicesToValuesTransformer`** : Utilisé en interne par `ChoiceType`.
 *   **`MoneyToLocalizedStringTransformer`** : Pour le `MoneyType`.
 
+### Utilisation de `ReversedTransformer`
+Parfois, vous avez un Transformer qui fait exactement ce que vous voulez, mais **à l'envers**.
+Au lieu de réécrire la classe, vous pouvez utiliser `Symfony\Component\Form\ReversedTransformer`.
+
+```php
+use Symfony\Component\Form\ReversedTransformer;
+
+// Si j'ai un transformer A -> B
+$transformer = new MyCustomTransformer();
+
+// Je peux l'utiliser pour faire B -> A
+$reversedTransformer = new ReversedTransformer($transformer);
+
+$builder->get('field')->addModelTransformer($reversedTransformer);
+```
+Cela échange simplement les méthodes `transform()` et `reverseTransform()`.
+
 ---
 
 ## 6. Chaînage de Transformateurs

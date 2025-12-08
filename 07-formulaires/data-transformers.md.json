@@ -76,6 +76,21 @@
         "`CallbackTransformer`"
       ],
       "explanation": "Il prend deux callbacks en argument : l'un pour `transform`, l'autre pour `reverseTransform`."
+    },
+    {
+      "id": 6,
+      "question": "Si vous disposez d'un Transformer qui convertit A en B, mais que vous avez besoin de convertir B en A, quelle classe utiliser pour éviter de réécrire la logique ?",
+      "type": "single_choice",
+      "options": [
+        "`InverseTransformer`",
+        "`ReversedTransformer`",
+        "`FlipTransformer`",
+        "`BackwardsTransformer`"
+      ],
+      "correct_answers": [
+        "`ReversedTransformer`"
+      ],
+      "explanation": "Cette classe wrapper échange simplement les appels aux méthodes `transform()` et `reverseTransform()` du transformer original."
     }
   ]
 }
