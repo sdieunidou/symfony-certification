@@ -58,8 +58,10 @@ Pour valider l'objet dans son ensemble (souvent via `Callback` ou contrainte per
 class User { ... }
 ```
 
-## Valider une valeur simple
-On peut valider une valeur scalaire sans créer de classe, en passant les contraintes à la volée.
+## Valider une valeur simple ou des données brutes (Validation Ad-hoc)
+On peut valider une valeur scalaire ou un tableau sans créer de classe (sans métadonnées), en passant les contraintes directement en deuxième argument de la méthode `validate`.
+
+### Exemple simple (Scalaire)
 
 ```php
 use Symfony\Component\Validator\Constraints as Assert;
@@ -71,6 +73,24 @@ $constraints = [
 ];
 
 $errors = $validator->validate($email, $constraints);
+```
+
+### Exemple avec un tableau (Collection)
+
+C'est très utile pour valider des données brutes (ex: un tableau JSON décodé) sans les mapper sur un objet.
+
+```php
+$input = [
+    'username' => 'John',
+    'contact' => 'invalid-email',
+];
+
+$constraints = new Assert\Collection([
+    'username' => new Assert\Length(['min' => 3]),
+    'contact' => new Assert\Email(),
+]);
+
+$errors = $validator->validate($input, $constraints);
 ```
 
 ## Sources de Métadonnées
