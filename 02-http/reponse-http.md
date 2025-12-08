@@ -24,7 +24,7 @@ Symfony oblige le contrôleur à retourner un objet qui hérite de `Symfony\Comp
     *   Évite la saturation mémoire (OOM) sur les gros exports.
 5.  **`RedirectResponse`** : Raccourci pour une 301/302 + Header Location.
 
-## Exemple de Code Expert
+## Exemple de Code
 
 ```php
 public function export(): StreamedResponse
