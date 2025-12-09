@@ -223,8 +223,6 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Web Profiler](./14-divers/profiler.md)
 * [Runtime](./14-divers/runtime.md)
 * [Attributs PHP natifs](./14-divers/attributes.md)
-* [Symfony Contracts](./14-divers/contracts.md)
-* [Symfony AI](./14-divers/symfony-ai.md)
 * [Création de Bundle](./14-divers/bundles.md)
 
 ### [16. Architecture](./16-architecture/)
@@ -293,3 +291,5 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Translation (i18n)](./19-composants/translation.md)
 * [OptionsResolver](./19-composants/options-resolver.md)
 * [Yaml](./19-composants/yaml.md)
+* [Symfony Contracts](./19-composants/contracts.md)
+* [Symfony AI](./19-composants/symfony-ai.md)
