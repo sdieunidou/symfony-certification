@@ -1,0 +1,51 @@
+{
+  "source_file": "14-divers/lazy-objects.md",
+  "title": "Lazy Objects (Ghost & Proxy)",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel composant Symfony fournit les traits `LazyGhostTrait` et `LazyProxyTrait` ?",
+      "type": "single_choice",
+      "options": [
+        "symfony/dependency-injection",
+        "symfony/proxy-manager-bridge",
+        "symfony/var-exporter",
+        "symfony/cache"
+      ],
+      "correct_answers": [
+        "symfony/var-exporter"
+      ],
+      "explanation": "Bien que l'injection de dépendances les utilise, c'est le composant VarExporter qui implémente la magie interne (depuis Symfony 6.2)."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence fondamentale entre un Lazy Ghost et un Virtual Proxy ?",
+      "type": "single_choice",
+      "options": [
+        "Le Ghost s'initialise lui-même (in-place), tandis que le Proxy délègue à une instance distincte.",
+        "Le Ghost ne fonctionne qu'avec des propriétés publiques.",
+        "Le Proxy est plus rapide que le Ghost.",
+        "Il n'y a aucune différence, ce sont deux noms pour la même chose."
+      ],
+      "correct_answers": [
+        "Le Ghost s'initialise lui-même (in-place), tandis que le Proxy délègue à une instance distincte."
+      ],
+      "explanation": "Le Ghost est l'objet réel vide qui se remplit. Le Virtual Proxy est une coquille qui contient l'objet réel."
+    },
+    {
+      "id": 3,
+      "question": "Depuis Symfony 6.3, quelle stratégie est utilisée par défaut pour les services `lazy: true` ?",
+      "type": "single_choice",
+      "options": [
+        "Virtual Proxy",
+        "Ghost Object",
+        "Runtime Exception",
+        "Null Object"
+      ],
+      "correct_answers": [
+        "Ghost Object"
+      ],
+      "explanation": "Symfony privilégie désormais les Ghost Objects pour leurs meilleures performances et une empreinte mémoire réduite."
+    }
+  ]
+}

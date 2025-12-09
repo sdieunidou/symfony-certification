@@ -223,6 +223,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Web Profiler](./14-divers/profiler.md)
 * [Runtime](./14-divers/runtime.md)
 * [Création de Bundle](./14-divers/bundles.md)
+* [Lazy Objects (Ghost & Proxy)](./14-divers/lazy-objects.md)
 
 ### [16. Architecture](./16-architecture/)
 * [Domain Driven Design (DDD)](./16-architecture/ddd.md)
