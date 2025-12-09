@@ -71,7 +71,7 @@ src/
 
 ### Inversion de Dépendance (DIP)
 Comment le Handler (Application) peut-il sauvegarder en base s'il ne doit pas dépendre de Doctrine (Infra) ?
-1.  **Application** définit l'interface `UserRepositoryInterface`.
+1.  **Domain** définit l'interface `UserRepositoryInterface`.
 2.  **Application** utilise cette interface (type-hint).
 3.  **Infrastructure** implémente l'interface avec `DoctrineUserRepository`.
 4.  **Symfony (DI)** injecte l'implémentation dans le Handler au runtime.
