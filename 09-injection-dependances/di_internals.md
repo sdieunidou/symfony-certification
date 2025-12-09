@@ -39,7 +39,7 @@ Représente un lien vers un autre service (l'arobase `@` dans le YAML).
 ### 3. CompilerPassInterface
 Interface pour modifier le container pendant la phase de compilation.
 *   Permet de manipuler les `Definitions`.
-*   Indispensable pour créer des systèmes de plugins basés sur les **Tags**.
+*   Indispensable pour créer des systèmes de basés sur les **Tags**.
 
 ### 4. ServiceLocator
 Un "mini-conteneur" léger qui ne donne accès qu'à une liste restreinte de services. Utilisé pour l'injection lazy et pour éviter de passer tout le container.
