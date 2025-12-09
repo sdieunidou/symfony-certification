@@ -76,9 +76,8 @@ class LoginFormAuthenticator extends AbstractAuthenticator
         $csrfToken = $request->request->get('_csrf_token');
 
         // 1. UserBadge : Charge l'utilisateur
-        $userBadge = new UserBadge($email, function($userIdentifier) {
-            return $this->userRepository->findOneBy(['email' => $userIdentifier]);
-        });
+        // (Sans callback, Symfony utilisera le UserProvider configuré sur le firewall)
+        $userBadge = new UserBadge($email);
 
         // 2. Création du Passport avec Credentials
         return new Passport(
