@@ -4,7 +4,7 @@
 Ce fichier couvre les mécanismes d'injection complexes comme l'Expression Language, les services Lazy, et l'injection de valeurs spéciales.
 
 ## 1. Expression Language (`@=`)
-Vous permet d'injecter des valeurs calculées dynamiquement en utilisant une syntaxe proche de Twig/JS. Utile pour injecter le résultat d'une méthode d'un autre service.
+Vous permet d'injecter des valeurs calculées dynamiquement. Utile pour injecter le résultat d'une méthode d'un autre service.
 
 ```yaml
 services:
