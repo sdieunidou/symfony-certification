@@ -50,8 +50,20 @@ Il existe 3 façons principales d'injecter des dépendances :
     *   Les dépendances sont optionnelles ou mutables.
     *   Résout les références circulaires.
 3.  **Property Injection** :
-    *   Injecter directement dans une propriété publique/annotée (`#[Required]`).
-    *   Utilisé par l'autowiring pour les setters automatiques.
+    *   Injecter directement dans une propriété publique ou annotée (`#[Required]`).
+    *   Utilisé par l'autowiring pour configurer automatiquement les dépendances sans passer par le constructeur.
+
+    ```php
+    use Symfony\Contracts\Service\Attribute\Required;
+    use Psr\Log\LoggerInterface;
+
+    class ReportGenerator
+    {
+        // Injection directe dans la propriété publique
+        #[Required]
+        public LoggerInterface $logger;
+    }
+    ```
 
 ## 5. Constantes et PHP Natif
 Vous pouvez injecter des constantes PHP directement.
@@ -68,6 +80,20 @@ Symfony permet de modifier le comportement de l'injection sur un argument spéci
 
 *   `!optional` : Si le service n'existe pas, l'argument est ignoré (rarement utilisé en YAML, plutôt via `ContainerBuilder`).
 *   `on-invalid: null` / `ignore` : Comportement si le service injecté n'existe pas.
+
+```yaml
+services:
+    App\Service\OptionalHandler:
+        arguments:
+            # Si 'app.logger' n'existe pas, l'argument sera null
+            $logger: '@?app.logger'
+            
+            # Syntaxe verbeuse équivalente
+            $otherLogger:
+                type: service
+                id: app.logger
+                on_invalid: null # ou 'ignore'
+```
 
 ```yaml
 arguments:
