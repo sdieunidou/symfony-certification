@@ -19,6 +19,36 @@
     },
     {
       "id": 2,
+      "question": "Quel est le rôle de l'attribut `#[HasNamedArguments]` sur le constructeur d'une contrainte personnalisée ?",
+      "type": "single_choice",
+      "options": [
+        "Il indique que la contrainte ne peut pas avoir d'arguments.",
+        "Il permet de mapper directement les arguments nommés de l'attribut PHP aux paramètres du constructeur.",
+        "Il force l'utilisation d'un tableau `$options` unique.",
+        "Il est obsolète depuis PHP 8."
+      ],
+      "correct_answers": [
+        "Il permet de mapper directement les arguments nommés de l'attribut PHP aux paramètres du constructeur."
+      ],
+      "explanation": "Sans cet attribut, Symfony pourrait tenter de passer les options comme un tableau unique. Il améliore la lisibilité et le typage strict."
+    },
+    {
+      "id": 3,
+      "question": "Comment définir une option 'par défaut' pour une contrainte (celle utilisée si aucun nom d'argument n'est fourni, ex: `#[MyConstraint('valeur')]`) ?",
+      "type": "single_choice",
+      "options": [
+        "En la nommant `value` dans le constructeur.",
+        "En surchargeant la méthode `getDefaultOption()` pour retourner le nom de la propriété.",
+        "Ce n'est pas possible, il faut toujours nommer les arguments.",
+        "En utilisant l'annotation `@Default`."
+      ],
+      "correct_answers": [
+        "En surchargeant la méthode `getDefaultOption()` pour retourner le nom de la propriété."
+      ],
+      "explanation": "La méthode `getDefaultOption()` retourne le nom de l'option qui recevra la valeur passée sans nom d'argument."
+    },
+    {
+      "id": 4,
       "question": "Dans un `ConstraintValidator`, quel objet est utilisé pour ajouter une violation ?",
       "type": "single_choice",
       "options": [
@@ -33,7 +63,7 @@
       "explanation": "On utilise `$this->context->buildViolation(...)->addViolation()`."
     },
     {
-      "id": 3,
+      "id": 5,
       "question": "Quelle est la bonne pratique concernant les valeurs `null` ou vides dans une contrainte personnalisée ?",
       "type": "single_choice",
       "options": [
@@ -48,7 +78,7 @@
       "explanation": "Cela permet de composer les contraintes. Si un champ est optionnel, votre contrainte ne doit pas échouer s'il est vide."
     },
     {
-      "id": 4,
+      "id": 6,
       "question": "Si votre classe de contrainte contient des propriétés privées, quelle méthode magique devez-vous implémenter pour qu'elles soient mises en cache correctement ?",
       "type": "single_choice",
       "options": [
@@ -63,7 +93,22 @@
       "explanation": "La classe parente `Constraint` utilise `get_object_vars` qui ne voit pas les propriétés privées des enfants. Il faut les retourner explicitement dans `__sleep`."
     },
     {
-      "id": 5,
+      "id": 7,
+      "question": "Comment injecter des dépendances (services) dans un validateur personnalisé ?",
+      "type": "single_choice",
+      "options": [
+        "Ce n'est pas possible, les validateurs sont instanciés manuellement.",
+        "Il faut les passer via le constructeur de la Contrainte.",
+        "Le validateur est un service (autowired), on utilise donc l'injection via son constructeur.",
+        "Il faut utiliser le conteneur global."
+      ],
+      "correct_answers": [
+        "Le validateur est un service (autowired), on utilise donc l'injection via son constructeur."
+      ],
+      "explanation": "Avec la configuration par défaut (`autowire: true`), les validateurs sont automatiquement enregistrés comme services."
+    },
+    {
+      "id": 8,
       "question": "Qu'est-ce qu'une 'Compound Constraint' (Contrainte Composée) ?",
       "type": "single_choice",
       "options": [
@@ -75,10 +120,10 @@
       "correct_answers": [
         "Une contrainte définie par une collection d'autres contraintes existantes, sans validateur spécifique."
       ],
-      "explanation": "Elle étend `Compound` et définit `getConstraints()`. Elle permet de regrouper des règles (ex: PasswordRequirements)."
+      "explanation": "Elle étend `Compound` et définit `getConstraints()`. Elle permet de regrouper des règles réutilisables."
     },
     {
-      "id": 6,
+      "id": 9,
       "question": "Quelle classe de test utiliser pour tester un validateur personnalisé ?",
       "type": "single_choice",
       "options": [
@@ -93,7 +138,7 @@
       "explanation": "C'est une classe utilitaire fournie par Symfony pour tester un validateur de manière isolée."
     },
     {
-      "id": 7,
+      "id": 10,
       "question": "Comment faire en sorte qu'une contrainte s'applique à la classe entière (et non à une propriété) ?",
       "type": "single_choice",
       "options": [
