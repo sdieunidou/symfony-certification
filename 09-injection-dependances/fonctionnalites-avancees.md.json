@@ -1,0 +1,66 @@
+{
+  "source_file": "09-injection-dependances/fonctionnalites-avancees.md",
+  "title": "Fonctionnalités Avancées d'Injection",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle syntaxe permet d'utiliser l'Expression Language pour injecter une valeur ?",
+      "type": "single_choice",
+      "options": [
+        "expr(...)",
+        "@=...",
+        "#{...}",
+        "!expr ..."
+      ],
+      "correct_answers": [
+        "@=..."
+      ],
+      "explanation": "Le préfixe `@=` indique que la chaîne suivante doit être évaluée par le composant ExpressionLanguage (ex: `@=service('foo').bar()`)."
+    },
+    {
+      "id": 2,
+      "question": "Qu'est-ce qu'un service 'Lazy' (`lazy: true`) ?",
+      "type": "single_choice",
+      "options": [
+        "Un service qui n'est jamais instancié.",
+        "Un service qui est instancié uniquement lors de son premier appel effectif, via un Proxy.",
+        "Un service lent qui doit être mis en cache.",
+        "Un service déprécié."
+      ],
+      "correct_answers": [
+        "Un service qui est instancié uniquement lors de son premier appel effectif, via un Proxy."
+      ],
+      "explanation": "Symfony injecte un objet proxy léger. L'instanciation réelle du service lourd est différée jusqu'à ce qu'une méthode soit appelée."
+    },
+    {
+      "id": 3,
+      "question": "Qu'est-ce qu'un service 'Synthetic' ?",
+      "type": "single_choice",
+      "options": [
+        "Un service généré par IA.",
+        "Un service dont l'instanciation n'est pas gérée par le conteneur mais injectée au runtime (ex: request, kernel).",
+        "Un service composé de plusieurs autres services.",
+        "Un alias de service."
+      ],
+      "correct_answers": [
+        "Un service dont l'instanciation n'est pas gérée par le conteneur mais injectée au runtime (ex: request, kernel)."
+      ],
+      "explanation": "Le conteneur sait que le service existe (`synthetic: true`) mais s'attend à ce qu'il soit injecté via `$container->set()` pendant le boot."
+    },
+    {
+      "id": 4,
+      "question": "Comment injecter une constante de classe PHP dans un argument de service ?",
+      "type": "single_choice",
+      "options": [
+        "En écrivant simplement le nom de la constante.",
+        "En utilisant `!php/const Class::CONSTANTE`.",
+        "En utilisant `@Class::CONSTANTE`.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "En utilisant `!php/const Class::CONSTANTE`."
+      ],
+      "explanation": "C'est la syntaxe YAML standard supportée par Symfony pour référencer des constantes PHP."
+    }
+  ]
+}

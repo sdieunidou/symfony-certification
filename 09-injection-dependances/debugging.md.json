@@ -1,0 +1,66 @@
+{
+  "source_file": "09-injection-dependances/debugging.md",
+  "title": "Débogage du Conteneur",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle commande permet de lister tous les services publics disponibles dans le conteneur ?",
+      "type": "single_choice",
+      "options": [
+        "php bin/console list:services",
+        "php bin/console debug:container",
+        "php bin/console services:debug",
+        "php bin/console debug:router"
+      ],
+      "correct_answers": [
+        "php bin/console debug:container"
+      ],
+      "explanation": "C'est la commande principale pour inspecter le contenu du conteneur de services."
+    },
+    {
+      "id": 2,
+      "question": "Quelle est la différence principale entre `debug:container` et `debug:autowiring` ?",
+      "type": "single_choice",
+      "options": [
+        "Il n'y en a aucune, c'est un alias.",
+        "`debug:container` liste les services (IDs), alors que `debug:autowiring` liste les types (classes/interfaces) utilisables pour l'injection.",
+        "`debug:autowiring` est plus lent.",
+        "`debug:container` ne montre que les services privés."
+      ],
+      "correct_answers": [
+        "`debug:container` liste les services (IDs), alors que `debug:autowiring` liste les types (classes/interfaces) utilisables pour l'injection."
+      ],
+      "explanation": "Un service peut exister dans le conteneur mais ne pas être autowirable s'il n'est pas associé à un type unique."
+    },
+    {
+      "id": 3,
+      "question": "À quoi sert la commande `lint:container` ?",
+      "type": "single_choice",
+      "options": [
+        "À formater le fichier services.yaml.",
+        "À vérifier que les services injectés correspondent aux types attendus dans les constructeurs.",
+        "À supprimer les services inutilisés.",
+        "À optimiser le cache."
+      ],
+      "correct_answers": [
+        "À vérifier que les services injectés correspondent aux types attendus dans les constructeurs."
+      ],
+      "explanation": "Elle permet de détecter les erreurs de configuration (arguments manquants, mauvais types) sans avoir à lancer l'application."
+    },
+    {
+      "id": 4,
+      "question": "Si un service n'apparaît pas dans `debug:container`, quelle est la cause la plus probable ?",
+      "type": "single_choice",
+      "options": [
+        "Le service est privé (par défaut).",
+        "Le service n'existe pas.",
+        "Le fichier yaml est vide.",
+        "Symfony est cassé."
+      ],
+      "correct_answers": [
+        "Le service est privé (par défaut)."
+      ],
+      "explanation": "Les services privés sont masqués par défaut. Il faut spécifier l'ID du service ou utiliser des options pour les voir."
+    }
+  ]
+}

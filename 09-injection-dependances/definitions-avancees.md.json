@@ -1,0 +1,81 @@
+{
+  "source_file": "09-injection-dependances/definitions-avancees.md",
+  "title": "Définitions Avancées",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle option permet de désactiver le comportement singleton d'un service (une nouvelle instance à chaque appel) ?",
+      "type": "single_choice",
+      "options": [
+        "singleton: false",
+        "shared: false",
+        "public: true",
+        "prototype: true"
+      ],
+      "correct_answers": [
+        "shared: false"
+      ],
+      "explanation": "Par défaut `shared` est à `true`. Le mettre à `false` force le conteneur à créer une nouvelle instance à chaque injection ou appel."
+    },
+    {
+      "id": 2,
+      "question": "Comment définir une dépendance optionnelle qui ne fait pas échouer l'injection si le service n'existe pas ?",
+      "type": "single_choice",
+      "options": [
+        "En préfixant l'ID du service par `?` (ex: `@?logger`).",
+        "En utilisant `optional: true`.",
+        "Ce n'est pas possible en YAML.",
+        "En mettant l'argument à `null`."
+      ],
+      "correct_answers": [
+        "En préfixant l'ID du service par `?` (ex: `@?logger`)."
+      ],
+      "explanation": "Le préfixe `@?` indique au conteneur d'injecter `null` si le service référencé n'existe pas, au lieu de lancer une exception."
+    },
+    {
+      "id": 3,
+      "question": "Quelle est la différence principale entre l'injection par constructeur et l'injection par setter (`calls`) ?",
+      "type": "single_choice",
+      "options": [
+        "L'injection par setter est plus performante.",
+        "L'injection par constructeur force les dépendances obligatoires et l'immutabilité, alors que les setters permettent les dépendances optionnelles et circulaires.",
+        "L'injection par setter est dépréciée.",
+        "Il n'y a aucune différence."
+      ],
+      "correct_answers": [
+        "L'injection par constructeur force les dépendances obligatoires et l'immutabilité, alors que les setters permettent les dépendances optionnelles et circulaires."
+      ],
+      "explanation": "C'est une bonne pratique de privilégier le constructeur pour garantir que l'objet est toujours dans un état valide."
+    },
+    {
+      "id": 4,
+      "question": "À quoi sert un `configurator` dans la définition d'un service ?",
+      "type": "single_choice",
+      "options": [
+        "À définir les paramètres du constructeur.",
+        "À exécuter une logique complexe de post-initialisation sur le service après son instanciation.",
+        "À configurer les routes du service.",
+        "À compiler le service."
+      ],
+      "correct_answers": [
+        "À exécuter une logique complexe de post-initialisation sur le service après son instanciation."
+      ],
+      "explanation": "Le configurator est un callable exécuté juste après la création de l'objet, permettant une configuration plus fine que de simples appels de setters."
+    },
+    {
+      "id": 5,
+      "question": "Comment factoriser la configuration commune de plusieurs services ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant l'option `parent` pour hériter d'un service abstrait.",
+        "En copiant-collant le YAML.",
+        "En utilisant l'autowiring uniquement.",
+        "En utilisant des traits PHP."
+      ],
+      "correct_answers": [
+        "En utilisant l'option `parent` pour hériter d'un service abstrait."
+      ],
+      "explanation": "L'option `parent` permet à un service d'hériter des arguments et des appels de méthode d'un autre service."
+    }
+  ]
+}
