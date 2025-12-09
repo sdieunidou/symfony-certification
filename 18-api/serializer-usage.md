@@ -4,8 +4,6 @@
 Le composant Serializer transforme des objets complexes (Entités, DTOs) en formats spécifiques (JSON, XML, CSV) et inversement.
 En API, c'est lui qui formate la réponse envoyée au client.
 
-*Voir aussi la fiche `18-composants/serializer.md` pour le fonctionnement technique.*
-
 ## Groupes de Sérialisation
 C'est la fonctionnalité la plus critique pour une API. Elle permet de contrôler quels champs sont exposés pour une opération donnée, évitant la fuite de données sensibles (mots de passe) ou les boucles infinies.
 
