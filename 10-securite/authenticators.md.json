@@ -4,63 +4,78 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel objet retourne la méthode `authenticate()` d'un Authenticator (Symfony 6+) ?",
+      "question": "Quel est le rôle principal d'un `Passport` dans Symfony Security ?",
       "type": "single_choice",
       "options": [
-        "Un `UserInterface`",
-        "Un `Passport`",
-        "Un `booléen`",
-        "Un `Token`"
+        "Vérifier le mot de passe directement.",
+        "Transporter les données d'authentification (User, Credentials, Badges) entre l'Authenticator et l'AuthenticationManager.",
+        "Stocker la session utilisateur.",
+        "Gérer les rôles."
       ],
       "correct_answers": [
-        "Un `Passport`"
+        "Transporter les données d'authentification (User, Credentials, Badges) entre l'Authenticator et l'AuthenticationManager."
       ],
-      "explanation": "Le Passport encapsule les credentials et les badges (User, Password, CSRF, RememberMe)."
+      "explanation": "C'est un DTO (Data Transfer Object) qui contient des Badges."
     },
     {
       "id": 2,
-      "question": "À quoi sert le `UserBadge` dans un Passport ?",
+      "question": "Quelle est la différence entre `Passport` et `SelfValidatingPassport` ?",
       "type": "single_choice",
       "options": [
-        "À vérifier le mot de passe.",
-        "À définir l'identifiant de l'utilisateur (email, username) pour que Symfony le charge via le UserProvider.",
-        "À stocker les rôles.",
-        "À valider le token CSRF."
+        "Aucune.",
+        "`Passport` nécessite un badge de type Credentials (ex: Password), alors que `SelfValidatingPassport` n'en a pas besoin.",
+        "`SelfValidatingPassport` valide automatiquement les formulaires.",
+        "`Passport` est déprécié."
       ],
       "correct_answers": [
-        "À définir l'identifiant de l'utilisateur (email, username) pour que Symfony le charge via le UserProvider."
+        "`Passport` nécessite un badge de type Credentials (ex: Password), alors que `SelfValidatingPassport` n'en a pas besoin."
       ],
-      "explanation": "C'est le lien entre l'authenticator et le UserProvider."
+      "explanation": "Utilisez SelfValidatingPassport pour les API Tokens ou OAuth où la simple présence du token valide suffit."
     },
     {
       "id": 3,
-      "question": "Si vous créez un Authenticator pour une API (Token Header) qui ne nécessite pas de vérifier un mot de passe, quel type de Passport utiliser ?",
+      "question": "À quoi servent les 'Attributes' d'un Passport (`setAttribute`) ?",
       "type": "single_choice",
       "options": [
-        "`Passport`",
-        "`SelfValidatingPassport`",
-        "`ApiPassport`",
-        "`AnonymousPassport`"
+        "À définir des attributs HTML.",
+        "À stocker des données arbitraires (ex: scopes, ip) dans le Passport pour les transmettre à la méthode `createToken` ou aux listeners.",
+        "À configurer les attributs de session.",
+        "À rien."
       ],
       "correct_answers": [
-        "`SelfValidatingPassport`"
+        "À stocker des données arbitraires (ex: scopes, ip) dans le Passport pour les transmettre à la méthode `createToken` ou aux listeners."
       ],
-      "explanation": "`SelfValidatingPassport` n'attend pas de badge `PasswordCredentials`."
+      "explanation": "C'est un moyen de passer de l'information contextuelle de la phase d'authentification à la phase de création du token."
     },
     {
       "id": 4,
-      "question": "Quelle méthode de l'Authenticator permet de vérifier si celui-ci doit s'activer pour la requête courante ?",
+      "question": "Quel Badge est **obligatoire** dans tous les Passports ?",
       "type": "single_choice",
       "options": [
-        "`authenticate()`",
-        "`supports(Request $request)`",
-        "`onAuthenticationSuccess()`",
-        "`start()`"
+        "`PasswordCredentials`",
+        "`UserBadge`",
+        "`CsrfTokenBadge`",
+        "`RememberMeBadge`"
       ],
       "correct_answers": [
-        "`supports(Request $request)`"
+        "`UserBadge`"
       ],
-      "explanation": "Si `supports` retourne `false`, l'authenticator est ignoré."
+      "explanation": "Il faut toujours identifier *qui* essaie de se connecter."
+    },
+    {
+      "id": 5,
+      "question": "Quel interface un Authenticator doit-il implémenter pour gérer la redirection des utilisateurs non authentifiés (le démarrage de l'auth) ?",
+      "type": "single_choice",
+      "options": [
+        "`AuthenticationEntryPointInterface`",
+        "`StartableInterface`",
+        "`RedirectInterface`",
+        "`LoginInterface`"
+      ],
+      "correct_answers": [
+        "`AuthenticationEntryPointInterface`"
+      ],
+      "explanation": "La méthode `start()` de cette interface est appelée par le `ExceptionListener` quand un utilisateur anonyme accède à une ressource protégée."
     }
   ]
 }
