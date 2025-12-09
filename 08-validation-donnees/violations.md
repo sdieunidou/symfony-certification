@@ -13,23 +13,55 @@ La classe de contrainte doit étendre `Symfony\Component\Validator\Constraint`.
 ### Structure de base et Attributs
 Depuis PHP 8, on utilise les attributs pour définir la contrainte. L'attribut `#[Attribute]` est nécessaire pour l'utiliser comme tel.
 
+Voici d'abord comment créer une contrainte simple **sans** utiliser `HasNamedArguments` :
+
 ```php
+// src/Validator/ContainsAlphanumeric.php
+
 namespace App\Validator;
 
 use Symfony\Component\Validator\Constraint;
-use Symfony\Component\Validator\Attribute\HasNamedArguments;
 
 #[\Attribute]
 class ContainsAlphanumeric extends Constraint
 {
-    public string $message = 'La chaîne "{{ string }}" contient des caractères interdits.';
-    
-    // Attribut utile pour forcer des arguments nommés dans le constructeur
+    public string $message = 'The string "{{ string }}" contains an illegal character: it can only contain letters or numbers.';
+    public string $mode = 'strict';
+
+    // toutes les options configurables doivent être passées au constructeur
+    public function __construct(?string $mode = null, ?string $message = null, ?array $groups = null, $payload = null)
+    {
+        parent::__construct([], $groups, $payload);
+
+        $this->mode = $mode ?? $this->mode;
+        $this->message = $message ?? $this->message;
+    }
+}
+```
+
+Ajoutez `#[Attribute]` à la classe de contrainte si vous souhaitez l'utiliser comme attribut dans d'autres classes.
+
+### Utilisation de `HasNamedArguments`
+Vous pouvez utiliser l'attribut `#[HasNamedArguments]` pour rendre certaines options de contrainte requises ou pour mapper directement les arguments :
+
+```php
+// src/Validator/ContainsAlphanumeric.php
+
+namespace App\Validator;
+
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
+use Symfony\Component\Validator\Constraint;
+
+#[\Attribute]
+class ContainsAlphanumeric extends Constraint
+{
+    public string $message = 'The string "{{ string }}" contains an illegal character: it can only contain letters or numbers.';
+
     #[HasNamedArguments]
     public function __construct(
-        public string $mode = 'strict', // Propriété publique accessible par le validateur
+        public string $mode,
         ?array $groups = null,
-        mixed $payload = null
+        mixed $payload = null,
     ) {
         parent::__construct([], $groups, $payload);
     }
@@ -64,8 +96,63 @@ Si vous avez `private string $mode` et que vous ne faites rien, après la mise e
     }
 ```
 
+### Options Avancées (Défaut et Requises)
+Vous pouvez configurer des options comme "par défaut" (assignable sans nommer l'argument) ou "requises" (si vous n'utilisez pas le typage strict du constructeur).
+
+```php
+// src/Validator/Foo.php
+namespace App\Validator;
+
+use Symfony\Component\Validator\Attribute\HasNamedArguments;
+use Symfony\Component\Validator\Constraint;
+
+#[\Attribute]
+class Foo extends Constraint
+{
+    public $mandatoryFooOption;
+    public $message = 'This value is invalid';
+    public $optionalBarOption = false;
+
+    #[HasNamedArguments]
+    public function __construct(
+        $mandatoryFooOption = null,
+        ?string $message = null,
+        ?bool $optionalBarOption = null,
+        ?array $groups = null,
+        $payload = null,
+        array $options = []
+    ) {
+        // Logique hybride pour supporter les options via tableau (legacy/annotation) 
+        // ou via arguments nommés (Attributs PHP 8)
+        if (\is_array($mandatoryFooOption)) {
+            $options = array_merge($mandatoryFooOption, $options);
+        } elseif (null !== $mandatoryFooOption) {
+            $options['value'] = $mandatoryFooOption;
+        }
+
+        parent::__construct($options, $groups, $payload);
+
+        $this->message = $message ?? $this->message;
+        $this->optionalBarOption = $optionalBarOption ?? $this->optionalBarOption;
+    }
+
+    // Permet d'utiliser #[Foo("valeur")] au lieu de #[Foo(mandatoryFooOption: "valeur")]
+    public function getDefaultOption(): string
+    {
+        return 'mandatoryFooOption';
+    }
+
+    public function getRequiredOptions(): array
+    {
+        return ['mandatoryFooOption'];
+    }
+}
+```
+
 ## 2. Créer le Validateur (Service)
-Le validateur contient la logique. Symfony l'instancie comme un service, donc l'**injection de dépendances** est possible (ex: `RequestStack`, `EntityManagerInterface`).
+Le validateur contient la logique. 
+Si vous utilisez la configuration par défaut `services.yaml` (`autowire: true`, `autoconfigure: true`), **votre validateur est automatiquement enregistré comme service**.
+Vous pouvez donc utiliser l'**injection de dépendances** dans le constructeur (ex: `RequestStack`, `EntityManagerInterface`, `LoggerInterface`).
 
 La méthode `validate` reçoit la valeur et la contrainte.
 
@@ -112,9 +199,11 @@ class ContainsAlphanumericValidator extends ConstraintValidator
 ```
 
 ## 3. Contraintes Composées (Compound Constraints)
-Introduit récemment, cela permet de créer une contrainte qui est en fait une collection d'autres contraintes existantes. Utile pour des ensembles de règles réutilisables (ex: politique de mot de passe).
+Introduit récemment, cela permet de créer une contrainte qui est en fait une collection d'autres contraintes existantes. Utile pour créer un "set" de règles réutilisables (ex: politique de mot de passe) à travers l'application.
 
 La classe doit étendre `Symfony\Component\Validator\Constraints\Compound`. Il n'y a **pas de validateur** à créer !
+
+Vous pouvez utiliser `$options` pour configurer dynamiquement les contraintes internes.
 
 ```php
 namespace App\Validator;
