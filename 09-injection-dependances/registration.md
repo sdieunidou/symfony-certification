@@ -77,6 +77,7 @@ services:
         namespace: App\Domain\
         resource: '../src/Domain/*/CommandHandler'
         tags: [command_handler]
+```
 
 ### 5. Injecter une Closure
 Vous pouvez injecter un callable (service invoke ou méthode) sous forme de Closure.
