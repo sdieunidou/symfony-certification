@@ -52,26 +52,34 @@ services:
 ```
 
 ## 3. Empiler les Décorateurs (Stacks)
-Au lieu de jouer avec les priorités, vous pouvez définir une pile explicite de décorateurs via l'option `stack`. C'est très lisible pour les middlewares.
+C'est idéal pour créer des "pipelines" ou des middlewares, par exemple pour un **Command Bus**.
+Imaginez un service qui traite une commande : on veut d'abord logger, puis ouvrir une transaction DB, puis exécuter le vrai traitement.
 
 ```yaml
 services:
-    # Ce service sera la composition de Baz(Bar(Foo))
-    my_stacked_service:
+    # On définit la stack complète sous un seul nom de service
+    app.command_handler:
         stack:
-            - class: App\Baz
+            # 3. Le Logger (Extérieur) : Exécuté en premier
+            - class: App\Decorator\LoggerDecorator
               arguments: ['@.inner']
-            - class: App\Bar
+            
+            # 2. La Transaction (Milieu) : Exécuté après le log
+            - class: App\Decorator\TransactionDecorator
               arguments: ['@.inner']
-            - class: App\Foo # Le service original (coeur)
+            
+            # 1. Le Handler Réel (Coeur)
+            - class: App\Service\CreateUserHandler
 ```
+
+L'avantage par rapport à la priorité `decoration_priority` est la **lisibilité** : l'ordre d'exécution est visible d'un coup d'œil dans la configuration.
 
 En PHP :
 ```php
-$services->stack('my_stacked_service', [
-    inline_service(Baz::class),
-    inline_service(Bar::class),
-    inline_service(Foo::class),
+$services->stack('app.command_handler', [
+    inline_service(LoggerDecorator::class),
+    inline_service(TransactionDecorator::class),
+    inline_service(CreateUserHandler::class),
 ]);
 ```
 
