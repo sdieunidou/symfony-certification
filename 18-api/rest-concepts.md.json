@@ -34,21 +34,6 @@
     },
     {
       "id": 3,
-      "question": "Quel verbe HTTP est idempotent et utilisé pour remplacer intégralement une ressource ?",
-      "type": "single_choice",
-      "options": [
-        "POST",
-        "PATCH",
-        "PUT",
-        "OPTIONS"
-      ],
-      "correct_answers": [
-        "PUT"
-      ],
-      "explanation": "`PUT` remplace la ressource cible par le payload de la requête. `PATCH` est pour la modification partielle."
-    },
-    {
-      "id": 4,
       "question": "Quel niveau du modèle de maturité de Richardson introduit l'Hypermedia (HATEOAS) ?",
       "type": "single_choice",
       "options": [
