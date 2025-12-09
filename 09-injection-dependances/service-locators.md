@@ -127,8 +127,11 @@ public function __construct(
 ```
 
 ## 🧠 Concepts Clés
-1.  **Lazy** : C'est la différence majeure avec `AutowireIterator`. L'itérateur instancie le service dès qu'on passe dessus dans la boucle. Le Locator n'instancie le service que si on fait `get()`.
-2.  **Performance** : Indispensable si vous avez des centaines de services potentiels mais que vous n'en utilisez qu'un seul par requête.
+1.  **Lazy par design** : C'est la différence majeure avec `AutowireIterator` ou l'injection directe.
+    *   **Injection classique** : Tout est instancié.
+    *   **Iterator** : Tout est instancié quand on boucle.
+    *   **Locator** : Rien n'est instancié tant qu'on n'appelle pas `get()`. C'est le moyen le plus léger de gérer des collections de services optionnels.
+2.  **Alternative aux Proxies** : Cela permet d'avoir du Lazy Loading sans avoir besoin de marquer les services comme `lazy: true` (qui utilise des Proxies complexes).
 
 ## ⚠️ Points de vigilance (Certification)
 *   **Visibilité** : Les services n'ont pas besoin d'être publics pour être dans un locator.
