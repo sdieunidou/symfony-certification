@@ -79,21 +79,68 @@ public function delete(): Response
 *Note : Vous pouvez restreindre aux méthodes HTTP : `methods: ['POST']`.*
 
 ## Stateless CSRF (Symfony 7.2+)
-Traditionnellement, les tokens CSRF sont stockés en **session** (Stateful). Cela pose problème pour le cache HTTP ou les applis stateless.
-Symfony 7.2 introduit une protection CSRF sans état.
+Traditionnellement, les tokens CSRF sont stockés en **session** (Stateful). Cela pose problème pour le cache HTTP (Varnish, CDN) car chaque utilisateur a besoin d'un token unique stocké sur le serveur.
+Symfony 7.2 introduit une protection CSRF sans état (Stateless).
 
 ### Configuration
-Déclarez les IDs de tokens qui doivent être stateless :
+Déclarez les IDs de tokens qui doivent être stateless dans `framework.yaml`.
+
 ```yaml
 # config/packages/framework.yaml
 framework:
     csrf_protection:
-        stateless_token_ids: ['submit', 'authenticate', 'logout']
+        # Liste des IDs de tokens qui ne doivent pas être stockés en session
+        stateless_token_ids: ['contact_form', 'newsletter_sub']
+```
+
+### Exemple Complet : Formulaire de Contact Caché
+
+Imaginons une page de contact publique que vous souhaitez mettre en cache, mais qui contient un formulaire.
+
+**1. Formulaire (PHP)**
+Définissez explicitement le `csrf_token_id` pour qu'il matche la configuration.
+
+```php
+// src/Form/ContactType.php
+public function configureOptions(OptionsResolver $resolver): void
+{
+    $resolver->setDefaults([
+        // Doit correspondre à une valeur dans stateless_token_ids
+        'csrf_token_id' => 'contact_form', 
+    ]);
+}
+```
+
+**2. Contrôleur (Avec Cache)**
+Vous pouvez maintenant activer le cache HTTP sur cette page !
+
+```php
+#[Route('/contact', name: 'app_contact')]
+// La page peut être mise en cache partagé (CDN/Varnish) pendant 1h
+#[Cache(smaxage: 3600, public: true)] 
+public function index(Request $request): Response
+{
+    $form = $this->createForm(ContactType::class);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Traitement...
+        return $this->redirectToRoute('app_contact_success');
+    }
+
+    return $this->render('contact/index.html.twig', [
+        'form' => $form,
+    ]);
+}
 ```
 
 ### Fonctionnement
-Symfony vérifie les en-têtes `Origin` et `Referer` de la requête HTTP. Si l'origine correspond au domaine de l'application, le token est considéré comme valide.
-*Pour le "Defense in Depth", un cookie et un header `csrf-token` peuvent être utilisés via un script JS fourni par Symfony.*
+Au lieu de générer un token aléatoire et de le stocker en session, Symfony génère un token **signé** (HMAC) contenant :
+*   L'ID du token (ex: 'contact_form')
+*   Une seed (généralement vide pour les anonymes ou liée à l'utilisateur)
+*   Le secret de l'application (`APP_SECRET`)
+
+Lors de la soumission, Symfony recalcule le token avec les mêmes paramètres et compare. Si ça matche, c'est valide. Plus besoin de session !
 
 ## Login & Logout
 *   **Login** : Le formulaire de login nécessite un token (champ `_csrf_token`). Configurez-le dans `security.yaml` -> `enable_csrf: true`.
