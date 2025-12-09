@@ -1,7 +1,5 @@
 # Configuration & Environnements
 
-Ce document couvre les concepts clés de la [documentation officielle de configuration](https://symfony.com/doc/7.4/configuration.html).
-
 ## 1. Vue d'ensemble & Formats
 
 La configuration dans Symfony peut être définie en **YAML** (recommandé), **XML**, ou **PHP**.
