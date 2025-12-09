@@ -198,6 +198,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Tests de commandes](./12-console/testing.md)
 
 ### [14. Tests Automatisés](./13-tests-automatises/)
+* [PHPUnit Basics](./13-tests-automatises/phpunit-basics.md)
 * [Tests unitaires](./13-tests-automatises/unitaires.md)
 * [Tests fonctionnels](./13-tests-automatises/fonctionnels.md)
 * [Tests E2E avec Panther](./13-tests-automatises/panther.md)

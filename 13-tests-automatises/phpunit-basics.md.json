@@ -1,0 +1,51 @@
+{
+  "source_file": "13-tests-automatises/phpunit-basics.md",
+  "title": "PHPUnit - Fondamentaux",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quelle est la différence principale entre `createMock()` et `createStub()` (disponible depuis PHPUnit 10) ?",
+      "type": "single_choice",
+      "options": [
+        "Aucune, ce sont des alias.",
+        "`createStub` sert à configurer des valeurs de retour, tandis que `createMock` permet en plus de vérifier des attentes (expects).",
+        "`createStub` crée une fausse base de données.",
+        "`createMock` est déprécié."
+      ],
+      "correct_answers": [
+        "`createStub` sert à configurer des valeurs de retour, tandis que `createMock` permet en plus de vérifier des attentes (expects)."
+      ],
+      "explanation": "Conceptuellement, un Stub fournit des données (input indirect), un Mock vérifie des interactions (output indirect). Dans PHPUnit, `createMock` fait les deux, mais `createStub` est plus léger si on ne fait que du stubbing."
+    },
+    {
+      "id": 2,
+      "question": "Comment définir un Data Provider pour une méthode de test ?",
+      "type": "single_choice",
+      "options": [
+        "En créant une méthode publique statique qui retourne un itérable et en utilisant l'attribut `#[DataProvider]`. ",
+        "En passant un tableau directement dans l'attribut `#[Test]`. ",
+        "En implémentant l'interface `DataProviderInterface`.",
+        "En utilisant `yield` directement dans la méthode de test."
+      ],
+      "correct_answers": [
+        "En créant une méthode publique statique qui retourne un itérable et en utilisant l'attribut `#[DataProvider]`. "
+      ],
+      "explanation": "La méthode doit être `static` (exigence récente de PHPUnit pour éviter l'instanciation de la classe de test lors de la collecte des données)."
+    },
+    {
+      "id": 3,
+      "question": "Quelle assertion utiliser pour vérifier que deux variables sont strictement identiques (valeur et type) ?",
+      "type": "single_choice",
+      "options": [
+        "`assertEquals()`",
+        "`assertSame()`",
+        "`assertStrict()`",
+        "`assertIdentical()`"
+      ],
+      "correct_answers": [
+        "`assertSame()`"
+      ],
+      "explanation": "`assertSame` utilise l'opérateur `===`, alors que `assertEquals` utilise `==`."
+    }
+  ]
+}
