@@ -139,6 +139,54 @@ protected function setUp(): void
 
 ---
 
+## 6. Usage Avancé
+
+### Groupes de Tests (`#[Group]`)
+Pour organiser vos tests (CI vs Local, Rapide vs Lent).
+```php
+use PHPUnit\Framework\Attributes\Group;
+
+#[Group('integration')]
+#[Group('slow')]
+class PaymentIntegrationTest extends TestCase { ... }
+```
+*Commande :* `bin/phpunit --group integration` ou `bin/phpunit --exclude-group slow`
+
+### Couverture de Code (`#[CoversClass]`)
+Indiquez explicitement quelle classe est testée. Cela évite que le test ne valide accidentellement du code dans une classe dépendante, ce qui fausserait le rapport de couverture.
+```php
+use PHPUnit\Framework\Attributes\CoversClass;
+
+#[CoversClass(Calculator::class)]
+class CalculatorTest extends TestCase { ... }
+```
+
+### Configuration (`phpunit.xml.dist`)
+C'est ici que l'environnement de test est défini.
+```xml
+<phpunit>
+    <php>
+        <!-- Force l'environnement de test -->
+        <env name="APP_ENV" value="test" />
+        <env name="KERNEL_CLASS" value="App\Kernel" />
+        
+        <!-- Connexion BDD dédiée aux tests (souvent SQLite ou une DB séparée) -->
+        <env name="DATABASE_URL" value="sqlite:///%kernel.project_dir%/var/test.db" />
+    </php>
+    
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Functional">
+            <directory>tests/Functional</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
+```
+
+---
+
 ## ⚠️ Points de vigilance (Certification)
 *   **Exception Testing** : `expectException` doit être appelé **avant** le code qui lève l'exception.
 *   **Private/Protected** : PHPUnit ne peut pas tester directement des méthodes privées. C'est normal : on teste l'interface publique (contrat). Si besoin, passez par la méthode publique qui l'utilise ou utilisez la réflexion (déconseillé).
