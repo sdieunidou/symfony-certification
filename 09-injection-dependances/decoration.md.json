@@ -4,63 +4,78 @@
   "questions": [
     {
       "id": 1,
-      "question": "À quoi sert la décoration de service ?",
+      "question": "Quel est le but principal de la décoration de service ?",
       "type": "single_choice",
       "options": [
-        "À ajouter du CSS.",
-        "À remplacer un service existant par le vôtre, tout en conservant la possibilité d'utiliser le service original (enveloppe/wrapper).",
-        "À créer un alias.",
-        "À supprimer un service."
+        "Remplacer une classe par héritage.",
+        "Ajouter une fonctionnalité à un service existant de manière transparente, sans modifier sa classe.",
+        "Définir des alias pour les services.",
+        "Optimiser le conteneur."
       ],
       "correct_answers": [
-        "À remplacer un service existant par le vôtre, tout en conservant la possibilité d'utiliser le service original (enveloppe/wrapper)."
+        "Ajouter une fonctionnalité à un service existant de manière transparente, sans modifier sa classe."
       ],
-      "explanation": "C'est une alternative puissante à l'héritage pour étendre ou modifier le comportement d'un service tiers."
+      "explanation": "Le pattern Décorateur permet d'envelopper un service pour modifier ses entrées/sorties sans changer son code source."
     },
     {
       "id": 2,
-      "question": "Quel attribut PHP permet de décorer un service ?",
+      "question": "Quel attribut PHP permet d'injecter proprement le service décoré (inner) sans se soucier du nom de l'argument ?",
       "type": "single_choice",
       "options": [
-        "`#[Decorates]`",
-        "`#[AsDecorator]`",
-        "`#[Override]`",
-        "`#[Replace]`"
+        "#[InjectInner]",
+        "#[AutowireDecorated]",
+        "#[DecoratedService]",
+        "#[ParentService]"
       ],
       "correct_answers": [
-        "`#[AsDecorator]`"
+        "#[AutowireDecorated]"
       ],
-      "explanation": "`#[AsDecorator(decorates: MailerInterface::class)]`."
+      "explanation": "Cet attribut dit à Symfony : 'Injecte ici l'instance du service que je suis en train de décorer'."
     },
     {
       "id": 3,
-      "question": "Si vous décorez le service `mailer`, quel ID de service devez-vous injecter dans votre classe décoratrice pour accéder au service original ?",
+      "question": "Que se passe-t-il avec les tags du service original lorsqu'il est décoré ?",
       "type": "single_choice",
       "options": [
-        "`mailer`",
-        "`mailer.original`",
-        "Le service injecté dépend de la configuration, mais par convention on injecte souvent l'interface du service décoré.",
-        "`parent`"
+        "Ils sont automatiquement transférés au décorateur.",
+        "Ils sont perdus (sauf exceptions système) et ne s'appliquent pas au décorateur.",
+        "Ils sont dupliqués.",
+        "Cela déclenche une erreur."
       ],
       "correct_answers": [
-        "Le service injecté dépend de la configuration, mais par convention on injecte souvent l'interface du service décoré."
+        "Ils sont perdus (sauf exceptions système) et ne s'appliquent pas au décorateur."
       ],
-      "explanation": "En YAML, on utilise souvent `.inner`. Avec l'attribut `AsDecorator`, l'autowiring injecte automatiquement le service décoré si on type l'argument avec l'interface."
+      "explanation": "C'est un piège classique. Si vous décorez une Commande ou une Extension Twig, vous devez souvent retaguer votre décorateur."
     },
     {
       "id": 4,
-      "question": "Que se passe-t-il pour le reste de l'application quand vous décorez `App\\Service\\Mailer` ?",
+      "question": "Quelle option permet de ne pas planter l'application si le service qu'on tente de décorer n'existe pas ?",
       "type": "single_choice",
       "options": [
-        "Rien, il faut modifier tous les contrôleurs pour utiliser le nouveau service.",
-        "Symfony remplace transparently l'ancien service par le vôtre partout où il est injecté.",
-        "Cela crée une erreur circulaire.",
-        "Les deux services coexistent."
+        "nullable: true",
+        "onInvalid: ignore",
+        "optional: true",
+        "soft_decoration: true"
       ],
       "correct_answers": [
-        "Symfony remplace transparently l'ancien service par le vôtre partout où il est injecté."
+        "onInvalid: ignore"
       ],
-      "explanation": "L'ID du service reste le même pour les consommateurs, mais il pointe maintenant vers votre instance."
+      "explanation": "Avec `ignore`, Symfony supprime simplement la définition du décorateur si le service cible est absent."
+    },
+    {
+      "id": 5,
+      "question": "En configuration YAML, quelle est la chaîne spéciale pour référencer le service décoré ?",
+      "type": "single_choice",
+      "options": [
+        "@parent",
+        "@original",
+        "@.inner",
+        "@decorated"
+      ],
+      "correct_answers": [
+        "@.inner"
+      ],
+      "explanation": "C'est l'ID conventionnel utilisé par Symfony pour l'injection manuelle dans le décorateur."
     }
   ]
 }

@@ -4,48 +4,78 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quand utiliser une Factory pour créer un service ?",
+      "question": "Quelle est la syntaxe pour utiliser un service comme factory (méthode non statique) en YAML ?",
       "type": "single_choice",
       "options": [
-        "Toujours.",
-        "Lorsque la création du service nécessite une logique complexe, des calculs, ou dépend d'une bibliothèque tierce non compatible avec l'injection directe.",
-        "Pour les services Doctrine.",
-        "Pour créer des contrôleurs."
+        "factory: ['App\\MyFactory', 'create']",
+        "factory: ['@App\\MyFactory', 'create']",
+        "factory: 'App\\MyFactory::create'",
+        "service_factory: '@App\\MyFactory'"
       ],
       "correct_answers": [
-        "Lorsque la création du service nécessite une logique complexe, des calculs, ou dépend d'une bibliothèque tierce non compatible avec l'injection directe."
+        "factory: ['@App\\MyFactory', 'create']"
       ],
-      "explanation": "La factory encapsule la complexité de l'instanciation."
+      "explanation": "Le '@' indique qu'on référence un service existant, et non une classe statique."
     },
     {
       "id": 2,
-      "question": "Comment configurer une factory en PHP avec les attributs/autowiring ?",
+      "question": "Si une factory implémente `__invoke`, comment la déclarer dans le YAML ?",
       "type": "single_choice",
       "options": [
-        "Ce n'est pas possible, il faut du YAML.",
-        "Il suffit de créer une méthode qui retourne l'objet souhaité, et de configurer le service pour utiliser cette méthode comme factory dans `services.yaml` (ou via un attribut si disponible).",
-        "En implémentant `FactoryInterface`.",
-        "En utilisant `new`."
+        "factory: ['@MyFactory', '__invoke']",
+        "factory: '@MyFactory'",
+        "Les deux fonctionnent, mais la version courte est préférée.",
+        "Il faut obligatoirement préciser '__invoke'."
       ],
       "correct_answers": [
-        "Il suffit de créer une méthode qui retourne l'objet souhaité, et de configurer le service pour utiliser cette méthode comme factory dans `services.yaml` (ou via un attribut si disponible)."
+        "Les deux fonctionnent, mais la version courte est préférée."
       ],
-      "explanation": "La configuration YAML `factory: ['@App\\Factory\\MyFactory', 'create']` reste la norme pour lier la factory au service produit."
+      "explanation": "Symfony détecte automatiquement si le service factory est invokable si aucune méthode n'est spécifiée."
     },
     {
       "id": 3,
-      "question": "Une factory peut-elle être elle-même un service avec des dépendances ?",
+      "question": "À quoi correspond l'option `arguments` sur une définition de service utilisant une factory ?",
       "type": "single_choice",
       "options": [
-        "Non, elle doit être statique.",
-        "Oui, c'est tout l'intérêt. On injecte les dépendances dans la Factory, qui les utilise pour construire l'objet final.",
-        "Oui, mais sans arguments.",
-        "Seulement si elle est publique."
+        "Aux arguments passés au constructeur de la classe du service.",
+        "Aux arguments passés à la méthode de la factory.",
+        "Aux arguments passés au constructeur de la factory.",
+        "C'est interdit."
       ],
       "correct_answers": [
-        "Oui, c'est tout l'intérêt. On injecte les dépendances dans la Factory, qui les utilise pour construire l'objet final."
+        "Aux arguments passés à la méthode de la factory."
       ],
-      "explanation": "Cela permet de configurer l'objet produit avec des paramètres de l'application."
+      "explanation": "Le conteneur appelle `Factory::method(...arguments)`, c'est ensuite à la factory de passer ce qu'il faut au `new Service()`."
+    },
+    {
+      "id": 4,
+      "question": "Comment configurer une classe pour qu'elle utilise sa propre méthode statique `create` comme constructeur via un attribut ?",
+      "type": "single_choice",
+      "options": [
+        "#[AsFactory('create')]",
+        "#[Autoconfigure(constructor: 'create')]",
+        "#[Construct('create')]",
+        "#[Factory(method: 'create')]"
+      ],
+      "correct_answers": [
+        "#[Autoconfigure(constructor: 'create')]"
+      ],
+      "explanation": "C'est l'option `constructor` de l'attribut `Autoconfigure` qui gère ce cas (Self-Factory)."
+    },
+    {
+      "id": 5,
+      "question": "Peut-on utiliser une expression pour définir une factory ?",
+      "type": "single_choice",
+      "options": [
+        "Non, une factory doit être une classe ou un service.",
+        "Oui, avec la syntaxe `factory: '@=...'`.",
+        "Oui, mais seulement en XML.",
+        "Non, pour des raisons de performance."
+      ],
+      "correct_answers": [
+        "Oui, avec la syntaxe `factory: '@=...'`."
+      ],
+      "explanation": "Cela permet de retourner dynamiquement un service ou un autre selon une condition (ex: debug)."
     }
   ]
 }

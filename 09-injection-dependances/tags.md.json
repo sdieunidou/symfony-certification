@@ -1,66 +1,81 @@
 {
   "source_file": "09-injection-dependances/tags.md",
-  "title": "Tags de Service",
+  "title": "Service Tags",
   "questions": [
     {
       "id": 1,
-      "question": "À quoi servent les Tags dans le conteneur de services ?",
+      "question": "Quelle est la méthode recommandée pour injecter une collection de services tagués dans Symfony (sans Compiler Pass) ?",
       "type": "single_choice",
       "options": [
-        "À commenter le code.",
-        "À marquer des services pour qu'ils soient détectés et traités par d'autres services (système de plugins/extensions).",
-        "À définir la version du service.",
-        "À gérer la sécurité."
+        "Utiliser l'attribut `#[TaggedIterator('mon.tag')]` dans le constructeur.",
+        "Utiliser `!tagged_services` dans le YAML.",
+        "Faire un `$container->get('mon.tag')`.",
+        "Ce n'est pas possible sans Compiler Pass."
       ],
       "correct_answers": [
-        "À marquer des services pour qu'ils soient détectés et traités par d'autres services (système de plugins/extensions)."
+        "Utiliser l'attribut `#[TaggedIterator('mon.tag')]` dans le constructeur."
       ],
-      "explanation": "Par exemple, le tag `console.command` permet à l'application Console de découvrir toutes les commandes disponibles."
+      "explanation": "C'est l'approche standard moderne qui remplace la nécessité d'écrire des Compiler Passes pour les cas simples."
     },
     {
       "id": 2,
-      "question": "Si `autoconfigure` est activé, comment Symfony tague-t-il les services ?",
+      "question": "À quoi sert l'attribut `#[AsTaggedItem]` ?",
       "type": "single_choice",
       "options": [
-        "Il ne fait rien, il faut taguer manuellement.",
-        "Il ajoute automatiquement des tags en fonction de l'interface implémentée par la classe.",
-        "Il tague tout avec `app.service`.",
-        "Il lit les commentaires PHPDoc."
+        "Il remplace totalement `#[AutoconfigureTag]`.",
+        "Il sert à configurer les métadonnées du tag (comme l'index et la priorité) pour l'injection.",
+        "Il sert à exclure le service de l'injection.",
+        "Il sert à créer un nouveau tag."
       ],
       "correct_answers": [
-        "Il ajoute automatiquement des tags en fonction de l'interface implémentée par la classe."
+        "Il sert à configurer les métadonnées du tag (comme l'index et la priorité) pour l'injection."
       ],
-      "explanation": "Ex: Implémenter `EventSubscriberInterface` ajoute le tag `kernel.event_subscriber`."
+      "explanation": "`AsTaggedItem` permet de définir `index` et `priority` sur la classe PHP, influençant comment elle sera positionnée dans l'itérateur."
     },
     {
       "id": 3,
-      "question": "Quel attribut PHP 8 permet d'injecter une collection de services tagués (Itérable) directement dans le constructeur ?",
+      "question": "Comment utiliser une méthode statique du service pour définir sa priorité dans un `TaggedIterator` ?",
       "type": "single_choice",
       "options": [
-        "`#[TaggedIterator('nom_du_tag')]`",
-        "`#[InjectTags('nom_du_tag')]`",
-        "`#[Collect('nom_du_tag')]`",
-        "`#[Services('nom_du_tag')]`"
+        "Automatiquement si la méthode s'appelle `getPriority`.",
+        "En utilisant l'option `defaultPriorityMethod` dans `#[TaggedIterator]`.",
+        "En utilisant l'attribut `#[Priority]` sur la méthode.",
+        "Ce n'est pas possible."
       ],
       "correct_answers": [
-        "`#[TaggedIterator('nom_du_tag')]`"
+        "En utilisant l'option `defaultPriorityMethod` dans `#[TaggedIterator]`."
       ],
-      "explanation": "C'est la méthode moderne pour consommer des tags sans écrire de Compiler Pass."
+      "explanation": "On spécifie le nom de la méthode statique à appeler (ex: `defaultPriorityMethod: 'getPriority'`)."
     },
     {
       "id": 4,
-      "question": "Que permet l'attribut `priority` sur un tag ?",
+      "question": "Dans une Compiler Pass, quel est le format retourné par `$container->findTaggedServiceIds('tag_name')` ?",
       "type": "single_choice",
       "options": [
-        "Rien.",
-        "De définir l'ordre dans lequel les services tagués seront traités/injectés.",
-        "De rendre le service public.",
-        "De définir le niveau de log."
+        "Un tableau simple d'IDs de services : `['service_id_1', 'service_id_2']`.",
+        "Un tableau associatif où la clé est l'ID du service et la valeur est un tableau de tags (attributs) : `['service_id' => [['name' => 'tag', 'priority' => 10]]]`. ",
+        "Un tableau d'objets `ServiceDefinition`.",
+        "Un itérateur."
       ],
       "correct_answers": [
-        "De définir l'ordre dans lequel les services tagués seront traités/injectés."
+        "Un tableau associatif où la clé est l'ID du service et la valeur est un tableau de tags (attributs) : `['service_id' => [['name' => 'tag', 'priority' => 10]]]`. "
       ],
-      "explanation": "Plus la priorité est élevée, plus le service est traité tôt (ex: Listeners)."
+      "explanation": "Comme un service peut avoir le même tag plusieurs fois, la valeur est un tableau de tableaux d'attributs."
+    },
+    {
+      "id": 5,
+      "question": "Si j'utilise `#[TaggedIterator('app.handler', indexAttribute: 'key')]`, que se passe-t-il si un service n'a pas l'attribut 'key' dans son tag ?",
+      "type": "single_choice",
+      "options": [
+        "Symfony utilise l'ID du service comme clé par défaut (fallback).",
+        "Une exception est levée à la compilation.",
+        "Le service est ignoré.",
+        "La clé sera `null`."
+      ],
+      "correct_answers": [
+        "Symfony utilise l'ID du service comme clé par défaut (fallback)."
+      ],
+      "explanation": "Symfony tente de résoudre l'index (via l'attribut ou la méthode statique), et retombe sur l'ID du service si rien n'est trouvé."
     }
   ]
 }

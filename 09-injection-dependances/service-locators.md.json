@@ -1,51 +1,66 @@
 {
   "source_file": "09-injection-dependances/service-locators.md",
-  "title": "Service Locators",
+  "title": "Service Subscribers & Locators",
   "questions": [
     {
       "id": 1,
-      "question": "Qu'est-ce qu'un Service Locator dans Symfony ?",
+      "question": "Quel attribut permet d'injecter un Service Locator configuré depuis le constructeur ?",
       "type": "single_choice",
       "options": [
-        "Un service qui localise les utilisateurs.",
-        "Un mini-conteneur qui donne accès uniquement à une liste restreinte de services.",
-        "Le conteneur global.",
-        "Un outil de débogage."
+        "#[InjectLocator]",
+        "#[AutowireLocator]",
+        "#[ServiceLocator]",
+        "#[Locate]"
       ],
       "correct_answers": [
-        "Un mini-conteneur qui donne accès uniquement à une liste restreinte de services."
+        "#[AutowireLocator]"
       ],
-      "explanation": "C'est une implémentation de `Psr\\Container\\ContainerInterface` qui contient une sous-sélection de services."
+      "explanation": "Permet de définir la liste des services (ou un tag) directement sur l'argument du constructeur."
     },
     {
       "id": 2,
-      "question": "Quelle interface permet à une classe de déclarer ses dépendances pour qu'un Service Locator soit automatiquement généré et injecté ?",
+      "question": "Quelle est la différence principale entre injecter `iterable $services` (via `#[AutowireIterator]`) et `ContainerInterface $locator` (via `#[AutowireLocator]`) ?",
       "type": "single_choice",
       "options": [
-        "`ServiceSubscriberInterface`",
-        "`ContainerAwareInterface`",
-        "`LocatorInterface`",
-        "`DependencyInjectionInterface`"
+        "Aucune.",
+        "Le locator est lazy (instanciation à la demande), l'itérateur instancie chaque service au moment de l'itération.",
+        "L'itérateur est lazy, le locator instancie tout immédiatement.",
+        "Le locator est déprécié."
       ],
       "correct_answers": [
-        "`ServiceSubscriberInterface`"
+        "Le locator est lazy (instanciation à la demande), l'itérateur instancie chaque service au moment de l'itération."
       ],
-      "explanation": "Si une classe implémente cette interface, Symfony injecte un locator contenant les services retournés par `getSubscribedServices()`."
+      "explanation": "Le Locator est préférable si on n'a besoin que d'un seul service parmi une grande liste."
     },
     {
       "id": 3,
-      "question": "Quel est l'avantage principal d'un Service Locator par rapport à l'injection de tous les services dans le constructeur ?",
+      "question": "Quelle interface permet d'itérer sur un Service Locator (depuis Symfony 7.1) ?",
       "type": "single_choice",
       "options": [
-        "La sécurité.",
-        "Le Lazy Loading : les services du locator ne sont instanciés que si on les demande via `get()`, économisant la mémoire et le CPU.",
-        "La simplicité du code.",
-        "L'autowiring."
+        "Psr\\Container\\ContainerInterface",
+        "Symfony\\Component\\DependencyInjection\\ServiceCollectionInterface",
+        "IteratorAggregate",
+        "Traversable"
       ],
       "correct_answers": [
-        "Le Lazy Loading : les services du locator ne sont instanciés que si on les demande via `get()`, économisant la mémoire et le CPU."
+        "Symfony\\Component\\DependencyInjection\\ServiceCollectionInterface"
       ],
-      "explanation": "C'est crucial pour les contrôleurs ou les gestionnaires de commandes qui peuvent avoir besoin de beaucoup d'outils différents mais n'en utilisent qu'un à la fois."
+      "explanation": "Elle étend `ContainerInterface` en ajoutant `Countable` et `IteratorAggregate`."
+    },
+    {
+      "id": 4,
+      "question": "Comment rendre un service optionnel dans `getSubscribedServices()` ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant `null` comme valeur.",
+        "En préfixant le type ou l'ID par un point d'interrogation `?`.",
+        "En utilisant l'attribut `#[Optional]`.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "En préfixant le type ou l'ID par un point d'interrogation `?`."
+      ],
+      "explanation": "Exemple : `'router' => '?'.RouterInterface::class`."
     }
   ]
 }

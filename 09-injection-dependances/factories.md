@@ -1,56 +1,98 @@
 # Factories (Usines)
 
 ## Concept clé
-Une Factory est utilisée pour créer des services qui nécessitent une logique d'instanciation complexe (calculs, conditions) ou qui proviennent de bibliothèques tierces non conçues pour l'injection de dépendances (legacy code, static constructors).
+Une Factory est utilisée pour créer des services qui nécessitent une logique d'instanciation complexe (calculs, conditions), qui ont des constructeurs statiques, ou qui proviennent de bibliothèques tierces (legacy).
 
-## Application dans Symfony 7.0
+## 1. Types de Factories
 
-### 1. Factory en PHP (Recommandé)
-Avec l'autowiring, si vous créez une méthode qui retourne un objet, Symfony peut l'utiliser comme factory.
-
-```php
-namespace App\Factory;
-
-class PaymentClientFactory
-{
-    public function __construct(private string $apiKey) {}
-
-    public function create(): PaymentClient
-    {
-        // Logique complexe d'initialisation
-        $client = new PaymentClient();
-        $client->authenticate($this->apiKey);
-        return $client;
-    }
-}
-```
-
-Configuration `services.yaml` pour dire que `PaymentClient` vient de l'usine :
+### Static Factory
+C'est le cas le plus simple : une méthode statique crée l'objet.
+La classe du service (`class`) n'a pas d'importance technique (c'est le retour de la factory qui compte), mais il est bon de la spécifier pour les outils d'analyse.
 
 ```yaml
 services:
-    # Enregistre la factory
-    App\Factory\PaymentClientFactory: ~
-
-    # Enregistre le service produit
-    App\Lib\PaymentClient:
-        factory: ['@App\Factory\PaymentClientFactory', 'create']
+    App\Service\NewsletterManager:
+        # Syntaxe : [Classe, MéthodeStatique]
+        factory: ['App\Email\NewsletterManagerStaticFactory', 'createNewsletterManager']
 ```
 
-### 2. Static Factory
-Si la méthode de création est statique.
+### Service Factory (Non-Static)
+Si votre factory a besoin de dépendances (ex: logger, configuration), elle doit être elle-même un service.
 
 ```yaml
-App\Service\MyService:
-    factory: ['App\Service\MyService', 'createStatic']
+services:
+    # 1. On enregistre la factory comme service
+    App\Factory\PaymentClientFactory:
+        arguments: ['%api_key%']
+
+    # 2. On utilise le service factory
+    App\Lib\PaymentClient:
+        # Syntaxe : [@ServiceID, Méthode]
+        factory: ['@App\Factory\PaymentClientFactory', 'createClient']
+```
+
+### Invokable Factory
+Si votre factory implémente `__invoke()`, vous pouvez omettre le nom de la méthode.
+
+```yaml
+services:
+    App\Lib\PaymentClient:
+        # Symfony détecte automatiquement __invoke
+        factory: '@App\Factory\InvokableFactory'
+```
+
+## 2. Factory Interne (Self-Factory)
+Souvent, une classe possède sa propre méthode statique de création (ex: `MyClass::create()`).
+
+```php
+// src/Email/NewsletterManager.php
+use Symfony\Component\DependencyInjection\Attribute\Autoconfigure;
+
+// Moderne : via Attribut (Symfony 6.3+)
+#[Autoconfigure(constructor: 'create')] 
+class NewsletterManager
+{
+    public static function create(string $apiKey): self { ... }
+}
+```
+
+Equivalent YAML (Legacy) :
+```yaml
+services:
+    App\Email\NewsletterManager:
+        factory: [null, 'create'] # null signifie "la classe elle-même"
+        # OU
+        constructor: 'create'     # Syntaxe raccourcie
+```
+
+## 3. Expression Factory (Avancé)
+Vous pouvez utiliser le langage d'expression pour choisir dynamiquement quel service créer.
+
+```yaml
+services:
+    App\Mailer\MailerInterface:
+        # Retourne un service différent selon le mode debug
+        factory: '@=parameter("kernel.debug") ? service("app.mailer.debug") : service("app.mailer.real")'
+```
+
+## 4. Passer des arguments à la Factory
+Les arguments définis sous `arguments` sont passés à la méthode de la factory, pas au constructeur du service produit (puisque c'est la factory qui appelle `new`).
+
+```yaml
+services:
+    App\Service\MyService:
+        factory: ['@App\Factory', 'create']
+        arguments:
+            $arg1: 'valeur pour la méthode create'
 ```
 
 ## 🧠 Concepts Clés
-1.  **Découplage** : La factory encapsule la complexité de la création. Le code consommateur ne voit que le service final prêt à l'emploi.
-2.  **Lazy** : La méthode de la factory n'est appelée que lorsque le service est réellement demandé.
+1.  **Découplage** : La factory encapsule la complexité. Le consommateur demande `PaymentClient` et reçoit une instance prête, sans savoir comment elle a été créée.
+2.  **Lazy** : La méthode factory n'est exécutée que lorsque le service est demandé.
 
 ## ⚠️ Points de vigilance (Certification)
-*   **Arguments** : On peut passer des arguments à la méthode de la factory via la clé `arguments` dans le YAML, ou via l'autowiring si la méthode factory a des arguments typés.
+*   **Factory vs Constructor** : Si `factory` est défini, le constructeur de la classe n'est **jamais** appelé directement par le conteneur. C'est la factory qui est responsable de faire `new`.
+*   **Class** : L'option `class` dans le YAML est optionnelle si l'ID du service est un FQCN (Fully Qualified Class Name), mais la factory peut retourner n'importe quel objet (polymorphisme).
 
 ## Ressources
 *   [Symfony Docs - Factories](https://symfony.com/doc/current/service_container/factories.html)
