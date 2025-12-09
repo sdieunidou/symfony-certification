@@ -7,7 +7,7 @@ Il ne gère ni le mot de passe, ni l'authentification. Juste le chargement.
 ## Interface `UserProviderInterface`
 Trois méthodes obligatoires :
 1.  `loadUserByIdentifier(string $identifier): UserInterface` : Chargement initial (Login).
-2.  `refreshUser(UserInterface $user): UserInterface` : Rechargement à chaque requête (depuis la session).
+2.  `refreshUser(UserInterface $user): UserInterface` : Rechargement à chaque requête depuis la session (jamais appelé en `stateless`).
 3.  `supportsClass(string $class): bool`.
 
 ## Types de Providers
