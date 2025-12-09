@@ -143,6 +143,7 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Services natifs](./09-injection-dependances/services-natifs.md)
 * [Paramètres](./09-injection-dependances/parametres.md)
 * [Enregistrement](./09-injection-dependances/registration.md)
+* [Autoconfigure](./09-injection-dependances/autoconfigure.md)
 * [Autowiring](./09-injection-dependances/autowiring.md)
 * [Décoration](./09-injection-dependances/decoration.md)
 * [Tags](./09-injection-dependances/tags.md)

@@ -86,7 +86,6 @@ App\Service\MessageGenerator:
     arguments:
         $generateMessageHash: !closure '@App\Hash\MessageHashGenerator'
 ```
-```
 
 ## 🧠 Concepts Clés
 1.  **ID du service** : Par défaut, l'ID d'un service est son **FQCN** (Fully Qualified Class Name, ex: `App\Service\Mailer`).

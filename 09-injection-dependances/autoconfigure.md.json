@@ -1,0 +1,81 @@
+{
+  "source_file": "09-injection-dependances/autoconfigure.md",
+  "title": "Autoconfigure",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Quel est le rôle principal de l'option `autoconfigure: true` dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Elle injecte automatiquement les dépendances dans le constructeur.",
+        "Elle ajoute automatiquement des tags aux services en fonction des interfaces qu'ils implémentent.",
+        "Elle enregistre automatiquement toutes les classes du dossier `src/` comme services.",
+        "Elle configure automatiquement les paramètres globaux de l'application."
+      ],
+      "correct_answers": [
+        "Elle ajoute automatiquement des tags aux services en fonction des interfaces qu'ils implémentent."
+      ],
+      "explanation": "L'autoconfigure détecte les interfaces (ex: `Command`, `EventSubscriberInterface`) et applique les tags correspondants (ex: `console.command`) sans configuration manuelle."
+    },
+    {
+      "id": 2,
+      "question": "Quelle section de `services.yaml` permet de définir des règles d'autoconfiguration personnalisées pour une interface spécifique ?",
+      "type": "single_choice",
+      "options": [
+        "_defaults",
+        "_instanceof",
+        "services",
+        "parameters"
+      ],
+      "correct_answers": [
+        "_instanceof"
+      ],
+      "explanation": "La section `_instanceof` permet de définir que tous les services implémentant une certaine interface recevront des tags ou des appels de méthode spécifiques."
+    },
+    {
+      "id": 3,
+      "question": "Quel attribut PHP permet d'ajouter un tag à un service automatiquement, rendant la configuration YAML optionnelle ?",
+      "type": "single_choice",
+      "options": [
+        "#[Tag]",
+        "#[AutoconfigureTag]",
+        "#[Service]",
+        "#[AsTaggedItem]"
+      ],
+      "correct_answers": [
+        "#[AutoconfigureTag]"
+      ],
+      "explanation": "L'attribut `#[AutoconfigureTag('mon.tag')]` (disponible depuis Symfony 5.3) permet de définir le tag directement sur la classe PHP."
+    },
+    {
+      "id": 4,
+      "question": "L'utilisation de `autoconfigure` a-t-elle un impact négatif sur les performances de l'application en production ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, car Symfony doit analyser les classes à chaque requête.",
+        "Non, car la résolution des tags se fait lors de la compilation du conteneur (cache warmup).",
+        "Oui, mais uniquement si on utilise `_instanceof`.",
+        "Cela dépend du nombre de services."
+      ],
+      "correct_answers": [
+        "Non, car la résolution des tags se fait lors de la compilation du conteneur (cache warmup)."
+      ],
+      "explanation": "Comme pour l'autowiring, tout le travail d'introspection est fait lors de la construction du conteneur, générant un code PHP optimisé et statique pour la production."
+    },
+    {
+      "id": 5,
+      "question": "Si un service a `autoconfigure: true` mais qu'on lui définit explicitement des tags dans `services.yaml`, que se passe-t-il ?",
+      "type": "single_choice",
+      "options": [
+        "Une erreur est levée lors de la compilation.",
+        "Les tags explicites s'ajoutent aux tags autoconfigurés.",
+        "Les tags explicites remplacent les tags autoconfigurés.",
+        "L'autoconfigure est ignoré pour ce service."
+      ],
+      "correct_answers": [
+        "Les tags explicites s'ajoutent aux tags autoconfigurés."
+      ],
+      "explanation": "Les tags sont cumulatifs. Le service aura à la fois les tags définis automatiquement par ses interfaces et ceux ajoutés manuellement."
+    }
+  ]
+}
