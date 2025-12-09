@@ -19,21 +19,6 @@
     },
     {
       "id": 2,
-      "question": "Si une factory implémente `__invoke`, comment la déclarer dans le YAML ?",
-      "type": "single_choice",
-      "options": [
-        "factory: ['@MyFactory', '__invoke']",
-        "factory: '@MyFactory'",
-        "Les deux fonctionnent, mais la version courte est préférée.",
-        "Il faut obligatoirement préciser '__invoke'."
-      ],
-      "correct_answers": [
-        "Les deux fonctionnent, mais la version courte est préférée."
-      ],
-      "explanation": "Symfony détecte automatiquement si le service factory est invokable si aucune méthode n'est spécifiée."
-    },
-    {
-      "id": 3,
       "question": "À quoi correspond l'option `arguments` sur une définition de service utilisant une factory ?",
       "type": "single_choice",
       "options": [
@@ -48,7 +33,7 @@
       "explanation": "Le conteneur appelle `Factory::method(...arguments)`, c'est ensuite à la factory de passer ce qu'il faut au `new Service()`."
     },
     {
-      "id": 4,
+      "id": 3,
       "question": "Comment configurer une classe pour qu'elle utilise sa propre méthode statique `create` comme constructeur via un attribut ?",
       "type": "single_choice",
       "options": [
@@ -63,7 +48,7 @@
       "explanation": "C'est l'option `constructor` de l'attribut `Autoconfigure` qui gère ce cas (Self-Factory)."
     },
     {
-      "id": 5,
+      "id": 4,
       "question": "Peut-on utiliser une expression pour définir une factory ?",
       "type": "single_choice",
       "options": [
