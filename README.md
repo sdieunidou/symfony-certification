@@ -222,7 +222,6 @@ Note : Ce contenu a été entièrement généré par une intelligence artificiel
 * [Performance](./14-divers/performance.md)
 * [Web Profiler](./14-divers/profiler.md)
 * [Runtime](./14-divers/runtime.md)
-* [Attributs PHP natifs](./14-divers/attributes.md)
 * [Création de Bundle](./14-divers/bundles.md)
 
 ### [16. Architecture](./16-architecture/)
