@@ -61,6 +61,21 @@
         "`UserPasswordHasherInterface`"
       ],
       "explanation": "La méthode `hashPassword($user, $plainPassword)` gère tout."
+    },
+    {
+      "id": 5,
+      "question": "Si vous devez utiliser des algorithmes de hachage différents selon l'utilisateur (ex: Argon2 pour Admin, Bcrypt pour User), quelle interface l'entité User doit-elle implémenter ?",
+      "type": "single_choice",
+      "options": [
+        "`PasswordHasherAwareInterface`",
+        "`NamedHasherInterface`",
+        "`DynamicHasherInterface`",
+        "`MultiHashInterface`"
+      ],
+      "correct_answers": [
+        "`PasswordHasherAwareInterface`"
+      ],
+      "explanation": "Cette interface oblige à implémenter `getPasswordHasherName()` qui retourne le nom du hasher configuré dans `security.yaml`."
     }
   ]
 }

@@ -61,6 +61,21 @@
         "`entity`"
       ],
       "explanation": "On spécifie la classe de l'entité et la propriété à utiliser comme identifiant (ex: email)."
+    },
+    {
+      "id": 5,
+      "question": "Quelle méthode remplace l'ancienne `loadUserByUsername` depuis Symfony 5.3 ?",
+      "type": "single_choice",
+      "options": [
+        "`loadUserByEmail`",
+        "`loadUserByIdentifier`",
+        "`loadUserByLogin`",
+        "`getUser`"
+      ],
+      "correct_answers": [
+        "`loadUserByIdentifier`"
+      ],
+      "explanation": "Le terme 'Identifier' est plus générique que 'Username', s'adaptant aux emails, clés API, téléphones, etc."
     }
   ]
 }

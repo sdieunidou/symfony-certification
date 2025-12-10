@@ -61,6 +61,21 @@
         "Un objet DTO retourné par `authenticate()` contenant l'utilisateur et les preuves (badges) de son identité."
       ],
       "explanation": "Le Passport simplifie la gestion des différentes étapes (Check CSRF, Check Password, Remember Me) via des 'Badges'."
+    },
+    {
+      "id": 5,
+      "question": "Techniquement, qu'est-ce qu'un Firewall dans l'architecture Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Un contrôleur.",
+        "Un middleware PSR-15.",
+        "Un Event Listener sur l'événement `kernel.request`.",
+        "Un service Twig."
+      ],
+      "correct_answers": [
+        "Un Event Listener sur l'événement `kernel.request`."
+      ],
+      "explanation": "Il intercepte la requête très tôt pour vérifier l'authentification avant que le contrôleur ne soit atteint."
     }
   ]
 }

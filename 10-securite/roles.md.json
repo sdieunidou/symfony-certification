@@ -61,6 +61,21 @@
         "`PUBLIC_ACCESS`"
       ],
       "explanation": "C'est un attribut spécial utilisé dans `access_control` pour ouvrir une route."
+    },
+    {
+      "id": 5,
+      "question": "Qu'appelle-t-on les 'Reachable Roles' ?",
+      "type": "single_choice",
+      "options": [
+        "Les rôles stockés en base de données.",
+        "L'ensemble des rôles qu'un utilisateur possède effectivement, c'est-à-dire ses rôles directs PLUS tous les rôles hérités via la hiérarchie.",
+        "Les rôles accessibles via l'URL.",
+        "Les rôles que l'utilisateur peut donner aux autres."
+      ],
+      "correct_answers": [
+        "L'ensemble des rôles qu'un utilisateur possède effectivement, c'est-à-dire ses rôles directs PLUS tous les rôles hérités via la hiérarchie."
+      ],
+      "explanation": "C'est cette liste calculée qui est utilisée par `is_granted`."
     }
   ]
 }

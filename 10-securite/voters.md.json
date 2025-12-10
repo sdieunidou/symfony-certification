@@ -61,6 +61,21 @@
         "L'accès est accordé (Dès qu'un voter dit Oui, c'est gagné)."
       ],
       "explanation": "Pour une sécurité plus stricte, on peut utiliser la stratégie `unanimous`."
+    },
+    {
+      "id": 5,
+      "question": "Pourquoi ne faut-il jamais faire de requête en base de données dans la méthode `supports()` d'un Voter ?",
+      "type": "single_choice",
+      "options": [
+        "C'est interdit par PHP.",
+        "Parce que `supports()` est appelé à chaque vérification de sécurité (pour tous les voters), cela tuerait les performances.",
+        "Parce que l'EntityManager n'est pas disponible.",
+        "C'est possible et recommandé."
+      ],
+      "correct_answers": [
+        "Parce que `supports()` est appelé à chaque vérification de sécurité (pour tous les voters), cela tuerait les performances."
+      ],
+      "explanation": "`supports()` doit être extrêmement rapide (vérification de type et de string uniquement). La logique lourde va dans `voteOnAttribute()`."
     }
   ]
 }

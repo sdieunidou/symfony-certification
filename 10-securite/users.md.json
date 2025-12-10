@@ -61,6 +61,21 @@
         "Pour éviter de stocker des données sensibles (mot de passe) ou des relations lourdes (Doctrine Proxy) dans la session PHP."
       ],
       "explanation": "L'objet User est sérialisé dans la session. Il doit être léger et sûr."
+    },
+    {
+      "id": 5,
+      "question": "Quelle interface optionnelle permet de contrôler précisément si un utilisateur a changé lors du 'Refresh User' (et donc s'il faut le déconnecter) ?",
+      "type": "single_choice",
+      "options": [
+        "`ComparableInterface`",
+        "`EquatableInterface`",
+        "`RefreshableInterface`",
+        "`StableUserInterface`"
+      ],
+      "correct_answers": [
+        "`EquatableInterface`"
+      ],
+      "explanation": "La méthode `isEqualTo` permet de comparer l'utilisateur en session avec celui rechargé de la DB. Par défaut, Symfony vérifie le mot de passe, le sel et l'identifiant."
     }
   ]
 }
