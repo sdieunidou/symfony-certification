@@ -76,6 +76,21 @@
         "Non, la structure du formulaire est figée à ce stade. Il faut utiliser `PRE_SUBMIT` ou `PRE_SET_DATA`."
       ],
       "explanation": "Une fois la soumission traitée, on ne peut plus changer la structure."
+    },
+    {
+      "id": 6,
+      "question": "Si vous voulez modifier l'objet hydraté juste avant la validation (ex: générer un slug), quel événement utiliser ?",
+      "type": "single_choice",
+      "options": [
+        "`PRE_SET_DATA`",
+        "`PRE_SUBMIT`",
+        "`POST_SUBMIT` ou `SUBMIT`",
+        "`VIEW_SUBMIT`"
+      ],
+      "correct_answers": [
+        "`POST_SUBMIT` ou `SUBMIT`"
+      ],
+      "explanation": "`SUBMIT` ou `POST_SUBMIT` sont adaptés car l'objet commence à être peuplé. `POST_SUBMIT` est généralement préféré pour les actions finales."
     }
   ]
 }

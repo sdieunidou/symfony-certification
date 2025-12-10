@@ -121,6 +121,51 @@
         "Toutes ses propriétés sont implicitement `readonly`, typées, et ne peuvent être initialisées qu'une fois."
       ],
       "explanation": "Cela facilite la création d'objets immuables (Immutable Objects), comme des DTO ou Value Objects."
+    },
+    {
+      "id": 9,
+      "question": "Quel est le but de la classe `WeakMap` introduite en PHP 8.0 ?",
+      "type": "single_choice",
+      "options": [
+        "Créer des cartes géographiques.",
+        "Stocker des références vers des objets sans empêcher le Garbage Collector de les détruire s'ils ne sont plus utilisés ailleurs.",
+        "Remplacer les tableaux associatifs.",
+        "Stocker des clés faibles (hash)."
+      ],
+      "correct_answers": [
+        "Stocker des références vers des objets sans empêcher le Garbage Collector de les détruire s'ils ne sont plus utilisés ailleurs."
+      ],
+      "explanation": "`WeakMap` permet d'associer des données à un objet sans créer de fuite mémoire. Si l'objet disparaît, l'entrée dans la map disparaît aussi."
+    },
+    {
+      "id": 10,
+      "question": "Quelles méthodes magiques remplacent l'interface `Serializable` (dépréciée) depuis PHP 7.4 ?",
+      "type": "multiple_choice",
+      "options": [
+        "`__sleep` et `__wakeup`",
+        "`__serialize` et `__unserialize`",
+        "`__toString`",
+        "`__jsonSerialize`"
+      ],
+      "correct_answers": [
+        "`__serialize` et `__unserialize`"
+      ],
+      "explanation": "`__serialize` retourne un tableau de données à sérialiser, et `__unserialize` restaure l'objet à partir de ce tableau. C'est plus robuste et sécurisé que `__sleep`."
+    },
+    {
+      "id": 11,
+      "question": "Pourquoi est-il souvent recommandé de déclarer les classes comme `final` par défaut dans une architecture moderne ?",
+      "type": "single_choice",
+      "options": [
+        "Pour améliorer les performances de compilation.",
+        "Pour interdire l'héritage et forcer la composition (Open/Closed Principle), facilitant ainsi la maintenance et les mises à jour.",
+        "Pour empêcher l'injection de dépendances.",
+        "C'est obligatoire en Symfony 7."
+      ],
+      "correct_answers": [
+        "Pour interdire l'héritage et forcer la composition (Open/Closed Principle), facilitant ainsi la maintenance et les mises à jour."
+      ],
+      "explanation": "Limiter l'héritage réduit le couplage. Si une classe n'est pas conçue pour être étendue, elle doit être finale."
     }
   ]
 }

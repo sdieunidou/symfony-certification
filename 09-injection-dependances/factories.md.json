@@ -61,6 +61,21 @@
         "Oui, avec la syntaxe `factory: '@=...'`."
       ],
       "explanation": "Cela permet de retourner dynamiquement un service ou un autre selon une condition (ex: debug)."
+    },
+    {
+      "id": 5,
+      "question": "Si l'ID du service est un FQCN (nom de classe complet), est-il obligatoire de préciser la clé `class` en plus de la factory ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, Symfony utilise l'ID comme classe par défaut, bien que la factory puisse retourner un objet d'un type différent (polymorphisme).",
+        "Seulement si la factory est statique.",
+        "Non, car la classe est devinée par la factory."
+      ],
+      "correct_answers": [
+        "Non, Symfony utilise l'ID comme classe par défaut, bien que la factory puisse retourner un objet d'un type différent (polymorphisme)."
+      ],
+      "explanation": "C'est une convention pratique pour réduire la configuration YAML."
     }
   ]
 }

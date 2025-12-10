@@ -91,6 +91,36 @@
         "Non, c'est un outil de productivité optionnel. On peut utiliser Apache, Nginx ou Docker."
       ],
       "explanation": "Symfony est un framework PHP standard qui tourne sur n'importe quelle stack compatible."
+    },
+    {
+      "id": 7,
+      "question": "Quelle fonctionnalité du serveur local Symfony permet d'utiliser des noms de domaine locaux (ex: `projet.wip`) sans modifier le fichier hosts ?",
+      "type": "single_choice",
+      "options": [
+        "Le DNS local / Proxy interne",
+        "Le VPN intégré",
+        "Le reverse proxy Nginx",
+        "Le module Apache"
+      ],
+      "correct_answers": [
+        "Le DNS local / Proxy interne"
+      ],
+      "explanation": "Le CLI inclut un proxy local qui intercepte les requêtes vers les domaines configurés (via `symfony proxy:domain:attach`)."
+    },
+    {
+      "id": 8,
+      "question": "Le CLI Symfony permet-il de lancer des workers en arrière-plan pour consommer des messages (Messenger) ?",
+      "type": "single_choice",
+      "options": [
+        "Non, il ne gère que le web.",
+        "Oui, via `symfony run -d ...` ou en configuration worker.",
+        "Uniquement sur SymfonyCloud.",
+        "Oui, mais c'est instable."
+      ],
+      "correct_answers": [
+        "Oui, via `symfony run -d ...` ou en configuration worker."
+      ],
+      "explanation": "Il peut lancer et gérer des processus workers en arrière-plan, mimant l'environnement de production."
     }
   ]
 }

@@ -61,6 +61,21 @@
         "`permanent` (true = 301, false = 302)"
       ],
       "explanation": "L'option `permanent: true` génère une redirection 301 (Moved Permanently)."
+    },
+    {
+      "id": 5,
+      "question": "Quelle option du `TemplateController` permet de définir la durée de cache HTTP (Cache-Control s-maxage) ?",
+      "type": "single_choice",
+      "options": [
+        "`ttl`",
+        "`maxAge` et `sharedAge`",
+        "`cache`",
+        "`expires`"
+      ],
+      "correct_answers": [
+        "`maxAge` et `sharedAge`"
+      ],
+      "explanation": "Cela permet de rendre les pages statiques très performantes en les cachant via un Reverse Proxy."
     }
   ]
 }

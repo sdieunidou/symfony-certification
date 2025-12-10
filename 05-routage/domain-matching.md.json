@@ -61,6 +61,21 @@
         "`schemes: ['https']`"
       ],
       "explanation": "Cette option force le schéma. Si l'utilisateur arrive en HTTP, Symfony le redirigera vers HTTPS (bien qu'il soit préférable de gérer cela au niveau serveur web)."
+    },
+    {
+      "id": 5,
+      "question": "Pour que le Host Matching fonctionne, que doit savoir le routeur ?",
+      "type": "single_choice",
+      "options": [
+        "Le Host de la requête actuelle (RequestContext).",
+        "L'adresse IP du serveur.",
+        "Le port d'écoute.",
+        "Le nom du serveur DNS."
+      ],
+      "correct_answers": [
+        "Le Host de la requête actuelle (RequestContext)."
+      ],
+      "explanation": "Le routeur compare le host configuré avec le `host` présent dans le contexte de la requête."
     }
   ]
 }

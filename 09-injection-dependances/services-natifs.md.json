@@ -61,6 +61,21 @@
         "`Symfony\\Bundle\\SecurityBundle\\Security`"
       ],
       "explanation": "La classe `Security` remplace l'injection combinée de `UserStorage` et `AuthorizationChecker` pour les cas courants."
+    },
+    {
+      "id": 5,
+      "question": "Quelle interface faut-il utiliser pour injecter le service de validation ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\\Component\\Validator\\Validator`",
+        "`Symfony\\Component\\Validator\\Validator\\ValidatorInterface`",
+        "`Symfony\\Component\\Validation\\ValidatorInterface`",
+        "`ValidatorInterface`"
+      ],
+      "correct_answers": [
+        "`Symfony\\Component\\Validator\\Validator\\ValidatorInterface`"
+      ],
+      "explanation": "C'est l'interface principale du composant Validator."
     }
   ]
 }

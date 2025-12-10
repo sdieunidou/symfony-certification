@@ -106,6 +106,21 @@
         "controller: App\\Controller\\BlogController::show"
       ],
       "explanation": "On utilise le double deux-points `::` pour séparer la classe et la méthode dans la configuration YAML."
+    },
+    {
+      "id": 8,
+      "question": "Si vous placez l'attribut `#[Route('/api')]` au-dessus de la classe du contrôleur, que se passe-t-il ?",
+      "type": "single_choice",
+      "options": [
+        "Rien, l'attribut doit être sur les méthodes.",
+        "Toutes les routes définies dans les méthodes de cette classe seront préfixées par `/api`.",
+        "Cela définit une route par défaut pour la classe.",
+        "Cela active le mode API."
+      ],
+      "correct_answers": [
+        "Toutes les routes définies dans les méthodes de cette classe seront préfixées par `/api`."
+      ],
+      "explanation": "C'est très utile pour grouper des routes sous un même préfixe d'URL (et de nom)."
     }
   ]
 }

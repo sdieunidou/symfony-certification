@@ -106,6 +106,21 @@
         "`getMainRequest()`"
       ],
       "explanation": "`getMainRequest()` a remplacé `getMasterRequest()` (déprécié) pour désigner la requête principale."
+    },
+    {
+      "id": 8,
+      "question": "Quel est l'avantage des méthodes `getInt`, `getBoolean` fournies par `InputBag` ?",
+      "type": "single_choice",
+      "options": [
+        "Elles sont plus rapides.",
+        "Elles effectuent un transtypage (type casting) sûr des valeurs reçues (qui sont toujours des strings en HTTP).",
+        "Elles valident les données en base de données.",
+        "Elles chiffrent les données."
+      ],
+      "correct_answers": [
+        "Elles effectuent un transtypage (type casting) sûr des valeurs reçues (qui sont toujours des strings en HTTP)."
+      ],
+      "explanation": "`$request->query->getInt('page', 1)` garantit de recevoir un entier, même si l'URL contient `?page=1` (string)."
     }
   ]
 }

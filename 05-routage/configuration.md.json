@@ -106,6 +106,21 @@
         "En ajoutant l'option `host: 'api.example.com'` dans l'attribut `#[Route]` de la classe."
       ],
       "explanation": "L'attribut `#[Route]` sur la classe permet de définir un host, des requirements et un prefix communs à toutes les méthodes."
+    },
+    {
+      "id": 8,
+      "question": "Quel est l'avantage principal d'utiliser des alias de route plutôt que de renommer brutalement une route ?",
+      "type": "single_choice",
+      "options": [
+        "Cela améliore les performances.",
+        "Cela permet la Rétrocompatibilité (BC) : l'ancien nom continue de fonctionner pour générer des URLs pendant une période de transition.",
+        "Cela permet d'avoir deux URLs pour le même contenu (SEO).",
+        "Cela réduit la taille du fichier de cache."
+      ],
+      "correct_answers": [
+        "Cela permet la Rétrocompatibilité (BC) : l'ancien nom continue de fonctionner pour générer des URLs pendant une période de transition."
+      ],
+      "explanation": "C'est crucial pour les librairies partagées ou les applications avec beaucoup de liens hardcodés (bien que ce soit mal)."
     }
   ]
 }

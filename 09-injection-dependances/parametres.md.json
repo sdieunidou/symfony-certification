@@ -61,6 +61,21 @@
         "`kernel.project_dir`"
       ],
       "explanation": "`kernel.root_dir` est déprécié et pointait vers `src/` (ou `app/` historiquement). `project_dir` pointe vers la racine où se trouve `composer.json`."
+    },
+    {
+      "id": 5,
+      "question": "À quoi servent les 'Env Processors' (ex: `%env(int:MY_VAR)%`) ?",
+      "type": "single_choice",
+      "options": [
+        "À définir des variables d'environnement.",
+        "À transformer la valeur d'une variable d'environnement à la volée (cast, trim, json_decode) lors de son injection.",
+        "À chiffrer les variables.",
+        "À mettre en cache les variables."
+      ],
+      "correct_answers": [
+        "À transformer la valeur d'une variable d'environnement à la volée (cast, trim, json_decode) lors de son injection."
+      ],
+      "explanation": "Cela permet de typer les variables d'environnement qui sont toujours des chaînes par défaut."
     }
   ]
 }

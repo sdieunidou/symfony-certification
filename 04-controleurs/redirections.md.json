@@ -76,6 +76,21 @@
         "Non, il faut les passer manuellement dans le tableau de paramètres."
       ],
       "explanation": "La redirection repart de zéro. Si vous voulez conserver `?page=2`, vous devez l'injecter : `['page' => $request->query->get('page')]`."
+    },
+    {
+      "id": 6,
+      "question": "Que se passe-t-il si vous redirigez vers la route courante sans condition d'arrêt ?",
+      "type": "single_choice",
+      "options": [
+        "Symfony détecte la boucle et arrête.",
+        "Le navigateur affiche l'erreur `ERR_TOO_MANY_REDIRECTS`.",
+        "La page s'affiche normalement.",
+        "Une erreur 500 est levée."
+      ],
+      "correct_answers": [
+        "Le navigateur affiche l'erreur `ERR_TOO_MANY_REDIRECTS`."
+      ],
+      "explanation": "C'est une erreur logique fréquente. Le navigateur arrête de suivre les redirections après une vingtaine d'essais."
     }
   ]
 }

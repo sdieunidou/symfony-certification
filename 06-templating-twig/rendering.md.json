@@ -61,6 +61,21 @@
         "`TemplateController`"
       ],
       "explanation": "Il suffit de définir le paramètre `template` dans les defaults de la route."
+    },
+    {
+      "id": 5,
+      "question": "Quelle méthode permet de rendre uniquement un bloc spécifique d'un template ?",
+      "type": "single_choice",
+      "options": [
+        "`renderBlock()`",
+        "`renderPartial()`",
+        "`renderFragment()`",
+        "`renderOnly()`"
+      ],
+      "correct_answers": [
+        "`renderBlock()`"
+      ],
+      "explanation": "C'est très utile pour les mises à jour partielles (AJAX/Turbo) en ne renvoyant que le HTML nécessaire."
     }
   ]
 }

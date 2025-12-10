@@ -61,6 +61,21 @@
         "Creative Commons BY-SA 3.0"
       ],
       "explanation": "Vous pouvez partager et adapter la doc, à condition de créditer (BY) et de partager sous la même licence (SA)."
+    },
+    {
+      "id": 5,
+      "question": "Qui détient les droits de publication (copyright) principaux de Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "L'association PHP.",
+        "Fabien Potencier (et les contributeurs).",
+        "SensioLabs.",
+        "GitHub."
+      ],
+      "correct_answers": [
+        "Fabien Potencier (et les contributeurs)."
+      ],
+      "explanation": "Fabien Potencier est le créateur et lead developer du projet."
     }
   ]
 }

@@ -151,6 +151,21 @@
         "En surchargeant la méthode `getTargets()` pour retourner `self::CLASS_CONSTRAINT`."
       ],
       "explanation": "Le validateur recevra alors l'instance de l'objet complet dans `$value`."
+    },
+    {
+      "id": 11,
+      "question": "À quoi sert l'option `payload` présente dans toutes les contraintes ?",
+      "type": "single_choice",
+      "options": [
+        "À stocker des données arbitraires attachées à la violation, pour usage côté client (frontend).",
+        "À définir le message d'erreur.",
+        "À passer des arguments au validateur.",
+        "À définir la priorité."
+      ],
+      "correct_answers": [
+        "À stocker des données arbitraires attachées à la violation, pour usage côté client (frontend)."
+      ],
+      "explanation": "Le payload est accessible dans l'objet `ConstraintViolation` et peut être utilisé pour remonter des codes d'erreur ou des métadonnées."
     }
   ]
 }

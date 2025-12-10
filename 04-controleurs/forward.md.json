@@ -61,6 +61,21 @@
         "Oui, car c'est une nouvelle requête traitée par le Kernel (avec `$event->isMainRequest() === false`)."
       ],
       "explanation": "Le cycle de vie est rejoué pour la sous-requête."
+    },
+    {
+      "id": 5,
+      "question": "Quel est l'impact de performance d'un `forward()` ?",
+      "type": "single_choice",
+      "options": [
+        "Négligeable.",
+        "Important, car il relance tout le cycle de vie du Kernel (Events, Listeners) pour la sous-requête.",
+        "Il améliore les performances.",
+        "Il n'utilise pas de mémoire."
+      ],
+      "correct_answers": [
+        "Important, car il relance tout le cycle de vie du Kernel (Events, Listeners) pour la sous-requête."
+      ],
+      "explanation": "C'est pourquoi il vaut souvent mieux extraire la logique métier dans un Service plutôt que de faire un forward."
     }
   ]
 }

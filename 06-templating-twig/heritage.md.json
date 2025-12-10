@@ -61,6 +61,21 @@
         "Non, un seul parent (comme en PHP)."
       ],
       "explanation": "`{% extends %}` n'accepte qu'un seul argument (mais on peut utiliser `use` pour l'héritage horizontal de blocs, similaire aux Traits)."
+    },
+    {
+      "id": 5,
+      "question": "Peut-on déterminer le template parent dynamiquement ?",
+      "type": "single_choice",
+      "options": [
+        "Non, le parent doit être une chaîne statique.",
+        "Oui, `{% extends %}` accepte une variable ou une expression conditionnelle (ex: ternaire).",
+        "Oui, mais seulement via le contrôleur.",
+        "Seulement si les templates sont dans le même dossier."
+      ],
+      "correct_answers": [
+        "Oui, `{% extends %}` accepte une variable ou une expression conditionnelle (ex: ternaire)."
+      ],
+      "explanation": "C'est très utile pour changer de layout selon le contexte (AJAX vs Page complète)."
     }
   ]
 }

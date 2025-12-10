@@ -61,6 +61,21 @@
         "`_stateless`"
       ],
       "explanation": "Si `_stateless` est à true, Symfony n'enverra pas de cookie de session et alertera si la session est utilisée."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert l'attribut spécial `_fragment` ?",
+      "type": "single_choice",
+      "options": [
+        "À charger une partie de page.",
+        "À sécuriser les sous-requêtes (ESI / Hinclude) via une signature, garantissant qu'elles sont internes.",
+        "À définir un fragment d'URL (#hash).",
+        "À rien."
+      ],
+      "correct_answers": [
+        "À sécuriser les sous-requêtes (ESI / Hinclude) via une signature, garantissant qu'elles sont internes."
+      ],
+      "explanation": "Le `FragmentListener` vérifie cette signature pour empêcher l'exécution directe de ces routes par un utilisateur externe."
     }
   ]
 }

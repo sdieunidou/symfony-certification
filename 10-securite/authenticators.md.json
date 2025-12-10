@@ -76,6 +76,21 @@
         "`AuthenticationEntryPointInterface`"
       ],
       "explanation": "La méthode `start()` de cette interface est appelée par le `ExceptionListener` quand un utilisateur anonyme accède à une ressource protégée."
+    },
+    {
+      "id": 6,
+      "question": "Si vous voulez afficher un message d'erreur spécifique à l'utilisateur lors de l'échec de l'authentification, quelle exception lever ?",
+      "type": "single_choice",
+      "options": [
+        "`AuthenticationException`",
+        "`CustomUserMessageAuthenticationException`",
+        "`AccessDeniedException`",
+        "`UserNotFoundException`"
+      ],
+      "correct_answers": [
+        "`CustomUserMessageAuthenticationException`"
+      ],
+      "explanation": "Cette exception permet de définir un message sûr ('safe') qui sera affiché à l'utilisateur (via `Security::AUTHENTICATION_ERROR`)."
     }
   ]
 }

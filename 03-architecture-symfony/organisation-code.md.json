@@ -91,6 +91,36 @@
         "Domain Driven Design (DDD) / Modular"
       ],
       "explanation": "Cette approche est recommandée pour les applications complexes afin de garder une cohésion forte par domaine."
+    },
+    {
+      "id": 7,
+      "question": "Que contient le fichier `config/bundles.php` ?",
+      "type": "single_choice",
+      "options": [
+        "La configuration des bundles.",
+        "La liste des bundles activés dans l'application.",
+        "Le code source des bundles.",
+        "Les routes des bundles."
+      ],
+      "correct_answers": [
+        "La liste des bundles activés dans l'application."
+      ],
+      "explanation": "C'est un tableau PHP retourné qui liste les classes de bundles à instancier par le Kernel."
+    },
+    {
+      "id": 8,
+      "question": "Dans quel dossier `config/` doit-on placer les configurations spécifiques à un bundle (ex: doctrine, security) ?",
+      "type": "single_choice",
+      "options": [
+        "config/routes/",
+        "config/services/",
+        "config/packages/",
+        "config/bundles/"
+      ],
+      "correct_answers": [
+        "config/packages/"
+      ],
+      "explanation": "Chaque fichier dans `config/packages/` est chargé automatiquement. Par convention, on utilise le nom du bundle (ex: `security.yaml`)."
     }
   ]
 }

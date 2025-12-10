@@ -76,6 +76,21 @@
         "Symfony utilise l'ID du service comme clé par défaut (fallback)."
       ],
       "explanation": "Symfony tente de résoudre l'index (via l'attribut ou la méthode statique), et retombe sur l'ID du service si rien n'est trouvé."
+    },
+    {
+      "id": 6,
+      "question": "Quelle est la différence entre `#[AutoconfigureTag]` et `#[AsTaggedItem]` ?",
+      "type": "single_choice",
+      "options": [
+        "`#[AutoconfigureTag]` applique le tag à la classe (définition), tandis que `#[AsTaggedItem]` configure les propriétés de ce tag (index, priorité) pour l'injection.",
+        "C'est la même chose.",
+        "`#[AutoconfigureTag]` est obsolète.",
+        "`#[AsTaggedItem]` ne fonctionne qu'avec les Service Locators."
+      ],
+      "correct_answers": [
+        "`#[AutoconfigureTag]` applique le tag à la classe (définition), tandis que `#[AsTaggedItem]` configure les propriétés de ce tag (index, priorité) pour l'injection."
+      ],
+      "explanation": "On utilise souvent les deux ensemble si l'interface n'est pas autoconfigurée par défaut."
     }
   ]
 }

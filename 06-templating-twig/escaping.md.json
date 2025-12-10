@@ -34,7 +34,7 @@
     },
     {
       "id": 3,
-      "question": "Comment échapper une variable pour un contexte JavaScript (ex: injection dans une balise `<script>`) ?",
+      "question": "Comment échapper manuellement une variable pour un contexte JavaScript (ex: injection dans une balise `<script>`) ?",
       "type": "single_choice",
       "options": [
         "`{{ var|e('js') }}`",
@@ -45,7 +45,7 @@
       "correct_answers": [
         "`{{ var|e('js') }}`"
       ],
-      "explanation": "L'échappement JS est différent de l'échappement HTML."
+      "explanation": "L'échappement JS est différent de l'échappement HTML. Utiliser `json_encode` (via `|json_encode`) est souvent encore plus sûr pour passer des données complexes."
     },
     {
       "id": 4,
@@ -61,6 +61,21 @@
         "`{{ var|upper|raw }}`"
       ],
       "explanation": "`raw` doit toujours être le **dernier** filtre de la chaîne pour empêcher l'échappement final."
+    },
+    {
+      "id": 5,
+      "question": "Dans quel type de template l'échappement automatique est-il désactivé par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "Dans les fichiers `.html.twig`.",
+        "Dans les fichiers `.txt.twig`.",
+        "Dans les fichiers `.js.twig`.",
+        "Jamais."
+      ],
+      "correct_answers": [
+        "Dans les fichiers `.txt.twig`."
+      ],
+      "explanation": "Twig détecte l'extension du fichier pour adapter sa stratégie d'échappement. Le format texte n'a pas besoin d'échappement XSS."
     }
   ]
 }

@@ -61,6 +61,21 @@
         "En passant une Closure (fonction anonyme) à l'option `validation_groups` dans `configureOptions`."
       ],
       "explanation": "La closure reçoit le formulaire en argument et peut retourner un tableau de groupes basé sur les données (`$form->getData()`)."
+    },
+    {
+      "id": 5,
+      "question": "Est-il possible d'hériter les groupes de validation entre classes parent/enfant ?",
+      "type": "single_choice",
+      "options": [
+        "Non, les groupes sont isolés par classe.",
+        "Oui, les contraintes de la classe parente sont automatiquement prises en compte si le groupe `Default` est validé.",
+        "Seulement si on utilise l'attribut `#[InheritConstraints]`.",
+        "Oui, mais il faut copier-coller les contraintes."
+      ],
+      "correct_answers": [
+        "Oui, les contraintes de la classe parente sont automatiquement prises en compte si le groupe `Default` est validé."
+      ],
+      "explanation": "L'héritage des métadonnées de validation fonctionne nativement avec l'héritage PHP."
     }
   ]
 }

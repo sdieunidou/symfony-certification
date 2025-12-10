@@ -61,6 +61,21 @@
         "`$context->buildViolation('message')->atPath('field_name')->addViolation()`"
       ],
       "explanation": "`atPath` permet de cibler une propriété pour que l'erreur s'affiche à côté du champ dans le formulaire."
+    },
+    {
+      "id": 5,
+      "question": "Peut-on utiliser une méthode statique comme callback de validation ?",
+      "type": "single_choice",
+      "options": [
+        "Non, uniquement des méthodes d'instance.",
+        "Oui, en passant un array `[Classe::class, 'methodName']` à l'attribut `#[Assert\\Callback]`.",
+        "Uniquement si l'entité est statique.",
+        "Seulement dans les DTOs."
+      ],
+      "correct_answers": [
+        "Oui, en passant un array `[Classe::class, 'methodName']` à l'attribut `#[Assert\\Callback]`."
+      ],
+      "explanation": "C'est utile pour externaliser la logique de validation et ne pas polluer la classe de l'entité."
     }
   ]
 }

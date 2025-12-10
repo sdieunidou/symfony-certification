@@ -19,7 +19,7 @@
     },
     {
       "id": 2,
-      "question": "Quelle commande CLI permet de vérifier la syntaxe de tous les templates Twig ?",
+      "question": "Quelle commande CLI permet de vérifier la syntaxe (parsing) de tous les templates Twig ?",
       "type": "single_choice",
       "options": [
         "php bin/console cache:clear",
@@ -61,6 +61,21 @@
         "php bin/console debug:twig"
       ],
       "explanation": "C'est très utile pour vérifier si une extension Twig personnalisée est bien chargée."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la différence entre `{{ dump(var) }}` et `{% dump var %}` ?",
+      "type": "single_choice",
+      "options": [
+        "Aucune.",
+        "`{{ dump(var) }}` affiche le dump dans le corps de la page (HTML), `{% dump var %}` l'envoie dans la Web Debug Toolbar.",
+        "`{% dump %}` est déprécié.",
+        "`{{ dump }}` ne marche pas."
+      ],
+      "correct_answers": [
+        "`{{ dump(var) }}` affiche le dump dans le corps de la page (HTML), `{% dump var %}` l'envoie dans la Web Debug Toolbar."
+      ],
+      "explanation": "Envoyer le dump dans la toolbar est utile pour ne pas casser la mise en page lors du débogage."
     }
   ]
 }

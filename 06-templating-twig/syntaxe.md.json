@@ -61,6 +61,21 @@
         "Il supprime les espaces blancs (whitespace trimming) avant et après le bloc."
       ],
       "explanation": "C'est le contrôle des espaces blancs (Whitespace Control)."
+    },
+    {
+      "id": 5,
+      "question": "Quand vous écrivez `user.name` en Twig, dans quel ordre Twig essaie-t-il d'accéder à la donnée ?",
+      "type": "single_choice",
+      "options": [
+        "Propriété publique -> Getter -> Clé de tableau -> Méthode.",
+        "Clé de tableau -> Propriété publique -> Méthode -> Getter (`get/is/has`) -> `__call`.",
+        "Getter -> Propriété publique -> Clé de tableau.",
+        "Il faut spécifier manuellement `user['name']` ou `user.name`."
+      ],
+      "correct_answers": [
+        "Clé de tableau -> Propriété publique -> Méthode -> Getter (`get/is/has`) -> `__call`."
+      ],
+      "explanation": "L'opérateur point `.` est polymorphe et gère intelligemment l'accès aux données, que ce soit un tableau ou un objet."
     }
   ]
 }

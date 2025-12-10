@@ -61,6 +61,21 @@
         "`permanent: true`"
       ],
       "explanation": "L'option `permanent` contrôle le code de statut (301 vs 302)."
+    },
+    {
+      "id": 5,
+      "question": "Quelle option permet de conserver les paramètres de la Query String (`?a=b`) lors de la redirection ?",
+      "type": "single_choice",
+      "options": [
+        "`keepQueryParams: true`",
+        "`query: true`",
+        "`forward_query: true`",
+        "`append_query: true`"
+      ],
+      "correct_answers": [
+        "`keepQueryParams: true`"
+      ],
+      "explanation": "Par défaut, la query string est perdue lors d'une redirection simple, sauf si cette option est activée."
     }
   ]
 }

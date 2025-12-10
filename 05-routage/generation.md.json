@@ -76,6 +76,36 @@
         "L'option `router.request_context.host` et `scheme` (ou `default_uri`) dans `config/packages/routing.yaml`."
       ],
       "explanation": "En CLI, il n'y a pas de requête HTTP, donc pas de contexte (host/scheme) automatique. Il faut le définir pour que les emails contiennent les bons liens."
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert le service `UriSigner` ?",
+      "type": "single_choice",
+      "options": [
+        "À crypter l'URL.",
+        "À ajouter une signature hashée (HMAC) à l'URL pour empêcher sa modification (ex: reset password, email confirmation).",
+        "À valider le format de l'URL.",
+        "À raccourcir l'URL."
+      ],
+      "correct_answers": [
+        "À ajouter une signature hashée (HMAC) à l'URL pour empêcher sa modification (ex: reset password, email confirmation)."
+      ],
+      "explanation": "Si l'utilisateur modifie un paramètre de l'URL signée, la signature ne correspondra plus et la validation échouera."
+    },
+    {
+      "id": 7,
+      "question": "Quel attribut (Symfony 7.4+) permet de vérifier automatiquement la signature d'une URL signée ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Signed]`",
+        "`#[IsSignatureValid]`",
+        "`#[Secure]`",
+        "`#[Verify]`"
+      ],
+      "correct_answers": [
+        "`#[IsSignatureValid]`"
+      ],
+      "explanation": "Cet attribut lance une exception 403 ou 404 si la signature est invalide ou expirée."
     }
   ]
 }

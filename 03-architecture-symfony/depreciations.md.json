@@ -91,6 +91,21 @@
         "Une dépréciation déclenchée par une librairie tierce (vendor) que vous utilisez."
       ],
       "explanation": "Vous ne pouvez généralement pas corriger une dépréciation indirecte autrement qu'en mettant à jour la librairie concernée."
+    },
+    {
+      "id": 7,
+      "question": "Quelle est la stratégie recommandée pour une mise à jour majeure (ex: 6.4 vers 7.0) ?",
+      "type": "single_choice",
+      "options": [
+        "Mettre à jour directement et corriger les erreurs ensuite.",
+        "Mettre à jour vers la dernière version mineure (6.4), corriger toutes les dépréciations, puis passer à la majeure suivante.",
+        "Réécrire l'application.",
+        "Attendre la version 7.1."
+      ],
+      "correct_answers": [
+        "Mettre à jour vers la dernière version mineure (6.4), corriger toutes les dépréciations, puis passer à la majeure suivante."
+      ],
+      "explanation": "Si votre application tourne sur la version 6.4 sans aucune dépréciation loggée, elle est compatible avec la 7.0."
     }
   ]
 }

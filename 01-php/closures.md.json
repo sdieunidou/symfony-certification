@@ -34,19 +34,21 @@
     },
     {
       "id": 3,
-      "question": "Quelle est la particularité des Arrow Functions (`fn() => ...`) introduites en PHP 7.4 ?",
+      "question": "Quelles sont les caractéristiques des Arrow Functions (`fn() => ...`) ?",
       "type": "multiple_choice",
       "options": [
         "Elles capturent automatiquement les variables du scope parent par valeur.",
         "Elles permettent de modifier directement les variables du parent sans référence.",
         "Elles ne peuvent contenir qu'une seule expression (le return est implicite).",
+        "Elles ne supportent pas les blocs de code `{ ... }`.",
         "Elles remplacent totalement les classes anonymes."
       ],
       "correct_answers": [
         "Elles capturent automatiquement les variables du scope parent par valeur.",
-        "Elles ne peuvent contenir qu'une seule expression (le return est implicite)."
+        "Elles ne peuvent contenir qu'une seule expression (le return est implicite).",
+        "Elles ne supportent pas les blocs de code `{ ... }`."
       ],
-      "explanation": "Les Arrow Functions sont concises : capture automatique par valeur et expression unique retournée automatiquement."
+      "explanation": "Les Arrow Functions sont concises : capture automatique par valeur, expression unique retournée automatiquement, et pas de bloc d'instructions multiples."
     },
     {
       "id": 4,
@@ -124,6 +126,21 @@
         "Pour manipuler des collections avec array_map/array_filter."
       ],
       "explanation": "Symfony et PHP utilisent les closures pour les callbacks, les traitements de listes et la configuration flexible de composants."
+    },
+    {
+      "id": 9,
+      "question": "Quelle est la différence entre le type hint `callable` et la classe `Closure` ?",
+      "type": "single_choice",
+      "options": [
+        "`Closure` accepte uniquement les fonctions anonymes, alors que `callable` accepte aussi les chaînes ('function_name') et les tableaux ([$obj, 'method']).",
+        "`callable` est déprécié au profit de `Closure`.",
+        "`Closure` est plus large et accepte tout ce qui est exécutable.",
+        "Il n'y a aucune différence."
+      ],
+      "correct_answers": [
+        "`Closure` accepte uniquement les fonctions anonymes, alors que `callable` accepte aussi les chaînes ('function_name') et les tableaux ([$obj, 'method'])."
+      ],
+      "explanation": "`Closure` est un type plus strict qui exige une instance de la classe Closure (fonction anonyme), tandis que `callable` englobe toutes les formes d'appelables en PHP."
     }
   ]
 }

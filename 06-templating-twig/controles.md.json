@@ -34,18 +34,23 @@
     },
     {
       "id": 3,
-      "question": "Quelle variable spéciale permet d'accéder à l'index courant ou à la taille de la boucle ?",
-      "type": "single_choice",
+      "question": "Quelles propriétés de la variable spéciale `loop` sont disponibles dans une boucle ?",
+      "type": "multiple_choice",
       "options": [
-        "`index`",
-        "`iterator`",
-        "`loop`",
-        "`foreach`"
+        "`loop.index` (index commençant à 1)",
+        "`loop.index0` (index commençant à 0)",
+        "`loop.first` (true si première itération)",
+        "`loop.last` (true si dernière itération)",
+        "`loop.revindex` (compte à rebours)"
       ],
       "correct_answers": [
-        "`loop`"
+        "`loop.index` (index commençant à 1)",
+        "`loop.index0` (index commençant à 0)",
+        "`loop.first` (true si première itération)",
+        "`loop.last` (true si dernière itération)",
+        "`loop.revindex` (compte à rebours)"
       ],
-      "explanation": "`loop.index`, `loop.first`, `loop.length` sont très utiles."
+      "explanation": "La variable `loop` contient de nombreuses informations contextuelles sur l'itération."
     },
     {
       "id": 4,
@@ -64,33 +69,36 @@
     },
     {
       "id": 5,
-      "question": "Comment combiner plusieurs conditions dans un `if` ?",
-      "type": "single_choice",
+      "question": "Quels opérateurs logiques sont recommandés dans Twig pour combiner des conditions ?",
+      "type": "multiple_choice",
       "options": [
-        "`&&` et `||`",
-        "`and` et `or`",
-        "Les deux fonctionnent.",
-        "`&` et `|`"
+        "`and`",
+        "`or`",
+        "`not`",
+        "`&&`",
+        "`||`"
       ],
       "correct_answers": [
-        "`and` et `or`"
+        "`and`",
+        "`or`",
+        "`not`"
       ],
-      "explanation": "Twig privilégie les mots-clés `and` et `or` pour la lisibilité (bien que les opérateurs symboliques fonctionnent dans certaines versions, la documentation recommande les mots)."
+      "explanation": "Bien que `&&` et `||` fonctionnent parfois, Twig recommande l'usage des mots-clés (`and`, `or`, `not`) pour la lisibilité."
     },
     {
       "id": 6,
-      "question": "Les variables définies dans une boucle (`{% set foo = 1 %}`) sont-elles accessibles après la boucle ?",
+      "question": "Comment filtrer une liste directement dans la déclaration de la boucle `for` ?",
       "type": "single_choice",
       "options": [
-        "Oui.",
-        "Non, elles sont scopées à la boucle.",
-        "Oui, si on utilise `global`.",
-        "Cela dépend de la configuration."
+        "Ce n'est pas possible.",
+        "En utilisant le filtre `|filter` : `{% for user in users|filter(u => u.isActive) %}`.",
+        "En utilisant `where` : `{% for user in users where user.isActive %}`.",
+        "En utilisant `if` à l'intérieur de la boucle."
       ],
       "correct_answers": [
-        "Non, elles sont scopées à la boucle."
+        "En utilisant le filtre `|filter` : `{% for user in users|filter(u => u.isActive) %}`."
       ],
-      "explanation": "Le scope dans Twig est strict pour éviter les effets de bord."
+      "explanation": "Le filtre `filter` accepte une fonction fléchée pour filtrer les éléments avant l'itération."
     }
   ]
 }

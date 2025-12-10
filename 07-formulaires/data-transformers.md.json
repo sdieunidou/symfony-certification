@@ -91,6 +91,21 @@
         "`ReversedTransformer`"
       ],
       "explanation": "Cette classe wrapper échange simplement les appels aux méthodes `transform()` et `reverseTransform()` du transformer original."
+    },
+    {
+      "id": 7,
+      "question": "Peut-on ajouter plusieurs Data Transformers sur un même champ ?",
+      "type": "single_choice",
+      "options": [
+        "Non, un seul par champ.",
+        "Oui, ils sont chaînés. La sortie de l'un devient l'entrée du suivant.",
+        "Oui, mais seul le dernier est utilisé.",
+        "Seulement s'ils sont de types différents."
+      ],
+      "correct_answers": [
+        "Oui, ils sont chaînés. La sortie de l'un devient l'entrée du suivant."
+      ],
+      "explanation": "Cela permet de composer des transformations complexes (ex: Centimes -> Float -> String formatée)."
     }
   ]
 }

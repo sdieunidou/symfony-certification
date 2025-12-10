@@ -61,6 +61,36 @@
         "Il essaie de deviner le type (Type Guessing) en analysant les métadonnées de validation et de l'ORM."
       ],
       "explanation": "Si la propriété est un `bool` ou a une annotation `@ORM\\Column(type='boolean')`, Symfony utilisera `CheckboxType`."
+    },
+    {
+      "id": 5,
+      "question": "Dans quelle méthode de `AbstractType` définit-on les options par défaut du formulaire (comme `data_class`) ?",
+      "type": "single_choice",
+      "options": [
+        "`buildForm`",
+        "`configureOptions`",
+        "`getDefaults`",
+        "`init`"
+      ],
+      "correct_answers": [
+        "`configureOptions`"
+      ],
+      "explanation": "On utilise l'objet `OptionsResolver` passé en argument pour définir les valeurs par défaut."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi est-il souvent recommandé d'utiliser un DTO (Data Transfer Object) plutôt que l'entité Doctrine directement dans un formulaire ?",
+      "type": "single_choice",
+      "options": [
+        "Pour des raisons de performance SQL.",
+        "Pour découpler la structure de la base de données de l'interface utilisateur (ex: mot de passe en clair vs hashé, champs combinés).",
+        "Parce que Doctrine est incompatible avec les formulaires.",
+        "C'est obligatoire en Symfony 7."
+      ],
+      "correct_answers": [
+        "Pour découpler la structure de la base de données de l'interface utilisateur (ex: mot de passe en clair vs hashé, champs combinés)."
+      ],
+      "explanation": "Cela permet de valider les données du formulaire indépendamment des contraintes de persistance."
     }
   ]
 }

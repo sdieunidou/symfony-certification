@@ -91,6 +91,24 @@
         "symfony check:security (ou composer audit)"
       ],
       "explanation": "Cela compare le `composer.lock` avec une base de données de failles connues."
+    },
+    {
+      "id": 7,
+      "question": "Parmi ces extensions PHP, laquelle est requise pour faire tourner Symfony ?",
+      "type": "multiple_choice",
+      "options": [
+        "ctype",
+        "iconv",
+        "session",
+        "gd",
+        "imagick"
+      ],
+      "correct_answers": [
+        "ctype",
+        "iconv",
+        "session"
+      ],
+      "explanation": "Ctype, Iconv, Session (et d'autres comme PCRE, JSON, SimpleXML) sont indispensables au fonctionnement du coeur du framework."
     }
   ]
 }

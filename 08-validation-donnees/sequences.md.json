@@ -61,6 +61,21 @@
         "`GroupSequenceProviderInterface`"
       ],
       "explanation": "L'entité doit implémenter `getGroupSequence()` qui retourne le tableau des groupes à valider."
+    },
+    {
+      "id": 5,
+      "question": "Lorsque vous définissez une `GroupSequence` sur une classe, qu'arrive-t-il au groupe `Default` ?",
+      "type": "single_choice",
+      "options": [
+        "Il est toujours validé en premier.",
+        "Il est supprimé.",
+        "Il est remplacé par la séquence définie. Si vous validez le groupe `Default` (comportement standard), c'est la séquence qui est exécutée.",
+        "Il est validé en dernier."
+      ],
+      "correct_answers": [
+        "Il est remplacé par la séquence définie. Si vous validez le groupe `Default` (comportement standard), c'est la séquence qui est exécutée."
+      ],
+      "explanation": "C'est pourquoi il est crucial d'inclure le nom de la classe (alias de Default) dans la séquence si on veut valider les contraintes de base."
     }
   ]
 }

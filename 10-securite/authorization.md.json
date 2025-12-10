@@ -61,6 +61,21 @@
         "Affirmative (Dès qu'un voter dit oui, l'accès est accordé)."
       ],
       "explanation": "Cela signifie que si un seul voter (ex: RoleVoter) accorde l'accès, c'est validé, même si les autres s'abstiennent."
+    },
+    {
+      "id": 5,
+      "question": "Si l'accès est refusé (`isGranted` retourne false), que se passe-t-il selon que l'utilisateur est connecté ou non ?",
+      "type": "single_choice",
+      "options": [
+        "Erreur 403 dans les deux cas.",
+        "Erreur 401 dans les deux cas.",
+        "Si connecté: Exception 403 (`AccessDeniedException`). Si non connecté: Redirection vers le login (ou 401) via l'`AuthenticationEntryPoint`.",
+        "Rien, le code continue."
+      ],
+      "correct_answers": [
+        "Si connecté: Exception 403 (`AccessDeniedException`). Si non connecté: Redirection vers le login (ou 401) via l'`AuthenticationEntryPoint`."
+      ],
+      "explanation": "C'est le comportement standard : si on ne sait pas qui c'est, on lui demande de se connecter. Si on sait qui c'est mais qu'il n'a pas le droit, on lui interdit l'accès."
     }
   ]
 }

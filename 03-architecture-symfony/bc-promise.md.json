@@ -25,11 +25,13 @@
         "L'API Publique (Classes et Méthodes non @internal)",
         "Les classes marquées @internal",
         "Les formats de configuration (YAML/XML)",
-        "Les fonctionnalités marquées @experimental"
+        "Les fonctionnalités marquées @experimental",
+        "Les noms et arguments des commandes Console"
       ],
       "correct_answers": [
         "L'API Publique (Classes et Méthodes non @internal)",
-        "Les formats de configuration (YAML/XML)"
+        "Les formats de configuration (YAML/XML)",
+        "Les noms et arguments des commandes Console"
       ],
       "explanation": "L'API publique et la configuration sont couvertes. Les éléments @internal et @experimental ne le sont pas et peuvent changer à tout moment."
     },
@@ -107,6 +109,21 @@
         "Avant de passer à la version majeure suivante (ex: pour passer de 7.4 à 8.0)."
       ],
       "explanation": "Les fonctionnalités dépréciées fonctionnent encore dans les versions mineures (avec un avertissement), mais sont supprimées dans la version majeure suivante. La mise à jour majeure exige donc d'avoir traité toutes les dépréciations."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi vos tests ne doivent-ils jamais dépendre du texte exact des messages d'erreur du framework ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que les messages d'erreur ne sont pas traduits.",
+        "Parce que le formatage et le contenu des messages d'erreur (Exception messages) ne sont pas couverts par la BC Promise.",
+        "Parce que PHPUnit ne sait pas lire les exceptions.",
+        "Parce que c'est contraire aux PSR."
+      ],
+      "correct_answers": [
+        "Parce que le formatage et le contenu des messages d'erreur (Exception messages) ne sont pas couverts par la BC Promise."
+      ],
+      "explanation": "Symfony peut améliorer ou reformuler les messages d'erreur dans une version mineure, ce qui ferait échouer des tests trop rigides."
     }
   ]
 }

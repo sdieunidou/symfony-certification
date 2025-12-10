@@ -121,6 +121,36 @@
         "Uniquement des Interfaces et des Traits pour garantir l'interopérabilité et le faible couplage."
       ],
       "explanation": "Cela permet de dépendre d'abstractions légères (`HttpClientInterface`) plutôt que d'implémentations complètes."
+    },
+    {
+      "id": 9,
+      "question": "Quel composant récent (7.0) permet de gérer les assets (CSS/JS) sans Node.js ?",
+      "type": "single_choice",
+      "options": [
+        "WebpackEncore",
+        "AssetMapper",
+        "Vite",
+        "Assetic"
+      ],
+      "correct_answers": [
+        "AssetMapper"
+      ],
+      "explanation": "AssetMapper est la solution moderne 'No-Build' pour gérer les assets dans Symfony."
+    },
+    {
+      "id": 10,
+      "question": "Quel composant gère les notifications multicanales (SMS, Slack, Telegram) ?",
+      "type": "single_choice",
+      "options": [
+        "Mailer",
+        "Notifier",
+        "Messenger",
+        "EventDispatcher"
+      ],
+      "correct_answers": [
+        "Notifier"
+      ],
+      "explanation": "Notifier abstrait l'envoi de messages courts sur différents canaux via des transports configurables."
     }
   ]
 }

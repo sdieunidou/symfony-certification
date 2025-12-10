@@ -95,6 +95,36 @@
         "Le facteur de qualité (priorité). Le client préfère JSON (1.0) à HTML (0.9)."
       ],
       "explanation": "Les q-values permettent au client d'exprimer ses préférences relatives."
+    },
+    {
+      "id": 7,
+      "question": "Si vous servez des contenus différents sur la même URL en fonction du header `Accept`, quel autre header devez-vous ABSOLUMENT ajouter à la réponse ?",
+      "type": "single_choice",
+      "options": [
+        "Vary: Accept",
+        "Cache-Control: private",
+        "Content-Type: varying",
+        "X-Negotiation: true"
+      ],
+      "correct_answers": [
+        "Vary: Accept"
+      ],
+      "explanation": "Sans `Vary: Accept`, un cache intermédiaire pourrait servir la version JSON à un navigateur demandant du HTML (ou inversement)."
+    },
+    {
+      "id": 8,
+      "question": "Quel header de négociation est utilisé par le client pour demander une compression (Gzip, Brotli) ?",
+      "type": "single_choice",
+      "options": [
+        "Accept-Compression",
+        "Accept-Encoding",
+        "Content-Encoding",
+        "Zip-Me-Up"
+      ],
+      "correct_answers": [
+        "Accept-Encoding"
+      ],
+      "explanation": "Exemple : `Accept-Encoding: gzip, deflate, br`."
     }
   ]
 }

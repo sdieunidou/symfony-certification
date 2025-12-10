@@ -61,6 +61,21 @@
         "En préfixant le type ou l'ID par un point d'interrogation `?`."
       ],
       "explanation": "Exemple : `'router' => '?'.RouterInterface::class`."
+    },
+    {
+      "id": 5,
+      "question": "Quel trait simplifie l'implémentation de `ServiceSubscriberInterface` en utilisant des méthodes privées annotées ?",
+      "type": "single_choice",
+      "options": [
+        "`ServiceSubscriberTrait`",
+        "`ServiceMethodsSubscriberTrait`",
+        "`ControllerTrait`",
+        "`LocatorTrait`"
+      ],
+      "correct_answers": [
+        "`ServiceMethodsSubscriberTrait`"
+      ],
+      "explanation": "Introduit en Symfony 7.1, il utilise l'attribut `#[SubscribedService]` sur les méthodes."
     }
   ]
 }

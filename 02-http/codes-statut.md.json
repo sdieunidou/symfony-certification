@@ -121,6 +121,51 @@
         "Pour éviter de divulguer des informations sensibles sur l'infrastructure (Faille de sécurité)."
       ],
       "explanation": "La stack trace expose les chemins de fichiers, versions de lib, et parfois des extraits de code."
+    },
+    {
+      "id": 9,
+      "question": "Que signifie le code 204 No Content ?",
+      "type": "single_choice",
+      "options": [
+        "La requête a échoué car la ressource est vide.",
+        "La requête a réussi mais il n'y a pas de corps de réponse à renvoyer (ex: après un DELETE).",
+        "La ressource n'a pas été trouvée.",
+        "Le serveur est vide."
+      ],
+      "correct_answers": [
+        "La requête a réussi mais il n'y a pas de corps de réponse à renvoyer (ex: après un DELETE)."
+      ],
+      "explanation": "C'est un succès explicite indiquant au client qu'il n'a pas besoin de mettre à jour sa vue."
+    },
+    {
+      "id": 10,
+      "question": "Quel code indique que la méthode HTTP utilisée (ex: GET) n'est pas supportée pour cette route (ex: qui n'accepte que POST) ?",
+      "type": "single_choice",
+      "options": [
+        "400 Bad Request",
+        "404 Not Found",
+        "405 Method Not Allowed",
+        "501 Not Implemented"
+      ],
+      "correct_answers": [
+        "405 Method Not Allowed"
+      ],
+      "explanation": "Le serveur connait la route, mais la méthode HTTP n'est pas celle attendue."
+    },
+    {
+      "id": 11,
+      "question": "Quel code est renvoyé lorsque le client a dépassé son quota de requêtes (Rate Limiting) ?",
+      "type": "single_choice",
+      "options": [
+        "429 Too Many Requests",
+        "403 Forbidden",
+        "509 Bandwidth Limit Exceeded",
+        "408 Request Timeout"
+      ],
+      "correct_answers": [
+        "429 Too Many Requests"
+      ],
+      "explanation": "Ce code indique un throttle (freinage) et est souvent accompagné d'informations sur quand réessayer."
     }
   ]
 }

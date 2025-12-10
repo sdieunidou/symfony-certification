@@ -121,6 +121,21 @@
         "L'objet `UserInterface` représentant l'utilisateur connecté, ou `null` s'il n'est pas connecté."
       ],
       "explanation": "Il faut toujours gérer le cas où `getUser()` retourne `null` (sauf si le contrôleur est sécurisé par un firewall/access_control)."
+    },
+    {
+      "id": 9,
+      "question": "Quelle interface implémente `AbstractController` pour permettre l'injection de ses helpers via un mini-conteneur ?",
+      "type": "single_choice",
+      "options": [
+        "ContainerAwareInterface",
+        "ServiceSubscriberInterface",
+        "ControllerInterface",
+        "HelperInterface"
+      ],
+      "correct_answers": [
+        "ServiceSubscriberInterface"
+      ],
+      "explanation": "Cette interface oblige la classe à déclarer les services dont elle a besoin via `getSubscribedServices()`, permettant au framework de créer un Service Locator optimisé."
     }
   ]
 }

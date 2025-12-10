@@ -91,6 +91,36 @@
         "kernel.request"
       ],
       "explanation": "C'est l'événement le plus précoce. Si vous définissez une Response ici (ex: 403 Access Denied), le reste du processus est annulé."
+    },
+    {
+      "id": 7,
+      "question": "Quel listener standard agit sur `kernel.request` pour analyser l'URL et déterminer la route ?",
+      "type": "single_choice",
+      "options": [
+        "RouterListener",
+        "LocaleListener",
+        "SecurityListener",
+        "ControllerListener"
+      ],
+      "correct_answers": [
+        "RouterListener"
+      ],
+      "explanation": "Il utilise le UrlMatcher pour parser la requête et peupler `$request->attributes` avec `_route` et `_controller`."
+    },
+    {
+      "id": 8,
+      "question": "Quel listener agit sur `kernel.response` pour fixer le Content-Type et le Charset s'ils sont manquants ?",
+      "type": "single_choice",
+      "options": [
+        "ResponseListener",
+        "StreamListener",
+        "ContextListener",
+        "HeaderListener"
+      ],
+      "correct_answers": [
+        "ResponseListener"
+      ],
+      "explanation": "Il s'assure que la réponse est conforme aux standards HTTP avant l'envoi."
     }
   ]
 }

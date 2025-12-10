@@ -61,6 +61,21 @@
         "En vérifiant si le fichier envoyé est `null`. Si oui, on ne touche pas à la propriété filename de l'entité (on garde l'ancienne valeur)."
       ],
       "explanation": "C'est l'avantage de `mapped: false`. Si le champ est vide, on ne fait rien, l'entité reste inchangée."
+    },
+    {
+      "id": 5,
+      "question": "Pourquoi faut-il renommer le fichier uploadé avec un nom unique (ex: UUID) ?",
+      "type": "single_choice",
+      "options": [
+        "Pour faire joli.",
+        "Pour des raisons de sécurité (éviter d'écraser un fichier existant ou d'utiliser un nom malveillant fourni par l'utilisateur).",
+        "Pour que la base de données soit plus rapide.",
+        "C'est une contrainte de `move()`."
+      ],
+      "correct_answers": [
+        "Pour des raisons de sécurité (éviter d'écraser un fichier existant ou d'utiliser un nom malveillant fourni par l'utilisateur)."
+      ],
+      "explanation": "Ne jamais faire confiance au `getClientOriginalName()` pour le stockage final."
     }
   ]
 }

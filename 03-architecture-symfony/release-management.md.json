@@ -91,6 +91,21 @@
         "Tous les 2 ans, en Novembre des années impaires."
       ],
       "explanation": "Exemple : 6.0 en Nov 2021, 7.0 en Nov 2023, 8.0 en Nov 2025."
+    },
+    {
+      "id": 7,
+      "question": "Comment se décompose le cycle de développement de 6 mois d'une version mineure ?",
+      "type": "single_choice",
+      "options": [
+        "6 mois de développement.",
+        "4 mois de développement, 2 mois de stabilisation (Feature Freeze).",
+        "3 mois de dev, 3 mois de tests.",
+        "C'est variable."
+      ],
+      "correct_answers": [
+        "4 mois de développement, 2 mois de stabilisation (Feature Freeze)."
+      ],
+      "explanation": "La période de stabilisation permet à l'écosystème de s'adapter et de corriger les régressions avant la release finale."
     }
   ]
 }

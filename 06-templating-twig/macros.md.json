@@ -61,6 +61,21 @@
         "Non, les macros ne supportent pas les blocs."
       ],
       "explanation": "Les macros sont pour la génération de code 'fonctionnelle', pas pour l'héritage de structure."
+    },
+    {
+      "id": 5,
+      "question": "Si vous avez besoin d'accéder à l'utilisateur courant (`app.user`) dans une macro, comment faire ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `app.user` directement.",
+        "Passer `app.user` (ou `app`) en argument à la macro lors de l'appel.",
+        "Utiliser `_context.app.user`.",
+        "Utiliser `global.user`."
+      ],
+      "correct_answers": [
+        "Passer `app.user` (ou `app`) en argument à la macro lors de l'appel."
+      ],
+      "explanation": "L'isolation de la macro impose de passer explicitement toutes les dépendances."
     }
   ]
 }

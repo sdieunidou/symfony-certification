@@ -78,6 +78,21 @@
         "Non, jamais. Si deux routes ont le même nom et des conditions différentes, la première est toujours choisie."
       ],
       "explanation": "Les conditions servent au matching (entrante), pas à la génération (sortante)."
+    },
+    {
+      "id": 6,
+      "question": "Quelle fonction permet de lire une variable d'environnement dans une expression de condition ?",
+      "type": "single_choice",
+      "options": [
+        "`env('VAR_NAME')`",
+        "`getenv('VAR_NAME')`",
+        "`variable('VAR_NAME')`",
+        "`parameter('VAR_NAME')`"
+      ],
+      "correct_answers": [
+        "`env('VAR_NAME')`"
+      ],
+      "explanation": "La fonction `env()` est spécifiquement exposée dans l'ExpressionLanguage pour le routing."
     }
   ]
 }

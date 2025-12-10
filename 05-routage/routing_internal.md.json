@@ -76,6 +76,21 @@
         "Dans `$request->attributes`."
       ],
       "explanation": "C'est l'espace réservé par Symfony pour les données internes liées à la requête courante."
+    },
+    {
+      "id": 6,
+      "question": "En production, comment Symfony optimise-t-il le routage ?",
+      "type": "single_choice",
+      "options": [
+        "Il ne fait rien de spécial.",
+        "Il compile toutes les routes en une seule classe PHP (`UrlMatcher`) contenant une regex optimisée.",
+        "Il met tout en RAM via Redis.",
+        "Il utilise un fichier XML binaire."
+      ],
+      "correct_answers": [
+        "Il compile toutes les routes en une seule classe PHP (`UrlMatcher`) contenant une regex optimisée."
+      ],
+      "explanation": "C'est ce qui rend le routage Symfony extrêmement rapide, peu importe le nombre de routes."
     }
   ]
 }

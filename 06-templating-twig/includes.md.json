@@ -76,6 +76,21 @@
         "Cela permet à un Reverse Proxy (Varnish, Symfony HttpCache) d'assembler des fragments de page ayant des durées de cache différentes."
       ],
       "explanation": "Si aucun proxy compatible n'est présent, `render_esi` retombe automatiquement sur un comportement `render` classique."
+    },
+    {
+      "id": 6,
+      "question": "Quelle option utiliser avec `include` pour éviter une erreur fatale si le template n'existe pas ?",
+      "type": "single_choice",
+      "options": [
+        "`check_exists: true`",
+        "`ignore_missing: true`",
+        "`silent: true`",
+        "`try: true`"
+      ],
+      "correct_answers": [
+        "`ignore_missing: true`"
+      ],
+      "explanation": "Exemple : `include('sidebar.html.twig', ignore_missing = true)`."
     }
   ]
 }

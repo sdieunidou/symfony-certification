@@ -76,6 +76,21 @@
         "Sur le blog officiel Symfony (articles 'New in Symfony') et les fichiers UPGRADE."
       ],
       "explanation": "Le blog détaille les nouveautés de manière pédagogique."
+    },
+    {
+      "id": 6,
+      "question": "Quelle est la durée totale du support pour une version LTS ?",
+      "type": "single_choice",
+      "options": [
+        "2 ans",
+        "3 ans (Bugs) + 1 an (Sécurité) = 4 ans",
+        "5 ans",
+        "10 ans"
+      ],
+      "correct_answers": [
+        "3 ans (Bugs) + 1 an (Sécurité) = 4 ans"
+      ],
+      "explanation": "Le support actif dure 3 ans, suivi d'une année où seuls les correctifs de sécurité critiques sont appliqués."
     }
   ]
 }

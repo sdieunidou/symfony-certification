@@ -121,6 +121,22 @@
         "extension_loaded('name')"
       ],
       "explanation": "La fonction `extension_loaded('nom_extension')` retourne `true` si l'extension est active."
+    },
+    {
+      "id": 9,
+      "question": "Quelles sont les conséquences de l'absence des extensions `mbstring` et `xml` pour Symfony ?",
+      "type": "multiple_choice",
+      "options": [
+        "Sans `mbstring`, la manipulation de chaînes Unicode (accents, emojis) échouera ou sera corrompue.",
+        "Sans `xml`, il est impossible de parser les configurations (services.xml) et le Kernel ne démarrera pas.",
+        "Ces extensions sont optionnelles et n'impactent que les performances.",
+        "Symfony utilisera automatiquement un serveur distant pour compenser."
+      ],
+      "correct_answers": [
+        "Sans `mbstring`, la manipulation de chaînes Unicode (accents, emojis) échouera ou sera corrompue.",
+        "Sans `xml`, il est impossible de parser les configurations (services.xml) et le Kernel ne démarrera pas."
+      ],
+      "explanation": "`mbstring` est critique pour les chaînes UTF-8 et `xml`/`dom` pour le chargement de la configuration et le fonctionnement interne du framework."
     }
   ]
 }

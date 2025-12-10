@@ -46,6 +46,21 @@
         "En créant un fichier avec le même chemin dans `templates/bundles/AcmeBlogBundle/`."
       ],
       "explanation": "Symfony configure automatiquement les namespaces des bundles pour regarder d'abord dans `templates/bundles/NomDuBundle/`."
+    },
+    {
+      "id": 4,
+      "question": "Peut-on associer plusieurs dossiers au même namespace Twig ?",
+      "type": "single_choice",
+      "options": [
+        "Non, un seul dossier par namespace.",
+        "Oui, Twig cherchera dans les dossiers dans l'ordre de définition (surcharge).",
+        "Oui, mais cela provoque des conflits.",
+        "Uniquement pour le namespace par défaut."
+      ],
+      "correct_answers": [
+        "Oui, Twig cherchera dans les dossiers dans l'ordre de définition (surcharge)."
+      ],
+      "explanation": "C'est ce mécanisme qui permet de surcharger les templates de bundles : le dossier du projet est ajouté avant le dossier du bundle dans le namespace."
     }
   ]
 }

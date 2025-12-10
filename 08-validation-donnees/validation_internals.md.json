@@ -61,6 +61,21 @@
         "Il ne le fait que si la contrainte `#[Valid]` est présente sur la propriété."
       ],
       "explanation": "C'est ce qu'on appelle la validation en cascade (Cascading Validation)."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert l'`ExecutionContext` passé au `ConstraintValidator` ?",
+      "type": "single_choice",
+      "options": [
+        "À lire la configuration YAML.",
+        "À stocker l'état de la validation et ajouter de nouvelles violations.",
+        "À valider le CSRF.",
+        "À connecter la base de données."
+      ],
+      "correct_answers": [
+        "À stocker l'état de la validation et ajouter de nouvelles violations."
+      ],
+      "explanation": "Il fournit les méthodes `buildViolation()` et connaît le chemin de la propriété courante."
     }
   ]
 }

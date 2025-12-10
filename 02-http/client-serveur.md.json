@@ -121,6 +121,36 @@
         "Elles relancent un cycle Kernel complet en interne sans faire d'appel réseau."
       ],
       "explanation": "C'est utilisé par exemple pour le rendu de fragments de page (`{{ render(controller(...)) }}`). Elles sont identifiées par le type `HttpKernelInterface::SUB_REQUEST`."
+    },
+    {
+      "id": 9,
+      "question": "Quel est le but de l'événement `kernel.response` ?",
+      "type": "single_choice",
+      "options": [
+        "Créer l'objet Response.",
+        "Modifier l'objet Response juste avant qu'il soit envoyé au client (ex: ajout de headers, cookies).",
+        "Envoyer la réponse au client.",
+        "Gérer les exceptions."
+      ],
+      "correct_answers": [
+        "Modifier l'objet Response juste avant qu'il soit envoyé au client (ex: ajout de headers, cookies)."
+      ],
+      "explanation": "C'est la dernière chance d'altérer la réponse. La WebDebugToolbar s'injecte ici."
+    },
+    {
+      "id": 10,
+      "question": "Quel est le risque majeur d'utiliser des services 'Stateful' (avec état) dans un environnement Worker (ex: FrankenPHP, RoadRunner) ?",
+      "type": "single_choice",
+      "options": [
+        "Aucun risque.",
+        "Les données d'un utilisateur précédent peuvent persister en mémoire et être exposées à l'utilisateur suivant (fuite de données).",
+        "L'application sera plus lente.",
+        "Cela provoque des erreurs 500 aléatoires."
+      ],
+      "correct_answers": [
+        "Les données d'un utilisateur précédent peuvent persister en mémoire et être exposées à l'utilisateur suivant (fuite de données)."
+      ],
+      "explanation": "Comme l'application ne redémarre pas entre les requêtes, tout ce qui est stocké dans une propriété privée d'un service persiste. Les services doivent être strictement Stateless."
     }
   ]
 }

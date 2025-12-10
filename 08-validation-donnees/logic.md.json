@@ -61,6 +61,21 @@
         "Le composant `ExpressionLanguage` de Symfony."
       ],
       "explanation": "Cela permet d'écrire des règles logiques (`this.amount > 10`) de manière sécurisée et compilée."
+    },
+    {
+      "id": 5,
+      "question": "Dans une contrainte `Expression`, comment accéder à une propriété privée de l'objet courant ?",
+      "type": "single_choice",
+      "options": [
+        "Directement via `this.propertyName` (si un getter existe, il sera utilisé).",
+        "Via `this.getPropertyName()` obligatoirement.",
+        "Via `reflection.propertyName`.",
+        "C'est impossible."
+      ],
+      "correct_answers": [
+        "Directement via `this.propertyName` (si un getter existe, il sera utilisé)."
+      ],
+      "explanation": "L'ExpressionLanguage utilise le `PropertyAccessor` en coulisses."
     }
   ]
 }

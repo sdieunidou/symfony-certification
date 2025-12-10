@@ -122,6 +122,22 @@
         "true"
       ],
       "explanation": "`instanceof` vérifie si l'objet respecte le contrat de l'interface, que ce soit directement ou via l'héritage."
+    },
+    {
+      "id": 9,
+      "question": "Quelles affirmations sont vraies concernant le contenu d'une interface ?",
+      "type": "multiple_choice",
+      "options": [
+        "Elles peuvent contenir des constantes (`public const`).",
+        "Elles peuvent contenir des méthodes magiques comme `__toString` ou `__invoke`.",
+        "Elles peuvent contenir des méthodes privées.",
+        "Elles peuvent contenir des propriétés statiques."
+      ],
+      "correct_answers": [
+        "Elles peuvent contenir des constantes (`public const`).",
+        "Elles peuvent contenir des méthodes magiques comme `__toString` ou `__invoke`."
+      ],
+      "explanation": "Une interface peut définir des constantes et des méthodes (y compris certaines magiques), mais jamais de propriétés ou de méthodes non publiques."
     }
   ]
 }

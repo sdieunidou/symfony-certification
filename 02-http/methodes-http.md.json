@@ -106,6 +106,36 @@
         "Oui, elle est identique à GET mais ne renvoie pas de corps de réponse."
       ],
       "explanation": "HEAD est utile pour vérifier la validité d'un lien ou la date de modification sans télécharger le contenu."
+    },
+    {
+      "id": 8,
+      "question": "La méthode POST est-elle idempotente ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, répéter une requête POST (ex: création de commande) crée généralement plusieurs ressources distinctes.",
+        "Oui, si le serveur le décide.",
+        "Uniquement pour les formulaires de login."
+      ],
+      "correct_answers": [
+        "Non, répéter une requête POST (ex: création de commande) crée généralement plusieurs ressources distinctes."
+      ],
+      "explanation": "C'est pourquoi le navigateur affiche une alerte 'Confirmer le renvoi du formulaire' si vous rafraîchissez une page POST."
+    },
+    {
+      "id": 9,
+      "question": "Si vous définissez une route uniquement pour GET (`methods: ['GET']`), que se passe-t-il si un client envoie une requête HEAD ?",
+      "type": "single_choice",
+      "options": [
+        "Symfony renvoie 405 Method Not Allowed.",
+        "Symfony gère automatiquement la requête HEAD : il exécute le contrôleur mais supprime le corps de la réponse.",
+        "Symfony renvoie 404 Not Found.",
+        "Le serveur plante."
+      ],
+      "correct_answers": [
+        "Symfony gère automatiquement la requête HEAD : il exécute le contrôleur mais supprime le corps de la réponse."
+      ],
+      "explanation": "Symfony est conforme aux standards HTTP : si GET est supporté, HEAD l'est implicitement."
     }
   ]
 }

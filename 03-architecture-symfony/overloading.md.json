@@ -77,6 +77,21 @@
         "Compiler Pass"
       ],
       "explanation": "Les CompilerPass sont des classes qui implémentent `CompilerPassInterface` et modifient le `ContainerBuilder`."
+    },
+    {
+      "id": 6,
+      "question": "Peut-on décorer un service qui a été déclaré comme 'privé' ou 'inliné' par le compilateur ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, car il n'est plus accessible dans le conteneur compilé.",
+        "Oui, avec une astuce.",
+        "Uniquement en dev."
+      ],
+      "correct_answers": [
+        "Non, car il n'est plus accessible dans le conteneur compilé."
+      ],
+      "explanation": "C'est une limitation technique. Cependant, la plupart des services utiles sont publics ou utilisés comme arguments, donc décorables avant l'inlining."
     }
   ]
 }

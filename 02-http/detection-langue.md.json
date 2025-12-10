@@ -91,6 +91,36 @@
         "Il utilise un mécanisme de fallback automatique vers `fr`."
       ],
       "explanation": "Symfony tente de trouver la meilleure correspondance possible en dégradant gracieusement la spécificité régionale."
+    },
+    {
+      "id": 7,
+      "question": "Quel header HTTP est utilisé par le navigateur pour signaler les préférences linguistiques de l'utilisateur ?",
+      "type": "single_choice",
+      "options": [
+        "Content-Language",
+        "Accept-Language",
+        "Preferred-Language",
+        "User-Locale"
+      ],
+      "correct_answers": [
+        "Accept-Language"
+      ],
+      "explanation": "Ce header est utile pour déterminer la langue par défaut lors de la première visite (avant redirection vers `/fr` ou `/en`)."
+    },
+    {
+      "id": 8,
+      "question": "Si vous servez du contenu différent sur la même URL selon la langue (ex: via Header), quel header de réponse est indispensable pour les caches ?",
+      "type": "single_choice",
+      "options": [
+        "Cache-Control: private",
+        "Vary: Accept-Language",
+        "Pragma: no-cache",
+        "Expires: 0"
+      ],
+      "correct_answers": [
+        "Vary: Accept-Language"
+      ],
+      "explanation": "Le header `Vary` indique aux proxies et caches que la réponse change en fonction de la valeur de `Accept-Language`, stockant ainsi une version par langue."
     }
   ]
 }

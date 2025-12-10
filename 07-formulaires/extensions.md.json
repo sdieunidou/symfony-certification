@@ -61,6 +61,21 @@
         "En implémentant la méthode statique `getExtendedTypes()`."
       ],
       "explanation": "Cette méthode doit retourner un itérable des classes étendues (ex: `[TextType::class]`)."
+    },
+    {
+      "id": 5,
+      "question": "Si vous voulez que votre extension s'applique à absolument tous les champs de formulaire, quel type devez-vous étendre ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType`",
+        "`Symfony\\Component\\Form\\Extension\\Core\\Type\\BaseType`",
+        "`Symfony\\Component\\Form\\AbstractType`",
+        "`All`"
+      ],
+      "correct_answers": [
+        "`Symfony\\Component\\Form\\Extension\\Core\\Type\\FormType`"
+      ],
+      "explanation": "`FormType` est la classe racine de tous les types de formulaires dans Symfony."
     }
   ]
 }

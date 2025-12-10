@@ -19,37 +19,39 @@
     },
     {
       "id": 2,
-      "question": "Quel est l'avantage principal d'utiliser `AssetMapper` par rapport à `Webpack Encore` ?",
-      "type": "single_choice",
+      "question": "Quels sont les avantages d'utiliser `AssetMapper` (Symfony 6.3+) par rapport à `Webpack Encore` ?",
+      "type": "multiple_choice",
       "options": [
-        "Il est plus rapide à l'exécution.",
-        "Il ne nécessite pas Node.js ni d'étape de build complexe, tout en gérant les modules JS modernes.",
-        "Il supporte Sass nativement.",
-        "Il est compatible IE11."
+        "Il ne nécessite pas Node.js ni NPM.",
+        "Il ne nécessite pas d'étape de build complexe (tout est fait à la volée ou pré-compilé par PHP).",
+        "Il est plus rapide à l'exécution en production.",
+        "Il gère nativement les modules JavaScript modernes via Import Maps."
       ],
       "correct_answers": [
-        "Il ne nécessite pas Node.js ni d'étape de build complexe, tout en gérant les modules JS modernes."
+        "Il ne nécessite pas Node.js ni NPM.",
+        "Il ne nécessite pas d'étape de build complexe (tout est fait à la volée ou pré-compilé par PHP).",
+        "Il gère nativement les modules JavaScript modernes via Import Maps."
       ],
-      "explanation": "AssetMapper (Symfony 6.3+) simplifie drastiquement la gestion du frontend pour les développeurs PHP."
+      "explanation": "AssetMapper simplifie drastiquement la gestion du frontend pour les développeurs PHP en supprimant la complexité de la toolchain JS."
     },
     {
       "id": 3,
-      "question": "Comment le cache-busting est-il géré par Symfony ?",
+      "question": "Comment le cache-busting (invalidation du cache navigateur) est-il géré par Symfony avec `asset()` ?",
       "type": "single_choice",
       "options": [
         "Il faut renommer le fichier manuellement.",
-        "Symfony ajoute automatiquement un paramètre de version (hash ou timestamp) à l'URL générée par `asset()`.",
+        "Symfony ajoute automatiquement un paramètre de version (hash ou timestamp) à l'URL générée (ex: `app.css?v=abcdef`).",
         "Le cache n'est pas géré.",
         "Via le fichier `.htaccess`."
       ],
       "correct_answers": [
-        "Symfony ajoute automatiquement un paramètre de version (hash ou timestamp) à l'URL générée par `asset()`."
+        "Symfony ajoute automatiquement un paramètre de version (hash ou timestamp) à l'URL générée (ex: `app.css?v=abcdef`)."
       ],
-      "explanation": "Cela force le navigateur à re-télécharger le fichier si son contenu a changé."
+      "explanation": "Cela force le navigateur à re-télécharger le fichier si son contenu a changé, sans changer le nom du fichier."
     },
     {
       "id": 4,
-      "question": "Où sont situés physiquement les fichiers référencés par `asset('logo.png')` ?",
+      "question": "Où sont situés physiquement les fichiers référencés par `asset('logo.png')` par défaut ?",
       "type": "single_choice",
       "options": [
         "`assets/logo.png`",
@@ -60,22 +62,38 @@
       "correct_answers": [
         "`public/logo.png`"
       ],
-      "explanation": "La fonction `asset()` pointe vers la racine web publique."
+      "explanation": "La fonction `asset()` pointe vers la racine web publique (document root)."
     },
     {
       "id": 5,
-      "question": "Si vous utilisez Webpack Encore, quelle fonction Twig remplace `asset()` pour les fichiers compilés ?",
-      "type": "single_choice",
+      "question": "Si vous utilisez Webpack Encore, quelle fonction Twig remplace `asset()` pour les fichiers CSS/JS compilés (Entrypoints) ?",
+      "type": "multiple_choice",
       "options": [
-        "`encore_asset()`",
-        "`asset()` fonctionne toujours (en pointant vers `public/build/...`), mais `encore_entry_link_tags` et `encore_entry_script_tags` sont utilisés pour charger les entrées.",
-        "`webpack()`",
-        "`build()`"
+        "`encore_entry_link_tags('app')` pour les CSS.",
+        "`encore_entry_script_tags('app')` pour les JS.",
+        "`webpack_asset('app')`.",
+        "`encore('app')`."
       ],
       "correct_answers": [
-        "`asset()` fonctionne toujours (en pointant vers `public/build/...`), mais `encore_entry_link_tags` et `encore_entry_script_tags` sont utilisés pour charger les entrées."
+        "`encore_entry_link_tags('app')` pour les CSS.",
+        "`encore_entry_script_tags('app')` pour les JS."
       ],
-      "explanation": "Encore génère un `manifest.json` que la fonction `asset()` sait lire si le package `json_manifest_version_strategy` est activé."
+      "explanation": "Ces fonctions lisent le fichier `entrypoints.json` généré par Webpack pour inclure les bons fichiers avec leurs versions."
+    },
+    {
+      "id": 6,
+      "question": "Comment utiliser un package d'assets spécifique (ex: CDN) configuré dans `framework.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "`asset('logo.png', { package: 'cdn_images' })`",
+        "`asset('logo.png', 'cdn_images')`",
+        "`asset_package('logo.png', 'cdn_images')`",
+        "`cdn('logo.png')`"
+      ],
+      "correct_answers": [
+        "`asset('logo.png', 'cdn_images')`"
+      ],
+      "explanation": "Le second argument de la fonction `asset` permet de spécifier le nom du package défini dans la configuration."
     }
   ]
 }

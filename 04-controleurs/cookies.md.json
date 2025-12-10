@@ -45,7 +45,7 @@
       "correct_answers": [
         "Envoyer un cookie avec le même nom et une date d'expiration passée (`clearCookie` helper)."
       ],
-      "explanation": "Le protocole HTTP supprime un cookie en l'écrasant par une version expirée."
+      "explanation": "Le protocole HTTP ne prévoit pas de commande de suppression explicite. On écrase le cookie par une version périmée."
     },
     {
       "id": 4,
@@ -53,12 +53,12 @@
       "type": "single_choice",
       "options": [
         "Elle force le cookie à être envoyé uniquement en HTTP (pas HTTPS).",
-        "Elle empêche le JavaScript client (`document.cookie`) d'accéder au cookie.",
+        "Elle empêche le code JavaScript côté client (`document.cookie`) d'accéder au cookie.",
         "Elle chiffre le cookie.",
         "Elle le rend temporaire."
       ],
       "correct_answers": [
-        "Elle empêche le JavaScript client (`document.cookie`) d'accéder au cookie."
+        "Elle empêche le code JavaScript côté client (`document.cookie`) d'accéder au cookie."
       ],
       "explanation": "C'est une protection contre le vol de session via XSS (Cross-Site Scripting)."
     },
@@ -76,6 +76,36 @@
         "`$request->cookies` modifie la valeur pour le script courant (lecture immédiate), `$response` envoie l'ordre au navigateur pour les prochaines requêtes."
       ],
       "explanation": "Pour que l'utilisateur 'garde' le cookie, il faut impérativement passer par la Response."
+    },
+    {
+      "id": 6,
+      "question": "Pour supprimer un cookie, est-il suffisant de donner son nom ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, le nom suffit.",
+        "Non, il faut impérativement que le chemin (path), le domaine et l'option secure correspondent à ceux utilisés lors de la création.",
+        "Oui, sauf si c'est un cookie de session.",
+        "Non, il faut connaître sa valeur."
+      ],
+      "correct_answers": [
+        "Non, il faut impérativement que le chemin (path), le domaine et l'option secure correspondent à ceux utilisés lors de la création."
+      ],
+      "explanation": "Le navigateur identifie le cookie par le triplet (Nom + Domaine + Path). Si ces paramètres diffèrent, un deuxième cookie sera créé au lieu d'écraser l'ancien."
+    },
+    {
+      "id": 7,
+      "question": "Quand est-ce que le header `Set-Cookie` est effectivement généré et envoyé ?",
+      "type": "single_choice",
+      "options": [
+        "Dès l'appel à `$response->headers->setCookie()`.",
+        "Au moment de l'appel à `$response->send()`.",
+        "À la fin du contrôleur.",
+        "Immédiatement."
+      ],
+      "correct_answers": [
+        "Au moment de l'appel à `$response->send()`."
+      ],
+      "explanation": "Les cookies sont stockés dans le `ResponseHeaderBag` et convertis en headers HTTP string uniquement lors de l'envoi final."
     }
   ]
 }

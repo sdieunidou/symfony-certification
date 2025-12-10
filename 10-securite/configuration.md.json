@@ -61,6 +61,21 @@
         "`role_hierarchy`"
       ],
       "explanation": "Cela permet de simplifier les règles d'accès en vérifiant uniquement le rôle le plus élevé."
+    },
+    {
+      "id": 5,
+      "question": "Quel est le pattern typique pour le firewall 'dev' qui doit ignorer la sécurité ?",
+      "type": "single_choice",
+      "options": [
+        "`^/admin`",
+        "`^/api`",
+        "`^/(_(profiler|wdt)|css|images|js)/`",
+        "`^/login`"
+      ],
+      "correct_answers": [
+        "`^/(_(profiler|wdt)|css|images|js)/`"
+      ],
+      "explanation": "Ce pattern couvre la barre de débogage web, le profiler et les assets statiques, qui ne doivent pas déclencher de mécanismes de sécurité."
     }
   ]
 }

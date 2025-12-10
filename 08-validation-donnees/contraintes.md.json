@@ -91,6 +91,21 @@
         "`Image`"
       ],
       "explanation": "`Image` hérite de `File` mais ajoute des options comme `minWidth`, `maxHeight`, etc."
+    },
+    {
+      "id": 7,
+      "question": "Quelle contrainte utiliser pour vérifier qu'un nombre est un multiple de 0.5 ?",
+      "type": "single_choice",
+      "options": [
+        "`Step`",
+        "`DivisibleBy`",
+        "`MultipleOf`",
+        "`Modulo`"
+      ],
+      "correct_answers": [
+        "`DivisibleBy`"
+      ],
+      "explanation": "`#[Assert\\DivisibleBy(0.5)]` assure que le nombre est divisible sans reste."
     }
   ]
 }

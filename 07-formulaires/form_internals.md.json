@@ -61,6 +61,21 @@
         "`$form->handleRequest($request)`"
       ],
       "explanation": "Cette méthode inspecte la requête pour voir si le formulaire a été soumis et lance le processus."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la classe principale qui sert de point d'entrée pour la création de formulaires (Factory) ?",
+      "type": "single_choice",
+      "options": [
+        "`FormBuilder`",
+        "`FormFactory`",
+        "`FormRegistry`",
+        "`FormEngine`"
+      ],
+      "correct_answers": [
+        "`FormFactory`"
+      ],
+      "explanation": "`FormFactory` est le service responsable d'instancier le `FormBuilder` et de résoudre les types."
     }
   ]
 }

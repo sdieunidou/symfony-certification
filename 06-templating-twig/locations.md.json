@@ -46,6 +46,21 @@
         "Rien ne s'affiche (null), aucune erreur n'est levée (sauf si `strict_variables` est true)."
       ],
       "explanation": "En prod, Twig est tolérant. En dev, il est strict et lance une exception."
+    },
+    {
+      "id": 4,
+      "question": "Si vous écrivez `user.name` dans Twig, que va chercher Symfony en priorité ?",
+      "type": "single_choice",
+      "options": [
+        "Le getter `getName()`.",
+        "La clé de tableau `['name']`.",
+        "La propriété publique `name`.",
+        "La méthode `name()`."
+      ],
+      "correct_answers": [
+        "La clé de tableau `['name']`."
+      ],
+      "explanation": "L'ordre est : 1. Clé tableau, 2. Propriété, 3. Méthode, 4. Getter (get/is/has)."
     }
   ]
 }

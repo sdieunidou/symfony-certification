@@ -93,6 +93,23 @@
         "MonologBridge"
       ],
       "explanation": "MonologBridge fait le lien entre le `LoggerInterface` (PSR-3) utilisé par Symfony et la librairie Monolog."
+    },
+    {
+      "id": 7,
+      "question": "Quels fonctionnalités le Doctrine Bridge apporte-t-il à Symfony ?",
+      "type": "multiple_choice",
+      "options": [
+        "Le type de formulaire `EntityType`.",
+        "Le User Provider `EntityUserProvider` pour la sécurité.",
+        "Le moteur de templating Twig.",
+        "L'intégration au Profiler Symfony (onglet Doctrine)."
+      ],
+      "correct_answers": [
+        "Le type de formulaire `EntityType`.",
+        "Le User Provider `EntityUserProvider` pour la sécurité.",
+        "L'intégration au Profiler Symfony (onglet Doctrine)."
+      ],
+      "explanation": "Il intègre Doctrine dans les formulaires, la sécurité et le débogage."
     }
   ]
 }

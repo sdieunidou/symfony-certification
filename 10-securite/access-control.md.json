@@ -61,6 +61,21 @@
         "Oui, via l'option `ips` (ex: `ips: [127.0.0.1]`)."
       ],
       "explanation": "C'est utile pour sécuriser une zone d'administration ou des outils internes."
+    },
+    {
+      "id": 5,
+      "question": "Quelle option permet d'écrire une règle d'accès complexe utilisant le langage d'expression (ex: `is_granted('ROLE_ADMIN') or request.getClientIp() == '...'`) ?",
+      "type": "single_choice",
+      "options": [
+        "`expression`",
+        "`allow_if`",
+        "`roles`",
+        "`condition`"
+      ],
+      "correct_answers": [
+        "`allow_if`"
+      ],
+      "explanation": "Cela donne accès à l'objet request, user, et aux fonctions de sécurité pour des règles fines."
     }
   ]
 }

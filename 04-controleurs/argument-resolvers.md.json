@@ -121,6 +121,21 @@
         "ValueResolverInterface"
       ],
       "explanation": "`ValueResolverInterface` est la nouvelle interface simplifiée depuis Symfony 6.2."
+    },
+    {
+      "id": 9,
+      "question": "Quel attribut utiliser pour valider un paramètre scalaire unique de l'URL (ex: `?status=active`) ?",
+      "type": "single_choice",
+      "options": [
+        "`#[MapQueryString]`",
+        "`#[MapQueryParameter]`",
+        "`#[Query]`",
+        "`#[Validate]`"
+      ],
+      "correct_answers": [
+        "`#[MapQueryParameter]`"
+      ],
+      "explanation": "Il est plus léger que `MapQueryString` pour un seul paramètre et permet d'appliquer des filtres natifs PHP."
     }
   ]
 }

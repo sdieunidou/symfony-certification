@@ -121,6 +121,36 @@
         "SplFixedArray"
       ],
       "explanation": "`SplFixedArray` est plus rapide et consomme moins de mémoire qu'un tableau PHP classique car il n'a pas besoin de gérer le hachage des clés associatives."
+    },
+    {
+      "id": 9,
+      "question": "Quelle interface de la SPL permet d'utiliser la fonction `count($objet)` ?",
+      "type": "single_choice",
+      "options": [
+        "Countable",
+        "Measurable",
+        "Sizeable",
+        "Iterator"
+      ],
+      "correct_answers": [
+        "Countable"
+      ],
+      "explanation": "L'interface `Countable` impose la méthode `count()` qui est appelée automatiquement lors de l'utilisation de `count($obj)`."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi préférer parfois les structures de données SPL (comme `SplStack`, `SplQueue`) aux tableaux natifs ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'elles sont plus faciles à écrire.",
+        "Parce qu'elles sont implémentées en C et souvent plus performantes (mémoire/CPU) pour des usages spécifiques (LIFO/FIFO).",
+        "Parce qu'elles sont compatibles avec JSON.",
+        "Parce qu'elles sont dépréciées."
+      ],
+      "correct_answers": [
+        "Parce qu'elles sont implémentées en C et souvent plus performantes (mémoire/CPU) pour des usages spécifiques (LIFO/FIFO)."
+      ],
+      "explanation": "Bien que les tableaux PHP soient très polyvalents, les structures spécialisées de la SPL offrent une meilleure sémantique et souvent de meilleures performances."
     }
   ]
 }

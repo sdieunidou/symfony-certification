@@ -61,6 +61,21 @@
         "En passant la valeur et les contraintes à `$validator->validate($value, $constraints)`."
       ],
       "explanation": "Le validateur peut valider n'importe quelle donnée brute si on lui fournit les contraintes."
+    },
+    {
+      "id": 5,
+      "question": "Si la validation échoue, le service Validator lance-t-il une exception ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, `ValidationFailedException`.",
+        "Non, jamais. Il retourne une liste d'erreurs.",
+        "Oui, si l'option `throw_exception` est activée.",
+        "Seulement en mode strict."
+      ],
+      "correct_answers": [
+        "Non, jamais. Il retourne une liste d'erreurs."
+      ],
+      "explanation": "C'est au développeur de vérifier la taille de la liste (`count($errors) > 0`) et d'agir en conséquence (lancer une exception, afficher un message, etc.)."
     }
   ]
 }

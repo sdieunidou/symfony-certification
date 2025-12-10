@@ -91,6 +91,21 @@
         "Le dépôt des recettes communautaires non-officielles."
       ],
       "explanation": "Pour utiliser ces recettes, il faut autoriser explicitement le dépôt contrib dans `composer.json` (`extra.symfony.allow-contrib: true`)."
+    },
+    {
+      "id": 7,
+      "question": "Flex peut-il configurer automatiquement Docker ?",
+      "type": "single_choice",
+      "options": [
+        "Non, Flex ne gère que le PHP.",
+        "Oui, certaines recettes peuvent ajouter des services dans `compose.yaml` (ou `docker-compose.yml`) et créer des Dockerfiles.",
+        "Uniquement si on utilise Kubernetes.",
+        "Oui, mais il faut payer."
+      ],
+      "correct_answers": [
+        "Oui, certaines recettes peuvent ajouter des services dans `compose.yaml` (ou `docker-compose.yml`) et créer des Dockerfiles."
+      ],
+      "explanation": "Par exemple, la recette `doctrine/doctrine-bundle` peut ajouter un service PostgreSQL dans votre fichier Docker Compose."
     }
   ]
 }

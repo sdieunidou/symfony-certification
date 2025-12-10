@@ -61,6 +61,21 @@
         "En le redéfinissant explicitement dans `services.yaml` avec la clé `arguments`."
       ],
       "explanation": "La définition explicite surcharge la définition générique."
+    },
+    {
+      "id": 5,
+      "question": "Pourquoi exclut-on généralement le dossier `Entity` et `Kernel.php` de l'enregistrement automatique des services ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'ils sont privés.",
+        "Parce que ce ne sont pas des services (les entités sont des objets de données, le Kernel est le cœur).",
+        "Pour gagner du temps de compilation.",
+        "C'est une erreur, il faut les inclure."
+      ],
+      "correct_answers": [
+        "Parce que ce ne sont pas des services (les entités sont des objets de données, le Kernel est le cœur)."
+      ],
+      "explanation": "Les entités sont instanciées par Doctrine ou manuellement, pas par le conteneur."
     }
   ]
 }

@@ -38,13 +38,13 @@
       "question": "Quelle est la différence entre `max-age` et `s-maxage` ?",
       "type": "single_choice",
       "options": [
-        "`max-age` est pour les images, `s-maxage` pour les scripts.",
-        "`max-age` s'applique à tous les caches, `s-maxage` surcharge `max-age` uniquement pour les caches partagés (CDN, Proxies).",
-        "`s-maxage` est une version sécurisée de `max-age`.",
+        "max-age est pour les images, s-maxage pour les scripts.",
+        "max-age s'applique à tous les caches, s-maxage surcharge max-age uniquement pour les caches partagés (CDN, Proxies).",
+        "s-maxage est une version sécurisée de max-age.",
         "Il n'y a aucune différence."
       ],
       "correct_answers": [
-        "`max-age` s'applique à tous les caches, `s-maxage` surcharge `max-age` uniquement pour les caches partagés (CDN, Proxies)."
+        "max-age s'applique à tous les caches, s-maxage surcharge max-age uniquement pour les caches partagés (CDN, Proxies)."
       ],
       "explanation": "Cela permet de définir une durée différente pour le navigateur de l'utilisateur (private) et pour le CDN (shared)."
     },
@@ -92,6 +92,36 @@
         "À indiquer au client que la ressource ne changera jamais durant sa période de validité, rendant la revalidation inutile même en cas de rafraîchissement manuel."
       ],
       "explanation": "Très utile pour les assets versionnés (ex: `app.12345.js`), cela évite les requêtes 'If-Modified-Since' inutiles."
+    },
+    {
+      "id": 7,
+      "question": "Quelle est la différence entre `Cache-Control: public` et `private` ?",
+      "type": "single_choice",
+      "options": [
+        "`public` signifie que tout le monde peut accéder à l'URL sans authentification.",
+        "`public` permet le stockage par les caches partagés (CDN), `private` réserve le stockage au cache du navigateur final.",
+        "`private` chiffre le contenu du cache.",
+        "`public` est obligatoire pour le HTTPS."
+      ],
+      "correct_answers": [
+        "`public` permet le stockage par les caches partagés (CDN), `private` réserve le stockage au cache du navigateur final."
+      ],
+      "explanation": "Une réponse contenant des données utilisateur spécifiques doit être `private` pour ne pas être servie par un CDN à d'autres utilisateurs."
+    },
+    {
+      "id": 8,
+      "question": "À quoi sert l'ETag (Entity Tag) ?",
+      "type": "single_choice",
+      "options": [
+        "À définir la date d'expiration.",
+        "À fournir un identifiant unique (hash) de la version de la ressource pour la validation.",
+        "À taguer les utilisateurs.",
+        "À crypter la réponse."
+      ],
+      "correct_answers": [
+        "À fournir un identifiant unique (hash) de la version de la ressource pour la validation."
+      ],
+      "explanation": "Le client envoie cet ETag dans le header `If-None-Match`. Si le serveur génère le même hash, il renvoie 304."
     }
   ]
 }

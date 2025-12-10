@@ -46,6 +46,21 @@
         "À définir la structure (schéma), les types et les valeurs par défaut de la configuration exposée par le bundle."
       ],
       "explanation": "Elle génère un `TreeBuilder` qui décrit les nœuds autorisés (scalar, array, boolean...)."
+    },
+    {
+      "id": 4,
+      "question": "Quelle interface une Extension de Bundle doit-elle implémenter pour pouvoir configurer d'autres bundles (ex: ajouter une globale Twig) ?",
+      "type": "single_choice",
+      "options": [
+        "ExtensionInterface",
+        "PrependExtensionInterface",
+        "ConfigurationInterface",
+        "CompilerPassInterface"
+      ],
+      "correct_answers": [
+        "PrependExtensionInterface"
+      ],
+      "explanation": "Elle ajoute la méthode `prepend()` qui est exécutée avant le chargement des autres extensions."
     }
   ]
 }

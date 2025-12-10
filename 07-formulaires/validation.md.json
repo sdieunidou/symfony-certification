@@ -61,6 +61,21 @@
         "Il désactive la validation native du navigateur (HTML5), permettant de tester la validation côté serveur (Symfony)."
       ],
       "explanation": "C'est recommandé pour avoir un affichage des erreurs cohérent et stylisé par Symfony/Twig, plutôt que les bulles par défaut du navigateur."
+    },
+    {
+      "id": 5,
+      "question": "Comment définir les groupes de validation de manière dynamique (ex: selon les données soumises) ?",
+      "type": "single_choice",
+      "options": [
+        "C'est impossible.",
+        "En passant une Closure (callback) à l'option `validation_groups`.",
+        "En utilisant un Event Listener.",
+        "En utilisant un DataTransformer."
+      ],
+      "correct_answers": [
+        "En passant une Closure (callback) à l'option `validation_groups`."
+      ],
+      "explanation": "La closure reçoit le formulaire et peut inspecter les données pour retourner le tableau de groupes à utiliser."
     }
   ]
 }

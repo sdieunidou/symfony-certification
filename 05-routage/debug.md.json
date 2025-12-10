@@ -61,6 +61,21 @@
         "Un problème d'ordre (priorité) : une route plus générique définie avant intercepte l'URL."
       ],
       "explanation": "Le routeur s'arrête au premier match. L'ordre de déclaration est donc vital."
+    },
+    {
+      "id": 5,
+      "question": "Quelle option de `debug:router` permet d'afficher les alias de routes (Nouveauté Symfony 7) ?",
+      "type": "single_choice",
+      "options": [
+        "`--show-aliases`",
+        "`--aliases`",
+        "`--with-aliases`",
+        "`--verbose`"
+      ],
+      "correct_answers": [
+        "`--show-aliases`"
+      ],
+      "explanation": "Par défaut, les alias sont masqués pour ne pas polluer la sortie."
     }
   ]
 }

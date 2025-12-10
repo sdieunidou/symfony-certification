@@ -61,6 +61,21 @@
         "En utilisant l'injection par Setter (au lieu du constructeur) ou un `ServiceLocator` (Lazy Loading)."
       ],
       "explanation": "Cela permet de retarder l'instanciation de l'une des dépendances."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert la classe `Reference` lorsqu'on manipule des définitions de services (ex: dans un Compiler Pass ou YAML) ?",
+      "type": "single_choice",
+      "options": [
+        "À créer une référence circulaire.",
+        "À représenter un lien vers un autre service (l'équivalent du `@` en YAML).",
+        "À documenter le service.",
+        "À cloner le service."
+      ],
+      "correct_answers": [
+        "À représenter un lien vers un autre service (l'équivalent du `@` en YAML)."
+      ],
+      "explanation": "Lors de la compilation, cette référence sera remplacée par l'appel réel au service cible."
     }
   ]
 }

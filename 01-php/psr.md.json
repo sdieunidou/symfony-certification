@@ -91,6 +91,66 @@
         "PSR-4"
       ],
       "explanation": "PSR-4 est le standard actuel pour l'autoloading, remplaçant PSR-0 qui est déprécié."
+    },
+    {
+      "id": 7,
+      "question": "Quelle est la différence entre PSR-6 et PSR-16 concernant le cache ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-6 est obsolète.",
+        "PSR-6 définit un système de cache complexe (Pool, Item) tandis que PSR-16 offre une interface simple (get, set, delete) pour des cas courants.",
+        "PSR-16 ne supporte pas le TTL.",
+        "PSR-6 est uniquement pour la base de données."
+      ],
+      "correct_answers": [
+        "PSR-6 définit un système de cache complexe (Pool, Item) tandis que PSR-16 offre une interface simple (get, set, delete) pour des cas courants."
+      ],
+      "explanation": "PSR-6 (Caching Interface) est plus puissant mais verbeux. PSR-16 (Simple Cache) est plus direct."
+    },
+    {
+      "id": 8,
+      "question": "Quelle PSR standardise le Dispatcher d'Événements ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-14",
+        "PSR-7",
+        "PSR-3",
+        "PSR-18"
+      ],
+      "correct_answers": [
+        "PSR-14"
+      ],
+      "explanation": "PSR-14 (Event Dispatcher) définit les interfaces `EventDispatcherInterface`, `ListenerProviderInterface` et `StoppableEventInterface`."
+    },
+    {
+      "id": 9,
+      "question": "Quelle est la distinction principale entre PSR-1 et PSR-12 ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-1 traite de l'autoloading, PSR-12 du style.",
+        "PSR-1 définit les règles fondamentales requises pour l'interopérabilité technique, tandis que PSR-12 définit les règles de style et de formatage du code.",
+        "PSR-1 est pour PHP 5, PSR-12 pour PHP 7.",
+        "Il n'y en a aucune."
+      ],
+      "correct_answers": [
+        "PSR-1 définit les règles fondamentales requises pour l'interopérabilité technique, tandis que PSR-12 définit les règles de style et de formatage du code."
+      ],
+      "explanation": "PSR-1 assure que le code ne casse pas (balises, noms de classes), PSR-12 assure que le code est lisible de la même façon (accolades, espaces)."
+    },
+    {
+      "id": 10,
+      "question": "Quelle PSR récente (PSR-20) fournit une interface standard pour accéder à l'heure système ?",
+      "type": "single_choice",
+      "options": [
+        "ClockInterface",
+        "TimeInterface",
+        "DateInterface",
+        "NowInterface"
+      ],
+      "correct_answers": [
+        "ClockInterface"
+      ],
+      "explanation": "`Psr\\Clock\\ClockInterface` permet de récupérer l'heure courante (`now()`) de manière standardisée et facilement mockable pour les tests."
     }
   ]
 }

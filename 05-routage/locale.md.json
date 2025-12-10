@@ -61,6 +61,21 @@
         "Si la requête courante a une locale (ex: `fr`), le générateur d'URL l'utilise par défaut pour les liens générés, sans qu'on ait besoin de la spécifier."
       ],
       "explanation": "Cela évite d'avoir à écrire `path('route', {'_locale': app.request.locale})` partout."
+    },
+    {
+      "id": 5,
+      "question": "Quel problème SEO (Search Engine Optimization) faut-il surveiller lorsqu'on utilise l'i18n ?",
+      "type": "single_choice",
+      "options": [
+        "Le temps de chargement.",
+        "Le Duplicate Content, si une même page est accessible via `/about` (défaut) et `/en/about`.",
+        "L'encodage des caractères.",
+        "La taille des URLs."
+      ],
+      "correct_answers": [
+        "Le Duplicate Content, si une même page est accessible via `/about` (défaut) et `/en/about`."
+      ],
+      "explanation": "Il faut soit utiliser des balises canonical, soit rediriger la racine vers l'URL localisée."
     }
   ]
 }

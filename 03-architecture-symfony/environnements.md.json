@@ -76,6 +76,51 @@
         "Celle du serveur web (variable système réelle)."
       ],
       "explanation": "Les 'vraies' variables d'environnement système ont toujours la priorité absolue sur les fichiers chargés par le composant Dotenv."
+    },
+    {
+      "id": 6,
+      "question": "Comment définir une configuration spécifique pour l'environnement de test uniquement ?",
+      "type": "single_choice",
+      "options": [
+        "Créer un fichier `config/packages/test/framework.yaml`.",
+        "Utiliser un `if ($env === 'test')` dans `services.yaml`.",
+        "Créer un fichier `config/test.yaml`.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "Créer un fichier `config/packages/test/framework.yaml`."
+      ],
+      "explanation": "Symfony charge automatiquement les fichiers de configuration situés dans `config/packages/{env}/`."
+    },
+    {
+      "id": 7,
+      "question": "Quel est le moyen recommandé de gérer les secrets (mots de passe, clés API) en production de manière sécurisée ?",
+      "type": "single_choice",
+      "options": [
+        "Les mettre en clair dans `.env`.",
+        "Les commiter dans `.env.local`.",
+        "Utiliser des variables d'environnement réelles ou le système 'Symfony Secrets' (Vault).",
+        "Les écrire en dur dans le code PHP."
+      ],
+      "correct_answers": [
+        "Utiliser des variables d'environnement réelles ou le système 'Symfony Secrets' (Vault)."
+      ],
+      "explanation": "Les fichiers `.env` ne sont pas faits pour les secrets en production. Symfony Secrets permet de chiffrer ces valeurs."
+    },
+    {
+      "id": 8,
+      "question": "À quoi servent les 'processeurs' de variables d'environnement (ex: `file:`, `base64:`) dans un fichier .env ?",
+      "type": "single_choice",
+      "options": [
+        "À exécuter du code PHP.",
+        "À transformer la valeur de la variable au moment de son utilisation (ex: lire le contenu d'un fichier, décoder du base64).",
+        "À compresser les variables.",
+        "À valider le type de la variable."
+      ],
+      "correct_answers": [
+        "À transformer la valeur de la variable au moment de son utilisation (ex: lire le contenu d'un fichier, décoder du base64)."
+      ],
+      "explanation": "Cela permet par exemple de pointer vers un fichier de secret Docker (`DATABASE_URL=file:/run/secrets/db_password`) et de récupérer son contenu automatiquement."
     }
   ]
 }

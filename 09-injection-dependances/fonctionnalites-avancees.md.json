@@ -61,6 +61,21 @@
         "En utilisant `!php/const Class::CONSTANTE`."
       ],
       "explanation": "C'est la syntaxe YAML standard supportée par Symfony pour référencer des constantes PHP."
+    },
+    {
+      "id": 5,
+      "question": "Quel attribut PHP permet d'activer l'injection de propriété (Property Injection) sur une propriété publique ?",
+      "type": "single_choice",
+      "options": [
+        "#[Inject]",
+        "#[Required]",
+        "#[Autowired]",
+        "#[Property]"
+      ],
+      "correct_answers": [
+        "#[Required]"
+      ],
+      "explanation": "L'attribut `Symfony\\Contracts\\Service\\Attribute\\Required` indique à l'autowiring de remplir cette propriété après l'instanciation."
     }
   ]
 }

@@ -91,6 +91,22 @@
         "UPPER_SNAKE_CASE (ex: DATABASE_URL)"
       ],
       "explanation": "C'est le standard universel pour les variables d'environnement système."
+    },
+    {
+      "id": 7,
+      "question": "Quel suffixe est généralement utilisé pour les classes qui écoutent des événements ?",
+      "type": "multiple_choice",
+      "options": [
+        "Listener (ex: ExceptionListener)",
+        "Subscriber (ex: ExceptionSubscriber)",
+        "Watcher",
+        "Handler"
+      ],
+      "correct_answers": [
+        "Listener (ex: ExceptionListener)",
+        "Subscriber (ex: ExceptionSubscriber)"
+      ],
+      "explanation": "Cela dépend si la classe est un EventListener ou un EventSubscriber, mais le suffixe doit refléter son rôle."
     }
   ]
 }

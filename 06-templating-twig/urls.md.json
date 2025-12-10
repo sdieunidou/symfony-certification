@@ -61,6 +61,21 @@
         "Ils sont ajoutés à la Query String (`?param=valeur`)."
       ],
       "explanation": "C'est le comportement standard pour gérer les filtres et paramètres optionnels."
+    },
+    {
+      "id": 5,
+      "question": "Comment ajouter un fragment (ancre #) à une URL générée ?",
+      "type": "single_choice",
+      "options": [
+        "`path('route', { '#': 'ancre' })`",
+        "`path('route', { '_fragment': 'ancre' })`",
+        "`path('route') ~ '#ancre'`",
+        "`path('route', fragment='ancre')`"
+      ],
+      "correct_answers": [
+        "`path('route') ~ '#ancre'`"
+      ],
+      "explanation": "Le fragment ne fait pas partie de l'URL générée par le routeur, il doit être concaténé manuellement (ou passé dans les options de `url()` si supporté, mais la concaténation est standard)."
     }
   ]
 }

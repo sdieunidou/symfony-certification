@@ -46,6 +46,21 @@
         "Non, elle ne fonctionne qu'à l'intérieur des délimiteurs `{{ ... }}` ou `{% ... %}`."
       ],
       "explanation": "Dans le HTML pur, il faut utiliser `{{ title }}`."
+    },
+    {
+      "id": 4,
+      "question": "L'interpolation fonctionne-t-elle avec les guillemets simples `'` ?",
+      "type": "single_choice",
+      "options": [
+        "Oui.",
+        "Non, comme en PHP, les guillemets simples ne parsent pas les variables. Il faut utiliser les guillemets doubles `\"`.",
+        "Oui, mais c'est déprécié.",
+        "Uniquement pour les variables numériques."
+      ],
+      "correct_answers": [
+        "Oui."
+      ],
+      "explanation": "Contrairement à PHP, Twig supporte l'interpolation `#{...}` dans les deux types de guillemets."
     }
   ]
 }

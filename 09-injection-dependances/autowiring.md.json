@@ -63,6 +63,21 @@
         "En utilisant l'attribut `#[Autowire('%nom_du_parametre%')]`."
       ],
       "explanation": "C'est la méthode recommandée depuis Symfony 6.1."
+    },
+    {
+      "id": 5,
+      "question": "Quel attribut permet de transformer une méthode d'un service en un 'Callable' injecté automatiquement, adaptant ainsi une interface fonctionnelle ?",
+      "type": "single_choice",
+      "options": [
+        "#[AutowireMethod]",
+        "#[AutowireCallable]",
+        "#[AsCallable]",
+        "#[Callback]"
+      ],
+      "correct_answers": [
+        "#[AutowireCallable]"
+      ],
+      "explanation": "Cela permet d'injecter une méthode spécifique d'un service comme si c'était un objet implémentant une interface fonctionnelle."
     }
   ]
 }

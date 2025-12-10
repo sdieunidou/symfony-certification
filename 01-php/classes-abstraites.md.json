@@ -123,6 +123,22 @@
         "En utilisant une classe anonyme (`new class extends AbstractClass ...`)."
       ],
       "explanation": "Les classes anonymes ou les méthodes de mock de PHPUnit permettent de tester concrètement une classe abstraite."
+    },
+    {
+      "id": 9,
+      "question": "Concernant l'implémentation des méthodes abstraites, quelle affirmation est vraie sur les arguments ?",
+      "type": "multiple_choice",
+      "options": [
+        "L'implémentation peut ajouter des arguments optionnels qui ne sont pas dans la signature abstraite.",
+        "L'implémentation doit avoir strictement le même nombre d'arguments.",
+        "L'implémentation peut accepter des arguments de types moins précis (Contravariance).",
+        "L'implémentation peut restreindre les types d'arguments (ex: mixed -> int)."
+      ],
+      "correct_answers": [
+        "L'implémentation peut ajouter des arguments optionnels qui ne sont pas dans la signature abstraite.",
+        "L'implémentation peut accepter des arguments de types moins précis (Contravariance)."
+      ],
+      "explanation": "La classe enfant doit respecter la signature mais peut être plus souple (contravariance sur les args) et ajouter des arguments optionnels supplémentaires."
     }
   ]
 }

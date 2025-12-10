@@ -64,19 +64,20 @@
     },
     {
       "id": 5,
-      "question": "Comment associer une exception personnalisée (ex: `UserBannedException`) à un code HTTP spécifique (ex: 403) sans écrire de listener ?",
+      "question": "Comment associer une exception personnalisée (ex: `UserBannedException`) à un code HTTP spécifique (ex: 403) ?",
       "type": "multiple_choice",
       "options": [
         "Via la configuration `framework.exceptions` dans `framework.yaml`.",
         "En utilisant l'attribut `#[WithHttpStatus(403)]` sur la classe d'exception.",
-        "En nommant l'exception `UserBannedHttpException`.",
+        "En la faisant hériter de `HttpException` et en passant 403 au constructeur.",
         "C'est impossible, il faut un listener."
       ],
       "correct_answers": [
         "Via la configuration `framework.exceptions` dans `framework.yaml`.",
-        "En utilisant l'attribut `#[WithHttpStatus(403)]` sur la classe d'exception."
+        "En utilisant l'attribut `#[WithHttpStatus(403)]` sur la classe d'exception.",
+        "En la faisant hériter de `HttpException` et en passant 403 au constructeur."
       ],
-      "explanation": "Symfony offre plusieurs moyens déclaratifs pour mapper les exceptions aux codes HTTP."
+      "explanation": "Symfony offre plusieurs moyens (Configuration, Attributs, Héritage) pour mapper les exceptions aux codes HTTP."
     },
     {
       "id": 6,
@@ -92,6 +93,21 @@
         "À simplifier l'objet Exception PHP (qui est complexe et récursif) en un objet simple utilisable dans les templates Twig."
       ],
       "explanation": "L'objet Exception natif de PHP contient la stack trace complète et des références d'objets qui peuvent causer des soucis de rendu ou de sécurité. FlattenException est une version DTO sûre."
+    },
+    {
+      "id": 7,
+      "question": "Si vous devez générer des réponses d'erreur en JSON pour une API, quelle est la méthode recommandée pour avoir un contrôle total ?",
+      "type": "single_choice",
+      "options": [
+        "Modifier le template `error.html.twig`.",
+        "Créer un Event Listener sur `kernel.exception` qui vérifie le format de la requête et retourne une `JsonResponse`.",
+        "Utiliser `die(json_encode(...))`.",
+        "Forcer le Content-Type dans le htaccess."
+      ],
+      "correct_answers": [
+        "Créer un Event Listener sur `kernel.exception` qui vérifie le format de la requête et retourne une `JsonResponse`."
+      ],
+      "explanation": "Cela permet d'intercepter l'exception avant le rendu HTML par défaut et de structurer la réponse JSON selon vos besoins (ou RFC 7807)."
     }
   ]
 }

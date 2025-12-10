@@ -19,7 +19,7 @@
     },
     {
       "id": 2,
-      "question": "Quelle est la syntaxe moderne pour appeler un composant Twig nommé `Alert` ?",
+      "question": "Quelle est la syntaxe moderne recommandée pour appeler un composant Twig nommé `Alert` ?",
       "type": "single_choice",
       "options": [
         "`{{ component('Alert') }}`",
@@ -30,7 +30,7 @@
       "correct_answers": [
         "`<twig:Alert />`"
       ],
-      "explanation": "Cette syntaxe HTML-like introduite récemment rend le code plus lisible."
+      "explanation": "Cette syntaxe HTML-like introduite récemment rend le code plus lisible et ressemble aux Web Components."
     },
     {
       "id": 3,
@@ -45,10 +45,25 @@
       "correct_answers": [
         "Le Twig Component est statique (rendu une fois), le Live Component est dynamique (se met à jour via AJAX sans écrire de JS)."
       ],
-      "explanation": "Les Live Components permettent de créer des interactions riches (recherche temps réel, formulaires) en PHP."
+      "explanation": "Les Live Components permettent de créer des interactions riches (recherche temps réel, formulaires) en PHP en re-rendant le composant côté serveur."
     },
     {
       "id": 4,
+      "question": "Quel attribut PHP doit-on placer sur la classe du composant pour qu'elle soit reconnue ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Route]`",
+        "`#[AsTwigComponent]`",
+        "`#[Component]`",
+        "`#[Twig]`"
+      ],
+      "correct_answers": [
+        "`#[AsTwigComponent]`"
+      ],
+      "explanation": "C'est l'attribut qui enregistre la classe comme un composant Twig."
+    },
+    {
+      "id": 5,
       "question": "Les propriétés publiques de la classe du composant PHP sont-elles accessibles dans le template Twig associé ?",
       "type": "single_choice",
       "options": [
@@ -60,7 +75,7 @@
       "correct_answers": [
         "Oui, automatiquement."
       ],
-      "explanation": "Le composant expose son état public directement au template."
+      "explanation": "Le composant expose son état public directement au template, ce qui simplifie le passage de données."
     }
   ]
 }

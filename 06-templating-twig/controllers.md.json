@@ -49,7 +49,7 @@
     },
     {
       "id": 4,
-      "question": "Comment passer des arguments au contrôleur embarqué ?",
+      "question": "Comment passer des arguments au contrôleur embarqué via `render(controller(...))` ?",
       "type": "single_choice",
       "options": [
         "Ce n'est pas possible.",
@@ -60,7 +60,7 @@
       "correct_answers": [
         "En deuxième argument de `controller()` : `controller('App...::method', { 'param': 'value' })`."
       ],
-      "explanation": "Ces arguments seront injectés dans la méthode du contrôleur cible."
+      "explanation": "Ces arguments seront injectés dans la méthode du contrôleur cible, soit comme arguments de méthode, soit dans les attributs de requête."
     }
   ]
 }

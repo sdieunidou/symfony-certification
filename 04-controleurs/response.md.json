@@ -76,6 +76,36 @@
         "`render` retourne une `Response`, `renderView` retourne une `string` (HTML)."
       ],
       "explanation": "`renderView` est utile pour générer du HTML à mettre dans un email ou un JSON, sans créer de réponse HTTP complète."
+    },
+    {
+      "id": 6,
+      "question": "Qu'est-ce que les 'Early Hints' (HTTP 103) ?",
+      "type": "single_choice",
+      "options": [
+        "Des indices pour le référencement.",
+        "Un mécanisme permettant d'envoyer des headers de préchargement (Link) au navigateur pendant que le serveur génère encore la réponse principale.",
+        "Une erreur de serveur.",
+        "Une fonctionnalité dépréciée."
+      ],
+      "correct_answers": [
+        "Un mécanisme permettant d'envoyer des headers de préchargement (Link) au navigateur pendant que le serveur génère encore la réponse principale."
+      ],
+      "explanation": "Cela permet au navigateur de commencer à télécharger les CSS/JS/Fonts plus tôt."
+    },
+    {
+      "id": 7,
+      "question": "Si vous retournez une réponse vide pour une API (ex: 204 No Content), comment faire ?",
+      "type": "single_choice",
+      "options": [
+        "`return null;`",
+        "`return new Response(null, 204);`",
+        "`return $this->json(null);`",
+        "`return new EmptyResponse();`"
+      ],
+      "correct_answers": [
+        "`return new Response(null, 204);`"
+      ],
+      "explanation": "Le code 204 impose qu'il n'y ait pas de contenu."
     }
   ]
 }

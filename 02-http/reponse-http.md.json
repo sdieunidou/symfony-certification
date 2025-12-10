@@ -107,6 +107,51 @@
         "PHP lance une erreur 'Headers already sent'."
       ],
       "explanation": "Le protocole HTTP impose d'envoyer les headers avant le corps. Une fois le corps commencé (echo), les headers sont verrouillés."
+    },
+    {
+      "id": 8,
+      "question": "À quoi sert la méthode `prepare(Request $request)` de l'objet Response ?",
+      "type": "single_choice",
+      "options": [
+        "À compiler le template Twig.",
+        "À fixer les headers standards manquants (Content-Type, Charset) et nettoyer les headers incompatibles selon la version HTTP.",
+        "À vérifier les droits utilisateur.",
+        "À compresser le body."
+      ],
+      "correct_answers": [
+        "À fixer les headers standards manquants (Content-Type, Charset) et nettoyer les headers incompatibles selon la version HTTP."
+      ],
+      "explanation": "Cette méthode est appelée automatiquement avant l'envoi pour garantir une réponse conforme au standard HTTP."
+    },
+    {
+      "id": 9,
+      "question": "Concernant `StreamedResponse`, quand est exécuté le callback que vous lui passez ?",
+      "type": "single_choice",
+      "options": [
+        "Immédiatement à l'instanciation (`new StreamedResponse`).",
+        "Lors de l'appel à `send()`, c'est-à-dire à la toute fin du cycle de vie du Kernel.",
+        "Avant le routing.",
+        "En tâche de fond asynchrone."
+      ],
+      "correct_answers": [
+        "Lors de l'appel à `send()`, c'est-à-dire à la toute fin du cycle de vie du Kernel."
+      ],
+      "explanation": "C'est un point de vigilance : à ce moment-là, certaines ressources (connexions DB) pourraient avoir été fermées si elles ne sont pas gérées correctement."
+    },
+    {
+      "id": 10,
+      "question": "Quel header de sécurité permet de définir une liste blanche de sources autorisées pour les scripts, styles et images (protection XSS) ?",
+      "type": "single_choice",
+      "options": [
+        "Content-Security-Policy (CSP)",
+        "Access-Control-Allow-Origin",
+        "X-Content-Type-Options",
+        "Referrer-Policy"
+      ],
+      "correct_answers": [
+        "Content-Security-Policy (CSP)"
+      ],
+      "explanation": "CSP est un outil puissant pour mitiger les attaques XSS et les injections de contenu."
     }
   ]
 }

@@ -121,6 +121,53 @@
         "`$request->getSession()`"
       ],
       "explanation": "Attention, appeler `getSession()` démarre la session si elle n'existe pas encore."
+    },
+    {
+      "id": 9,
+      "question": "Quel type d'objet contient la propriété `$request->files` ?",
+      "type": "single_choice",
+      "options": [
+        "Des tableaux associatifs (comme $_FILES).",
+        "Des chaînes de caractères (chemins).",
+        "Des objets `Symfony\\Component\\HttpFoundation\\File\\UploadedFile`.",
+        "Des ressources streams."
+      ],
+      "correct_answers": [
+        "Des objets `Symfony\\Component\\HttpFoundation\\File\\UploadedFile`."
+      ],
+      "explanation": "L'objet `UploadedFile` offre des méthodes pratiques pour déplacer le fichier (`move()`), vérifier l'extension, le type mime, etc."
+    },
+    {
+      "id": 10,
+      "question": "Quelle méthode permet de mapper un paramètre de requête directement vers un Enum (PHP 8.1+) ?",
+      "type": "single_choice",
+      "options": [
+        "`$request->query->getEnum('status', Status::class)`",
+        "`$request->query->get('status')`",
+        "`Status::tryFrom($request->query->get('status'))`",
+        "Ce n'est pas supporté nativement."
+      ],
+      "correct_answers": [
+        "`$request->query->getEnum('status', Status::class)`"
+      ],
+      "explanation": "Introduit récemment, cela valide et convertit automatiquement la valeur en instance d'Enum ou retourne null/default."
+    },
+    {
+      "id": 11,
+      "question": "Outre les paramètres de route, que trouve-t-on dans `$request->attributes` ?",
+      "type": "multiple_choice",
+      "options": [
+        "Le nom de la route courante (`_route`).",
+        "Le contrôleur à exécuter (`_controller`).",
+        "Les paramètres GET.",
+        "La locale (`_locale`)."
+      ],
+      "correct_answers": [
+        "Le nom de la route courante (`_route`).",
+        "Le contrôleur à exécuter (`_controller`).",
+        "La locale (`_locale`)."
+      ],
+      "explanation": "Les attributs sont le stockage interne de Symfony pour tout ce qui concerne le contexte de la requête enrichi par le framework."
     }
   ]
 }

@@ -91,6 +91,21 @@
         "`public/uploads`"
       ],
       "explanation": "Le dossier `public/` est le Document Root. Les fichiers en dehors ne sont pas accessibles directement par URL."
+    },
+    {
+      "id": 7,
+      "question": "Quel service Symfony est utile pour assainir le nom d'un fichier (remplacer les espaces, accents, caractères spéciaux) ?",
+      "type": "single_choice",
+      "options": [
+        "Sanitizer",
+        "StringCleaner",
+        "Slugger (SluggerInterface)",
+        "FilenameFixer"
+      ],
+      "correct_answers": [
+        "Slugger (SluggerInterface)"
+      ],
+      "explanation": "Le `SluggerInterface` (utilisable via `AsciiSlugger`) transforme 'Mon Fichier!.pdf' en 'mon-fichier.pdf'."
     }
   ]
 }

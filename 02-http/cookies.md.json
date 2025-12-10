@@ -121,6 +121,36 @@
         "Secure"
       ],
       "explanation": "Les navigateurs modernes rejettent `SameSite=None` si le cookie n'est pas marqué `Secure` (HTTPS uniquement)."
+    },
+    {
+      "id": 9,
+      "question": "Quelle est la portée d'un cookie défini sur le domaine `example.com` ?",
+      "type": "single_choice",
+      "options": [
+        "Il est visible uniquement sur `example.com` (racine).",
+        "Il est visible sur `example.com` et tous ses sous-domaines (`app.example.com`, `blog.example.com`).",
+        "Il est visible sur tous les domaines en .com.",
+        "Il est visible uniquement si l'utilisateur est admin."
+      ],
+      "correct_answers": [
+        "Il est visible sur `example.com` et tous ses sous-domaines (`app.example.com`, `blog.example.com`)."
+      ],
+      "explanation": "Le scope est hérité par les sous-domaines. À l'inverse, un cookie défini sur `app.example.com` ne sera pas visible sur `example.com`."
+    },
+    {
+      "id": 10,
+      "question": "Quelle est la particularité du flag `$raw` dans le constructeur de Cookie Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Il active le mode RAW pour les photos.",
+        "Il empêche l'encodage URL automatique des valeurs (les espaces restent des espaces, pas des + ou %20).",
+        "Il force le stockage binaire.",
+        "Il désactive la sécurité."
+      ],
+      "correct_answers": [
+        "Il empêche l'encodage URL automatique des valeurs (les espaces restent des espaces, pas des + ou %20)."
+      ],
+      "explanation": "Utile si le cookie doit être lu par un script JS tiers ou un système legacy qui ne supporte pas l'URL-encoding standard de PHP."
     }
   ]
 }

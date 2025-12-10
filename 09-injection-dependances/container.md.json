@@ -61,6 +61,21 @@
         "`php bin/console lint:container`"
       ],
       "explanation": "Cette commande est cruciale en CI pour détecter les erreurs de configuration avant le déploiement."
+    },
+    {
+      "id": 5,
+      "question": "Pourquoi injecter le conteneur de services entier (`ContainerInterface`) dans un service est-il considéré comme une mauvaise pratique ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que c'est plus lent.",
+        "Cela cache les dépendances réelles de la classe et couple fortement le code au framework (Service Locator pattern).",
+        "Le conteneur n'est pas injectable.",
+        "Cela provoque des fuites de mémoire."
+      ],
+      "correct_answers": [
+        "Cela cache les dépendances réelles de la classe et couple fortement le code au framework (Service Locator pattern)."
+      ],
+      "explanation": "Il faut toujours préférer l'injection explicite des dépendances nécessaires."
     }
   ]
 }

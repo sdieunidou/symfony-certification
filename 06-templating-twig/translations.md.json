@@ -61,6 +61,21 @@
         "php bin/console translation:extract"
       ],
       "explanation": "Elle parcourt le code et met à jour les fichiers catalogue (YAML/XLIFF)."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert le tag `{% trans_default_domain 'admin' %}` ?",
+      "type": "single_choice",
+      "options": [
+        "À définir la locale par défaut.",
+        "À définir le domaine de traduction par défaut pour tout le template, évitant de le répéter à chaque filtre `trans`.",
+        "À forcer la traduction en admin.",
+        "C'est un tag obsolète."
+      ],
+      "correct_answers": [
+        "À définir le domaine de traduction par défaut pour tout le template, évitant de le répéter à chaque filtre `trans`."
+      ],
+      "explanation": "Très utile pour les templates d'une section spécifique (ex: Admin) qui utilisent un fichier de traduction dédié."
     }
   ]
 }

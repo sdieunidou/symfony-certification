@@ -61,6 +61,21 @@
         "Non, le composant Form l'ajoute automatiquement si `cascade_validation` est true (ce qui est le défaut pour les enfants)."
       ],
       "explanation": "Cependant, pour une validation hors formulaire (API/DTO), l'attribut est obligatoire."
+    },
+    {
+      "id": 5,
+      "question": "Si vous avez une propriété qui est un tableau d'objets (ex: `Product[]`), comment valider chacun de ces objets ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant une boucle foreach manuelle.",
+        "En ajoutant `#[Assert\\Valid]` sur la propriété array.",
+        "En ajoutant `#[Assert\\All([new Assert\\Valid()])]`.",
+        "En utilisant `#[Assert\\Collection]`."
+      ],
+      "correct_answers": [
+        "En ajoutant `#[Assert\\Valid]` sur la propriété array."
+      ],
+      "explanation": "`#[Assert\\Valid]` fonctionne aussi sur les tableaux et les collections (Traversable), il itère sur chaque élément."
     }
   ]
 }

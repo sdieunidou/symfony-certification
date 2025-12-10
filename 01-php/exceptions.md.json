@@ -121,6 +121,21 @@
         "TypeError"
       ],
       "explanation": "Les erreurs de type génèrent désormais une `TypeError`, qui hérite de `Error` (et donc de `Throwable`)."
+    },
+    {
+      "id": 9,
+      "question": "Quelle fonction native PHP permet de définir un gestionnaire global pour les exceptions non attrapées ?",
+      "type": "single_choice",
+      "options": [
+        "register_exception_handler()",
+        "set_exception_handler()",
+        "catch_all_exceptions()",
+        "on_exception()"
+      ],
+      "correct_answers": [
+        "set_exception_handler()"
+      ],
+      "explanation": "`set_exception_handler()` définit une fonction de rappel qui sera appelée si une exception n'est attrapée par aucun bloc try/catch."
     }
   ]
 }

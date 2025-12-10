@@ -91,6 +91,36 @@
         "PSR-20 (Clock)"
       ],
       "explanation": "L'interface `Psr\\Clock\\ClockInterface` permet d'injecter une horloge système en prod et une horloge figée (MockClock) en test."
+    },
+    {
+      "id": 7,
+      "question": "Quelle interface PSR permet l'injection de dépendances standardisée (Service Locator) ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-11 (ContainerInterface)",
+        "PSR-18 (ClientInterface)",
+        "PSR-3 (LoggerInterface)",
+        "PSR-4 (Autoloader)"
+      ],
+      "correct_answers": [
+        "PSR-11 (ContainerInterface)"
+      ],
+      "explanation": "Elle définit les méthodes `get($id)` et `has($id)`."
+    },
+    {
+      "id": 8,
+      "question": "Quel composant Symfony implémente PSR-18 (HTTP Client) ?",
+      "type": "single_choice",
+      "options": [
+        "Guzzle",
+        "Symfony HttpClient",
+        "BrowserKit",
+        "Curl"
+      ],
+      "correct_answers": [
+        "Symfony HttpClient"
+      ],
+      "explanation": "Le composant HttpClient peut être utilisé comme une implémentation PSR-18 via la classe `Psr18Client`."
     }
   ]
 }

@@ -61,6 +61,21 @@
         "En ajoutant l'option `needs_environment: true` et en typant le premier argument `Environment $env`."
       ],
       "explanation": "C'est utile si votre fonction a besoin de rendre un autre template ou d'accéder à la configuration Twig."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la différence fondamentale entre une Extension et un Runtime dans Twig ?",
+      "type": "single_choice",
+      "options": [
+        "L'Extension définit les filtres/fonctions (signature), le Runtime contient la logique d'exécution (corps).",
+        "L'Extension est pour le dev, le Runtime pour la prod.",
+        "Le Runtime est pour les filtres, l'Extension pour les fonctions.",
+        "Il n'y a pas de différence."
+      ],
+      "correct_answers": [
+        "L'Extension définit les filtres/fonctions (signature), le Runtime contient la logique d'exécution (corps)."
+      ],
+      "explanation": "Cette séparation permet d'optimiser les performances en ne chargeant le Runtime que si nécessaire."
     }
   ]
 }

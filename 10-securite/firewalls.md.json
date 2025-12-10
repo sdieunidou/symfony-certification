@@ -61,6 +61,21 @@
         "Non, le pare-feu gère l'Authentification (qui est connecté). L'Autorisation est gérée par `access_control` (global) ou les Voters."
       ],
       "explanation": "C'est une distinction fondamentale. Le firewall établit l'identité, l'Access Control restreint l'accès."
+    },
+    {
+      "id": 5,
+      "question": "Par défaut, l'authentification est-elle partagée entre deux firewalls différents (ex: main et admin) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, toujours.",
+        "Non, chaque firewall est isolé. Pour partager l'authentification, il faut qu'ils aient le même `context`.",
+        "Oui, si ils utilisent le même provider.",
+        "Seulement si `stateless: true`."
+      ],
+      "correct_answers": [
+        "Non, chaque firewall est isolé. Pour partager l'authentification, il faut qu'ils aient le même `context`."
+      ],
+      "explanation": "Si vous vous connectez sur le firewall 'main', vous ne serez pas connecté sur le firewall 'admin' à moins d'avoir configuré le même contexte de session."
     }
   ]
 }

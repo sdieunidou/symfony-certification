@@ -76,6 +76,21 @@
         "En configurant `framework.form.csrf_protection: false` dans `framework.yaml`."
       ],
       "explanation": "C'est la méthode recommandée pour configurer le comportement par défaut globalement."
+    },
+    {
+      "id": 6,
+      "question": "Quel problème pose la protection CSRF si vous utilisez un cache HTTP public (ex: Varnish) pour vos pages contenant des formulaires ?",
+      "type": "single_choice",
+      "options": [
+        "Aucun.",
+        "Le token CSRF, qui est spécifique à l'utilisateur, sera mis en cache et servi à tout le monde, provoquant des erreurs 'Invalid CSRF token'.",
+        "Le cache sera désactivé.",
+        "La page sera vide."
+      ],
+      "correct_answers": [
+        "Le token CSRF, qui est spécifique à l'utilisateur, sera mis en cache et servi à tout le monde, provoquant des erreurs 'Invalid CSRF token'."
+      ],
+      "explanation": "Pour éviter cela, chargez le formulaire en AJAX/ESI ou désactivez CSRF pour les formulaires publics."
     }
   ]
 }

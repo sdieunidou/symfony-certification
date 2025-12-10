@@ -79,18 +79,18 @@
     },
     {
       "id": 6,
-      "question": "Quelle partie du formulaire faut-il surcharger pour modifier uniquement la structure HTML globale d'un champ (le div conteneur) sans toucher à l'input lui-même ?",
+      "question": "Si vous définissez un thème global ET un thème local (`form_theme`), lequel est utilisé ?",
       "type": "single_choice",
       "options": [
-        "Le bloc `_widget`.",
-        "Le bloc `_row`.",
-        "Le bloc `_label`.",
-        "Le bloc `_errors`."
+        "Le thème global.",
+        "Le thème local (il a la priorité).",
+        "Les deux sont fusionnés, mais le global a la priorité.",
+        "Une erreur est levée."
       ],
       "correct_answers": [
-        "Le bloc `_row`."
+        "Le thème local (il a la priorité)."
       ],
-      "explanation": "Le bloc `row` est le conteneur qui appelle ensuite `form_label`, `form_widget` et `form_errors`."
+      "explanation": "Les thèmes les plus spécifiques surchargent les thèmes globaux."
     }
   ]
 }

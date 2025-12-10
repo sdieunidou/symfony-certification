@@ -46,6 +46,21 @@
         "Oui, via le constructeur, car les Form Types sont enregistrés comme services (tag `form.type`)."
       ],
       "explanation": "L'autowiring fonctionne parfaitement pour injecter des Transformers, Repositories ou RequestStack."
+    },
+    {
+      "id": 4,
+      "question": "À quoi sert l'option `by_reference` ?",
+      "type": "single_choice",
+      "options": [
+        "À cloner l'objet.",
+        "À indiquer si le formulaire doit modifier l'objet directement (true) ou utiliser les setters/adders (false).",
+        "À passer l'objet par référence dans le constructeur.",
+        "À activer le mode lecture seule."
+      ],
+      "correct_answers": [
+        "À indiquer si le formulaire doit modifier l'objet directement (true) ou utiliser les setters/adders (false)."
+      ],
+      "explanation": "Pour les relations OneToMany, il est crucial de mettre `by_reference => false` pour appeler `addTag()` au lieu de `setTags()`."
     }
   ]
 }

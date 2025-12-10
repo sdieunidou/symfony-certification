@@ -64,18 +64,18 @@
     },
     {
       "id": 5,
-      "question": "Quelle fonction affiche les erreurs globales du formulaire (celles qui ne sont pas liées à un champ précis) ?",
+      "question": "Quelle fonction affiche le texte d'aide défini via l'option `help` ?",
       "type": "single_choice",
       "options": [
-        "`form_errors(form)` (sur l'objet racine)",
-        "`form_global_errors(form)`",
-        "`form_row(form)`",
-        "`form_rest(form)`"
+        "`form_info()`",
+        "`form_help()`",
+        "`form_text()`",
+        "`form_desc()`"
       ],
       "correct_answers": [
-        "`form_errors(form)` (sur l'objet racine)"
+        "`form_help()`"
       ],
-      "explanation": "Il est conseillé de l'appeler en haut du formulaire pour que l'utilisateur voie les problèmes généraux."
+      "explanation": "Cette fonction fait partie du rendu standard de `form_row`."
     }
   ]
 }

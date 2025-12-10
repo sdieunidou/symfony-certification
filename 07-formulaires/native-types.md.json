@@ -64,18 +64,18 @@
     },
     {
       "id": 5,
-      "question": "Quel type permet d'intégrer une liste dynamique de sous-formulaires (ex: Tags d'un Article) ?",
+      "question": "Quel type natif permet de mapper directement une énumération PHP (Enum) ?",
       "type": "single_choice",
       "options": [
-        "`ListType`",
-        "`CollectionType`",
-        "`ArrayType`",
-        "`EmbedType`"
+        "`ChoiceType`",
+        "`EnumType`",
+        "`ScalarType`",
+        "`ListType`"
       ],
       "correct_answers": [
-        "`CollectionType`"
+        "`EnumType`"
       ],
-      "explanation": "Il gère un array ou une ArrayCollection d'objets, souvent utilisé avec du JavaScript pour ajouter/supprimer des éléments (prototype)."
+      "explanation": "Introduit récemment, il simplifie l'usage des Enums PHP 8.1."
     }
   ]
 }

@@ -121,6 +121,21 @@
         "Un entier. Plus il est élevé, plus le listener est exécuté tôt."
       ],
       "explanation": "Le défaut est 0. Un listener avec priorité 10 passera avant un listener avec priorité 0."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi est-il recommandé d'utiliser le nom de la classe de l'événement (`MyEvent::class`) plutôt qu'une chaîne de caractères ('my.event') pour s'abonner ?",
+      "type": "single_choice",
+      "options": [
+        "Pour des raisons de performance uniquement.",
+        "Pour bénéficier de l'autocomplétion, du refactoring automatique et éviter les fautes de frappe.",
+        "C'est obligatoire depuis Symfony 6.",
+        "Les chaînes de caractères sont dépréciées."
+      ],
+      "correct_answers": [
+        "Pour bénéficier de l'autocomplétion, du refactoring automatique et éviter les fautes de frappe."
+      ],
+      "explanation": "C'est une bonne pratique de robustesse (Event Aliases)."
     }
   ]
 }

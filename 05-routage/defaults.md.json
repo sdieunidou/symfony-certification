@@ -76,6 +76,21 @@
         "Que le paramètre `page` est optionnel et sa valeur par défaut est 1."
       ],
       "explanation": "C'est une manière concise (Inline) de définir un défaut directement dans le pattern, alternative à `defaults: ['page' => 1]`."
+    },
+    {
+      "id": 6,
+      "question": "Si vous autorisez `null` dans la signature (`?string $query`), quelle est la valeur par défaut du paramètre de route ?",
+      "type": "single_choice",
+      "options": [
+        "Une chaîne vide.",
+        "`null`.",
+        "Le paramètre reste obligatoire.",
+        "Cela lance une exception."
+      ],
+      "correct_answers": [
+        "`null`."
+      ],
+      "explanation": "Symfony détecte la nullabilité et rend le paramètre optionnel avec `null` comme défaut."
     }
   ]
 }

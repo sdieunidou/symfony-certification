@@ -76,6 +76,21 @@
         "Les tags explicites s'ajoutent aux tags autoconfigurés."
       ],
       "explanation": "Les tags sont cumulatifs. Le service aura à la fois les tags définis automatiquement par ses interfaces et ceux ajoutés manuellement."
+    },
+    {
+      "id": 6,
+      "question": "Comment empêcher qu'un service spécifique reçoive des tags automatiquement via autoconfigure ?",
+      "type": "single_choice",
+      "options": [
+        "En définissant `autowire: false`.",
+        "En définissant `autoconfigure: false` explicitement pour ce service.",
+        "En retirant l'interface.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "En définissant `autoconfigure: false` explicitement pour ce service."
+      ],
+      "explanation": "Cela permet d'avoir un contrôle total sur la configuration du service, sans interférence automatique."
     }
   ]
 }

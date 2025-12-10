@@ -76,6 +76,21 @@
         "En utilisant l'option `parent` pour hériter d'un service abstrait."
       ],
       "explanation": "L'option `parent` permet à un service d'hériter des arguments et des appels de méthode d'un autre service."
+    },
+    {
+      "id": 6,
+      "question": "Comment indiquer qu'un argument de service abstrait DOIT être défini par les services enfants (sinon une erreur est levée) ?",
+      "type": "single_choice",
+      "options": [
+        "En mettant l'argument à `null`.",
+        "En utilisant `!abstract` comme valeur de l'argument.",
+        "En utilisant `required: true`.",
+        "Ce n'est pas supporté."
+      ],
+      "correct_answers": [
+        "En utilisant `!abstract` comme valeur de l'argument."
+      ],
+      "explanation": "Cela oblige les services enfants à fournir une valeur pour cet argument spécifique."
     }
   ]
 }

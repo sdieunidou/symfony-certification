@@ -76,6 +76,36 @@
         "Uniquement quand on lit ou écrit dans l'objet Session (Lazy)."
       ],
       "explanation": "Si l'application n'utilise pas la session (ex: page statique), aucun cookie `PHPSESSID` n'est envoyé."
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert le `MetadataBag` de la session ?",
+      "type": "single_choice",
+      "options": [
+        "À stocker les métadonnées SEO.",
+        "À stocker des informations techniques sur la session elle-même (date de création, dernière activité, durée de vie).",
+        "À stocker les logs.",
+        "À rien."
+      ],
+      "correct_answers": [
+        "À stocker des informations techniques sur la session elle-même (date de création, dernière activité, durée de vie)."
+      ],
+      "explanation": "C'est utile pour gérer manuellement l'expiration ou l'inactivité."
+    },
+    {
+      "id": 7,
+      "question": "Si vous changez de stockage de session (ex: Fichier -> Redis), comment éviter de déconnecter tous les utilisateurs ?",
+      "type": "single_choice",
+      "options": [
+        "C'est impossible.",
+        "En utilisant le `MigratingSessionHandler` qui écrit dans le nouveau stockage tout en lisant dans l'ancien.",
+        "En copiant les fichiers manuellement.",
+        "En augmentant le TTL."
+      ],
+      "correct_answers": [
+        "En utilisant le `MigratingSessionHandler` qui écrit dans le nouveau stockage tout en lisant dans l'ancien."
+      ],
+      "explanation": "Ce handler permet une migration en douceur (Dual Write) sans interruption de service."
     }
   ]
 }

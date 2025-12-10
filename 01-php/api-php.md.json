@@ -41,14 +41,16 @@
         "Constructor Property Promotion",
         "Intersection types",
         "Readonly properties",
-        "Match expression"
+        "Match expression",
+        "Fibers"
       ],
       "correct_answers": [
         "Enums (Énumérations)",
         "Intersection types",
-        "Readonly properties"
+        "Readonly properties",
+        "Fibers"
       ],
-      "explanation": "PHP 8.1 a introduit les Enums, les Intersection types et les Readonly properties. Le Constructor Property Promotion et le Match expression datent de PHP 8.0."
+      "explanation": "PHP 8.1 a introduit les Enums, les Intersection types, les Readonly properties et les Fibers. Le Constructor Property Promotion et le Match expression datent de PHP 8.0."
     },
     {
       "id": 4,
@@ -155,6 +157,51 @@
         "Pour transformer les erreurs de type (coercition silencieuse) en TypeError (Exception)."
       ],
       "explanation": "Le mode strict empêche PHP de convertir automatiquement les types (ex: string '10' en int 10) et lance une erreur si le type attendu ne correspond pas exactement."
+    },
+    {
+      "id": 11,
+      "question": "Que permet le 'Nullsafe operator' (`?->`) introduit en PHP 8.0 ?",
+      "type": "single_choice",
+      "options": [
+        "De forcer une variable à être null.",
+        "D'accéder aux propriétés ou méthodes d'un objet en annulant l'exécution (retournant null) si l'objet est null, évitant ainsi les erreurs.",
+        "De vérifier si une variable est définie avant de l'utiliser.",
+        "De créer un objet vide s'il n'existe pas."
+      ],
+      "correct_answers": [
+        "D'accéder aux propriétés ou méthodes d'un objet en annulant l'exécution (retournant null) si l'objet est null, évitant ainsi les erreurs."
+      ],
+      "explanation": "L'opérateur `?->` permet de chaîner des appels (ex: `$user?->getAddress()?->city`) et retourne null dès qu'un élément de la chaîne est null, sans lever d'erreur."
+    },
+    {
+      "id": 12,
+      "question": "Quelle est la particularité des 'Named Arguments' (PHP 8.0) ?",
+      "type": "single_choice",
+      "options": [
+        "Ils permettent de passer les arguments à une fonction en spécifiant leur nom plutôt que leur position.",
+        "Ils obligent à nommer les variables de retour.",
+        "Ils permettent de donner un nom aux arguments variadiques.",
+        "Ils sont utilisés uniquement pour les constructeurs."
+      ],
+      "correct_answers": [
+        "Ils permettent de passer les arguments à une fonction en spécifiant leur nom plutôt que leur position."
+      ],
+      "explanation": "Cela permet de sauter des arguments optionnels et rend le code plus lisible (ex: `setCookie(name: 'test', secure: true)`)."
+    },
+    {
+      "id": 13,
+      "question": "À quoi sert le type de retour `never` introduit en PHP 8.1 ?",
+      "type": "single_choice",
+      "options": [
+        "À indiquer qu'une fonction ne retourne jamais de valeur car elle contient une boucle infinie.",
+        "À indiquer qu'une fonction arrête l'exécution du script (exit) ou lance une exception systématiquement.",
+        "À indiquer qu'une fonction retourne toujours null.",
+        "À marquer une fonction comme dépréciée."
+      ],
+      "correct_answers": [
+        "À indiquer qu'une fonction arrête l'exécution du script (exit) ou lance une exception systématiquement."
+      ],
+      "explanation": "Le type `never` indique que la fonction ne termine pas son exécution normalement (elle `exit()` ou `throw`)."
     }
   ]
 }

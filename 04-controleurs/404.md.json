@@ -91,6 +91,36 @@
         "Non, c'est une 403 (Access Denied), sauf si on souhaite masquer l'existence de la ressource pour des raisons de sécurité."
       ],
       "explanation": "Sémantiquement, 403 est correct. Cependant, pour éviter l'énumération de ressources (User Enumeration), on peut choisir de renvoyer une 404."
+    },
+    {
+      "id": 7,
+      "question": "À quoi sert l'attribut `#[MapEntity]` (Symfony 6.3+) dans un contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "À mapper une entité vers une table.",
+        "À configurer explicitement comment une entité Doctrine doit être chargée depuis la requête (expr, mapping, id).",
+        "À valider une entité.",
+        "À créer une entité."
+      ],
+      "correct_answers": [
+        "À configurer explicitement comment une entité Doctrine doit être chargée depuis la requête (expr, mapping, id)."
+      ],
+      "explanation": "Il permet de personnaliser la logique de recherche (ex: chercher par `slug` au lieu de `id`, ou utiliser une expression personnalisée)."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi faut-il être prudent avec le message d'erreur passé à `createNotFoundException($message)` ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'il est ignoré.",
+        "Parce qu'il peut être affiché à l'utilisateur final en production, révélant potentiellement des informations sensibles.",
+        "Parce qu'il doit être en anglais.",
+        "Parce qu'il ralentit l'application."
+      ],
+      "correct_answers": [
+        "Parce qu'il peut être affiché à l'utilisateur final en production, révélant potentiellement des informations sensibles."
+      ],
+      "explanation": "Si le template d'erreur utilise `{{ exception.message }}`, ce texte sera visible. Il vaut mieux rester générique en prod."
     }
   ]
 }

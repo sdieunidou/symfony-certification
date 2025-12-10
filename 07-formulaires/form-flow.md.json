@@ -61,6 +61,21 @@
         "En session."
       ],
       "explanation": "Cela permet de conserver les données saisies même si l'utilisateur rafraîchit la page, jusqu'à la fin du flux."
+    },
+    {
+      "id": 5,
+      "question": "Comment fonctionne la validation dans un Form Flow ?",
+      "type": "single_choice",
+      "options": [
+        "Tout le formulaire est validé à la fin.",
+        "Chaque étape est validée indépendamment lors de sa soumission.",
+        "Il n'y a pas de validation.",
+        "On valide manuellement dans le contrôleur."
+      ],
+      "correct_answers": [
+        "Chaque étape est validée indépendamment lors de sa soumission."
+      ],
+      "explanation": "Symfony utilise le nom de l'étape comme groupe de validation pour isoler les contraintes."
     }
   ]
 }

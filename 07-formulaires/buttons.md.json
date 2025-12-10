@@ -46,6 +46,21 @@
         "Pour rendre la classe `FormType` réutilisable dans différents contextes (Création vs Édition) qui nécessitent des boutons différents."
       ],
       "explanation": "Cela découple la définition des données (FormType) de l'action utilisateur (Controller/View)."
+    },
+    {
+      "id": 4,
+      "question": "Si vous ajoutez un bouton `SubmitType` dans votre `FormType`, comment le récupérer dans le contrôleur pour vérifier s'il a été cliqué ?",
+      "type": "single_choice",
+      "options": [
+        "Via `$form->clicked()`.",
+        "Via `$form->get('nom_du_bouton')`.",
+        "Via `$request->get('nom_du_bouton')`.",
+        "C'est impossible si le bouton est dans le Type."
+      ],
+      "correct_answers": [
+        "Via `$form->get('nom_du_bouton')`."
+      ],
+      "explanation": "L'objet Form est un arbre, on peut naviguer vers n'importe quel enfant par son nom."
     }
   ]
 }

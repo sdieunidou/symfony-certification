@@ -61,6 +61,21 @@
         "Non, le conteneur est gelé pour des raisons de performance et d'intégrité."
       ],
       "explanation": "Au runtime, le graphe de dépendances est fixe."
+    },
+    {
+      "id": 5,
+      "question": "Quel est le type de passe par défaut (ordre d'exécution) si rien n'est spécifié lors de l'enregistrement ?",
+      "type": "single_choice",
+      "options": [
+        "`PassConfig::TYPE_AFTER_REMOVING`",
+        "`PassConfig::TYPE_BEFORE_OPTIMIZATION`",
+        "`PassConfig::TYPE_OPTIMIZE`",
+        "`PassConfig::TYPE_BEFORE_REMOVING`"
+      ],
+      "correct_answers": [
+        "`PassConfig::TYPE_BEFORE_OPTIMIZATION`"
+      ],
+      "explanation": "C'est le moment idéal pour modifier les définitions avant que Symfony n'optimise le conteneur (ex: suppression des services privés)."
     }
   ]
 }

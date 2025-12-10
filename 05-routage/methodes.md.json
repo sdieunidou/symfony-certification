@@ -61,6 +61,21 @@
         "Oui, c'est une pratique courante (ex: GET `/api/users` pour la liste, POST `/api/users` pour la création)."
       ],
       "explanation": "Symfony testera les routes dans l'ordre. La restriction de méthode agit comme un filtre sélectif."
+    },
+    {
+      "id": 5,
+      "question": "Comme les navigateurs HTML ne supportent que GET et POST, comment Symfony gère-t-il les formulaires PUT ou DELETE ?",
+      "type": "single_choice",
+      "options": [
+        "Il ne les gère pas.",
+        "Il utilise AJAX obligatoirement.",
+        "Il utilise un champ caché `_method` (ex: `<input type=\"hidden\" name=\"_method\" value=\"DELETE\">`) que le routeur lit pour simuler la méthode.",
+        "Il transforme tout en POST."
+      ],
+      "correct_answers": [
+        "Il utilise un champ caché `_method` (ex: `<input type=\"hidden\" name=\"_method\" value=\"DELETE\">`) que le routeur lit pour simuler la méthode."
+      ],
+      "explanation": "C'est une convention standard pour contourner les limitations des formulaires HTML."
     }
   ]
 }

@@ -76,6 +76,21 @@
         "@.inner"
       ],
       "explanation": "C'est l'ID conventionnel utilisé par Symfony pour l'injection manuelle dans le décorateur."
+    },
+    {
+      "id": 6,
+      "question": "Quelle fonctionnalité YAML permet d'empiler plusieurs décorateurs sur un même service pour créer un pipeline (ex: Command Bus) ?",
+      "type": "single_choice",
+      "options": [
+        "La clé `stack`.",
+        "La clé `pipeline`.",
+        "La clé `chain`.",
+        "La clé `middleware`."
+      ],
+      "correct_answers": [
+        "La clé `stack`."
+      ],
+      "explanation": "Cela permet de définir l'ordre d'exécution de manière lisible, sans jouer avec les priorités."
     }
   ]
 }

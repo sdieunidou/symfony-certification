@@ -61,6 +61,21 @@
         "Le service est privé (par défaut)."
       ],
       "explanation": "Les services privés sont masqués par défaut. Il faut spécifier l'ID du service ou utiliser des options pour les voir."
+    },
+    {
+      "id": 5,
+      "question": "Comment filtrer la liste des services par nom avec `debug:container` ?",
+      "type": "single_choice",
+      "options": [
+        "En utilisant grep.",
+        "Avec l'option `--name=mon_service` ou simplement en passant un argument.",
+        "Avec `--filter`.",
+        "Avec `--search`."
+      ],
+      "correct_answers": [
+        "Avec l'option `--name=mon_service` ou simplement en passant un argument."
+      ],
+      "explanation": "Exemple : `php bin/console debug:container mailer` affichera tous les services contenant 'mailer'."
     }
   ]
 }
