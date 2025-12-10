@@ -50,18 +50,18 @@
     },
     {
       "id": 4,
-      "question": "Pourquoi ne faut-il jamais ajouter l'en-tête `Vary: Cookie` sur une réponse destinée au cache public ?",
+      "question": "Quelle méthode utiliser pour définir la durée de cache spécifique aux proxies partagés (s-maxage) ?",
       "type": "single_choice",
       "options": [
-        "Cela provoque une erreur 500.",
-        "Cela rend le cache inefficace car chaque utilisateur ayant un cookie différent (ex: session, tracking) aura sa propre version en cache, annulant le bénéfice du partage.",
-        "Cela supprime les cookies du client.",
-        "Cela force le passage en HTTPS."
+        "`$response->setMaxAge()`",
+        "`$response->setSharedMaxAge()`",
+        "`$response->setPublicAge()`",
+        "`$response->setProxyTTL()`"
       ],
       "correct_answers": [
-        "Cela rend le cache inefficace car chaque utilisateur ayant un cookie différent (ex: session, tracking) aura sa propre version en cache, annulant le bénéfice du partage."
+        "`$response->setSharedMaxAge()`"
       ],
-      "explanation": "`Vary: Cookie` demande au proxy de stocker une version différente de la page pour chaque combinaison de cookies. Comme les cookies changent souvent par utilisateur, le cache devient inutilement fragmenté."
+      "explanation": "Cela configure la directive `s-maxage` qui est prioritaire sur `max-age` pour les caches partagés."
     }
   ]
 }

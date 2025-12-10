@@ -76,6 +76,21 @@
         "Pour que Symfony fasse confiance aux en-têtes comme `X-Forwarded-For` et restaure la véritable IP du client au lieu de celle du proxy."
       ],
       "explanation": "Sans cela, l'application verra l'IP du proxy comme IP cliente, ce qui fausse les logs, la sécurité et les fonctionnalités géo-dépendantes."
+    },
+    {
+      "id": 6,
+      "question": "Que contrôle l'option `trace_level` dans la configuration de `http_cache` ?",
+      "type": "single_choice",
+      "options": [
+        "La quantité de logs écrits sur le disque.",
+        "La verbosité du header `X-Symfony-Cache` (none, short, full).",
+        "Le niveau de compression.",
+        "Le temps de trace des requêtes."
+      ],
+      "correct_answers": [
+        "La verbosité du header `X-Symfony-Cache` (none, short, full)."
+      ],
+      "explanation": "`full` ajoute des détails sur le corps de la réponse, `short` donne juste HIT/MISS."
     }
   ]
 }

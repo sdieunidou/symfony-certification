@@ -62,6 +62,21 @@
         "Définir le header `AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER` à `true`."
       ],
       "explanation": "Ce header spécial instruit le Listener de session de Symfony de ne pas écraser vos directives de cache, vous laissant l'entière responsabilité de la sécurité."
+    },
+    {
+      "id": 5,
+      "question": "Pourquoi l'utilisation de `Vary: Cookie` sur une réponse publique est-elle une mauvaise pratique ?",
+      "type": "single_choice",
+      "options": [
+        "Cela provoque des erreurs 500.",
+        "Cela rend le cache inefficace car les cookies changent souvent (session, tracking), créant une version de cache par utilisateur au lieu d'une version partagée.",
+        "Cela désactive les cookies.",
+        "Cela force le navigateur à ne pas stocker la page."
+      ],
+      "correct_answers": [
+        "Cela rend le cache inefficace car les cookies changent souvent (session, tracking), créant une version de cache par utilisateur au lieu d'une version partagée."
+      ],
+      "explanation": "Le but du cache public est de partager le contenu. `Vary: Cookie` fragmente le cache à l'extrême."
     }
   ]
 }

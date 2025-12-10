@@ -61,6 +61,21 @@
         "Injecter `CacheInterface` (autowire `cache.app`)."
       ],
       "explanation": "L'autowiring injecte par défaut le pool principal de l'application."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la particularité de l'adapter `cache.adapter.array` ?",
+      "type": "single_choice",
+      "options": [
+        "Il stocke les données en base de données.",
+        "Il stocke les données dans la mémoire du processus PHP courant, elles sont perdues à la fin de la requête (utile pour les tests).",
+        "Il est très lent.",
+        "Il utilise un tableau JSON sur le disque."
+      ],
+      "correct_answers": [
+        "Il stocke les données dans la mémoire du processus PHP courant, elles sont perdues à la fin de la requête (utile pour les tests)."
+      ],
+      "explanation": "C'est l'adapter idéal pour l'environnement de test (`APP_ENV=test`) pour garantir l'isolation entre les tests."
     }
   ]
 }

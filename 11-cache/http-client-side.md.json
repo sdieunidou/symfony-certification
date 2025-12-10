@@ -76,6 +76,21 @@
         "`Cache-Control: max-age`"
       ],
       "explanation": "`max-age` (HTTP/1.1) a la priorité sur `Expires` (HTTP/1.0)."
+    },
+    {
+      "id": 6,
+      "question": "Que garantit la directive `must-revalidate` une fois le cache expiré ?",
+      "type": "single_choice",
+      "options": [
+        "Que le navigateur doit effacer le cache.",
+        "Que le cache ne doit JAMAIS servir une réponse périmée (stale), même si le serveur est injoignable (erreur réseau).",
+        "Qu'il faut se reconnecter.",
+        "Rien de spécial."
+      ],
+      "correct_answers": [
+        "Que le cache ne doit JAMAIS servir une réponse périmée (stale), même si le serveur est injoignable (erreur réseau)."
+      ],
+      "explanation": "Sans cette directive, certains navigateurs pourraient décider de servir une version périmée s'ils n'arrivent pas à contacter le serveur."
     }
   ]
 }

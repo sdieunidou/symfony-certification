@@ -61,6 +61,21 @@
         "`['--admin' => true]`"
       ],
       "explanation": "Le tableau d'input de `execute` attend les noms des options comme clés et `true` comme valeur pour les options booléennes (`VALUE_NONE`)."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la différence d'usage entre `CommandTester` et `ApplicationTester` ?",
+      "type": "single_choice",
+      "options": [
+        "C'est la même chose.",
+        "`CommandTester` teste une commande isolée, `ApplicationTester` teste toute l'application console (utile pour tester l'enchaînement ou les listeners globaux).",
+        "`ApplicationTester` est déprécié.",
+        "`CommandTester` ne fonctionne qu'avec PHPUnit."
+      ],
+      "correct_answers": [
+        "`CommandTester` teste une commande isolée, `ApplicationTester` teste toute l'application console (utile pour tester l'enchaînement ou les listeners globaux)."
+      ],
+      "explanation": "Utilisez `CommandTester` dans 99% des cas."
     }
   ]
 }

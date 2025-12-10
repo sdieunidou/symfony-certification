@@ -61,6 +61,21 @@
         "Non, jamais."
       ],
       "explanation": "Le cycle de vie Console est totalement distinct du cycle de vie HttpKernel. Ces événements ne concernent que l'utilisation CLI."
+    },
+    {
+      "id": 5,
+      "question": "Quelle classe contient les constantes définissant les noms des événements de la console ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\\Component\\Console\\ConsoleEvents`",
+        "`Symfony\\Component\\HttpKernel\\KernelEvents`",
+        "`Symfony\\Component\\Console\\Events`",
+        "`Symfony\\Component\\Console\\Event\\ConsoleEvents`"
+      ],
+      "correct_answers": [
+        "`Symfony\\Component\\Console\\ConsoleEvents`"
+      ],
+      "explanation": "On utilise par exemple `ConsoleEvents::COMMAND`, `ConsoleEvents::TERMINATE`, etc."
     }
   ]
 }

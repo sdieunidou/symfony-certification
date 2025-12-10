@@ -61,6 +61,21 @@
         "`$this->getHelper('question')`"
       ],
       "explanation": "Les commandes possèdent un `HelperSet` accessible via la méthode `getHelper()`."
+    },
+    {
+      "id": 5,
+      "question": "Lors de l'utilisation du `ProgressBar`, quelles méthodes faut-il appeler pour mettre à jour et clore la barre ?",
+      "type": "single_choice",
+      "options": [
+        "`update()` et `end()`",
+        "`advance()` (dans la boucle) et `finish()` (à la fin)",
+        "`next()` et `stop()`",
+        "`step()` et `close()`"
+      ],
+      "correct_answers": [
+        "`advance()` (dans la boucle) et `finish()` (à la fin)"
+      ],
+      "explanation": "`advance()` incrémente le compteur et redessine la barre. `finish()` assure que la barre atteint 100% et ajoute un saut de ligne final."
     }
   ]
 }

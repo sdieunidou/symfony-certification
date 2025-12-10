@@ -46,6 +46,21 @@
         "Oui, en utilisant un Marshaller chiffré (ex: `SodiumMarshaller`) pour décorer l'adapter."
       ],
       "explanation": "Cela protège les données sensibles (GDPR) en cas de compromission du serveur de cache."
+    },
+    {
+      "id": 4,
+      "question": "Pour utiliser les tags, quelle condition l'adapter doit-il respecter ?",
+      "type": "single_choice",
+      "options": [
+        "Il doit implémenter `TagAwareAdapterInterface` ou être enveloppé dans un `TagAwareAdapter`.",
+        "Il doit être Redis.",
+        "Il doit avoir une base de données relationnelle.",
+        "Il n'y a pas de condition."
+      ],
+      "correct_answers": [
+        "Il doit implémenter `TagAwareAdapterInterface` ou être enveloppé dans un `TagAwareAdapter`."
+      ],
+      "explanation": "Redis a un support natif (rapide), mais on peut ajouter le support des tags à n'importe quel adapter (Filesystem, etc.) via le wrapper générique."
     }
   ]
 }

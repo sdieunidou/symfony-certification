@@ -61,6 +61,21 @@
         "interact()"
       ],
       "explanation": "Cette méthode est appelée juste avant `execute()`. Elle permet de vérifier si des arguments manquent et de lancer des questions `$io->ask()` pour remplir l'objet `$input`."
+    },
+    {
+      "id": 5,
+      "question": "Pourquoi faut-il être vigilant avec la gestion de la mémoire (Memory Leak) dans les commandes de type 'Worker' ou 'Daemon' ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que PHP a une limite de mémoire très basse.",
+        "Parce que contrairement à une requête HTTP, le processus PHP ne meurt pas après chaque tâche, donc la mémoire n'est pas libérée automatiquement.",
+        "Parce que la console utilise plus de mémoire que le web.",
+        "Ce n'est pas un problème en PHP 8."
+      ],
+      "correct_answers": [
+        "Parce que contrairement à une requête HTTP, le processus PHP ne meurt pas après chaque tâche, donc la mémoire n'est pas libérée automatiquement."
+      ],
+      "explanation": "Il faut nettoyer l'EntityManager (`$em->clear()`) et les variables cycliques pour éviter que la consommation RAM n'explose sur le long terme."
     }
   ]
 }

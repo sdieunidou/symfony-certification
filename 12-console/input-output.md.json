@@ -76,6 +76,21 @@
         "Non, car cela rendrait le parsing impossible (on ne saurait pas à qui attribuer la valeur)."
       ],
       "explanation": "Si un argument optionnel est omis, tous les arguments suivants seraient décalés. Les arguments obligatoires doivent donc toujours précéder les optionnels."
+    },
+    {
+      "id": 6,
+      "question": "Si vous avez une option avec le raccourci `i` (`InputOption::VALUE_REQUIRED`) et une option `v` (`InputOption::VALUE_NONE`), comment pouvez-vous les combiner ?",
+      "type": "single_choice",
+      "options": [
+        "`-i -v` uniquement",
+        "`-iv` (si `v` est booléen et `i` attend une valeur, attention à l'ordre ou la syntaxe selon les shells)",
+        "On ne peut pas combiner des options.",
+        "`--iv`"
+      ],
+      "correct_answers": [
+        "`-iv` (si `v` est booléen et `i` attend une valeur, attention à l'ordre ou la syntaxe selon les shells)"
+      ],
+      "explanation": "L'agrégation de raccourcis est standard (ex: `ls -la`). Notez que si une option attend une valeur, elle doit être la dernière du groupe ou suivie immédiatement de sa valeur."
     }
   ]
 }

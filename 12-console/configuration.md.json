@@ -62,6 +62,21 @@
         "En préfixant son nom par un underscore `_`."
       ],
       "explanation": "Les deux méthodes fonctionnent. L'attribut `hidden: true` est la méthode moderne explicite."
+    },
+    {
+      "id": 5,
+      "question": "Comment la console gère-t-elle les abréviations de noms de commandes (ex: `bin/console a:u:c` pour `app:user:create`) ?",
+      "type": "single_choice",
+      "options": [
+        "Elle ne les gère pas, il faut taper le nom complet.",
+        "Elle les gère automatiquement tant que l'abréviation est unique (non ambiguë).",
+        "Il faut définir des alias manuellement.",
+        "Cela dépend du shell utilisé."
+      ],
+      "correct_answers": [
+        "Elle les gère automatiquement tant que l'abréviation est unique (non ambiguë)."
+      ],
+      "explanation": "C'est une fonctionnalité native très pratique pour gagner du temps."
     }
   ]
 }

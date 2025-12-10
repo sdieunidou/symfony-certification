@@ -61,6 +61,21 @@
         "Parce que Symfony supprime par défaut le header `Surrogate-Capability` envoyé par le proxy s'il ne provient pas d'une IP de confiance."
       ],
       "explanation": "Symfony a besoin de voir le header `Surrogate-Capability` pour savoir qu'il peut émettre des tags ESI. Ce header est filtré si l'IP du proxy n'est pas de confiance."
+    },
+    {
+      "id": 5,
+      "question": "Quel en-tête HTTP le Reverse Proxy envoie-t-il à Symfony pour annoncer qu'il supporte les ESI ?",
+      "type": "single_choice",
+      "options": [
+        "`ESI-Enabled`",
+        "`Surrogate-Capability`",
+        "`X-Reverse-Proxy`",
+        "`Accept-ESI`"
+      ],
+      "correct_answers": [
+        "`Surrogate-Capability`"
+      ],
+      "explanation": "C'est ce header (défini par le W3C) qui permet la négociation de contenu pour les surrogates."
     }
   ]
 }

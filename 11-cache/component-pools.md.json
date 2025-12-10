@@ -61,6 +61,21 @@
         "Il préfixe automatiquement les clés avec un Hash du nom du pool (Namespacing)."
       ],
       "explanation": "Le composant Cache gère le 'namespacing' de manière transparente en préfixant les clés, garantissant l'isolation."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert l'option `default_redis_provider` dans `framework.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "À installer Redis.",
+        "À définir le DSN (connexion) par défaut pour tous les pools qui utilisent l'adapter Redis, évitant de répéter l'URL.",
+        "À définir la base de données par défaut.",
+        "À définir le mot de passe administrateur."
+      ],
+      "correct_answers": [
+        "À définir le DSN (connexion) par défaut pour tous les pools qui utilisent l'adapter Redis, évitant de répéter l'URL."
+      ],
+      "explanation": "Si un pool utilise `cache.adapter.redis` sans spécifier de provider, il utilisera celui-ci."
     }
   ]
 }

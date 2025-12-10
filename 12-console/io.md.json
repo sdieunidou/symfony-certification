@@ -61,6 +61,21 @@
         "`$io->success()`"
       ],
       "explanation": "`$io->success()` formate le texte dans un bloc vert standardisé."
+    },
+    {
+      "id": 5,
+      "question": "Que fait la méthode `$io->choice()` si l'utilisateur commence à taper une réponse ?",
+      "type": "single_choice",
+      "options": [
+        "Rien de spécial.",
+        "Elle propose une autocomplétion basée sur les choix disponibles.",
+        "Elle valide immédiatement.",
+        "Elle efface la saisie."
+      ],
+      "correct_answers": [
+        "Elle propose une autocomplétion basée sur les choix disponibles."
+      ],
+      "explanation": "C'est très utile pour guider l'utilisateur dans une liste de choix prédéfinis."
     }
   ]
 }

@@ -46,6 +46,21 @@
         "Messenger"
       ],
       "explanation": "En configurant `early_expiration_message_bus`, Symfony envoie un message dans le bus au lieu de recalculer en direct."
+    },
+    {
+      "id": 4,
+      "question": "Quelle option de configuration faut-il ajouter à un pool pour activer le recalcul asynchrone via Messenger ?",
+      "type": "single_choice",
+      "options": [
+        "`async: true`",
+        "`early_expiration_message_bus: 'nom_du_bus'`",
+        "`worker: 'messenger'`",
+        "`recompute: 'async'`"
+      ],
+      "correct_answers": [
+        "`early_expiration_message_bus: 'nom_du_bus'`"
+      ],
+      "explanation": "Cette option indique au cache d'envoyer un message de type `EarlyExpirationMessage` au lieu de re-calculer synchrone."
     }
   ]
 }

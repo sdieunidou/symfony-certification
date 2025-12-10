@@ -76,6 +76,21 @@
         "`debug:container`"
       ],
       "explanation": "`debug:container` affiche la liste des services et leurs alias. `debug:autowiring` est spécifique aux types injectables."
+    },
+    {
+      "id": 6,
+      "question": "Quelle commande affiche des informations succinctes sur l'environnement actuel (version PHP, version Symfony, version Kernel) ?",
+      "type": "single_choice",
+      "options": [
+        "`about`",
+        "`info`",
+        "`status`",
+        "`version`"
+      ],
+      "correct_answers": [
+        "`about`"
+      ],
+      "explanation": "`php bin/console about` est utile pour vérifier rapidement dans quel état se trouve l'application."
     }
   ]
 }

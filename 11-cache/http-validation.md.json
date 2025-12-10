@@ -61,6 +61,21 @@
         "Avant d'effectuer les opérations lourdes (requêtes complexes, rendu de template), en se basant sur des métadonnées légères."
       ],
       "explanation": "Si vous générez toute la page pour calculer son hash, vous économisez la bande passante mais pas le CPU serveur. L'idéal est de valider sur des données légères (ex: `updatedAt` de l'entité) avant le rendu."
+    },
+    {
+      "id": 5,
+      "question": "Si une requête contient à la fois `If-None-Match` (ETag) et `If-Modified-Since` (Date), lequel a la priorité ?",
+      "type": "single_choice",
+      "options": [
+        "`If-Modified-Since`",
+        "`If-None-Match` (ETag)",
+        "Les deux doivent correspondre.",
+        "Le serveur choisit au hasard."
+      ],
+      "correct_answers": [
+        "`If-None-Match` (ETag)"
+      ],
+      "explanation": "L'ETag est considéré comme un validateur plus fiable et précis que la date (qui est limitée à la seconde)."
     }
   ]
 }

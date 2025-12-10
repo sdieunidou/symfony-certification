@@ -61,6 +61,36 @@
         "Elle gère automatiquement le 'Stampede Protection' (verrouillage) et la logique 'Get or Compute' via un callback."
       ],
       "explanation": "C'est une abstraction plus robuste pour les environnements à fort trafic."
+    },
+    {
+      "id": 5,
+      "question": "Quelle méthode de `CacheItemInterface` définit la durée de validité d'un item ?",
+      "type": "single_choice",
+      "options": [
+        "`$item->ttl(3600)`",
+        "`$item->expiresAfter(3600)` (secondes ou DateInterval)",
+        "`$item->setExpiration(3600)`",
+        "`$item->validFor(3600)`"
+      ],
+      "correct_answers": [
+        "`$item->expiresAfter(3600)` (secondes ou DateInterval)"
+      ],
+      "explanation": "Il existe aussi `expiresAt(\DateTimeInterface)` pour une date précise."
+    },
+    {
+      "id": 6,
+      "question": "Quel est le rôle du 'Marshaller' dans le composant Cache ?",
+      "type": "single_choice",
+      "options": [
+        "Gérer la connexion Redis.",
+        "Sérialiser et désérialiser les valeurs PHP pour qu'elles puissent être stockées.",
+        "Vérifier les droits d'accès.",
+        "Nettoyer le cache expiré."
+      ],
+      "correct_answers": [
+        "Sérialiser et désérialiser les valeurs PHP pour qu'elles puissent être stockées."
+      ],
+      "explanation": "Par défaut, le `DefaultMarshaller` utilise `serialize()` de PHP, mais on peut le remplacer (ex: JSON, Encryption)."
     }
   ]
 }

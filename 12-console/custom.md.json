@@ -61,6 +61,21 @@
         "Appeler `parent::__construct()`."
       ],
       "explanation": "Il est obligatoire d'appeler le constructeur parent de la classe `Command` pour que l'initialisation interne se fasse correctement."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert la méthode `initialize(InputInterface $input, OutputInterface $output)` ?",
+      "type": "single_choice",
+      "options": [
+        "À initialiser la base de données.",
+        "À exécuter du code avant `interact()` et `execute()`, par exemple pour définir des variables globales basées sur les options d'entrée.",
+        "À définir le nom de la commande.",
+        "À rien."
+      ],
+      "correct_answers": [
+        "À exécuter du code avant `interact()` et `execute()`, par exemple pour définir des variables globales basées sur les options d'entrée."
+      ],
+      "explanation": "C'est utile pour configurer l'état de la commande avant toute interaction utilisateur."
     }
   ]
 }

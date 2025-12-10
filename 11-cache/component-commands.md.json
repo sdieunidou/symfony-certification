@@ -46,6 +46,21 @@
         "`cache:pool:invalidate-tags pool_name product`"
       ],
       "explanation": "Cette commande permet une invalidation chirurgicale."
+    },
+    {
+      "id": 4,
+      "question": "Quelle est la différence fondamentale entre `cache:clear` et `cache:pool:clear` ?",
+      "type": "single_choice",
+      "options": [
+        "`cache:clear` vide le dossier `var/cache` (conteneur, twig, routing), tandis que `cache:pool:clear` vide les données stockées dans les pools (Redis, etc.).",
+        "`cache:clear` est pour la prod, `cache:pool:clear` pour le dev.",
+        "`cache:pool:clear` ne fonctionne pas avec le Filesystem.",
+        "C'est la même chose."
+      ],
+      "correct_answers": [
+        "`cache:clear` vide le dossier `var/cache` (conteneur, twig, routing), tandis que `cache:pool:clear` vide les données stockées dans les pools (Redis, etc.)."
+      ],
+      "explanation": "`cache:clear` appelle aussi le `cache.system_clearer` mais ne touche pas à vos données métier stockées dans `cache.app` si celui-ci est sur Redis."
     }
   ]
 }
