@@ -49,21 +49,6 @@
     },
     {
       "id": 4,
-      "question": "Dans un formulaire imbriqué (Embedded Form), faut-il ajouter manuellement `#[Assert\\Valid]` sur la propriété liée ?",
-      "type": "single_choice",
-      "options": [
-        "Oui, toujours.",
-        "Non, le composant Form l'ajoute automatiquement si `cascade_validation` est true (ce qui est le défaut pour les enfants).",
-        "Seulement si le formulaire enfant est mappé.",
-        "Non, les formulaires ne valident pas les objets."
-      ],
-      "correct_answers": [
-        "Non, le composant Form l'ajoute automatiquement si `cascade_validation` est true (ce qui est le défaut pour les enfants)."
-      ],
-      "explanation": "Cependant, pour une validation hors formulaire (API/DTO), l'attribut est obligatoire."
-    },
-    {
-      "id": 5,
       "question": "Si vous avez une propriété qui est un tableau d'objets (ex: `Product[]`), comment valider chacun de ces objets ?",
       "type": "single_choice",
       "options": [
