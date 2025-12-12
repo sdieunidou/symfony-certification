@@ -76,6 +76,21 @@
         "XLIFF (`.xlf`)"
       ],
       "explanation": "XLIFF est le standard industriel supporté par tous les outils de traduction professionnels."
+    },
+    {
+      "id": 6,
+      "question": "Où est-il recommandé d'ajouter les boutons de soumission (`SubmitType`) d'un formulaire ?",
+      "type": "single_choice",
+      "options": [
+        "Dans la classe PHP du formulaire (`buildForm`).",
+        "Directement dans le template Twig.",
+        "Dans le contrôleur.",
+        "Dans un fichier de configuration."
+      ],
+      "correct_answers": [
+        "Directement dans le template Twig."
+      ],
+      "explanation": "Le style et le libellé du bouton dépendent souvent du contexte d'affichage (ex: 'Créer' vs 'Modifier'), il est donc plus flexible de le gérer dans la vue."
     }
   ]
 }

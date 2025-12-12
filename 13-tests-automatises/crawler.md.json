@@ -61,6 +61,21 @@
         "`$crawler->each(function ($node, $i) { ... })`"
       ],
       "explanation": "La méthode `each` prend une callback qui reçoit chaque nœud et son index."
+    },
+    {
+      "id": 5,
+      "question": "Comment cliquer sur un lien dont le texte est 'Se connecter' en utilisant le Crawler ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->click('Se connecter');`",
+        "`$link = $crawler->selectLink('Se connecter')->link(); $client->click($link);`",
+        "`$crawler->clickLink('Se connecter');`",
+        "`$client->follow('Se connecter');`"
+      ],
+      "correct_answers": [
+        "`$link = $crawler->selectLink('Se connecter')->link(); $client->click($link);`"
+      ],
+      "explanation": "Il faut d'abord sélectionner le nœud du lien, le convertir en objet `Link` avec `link()`, puis passer cet objet au client."
     }
   ]
 }

@@ -61,6 +61,21 @@
         "Parce que le cache OPcache conserve les anciens fichiers en mémoire (surtout si `validate_timestamps=0`)."
       ],
       "explanation": "Sans reload, PHP continuerait d'exécuter l'ancien code qui est en cache RAM, même si les fichiers disques ont changé."
+    },
+    {
+      "id": 5,
+      "question": "Quel est l'intérêt d'utiliser des 'Feature Flags' (Bascule de fonctionnalité) ?",
+      "type": "single_choice",
+      "options": [
+        "Améliorer le SEO.",
+        "Découpler le déploiement du code de l'activation de la fonctionnalité, permettant un déploiement continu même si la fonctionnalité n'est pas finie ou doit être activée progressivement.",
+        "Gérer les drapeaux de langue.",
+        "C'est une fonctionnalité de Git."
+      ],
+      "correct_answers": [
+        "Découpler le déploiement du code de l'activation de la fonctionnalité, permettant un déploiement continu même si la fonctionnalité n'est pas finie ou doit être activée progressivement."
+      ],
+      "explanation": "Cela permet de tester en prod (pour certains utilisateurs) et de faire un rollback instantané (désactivation) sans redéployer."
     }
   ]
 }

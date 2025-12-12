@@ -61,6 +61,21 @@
         "Un script d'installation automatique qui configure le bundle (fichiers par défaut, variables d'env, ajout dans `bundles.php`) lors du `composer require`."
       ],
       "explanation": "Les recettes permettent une expérience d'installation 'Zero Config' pour l'utilisateur final."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert la 'Semantic Configuration' (TreeBuilder) dans un Bundle ?",
+      "type": "single_choice",
+      "options": [
+        "À traduire les messages d'erreur.",
+        "À définir, valider et documenter la structure de configuration (YAML) exposée aux utilisateurs du bundle.",
+        "À optimiser le chargement des classes.",
+        "À configurer les routes."
+      ],
+      "correct_answers": [
+        "À définir, valider et documenter la structure de configuration (YAML) exposée aux utilisateurs du bundle."
+      ],
+      "explanation": "Elle permet de fournir une configuration typée et validée (ex: `my_bundle: { api_key: ... }`) plutôt que des paramètres plats en vrac."
     }
   ]
 }

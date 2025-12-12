@@ -61,6 +61,36 @@
         "`$client->xmlHttpRequest(...)`"
       ],
       "explanation": "C'est un raccourci pratique pour `$client->request()` qui ajoute automatiquement le bon header."
+    },
+    {
+      "id": 5,
+      "question": "Si vous voulez conserver l'état des services (ex: mocks) entre deux requêtes dans le même test, quelle méthode appeler ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->disableReboot()`",
+        "`$client->keepAlive()`",
+        "`$client->persistServices()`",
+        "`$client->noReset()`"
+      ],
+      "correct_answers": [
+        "`$client->disableReboot()`"
+      ],
+      "explanation": "Cela empêche le redémarrage du kernel, donc le conteneur n'est pas réinitialisé."
+    },
+    {
+      "id": 6,
+      "question": "Quels sont les raccourcis pratiques pour interagir avec la page sans utiliser manuellement le Crawler ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->press()` et `$client->type()`",
+        "`$client->clickLink()` et `$client->submitForm()`",
+        "`$client->goTo()` et `$client->fill()`",
+        "`$client->click()` et `$client->submit()`"
+      ],
+      "correct_answers": [
+        "`$client->clickLink()` et `$client->submitForm()`"
+      ],
+      "explanation": "Ces méthodes combinent la sélection de l'élément (lien/bouton) et l'action en une seule ligne."
     }
   ]
 }

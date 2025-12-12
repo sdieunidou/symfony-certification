@@ -62,6 +62,21 @@
         "`error`"
       ],
       "explanation": "`error` signale un échec, mais le système continue de tourner. `critical` ou `alert` nécessiteraient une intervention."
+    },
+    {
+      "id": 5,
+      "question": "À quoi servent les 'Processors' dans Monolog ?",
+      "type": "single_choice",
+      "options": [
+        "À écrire les logs sur le disque.",
+        "À ajouter automatiquement des informations supplémentaires (contexte) à tous les logs (ex: IP du client, ID de session).",
+        "À filtrer les logs par niveau.",
+        "À envoyer des emails."
+      ],
+      "correct_answers": [
+        "À ajouter automatiquement des informations supplémentaires (contexte) à tous les logs (ex: IP du client, ID de session)."
+      ],
+      "explanation": "Un processor est un callback qui reçoit l'enregistrement de log et l'enrichit avant qu'il ne soit passé aux handlers."
     }
   ]
 }

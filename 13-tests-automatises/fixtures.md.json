@@ -61,6 +61,21 @@
         "`Fixture` (du namespace `Doctrine\\Bundle\\FixturesBundle\\Fixture`)"
       ],
       "explanation": "Cette classe impose d'implémenter la méthode `load(ObjectManager $manager)`."
+    },
+    {
+      "id": 5,
+      "question": "Si une fixture doit être chargée après une autre (dépendance), quelle interface doit-elle implémenter ?",
+      "type": "single_choice",
+      "options": [
+        "`OrderedFixtureInterface`",
+        "`DependentFixtureInterface`",
+        "`SequenceFixtureInterface`",
+        "`ChainedFixtureInterface`"
+      ],
+      "correct_answers": [
+        "`DependentFixtureInterface`"
+      ],
+      "explanation": "Cette interface impose la méthode `getDependencies()` qui retourne la liste des classes de fixtures requises au préalable."
     }
   ]
 }

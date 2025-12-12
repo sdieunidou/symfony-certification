@@ -61,6 +61,21 @@
         "`$client->setServerParameters([...])`"
       ],
       "explanation": "On utilise `setServerParameters` en passant des clés au format PHP `$_SERVER` (ex: `HTTP_AUTHORIZATION`)."
+    },
+    {
+      "id": 5,
+      "question": "Comment passer des options comme `HTTP_HOST` ou `HTTPS` lors de la création du client ?",
+      "type": "single_choice",
+      "options": [
+        "En argument de `createClient()` : `static::createClient([], ['HTTP_HOST' => 'api.com'])`.",
+        "Dans le fichier `.env.test`.",
+        "Dans le constructeur du test.",
+        "Ce n'est pas possible."
+      ],
+      "correct_answers": [
+        "En argument de `createClient()` : `static::createClient([], ['HTTP_HOST' => 'api.com'])`."
+      ],
+      "explanation": "Le deuxième argument de `createClient` est un tableau de paramètres serveur passés au Kernel."
     }
   ]
 }

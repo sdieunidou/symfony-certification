@@ -61,6 +61,21 @@
         "`%env(file:VAR)%`"
       ],
       "explanation": "Le processeur `file:` considère la valeur de la variable comme un chemin de fichier et retourne son contenu."
+    },
+    {
+      "id": 5,
+      "question": "Quelle commande permet d'ajouter un secret chiffré dans le coffre-fort (Vault) de l'application ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console secrets:add`",
+        "`php bin/console secrets:set`",
+        "`php bin/console vault:store`",
+        "`php bin/console env:encrypt`"
+      ],
+      "correct_answers": [
+        "`php bin/console secrets:set`"
+      ],
+      "explanation": "Cette commande chiffre la valeur avec la clé publique et la stocke dans `config/secrets/{env}/{nom}.{env}.list`."
     }
   ]
 }

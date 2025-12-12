@@ -61,6 +61,21 @@
         "`$this->assertTrue($client->getResponse()->headers->has('Content-Type'))`"
       ],
       "explanation": "On accède au sac de headers via la propriété publique `headers` de l'objet Response."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la différence entre `$client->getResponse()` et `$client->getInternalResponse()` ?",
+      "type": "single_choice",
+      "options": [
+        "Aucune.",
+        "`getResponse()` retourne la réponse HTTP Symfony (HttpFoundation), tandis que `getInternalResponse()` retourne l'objet BrowserKit utilisé par le moteur de test.",
+        "`getInternalResponse()` est déprécié.",
+        "`getResponse()` est pour la production."
+      ],
+      "correct_answers": [
+        "`getResponse()` retourne la réponse HTTP Symfony (HttpFoundation), tandis que `getInternalResponse()` retourne l'objet BrowserKit utilisé par le moteur de test."
+      ],
+      "explanation": "Dans la plupart des cas, on utilise `getResponse()` pour faire des assertions sur le code statut, les headers, etc."
     }
   ]
 }

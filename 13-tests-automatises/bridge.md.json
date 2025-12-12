@@ -61,6 +61,21 @@
         "Non, elles sont généralement ignorées car ce n'est pas votre code."
       ],
       "explanation": "Le bridge se concentre sur les dépréciations causées par VOTRE code ou l'utilisation que vous faites des bibliothèques, pas les problèmes internes aux bibliothèques tierces."
+    },
+    {
+      "id": 5,
+      "question": "Comment activer le listener du PHPUnit Bridge dans la configuration `phpunit.xml.dist` ?",
+      "type": "single_choice",
+      "options": [
+        "C'est automatique, rien à faire.",
+        "En ajoutant `<listener class=\"Symfony\\Bridge\\PhpUnit\\SymfonyTestsListener\" />` dans la section `<listeners>`.",
+        "En ajoutant `APP_ENV=test` dans `<php>`.",
+        "En exécutant `composer require phpunit`."
+      ],
+      "correct_answers": [
+        "En ajoutant `<listener class=\"Symfony\\Bridge\\PhpUnit\\SymfonyTestsListener\" />` dans la section `<listeners>`."
+      ],
+      "explanation": "Ce listener est essentiel pour que le Bridge puisse intercepter les événements de tests et les dépréciations."
     }
   ]
 }

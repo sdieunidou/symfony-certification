@@ -61,6 +61,21 @@
         "`self::bootKernel()`"
       ],
       "explanation": "Cette méthode initialise le Kernel et le conteneur."
+    },
+    {
+      "id": 5,
+      "question": "Dans le conteneur de test (`test.service_container`), quel est le statut de visibilité des services par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "Identique à la production (les services privés restent privés).",
+        "Tous les services (même privés) sont rendus publics pour faciliter les tests.",
+        "Seuls les services taggés `public: true` sont accessibles.",
+        "Le conteneur est vide."
+      ],
+      "correct_answers": [
+        "Tous les services (même privés) sont rendus publics pour faciliter les tests."
+      ],
+      "explanation": "Cela permet de tester unitairement n'importe quel service sans devoir modifier sa configuration pour les tests."
     }
   ]
 }

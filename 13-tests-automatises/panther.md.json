@@ -61,6 +61,21 @@
         "`$client->waitFor('.element')`"
       ],
       "explanation": "Cela permet d'attendre qu'un élément apparaisse dans le DOM avant de faire une assertion, évitant les 'flaky tests'."
+    },
+    {
+      "id": 5,
+      "question": "Quelle méthode statique utiliser pour créer un client Panther ?",
+      "type": "single_choice",
+      "options": [
+        "`static::createClient()`",
+        "`static::createPantherClient()`",
+        "`new PantherClient()`",
+        "`Panther::create()`"
+      ],
+      "correct_answers": [
+        "`static::createPantherClient()`"
+      ],
+      "explanation": "Contrairement à `createClient()` qui crée un `KernelBrowser`, celle-ci démarre le serveur web et le navigateur."
     }
   ]
 }

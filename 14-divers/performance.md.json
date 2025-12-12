@@ -61,6 +61,21 @@
         "Une fonctionnalité d'OPcache qui charge et compile les classes PHP en mémoire au démarrage du serveur (avant toute requête)."
       ],
       "explanation": "Symfony génère un script de preload optimisé dans `var/cache/prod`."
+    },
+    {
+      "id": 5,
+      "question": "Quel est l'impact de l'augmentation du `realpath_cache_size` dans php.ini ?",
+      "type": "single_choice",
+      "options": [
+        "Cela consomme plus de disque.",
+        "Cela permet à PHP de garder en mémoire les chemins de fichiers résolus plus longtemps, réduisant les appels système (stat) pour les projets avec beaucoup de fichiers.",
+        "Cela ralentit le serveur.",
+        "Cela n'a aucun impact sur Symfony."
+      ],
+      "correct_answers": [
+        "Cela permet à PHP de garder en mémoire les chemins de fichiers résolus plus longtemps, réduisant les appels système (stat) pour les projets avec beaucoup de fichiers."
+      ],
+      "explanation": "Symfony comportant des milliers de fichiers, le cache realpath par défaut est souvent insuffisant."
     }
   ]
 }

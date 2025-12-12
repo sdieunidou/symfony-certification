@@ -46,6 +46,21 @@
         "`assertSame()`"
       ],
       "explanation": "`assertSame` utilise l'opérateur `===`, alors que `assertEquals` utilise `==`."
+    },
+    {
+      "id": 4,
+      "question": "Quand la méthode `setUp()` est-elle exécutée ?",
+      "type": "single_choice",
+      "options": [
+        "Avant la classe de test.",
+        "Avant chaque méthode de test.",
+        "Après chaque méthode de test.",
+        "Une seule fois au début."
+      ],
+      "correct_answers": [
+        "Avant chaque méthode de test."
+      ],
+      "explanation": "C'est l'endroit idéal pour initialiser l'état commun à chaque test. Pour une initialisation unique par classe, utilisez `setUpBeforeClass()`."
     }
   ]
 }

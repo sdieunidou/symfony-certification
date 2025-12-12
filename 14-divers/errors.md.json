@@ -61,6 +61,21 @@
         "`fingers_crossed`"
       ],
       "explanation": "Ce handler garde les logs dans un buffer et ne les écrit sur le disque que si un certain niveau (ex: ERROR) est atteint. Cela permet d'avoir les logs 'debug' qui ont précédé l'erreur sans polluer le disque le reste du temps."
+    },
+    {
+      "id": 5,
+      "question": "Quelles variables sont disponibles dans les templates d'erreur Twig (ex: `error404.html.twig`) ?",
+      "type": "single_choice",
+      "options": [
+        "`request`, `response`, `user`",
+        "`status_code`, `status_text`, `exception`",
+        "`error_code`, `message`, `stack_trace`",
+        "`code`, `msg`, `e`"
+      ],
+      "correct_answers": [
+        "`status_code`, `status_text`, `exception`"
+      ],
+      "explanation": "Ces variables permettent d'afficher le code HTTP, le message standard et d'accéder à l'objet exception."
     }
   ]
 }

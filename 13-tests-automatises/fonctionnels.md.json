@@ -61,6 +61,21 @@
         "`$client->request('GET', '/url')`"
       ],
       "explanation": "Elle retourne un objet `Crawler`."
+    },
+    {
+      "id": 5,
+      "question": "Quelle assertion permet de vérifier le nombre d'emails envoyés lors du test (profiling) ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->assertEmailCount(int $count)`",
+        "`$this->assertMailSent(int $count)`",
+        "`$client->assertEmails(int $count)`",
+        "`$this->checkEmails(int $count)`"
+      ],
+      "correct_answers": [
+        "`$this->assertEmailCount(int $count)`"
+      ],
+      "explanation": "Cette assertion interroge le collecteur du profiler Symfony pour compter les emails envoyés par le composant Mailer."
     }
   ]
 }

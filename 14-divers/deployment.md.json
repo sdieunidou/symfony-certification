@@ -61,6 +61,21 @@
         "Pour compiler tous les fichiers `.env` en un seul fichier PHP statique optimisé (`.env.local.php`)."
       ],
       "explanation": "Cela évite à Symfony de devoir parser les fichiers `.env` à chaque requête, ce qui est coûteux."
+    },
+    {
+      "id": 5,
+      "question": "Quelle variable d'environnement doit absolument être définie à `0` (zéro) en production pour désactiver le mode debug ?",
+      "type": "single_choice",
+      "options": [
+        "`APP_DEBUG`",
+        "`APP_ENV`",
+        "`SYMFONY_DEBUG`",
+        "`DEBUG_MODE`"
+      ],
+      "correct_answers": [
+        "`APP_DEBUG`"
+      ],
+      "explanation": "`APP_DEBUG=0` désactive le profiler, le re-parsing des fichiers de config à chaque requête et les pages d'erreur détaillées."
     }
   ]
 }
