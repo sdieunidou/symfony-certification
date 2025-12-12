@@ -50,7 +50,7 @@
     },
     {
       "id": 4,
-      "question": "Si vous voulez forcer Symfony à ne PAS modifier les headers de cache même si une session est active (Expert), que devez-vous faire ?",
+      "question": "Si vous voulez forcer Symfony à ne PAS modifier les headers de cache même si une session est active, que devez-vous faire ?",
       "type": "single_choice",
       "options": [
         "Utiliser `session_destroy()`.",
