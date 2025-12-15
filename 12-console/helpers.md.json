@@ -76,6 +76,81 @@
         "`advance()` (dans la boucle) et `finish()` (à la fin)"
       ],
       "explanation": "`advance()` incrémente le compteur et redessine la barre. `finish()` assure que la barre atteint 100% et ajoute un saut de ligne final."
+    },
+    {
+      "id": 6,
+      "question": "Quel helper permet d'exécuter un processus système et d'afficher sa sortie en temps réel ?",
+      "type": "single_choice",
+      "options": [
+        "ProcessHelper",
+        "ExecHelper",
+        "ShellHelper",
+        "CommandHelper"
+      ],
+      "correct_answers": [
+        "ProcessHelper"
+      ],
+      "explanation": "ProcessHelper wrappe le composant Process pour l'usage CLI."
+    },
+    {
+      "id": 7,
+      "question": "Comment ajouter une ligne de séparation dans un tableau rendu par `Table` ?",
+      "type": "single_choice",
+      "options": [
+        "En insérant `new TableSeparator()` dans les rows",
+        "En appelant `addSeparator()`",
+        "En passant `['---']`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "En insérant `new TableSeparator()` dans les rows"
+      ],
+      "explanation": "TableSeparator crée une ligne horizontale."
+    },
+    {
+      "id": 8,
+      "question": "Quel helper gère l'interactivité (questions, autocomplétion, mot de passe masqué) ?",
+      "type": "single_choice",
+      "options": [
+        "QuestionHelper",
+        "PromptHelper",
+        "AskHelper",
+        "InputHelper"
+      ],
+      "correct_answers": [
+        "QuestionHelper"
+      ],
+      "explanation": "QuestionHelper est utilisé par SymfonyStyle pour les entrées."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi préférer `$io->table()` plutôt que `new Table($output)` ?",
+      "type": "single_choice",
+      "options": [
+        "Moins de code et look cohérent avec les autres sorties SymfonyStyle",
+        "Table est déprécié",
+        "Table ne gère pas les headers",
+        "Obligatoire en prod"
+      ],
+      "correct_answers": [
+        "Moins de code et look cohérent avec les autres sorties SymfonyStyle"
+      ],
+      "explanation": "SymfonyStyle encapsule les helpers et harmonise l'affichage."
+    },
+    {
+      "id": 10,
+      "question": "Comment récupérer un helper historique depuis une commande ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->getHelper('question')` via le HelperSet",
+        "`$io->helper('question')`",
+        "`HelperRegistry::get()`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`$this->getHelper('question')` via le HelperSet"
+      ],
+      "explanation": "getHelper() accède au HelperSet de la commande."
     }
   ]
 }

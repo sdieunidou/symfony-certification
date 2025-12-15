@@ -76,6 +76,81 @@
         "En ajoutant `<listener class=\"Symfony\\Bridge\\PhpUnit\\SymfonyTestsListener\" />` dans la section `<listeners>`."
       ],
       "explanation": "Ce listener est essentiel pour que le Bridge puisse intercepter les événements de tests et les dépréciations."
+    },
+    {
+      "id": 6,
+      "question": "Quelle variable d'env configure la tolérance aux dépréciations dans le Bridge ?",
+      "type": "single_choice",
+      "options": [
+        "`SYMFONY_DEPRECATIONS_HELPER`",
+        "`APP_DEBUG`",
+        "`APP_ENV`",
+        "`PHPUNIT_DEPRECATIONS`"
+      ],
+      "correct_answers": [
+        "`SYMFONY_DEPRECATIONS_HELPER`"
+      ],
+      "explanation": "Elle permet de fixer des seuils (max[self], max[direct], etc.)."
+    },
+    {
+      "id": 7,
+      "question": "Où le Bridge installe-t-il la version isolée de PHPUnit ?",
+      "type": "single_choice",
+      "options": [
+        "`bin/.phpunit/`",
+        "`vendor/phpunit/`",
+        "`/usr/local/bin`",
+        "`var/phpunit`"
+      ],
+      "correct_answers": [
+        "`bin/.phpunit/`"
+      ],
+      "explanation": "Le binaire est téléchargé là pour éviter les conflits globaux."
+    },
+    {
+      "id": 8,
+      "question": "Comment lister les dépréciations triées par origine après une suite de tests ?",
+      "type": "single_choice",
+      "options": [
+        "Lire le rapport généré par le bridge à la fin de l'exécution (console)",
+        "Exécuter `php bin/console debug:deprecations`",
+        "Regarder var/log",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Lire le rapport généré par le bridge à la fin de l'exécution (console)"
+      ],
+      "explanation": "Le bridge affiche un résumé des dépréciations avec catégories."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi les dépréciations des vendors sont ignorées par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "Pour se concentrer sur le code applicatif et éviter le bruit",
+        "Parce qu'il y en a trop",
+        "Parce que Doctrine l'impose",
+        "Parce que PHPUnit ne les supporte pas"
+      ],
+      "correct_answers": [
+        "Pour se concentrer sur le code applicatif et éviter le bruit"
+      ],
+      "explanation": "L'objectif est d'assainir votre code sans être bloqué par les dépendances."
+    },
+    {
+      "id": 10,
+      "question": "Quelle alternative moderne au `ClockMock` est recommandée pour manipuler le temps ?",
+      "type": "single_choice",
+      "options": [
+        "Le composant Clock (`ClockInterface`, `MockClock`)",
+        "sleep()",
+        "Carbon",
+        "DateTime::setTime()"
+      ],
+      "correct_answers": [
+        "Le composant Clock (`ClockInterface`, `MockClock`)"
+      ],
+      "explanation": "Clock fournit une abstraction testable sans patcher les fonctions globales."
     }
   ]
 }

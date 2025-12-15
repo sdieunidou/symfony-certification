@@ -76,6 +76,81 @@
         "Tous les services (même privés) sont rendus publics pour faciliter les tests."
       ],
       "explanation": "Cela permet de tester unitairement n'importe quel service sans devoir modifier sa configuration pour les tests."
+    },
+    {
+      "id": 6,
+      "question": "Comment remplacer un service par un mock dans un test d'intégration ?",
+      "type": "single_choice",
+      "options": [
+        "En faisant `$container->set('id_service', $mock);` sur le conteneur de test",
+        "Impossible, conteneur figé",
+        "En modifiant services.yaml",
+        "En utilisant @mock"
+      ],
+      "correct_answers": [
+        "En faisant `$container->set('id_service', $mock);` sur le conteneur de test"
+      ],
+      "explanation": "Le conteneur de test est modifiable au runtime."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi désactiver debug pour la suite de tests (phpunit.xml) ?",
+      "type": "single_choice",
+      "options": [
+        "Améliorer la perf en évitant la régénération de cache à chaque requête",
+        "Obligatoire",
+        "Pour masquer les erreurs",
+        "Pour activer le profiler"
+      ],
+      "correct_answers": [
+        "Améliorer la perf en évitant la régénération de cache à chaque requête"
+      ],
+      "explanation": "Le mode debug est utile ponctuellement mais coûteux sur toute la suite."
+    },
+    {
+      "id": 8,
+      "question": "Quelle méthode donne accès au Kernel dans un `KernelTestCase` ?",
+      "type": "single_choice",
+      "options": [
+        "`self::bootKernel()` puis `static::$kernel`",
+        "`self::getKernel()` sans boot",
+        "`$this->kernel()`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`self::bootKernel()` puis `static::$kernel`"
+      ],
+      "explanation": "bootKernel instancie et stocke le kernel accessible via la propriété statique."
+    },
+    {
+      "id": 9,
+      "question": "Quelle commande installe les composants de test (BrowserKit, CssSelector, PHPUnit Bridge) ?",
+      "type": "single_choice",
+      "options": [
+        "`composer require --dev symfony/test-pack`",
+        "`composer require phpunit/phpunit` seul",
+        "`composer require symfony/browser-kit` seul",
+        "`composer require symfony/dom-crawler` seul"
+      ],
+      "correct_answers": [
+        "`composer require --dev symfony/test-pack`"
+      ],
+      "explanation": "Le test-pack regroupe les dépendances nécessaires pour les tests Symfony."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi `static::getContainer()` retourne un conteneur de test différent du conteneur prod ?",
+      "type": "single_choice",
+      "options": [
+        "Il rend les services privés publics et autorise set(), pour faciliter les tests",
+        "Aucune différence",
+        "Il charge les services mockés par défaut",
+        "Il désactive Doctrine"
+      ],
+      "correct_answers": [
+        "Il rend les services privés publics et autorise set(), pour faciliter les tests"
+      ],
+      "explanation": "Le conteneur de test est 'déverrouillé' pour l'accès et la substitution."
     }
   ]
 }

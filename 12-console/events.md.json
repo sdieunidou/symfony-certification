@@ -76,6 +76,81 @@
         "`Symfony\\Component\\Console\\ConsoleEvents`"
       ],
       "explanation": "On utilise par exemple `ConsoleEvents::COMMAND`, `ConsoleEvents::TERMINATE`, etc."
+    },
+    {
+      "id": 6,
+      "question": "Quel événement permet de modifier le code de sortie après exécution d'une commande ?",
+      "type": "single_choice",
+      "options": [
+        "`console.terminate`",
+        "`console.command`",
+        "`console.error`",
+        "`console.exit`"
+      ],
+      "correct_answers": [
+        "`console.terminate`"
+      ],
+      "explanation": "ConsoleTerminateEvent permet d'ajuster l'exit code une fois l'exécution terminée."
+    },
+    {
+      "id": 7,
+      "question": "Comment empêcher l'exécution d'une commande dans `console.command` ?",
+      "type": "single_choice",
+      "options": [
+        "Appeler `$event->disableCommand()` et fixer un exit code",
+        "throw new Exception",
+        "return false",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Appeler `$event->disableCommand()` et fixer un exit code"
+      ],
+      "explanation": "disableCommand empêche le run; on peut aussi définir setExitCode."
+    },
+    {
+      "id": 8,
+      "question": "Quel événement capter pour transformer une exception en message utilisateur et changer le code de sortie ?",
+      "type": "single_choice",
+      "options": [
+        "`console.error`",
+        "`kernel.exception`",
+        "`console.command`",
+        "`console.signal`"
+      ],
+      "correct_answers": [
+        "`console.error`"
+      ],
+      "explanation": "ConsoleErrorEvent permet de remplacer l'exception et le code."
+    },
+    {
+      "id": 9,
+      "question": "Les événements console sont-ils émis pour les requêtes HTTP ?",
+      "type": "single_choice",
+      "options": [
+        "Non, cycle totalement distinct de HttpKernel",
+        "Oui, toujours",
+        "Oui, si debug",
+        "Uniquement en prod"
+      ],
+      "correct_answers": [
+        "Non, cycle totalement distinct de HttpKernel"
+      ],
+      "explanation": "ConsoleEvents ne sont déclenchés qu'en CLI."
+    },
+    {
+      "id": 10,
+      "question": "Quel événement intercepter pour gérer un SIGINT (Ctrl+C) sur un worker console ?",
+      "type": "single_choice",
+      "options": [
+        "`console.signal`",
+        "`kernel.terminate`",
+        "`console.terminate`",
+        "`console.stop`"
+      ],
+      "correct_answers": [
+        "`console.signal`"
+      ],
+      "explanation": "ConsoleSignalEvent notifie les signaux système reçus."
     }
   ]
 }

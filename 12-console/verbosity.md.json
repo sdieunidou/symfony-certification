@@ -61,6 +61,96 @@
         "`$output->isVerbose()`"
       ],
       "explanation": "`isVerbose()` retourne `true` si le niveau est VERBOSE, VERY_VERBOSE ou DEBUG."
+    },
+    {
+      "id": 5,
+      "question": "Que fait l'option `-q` (quiet) sur les sorties ?",
+      "type": "single_choice",
+      "options": [
+        "Supprime toute sortie standard, sauf erreurs fatales",
+        "Ajoute plus de logs",
+        "Active le debug",
+        "Colore la sortie"
+      ],
+      "correct_answers": [
+        "Supprime toute sortie standard, sauf erreurs fatales"
+      ],
+      "explanation": "Quiet réduit la verbosité à VERBOSITY_QUIET."
+    },
+    {
+      "id": 6,
+      "question": "Quelle méthode tester spécifiquement le niveau Very Verbose ?",
+      "type": "single_choice",
+      "options": [
+        "`$output->isVeryVerbose()`",
+        "`$output->isVerbose()`",
+        "`$output->isDebug()`",
+        "`$output->hasVerbosity(2)`"
+      ],
+      "correct_answers": [
+        "`$output->isVeryVerbose()`"
+      ],
+      "explanation": "isVeryVerbose couvre -vv et -vvv."
+    },
+    {
+      "id": 7,
+      "question": "Comment écrire un message uniquement visible en mode debug (-vvv) ?",
+      "type": "single_choice",
+      "options": [
+        "`$output->writeln('msg', OutputInterface::VERBOSITY_DEBUG);`",
+        "`$output->debug('msg');`",
+        "`if ($output->isVerbose()) writeln`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`$output->writeln('msg', OutputInterface::VERBOSITY_DEBUG);`"
+      ],
+      "explanation": "Le second paramètre fixe le niveau requis d'affichage."
+    },
+    {
+      "id": 8,
+      "question": "En mode quiet (-q), que deviennent les exceptions non catchées ?",
+      "type": "single_choice",
+      "options": [
+        "Le message est supprimé mais le code de sortie reste en erreur",
+        "Elles sont affichées avec stack trace",
+        "Elles sont loguées dans var/log automatiquement",
+        "Elles sont ignorées"
+      ],
+      "correct_answers": [
+        "Le message est supprimé mais le code de sortie reste en erreur"
+      ],
+      "explanation": "Quiet supprime l'affichage mais pas le code retour."
+    },
+    {
+      "id": 9,
+      "question": "Quel niveau est actif par défaut si aucune option -v n'est fournie ?",
+      "type": "single_choice",
+      "options": [
+        "VERBOSITY_NORMAL",
+        "VERBOSITY_QUIET",
+        "VERBOSITY_VERBOSE",
+        "VERBOSITY_DEBUG"
+      ],
+      "correct_answers": [
+        "VERBOSITY_NORMAL"
+      ],
+      "explanation": "Le niveau standard affiche le nécessaire."
+    },
+    {
+      "id": 10,
+      "question": "Comment tester le niveau de verbosité courant sans méthode d'aide ?",
+      "type": "single_choice",
+      "options": [
+        "Comparer `$output->getVerbosity()` aux constantes (ex: >= VERBOSITY_VERBOSE)",
+        "Regarder une variable globale",
+        "Impossible",
+        "En utilisant -v"
+      ],
+      "correct_answers": [
+        "Comparer `$output->getVerbosity()` aux constantes (ex: >= VERBOSITY_VERBOSE)"
+      ],
+      "explanation": "getVerbosity retourne l'entier du niveau ; comparaison directe est possible."
     }
   ]
 }

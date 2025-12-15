@@ -3,6 +3,81 @@
   "title": "Tests Fonctionnels (WebTestCase)",
   "questions": [
     {
+      "id": 6,
+      "question": "Comment suivre automatiquement toutes les redirections dans un test fonctionnel ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->followRedirects(true)`",
+        "`$client->enableRedirects()`",
+        "`$client->followRedirect()`",
+        "`$client->autoRedirect()`"
+      ],
+      "correct_answers": [
+        "`$client->followRedirects(true)`"
+      ],
+      "explanation": "Cela rend le client BrowserKit en mode suivi automatique."
+    },
+    {
+      "id": 7,
+      "question": "Comment activer le profiler pour une requête afin de vérifier les emails ou requêtes SQL ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->enableProfiler();` avant `request()`",
+        "`$client->startProfiler();`",
+        "`$client->useToolbar();`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`$client->enableProfiler();` avant `request()`"
+      ],
+      "explanation": "Permet ensuite d'accéder à `$client->getProfile()`."
+    },
+    {
+      "id": 8,
+      "question": "Comment tester un formulaire en remplissant et soumettant via le Crawler ?",
+      "type": "single_choice",
+      "options": [
+        "Sélectionner le bouton submit -> `$form = $crawler->selectButton('Valider')->form([...])` puis `$client->submit($form)`",
+        "`$client->postForm()`",
+        "`$crawler->submit()` sans form",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Sélectionner le bouton submit -> `$form = $crawler->selectButton('Valider')->form([...])` puis `$client->submit($form)`"
+      ],
+      "explanation": "BrowserKit/Twig interagissent via le Crawler et l'objet Form associé au bouton."
+    },
+    {
+      "id": 9,
+      "question": "Quelle assertion Symfony permet de vérifier un redirect vers une route donnée ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->assertResponseRedirects('/login')`",
+        "`$this->assertRedirect('/login')`",
+        "`$this->assertHeader('Location')`",
+        "`$this->assertRedirectedToRoute('app_login')` seulement"
+      ],
+      "correct_answers": [
+        "`$this->assertResponseRedirects('/login')`"
+      ],
+      "explanation": "assertResponseRedirects vérifie code 3xx et header Location attendu."
+    },
+    {
+      "id": 10,
+      "question": "Comment vérifier l'absence d'erreur Twig/HTTP dans la réponse ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->assertResponseIsSuccessful()`",
+        "`$this->assertStatusOk()`",
+        "`$this->assertNoError()`",
+        "`$crawler->isValid()`"
+      ],
+      "correct_answers": [
+        "`$this->assertResponseIsSuccessful()`"
+      ],
+      "explanation": "Assure un statut 2xx/3xx dans le test fonctionnel."
+    },
+    {
       "id": 1,
       "question": "Quelle classe de base doit-on étendre pour écrire des tests fonctionnels (qui simulent un navigateur) ?",
       "type": "single_choice",

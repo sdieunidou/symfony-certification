@@ -76,6 +76,81 @@
         "`$link = $crawler->selectLink('Se connecter')->link(); $client->click($link);`"
       ],
       "explanation": "Il faut d'abord sélectionner le nœud du lien, le convertir en objet `Link` avec `link()`, puis passer cet objet au client."
+    },
+    {
+      "id": 6,
+      "question": "Comment lire un attribut (ex: href) sur le premier nœud sélectionné ?",
+      "type": "single_choice",
+      "options": [
+        "`$crawler->attr('href')`",
+        "`$crawler->attribute('href')`",
+        "`$crawler->getAttribute('href')`",
+        "`$crawler->first()->get('href')`"
+      ],
+      "correct_answers": [
+        "`$crawler->attr('href')`"
+      ],
+      "explanation": "attr() lit l'attribut sur le premier nœud de la sélection."
+    },
+    {
+      "id": 7,
+      "question": "Comment filtrer des nœuds via un sélecteur CSS ?",
+      "type": "single_choice",
+      "options": [
+        "`$crawler->filter('div.alert');`",
+        "`$crawler->css('div.alert');`",
+        "`$crawler->querySelector('div.alert');`",
+        "`$crawler->select('div.alert');`"
+      ],
+      "correct_answers": [
+        "`$crawler->filter('div.alert');`"
+      ],
+      "explanation": "filter() s'appuie sur CssSelector pour cibler des nœuds."
+    },
+    {
+      "id": 8,
+      "question": "Comment vérifier qu'au moins un h1 est présent ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->assertGreaterThan(0, $crawler->filter('h1')->count());`",
+        "`$crawler->exists('h1')`",
+        "`$crawler->has('h1')`",
+        "`$crawler->length('h1')`"
+      ],
+      "correct_answers": [
+        "`$this->assertGreaterThan(0, $crawler->filter('h1')->count());`"
+      ],
+      "explanation": "count() retourne le nombre de nœuds."
+    },
+    {
+      "id": 9,
+      "question": "Comment soumettre un formulaire avec plusieurs boutons submit en choisissant le bon bouton ?",
+      "type": "single_choice",
+      "options": [
+        "Sélectionner le bouton ciblé avec `selectButton()` puis `form()`/`submit()`",
+        "DomCrawler choisit toujours le premier bouton",
+        "Passer l'ID du bouton à submit()",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Sélectionner le bouton ciblé avec `selectButton()` puis `form()`/`submit()`"
+      ],
+      "explanation": "selectButton choisit quel submit utiliser dans le form associé."
+    },
+    {
+      "id": 10,
+      "question": "Comment cliquer un lien trouvé par sélecteur CSS plutôt que par son texte ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `$crawler->filter('a.my-link')->link();` puis `$client->click($link);`",
+        "`$client->clickSelector()`",
+        "`$crawler->clickCss()`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Utiliser `$crawler->filter('a.my-link')->link();` puis `$client->click($link);`"
+      ],
+      "explanation": "filter sélectionne le nœud, link() construit l'objet Link à cliquer."
     }
   ]
 }

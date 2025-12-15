@@ -3,6 +3,81 @@
   "title": "Tests Unitaires (PHPUnit)",
   "questions": [
     {
+      "id": 6,
+      "question": "Quelle différence entre un test unitaire et un test d'intégration ?",
+      "type": "single_choice",
+      "options": [
+        "Unitaire : classe isolée avec doublures; Intégration : plusieurs composants (DB, conteneur)",
+        "Aucune",
+        "Unitaire utilise WebTestCase",
+        "Intégration n'utilise pas la base"
+      ],
+      "correct_answers": [
+        "Unitaire : classe isolée avec doublures; Intégration : plusieurs composants (DB, conteneur)"
+      ],
+      "explanation": "Le périmètre et les dépendances diffèrent."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi privilégier les Value Objects et services purs dans les tests unitaires ?",
+      "type": "single_choice",
+      "options": [
+        "Ils sont sans effets de bord et ne nécessitent pas de conteneur",
+        "Ils sont plus lents",
+        "Ils nécessitent Doctrine",
+        "Ils requièrent WebTestCase"
+      ],
+      "correct_answers": [
+        "Ils sont sans effets de bord et ne nécessitent pas de conteneur"
+      ],
+      "explanation": "Facile à tester rapidement sans infrastructure."
+    },
+    {
+      "id": 8,
+      "question": "Quel package installer pour disposer du bridge Symfony + PHPUnit en dev ?",
+      "type": "single_choice",
+      "options": [
+        "`symfony/test-pack`",
+        "`phpunit/phpunit` seul",
+        "`symfony/browser-kit` uniquement",
+        "`symfony/dom-crawler` uniquement"
+      ],
+      "correct_answers": [
+        "`symfony/test-pack`"
+      ],
+      "explanation": "Le test-pack embarque PHPUnit bridge, BrowserKit, DomCrawler..."
+    },
+    {
+      "id": 9,
+      "question": "Que fait `createStub()` par rapport à `createMock()` en unitaire ?",
+      "type": "single_choice",
+      "options": [
+        "Stub : configure retours sans expectations; Mock : permet aussi expects()",
+        "Aucune différence",
+        "Mock est déprécié",
+        "Stub lance des exceptions"
+      ],
+      "correct_answers": [
+        "Stub : configure retours sans expectations; Mock : permet aussi expects()"
+      ],
+      "explanation": "Un stub suffit pour fournir des données ; un mock vérifie interactions."
+    },
+    {
+      "id": 10,
+      "question": "Comment isoler une dépendance fonction native (ex: time()) en test unitaire ?",
+      "type": "single_choice",
+      "options": [
+        "En injectant une ClockInterface (composant Clock) et en la mockant",
+        "Impossible",
+        "En modifiant php.ini",
+        "En utilisant WebTestCase"
+      ],
+      "correct_answers": [
+        "En injectant une ClockInterface (composant Clock) et en la mockant"
+      ],
+      "explanation": "Le composant Clock permet d'éviter les fonctions globales difficiles à tester."
+    },
+    {
       "id": 1,
       "question": "Quelle classe de base utiliser pour un test unitaire pur (sans framework Symfony) ?",
       "type": "single_choice",

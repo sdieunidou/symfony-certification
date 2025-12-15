@@ -91,6 +91,66 @@
         "`$client->clickLink()` et `$client->submitForm()`"
       ],
       "explanation": "Ces méthodes combinent la sélection de l'élément (lien/bouton) et l'action en une seule ligne."
+    },
+    {
+      "id": 7,
+      "question": "Comment ajouter des headers par défaut (ex: Authorization) pour toutes les requêtes du client ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->setServerParameters(['HTTP_AUTHORIZATION' => 'Bearer TOKEN']);`",
+        "`$client->setHeaders([...])`",
+        "`$client->auth('TOKEN')`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`$client->setServerParameters(['HTTP_AUTHORIZATION' => 'Bearer TOKEN']);`"
+      ],
+      "explanation": "Les en-têtes se passent via les paramètres serveur (préfixe HTTP_)."
+    },
+    {
+      "id": 8,
+      "question": "Comment envoyer facilement une requête JSON ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->jsonRequest('POST', '/api', ['k' => 'v']);`",
+        "`$client->request('JSON', ...)`",
+        "`$client->postJson()`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`$client->jsonRequest('POST', '/api', ['k' => 'v']);`"
+      ],
+      "explanation": "jsonRequest sérialise et ajoute Content-Type/Accept application/json."
+    },
+    {
+      "id": 9,
+      "question": "Que fait `followRedirect()` ?",
+      "type": "single_choice",
+      "options": [
+        "Suis la redirection actuelle et retourne le nouveau Crawler",
+        "Active le suivi automatique pour toutes les requêtes",
+        "Vide les cookies",
+        "Redémarre le kernel"
+      ],
+      "correct_answers": [
+        "Suis la redirection actuelle et retourne le nouveau Crawler"
+      ],
+      "explanation": "Pour suivre toutes les redirections automatiquement, utiliser `followRedirects(true)`."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi `disableReboot()` peut-il être risqué avec Doctrine ?",
+      "type": "single_choice",
+      "options": [
+        "Les entités restent managées entre requêtes et peuvent être obsolètes",
+        "Cela vide la base",
+        "Cela empêche les redirections",
+        "Cela désactive les logs"
+      ],
+      "correct_answers": [
+        "Les entités restent managées entre requêtes et peuvent être obsolètes"
+      ],
+      "explanation": "Sans reboot, l'EntityManager conserve son contexte entre requêtes dans le même test."
     }
   ]
 }

@@ -76,6 +76,81 @@
         "`static::createPantherClient()`"
       ],
       "explanation": "Contrairement à `createClient()` qui crée un `KernelBrowser`, celle-ci démarre le serveur web et le navigateur."
+    },
+    {
+      "id": 6,
+      "question": "Quelle méthode Panther attendre qu'un texte apparaisse dans un élément ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->waitForElementToContain('css', 'texte')`",
+        "`$client->waitForText('texte')`",
+        "`$client->wait()`",
+        "`sleep(5)`"
+      ],
+      "correct_answers": [
+        "`$client->waitForElementToContain('css', 'texte')`"
+      ],
+      "explanation": "Les helpers waitFor*/wait* gèrent l'asynchronicité du DOM."
+    },
+    {
+      "id": 7,
+      "question": "Comment prendre une capture d'écran pour debug ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->takeScreenshot('screen.png');`",
+        "`$client->screenshot()`",
+        "`$client->save()`",
+        "`$client->dump()`"
+      ],
+      "correct_answers": [
+        "`$client->takeScreenshot('screen.png');`"
+      ],
+      "explanation": "Panther expose takeScreenshot pour écrire un PNG."
+    },
+    {
+      "id": 8,
+      "question": "Quel mode est conseillé en CI pour exécuter Panther ?",
+      "type": "single_choice",
+      "options": [
+        "Headless",
+        "Mode GUI",
+        "Selenium Grid uniquement",
+        "PhantomJS"
+      ],
+      "correct_answers": [
+        "Headless"
+      ],
+      "explanation": "Le headless est plus stable et rapide en CI."
+    },
+    {
+      "id": 9,
+      "question": "Comment passer des options Chrome (ex: DevTools) au client Panther ?",
+      "type": "single_choice",
+      "options": [
+        "En les passant dans `static::createPantherClient(['external_base_uri' => null], ['--auto-open-devtools-for-tabs'])`",
+        "Impossible",
+        "Via phpunit.xml",
+        "Via .env"
+      ],
+      "correct_answers": [
+        "En les passant dans `static::createPantherClient(['external_base_uri' => null], ['--auto-open-devtools-for-tabs'])`"
+      ],
+      "explanation": "Le second argument accepte les flags du navigateur piloté."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi Panther est requis pour tester une SPA React riche en AJAX ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'il exécute le JavaScript réel via un navigateur WebDriver",
+        "Parce qu'il simule sans JS",
+        "Parce qu'il mocke les appels HTTP",
+        "Parce qu'il désactive le JS"
+      ],
+      "correct_answers": [
+        "Parce qu'il exécute le JavaScript réel via un navigateur WebDriver"
+      ],
+      "explanation": "Seul un navigateur réel gère le rendu/JS complexe; WebTestCase ne suffit pas."
     }
   ]
 }

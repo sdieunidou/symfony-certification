@@ -76,6 +76,81 @@
         "`CommandTester` teste une commande isolée, `ApplicationTester` teste toute l'application console (utile pour tester l'enchaînement ou les listeners globaux)."
       ],
       "explanation": "Utilisez `CommandTester` dans 99% des cas."
+    },
+    {
+      "id": 6,
+      "question": "Que faut-il faire avec `Application` quand on utilise `ApplicationTester` pour éviter un `exit()` ?",
+      "type": "single_choice",
+      "options": [
+        "Appeler `$application->setAutoExit(false);`",
+        "Appeler `$application->disableExit();`",
+        "Mettre APP_DEBUG=1",
+        "Rien, il n'y a pas d'exit"
+      ],
+      "correct_answers": [
+        "Appeler `$application->setAutoExit(false);`"
+      ],
+      "explanation": "Sinon l'exécution de tests serait interrompue par un exit."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi préférer récupérer la commande via `$application->find()` dans un test KernelTestCase ?",
+      "type": "single_choice",
+      "options": [
+        "Pour obtenir l'instance initialisée par le conteneur (dépendances injectées)",
+        "Pour aller plus vite",
+        "Parce que new est interdit",
+        "Parce que CommandTester l'exige"
+      ],
+      "correct_answers": [
+        "Pour obtenir l'instance initialisée par le conteneur (dépendances injectées)"
+      ],
+      "explanation": "find() retourne la commande service déjà autowirée."
+    },
+    {
+      "id": 8,
+      "question": "Comment tester un input interactif avec CommandTester ?",
+      "type": "single_choice",
+      "options": [
+        "Passer `inputs: ['yes', '42']` au constructeur CommandTester",
+        "Impossible",
+        "En utilisant `$io->ask()`",
+        "En mockant STDIN"
+      ],
+      "correct_answers": [
+        "Passer `inputs: ['yes', '42']` au constructeur CommandTester"
+      ],
+      "explanation": "CommandTester accepte un tableau d'entrées simulées."
+    },
+    {
+      "id": 9,
+      "question": "Comment tester facilement le display généré par une commande ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `$commandTester->getDisplay()` et des assertions sur le texte",
+        "En lisant STDOUT réel",
+        "Impossible",
+        "En utilisant var_dump"
+      ],
+      "correct_answers": [
+        "Avec `$commandTester->getDisplay()` et des assertions sur le texte"
+      ],
+      "explanation": "getDisplay capture la sortie de la commande pour assertions."
+    },
+    {
+      "id": 10,
+      "question": "Comment tester qu'une commande échoue avec un code de sortie particulier ?",
+      "type": "single_choice",
+      "options": [
+        "Vérifier `$commandTester->getStatusCode()` ou `assertSame(Command::FAILURE, ...)`",
+        "Impossible",
+        "En lisant un fichier log",
+        "En lançant une exception"
+      ],
+      "correct_answers": [
+        "Vérifier `$commandTester->getStatusCode()` ou `assertSame(Command::FAILURE, ...)`"
+      ],
+      "explanation": "Le status code est accessible après execute()."
     }
   ]
 }

@@ -61,6 +61,96 @@
         "Non, car cela consomme beaucoup de mémoire et ralentit l'exécution des tests."
       ],
       "explanation": "Activez-le uniquement pour les tests qui ont besoin de vérifier des données techniques (emails, db queries)."
+    },
+    {
+      "id": 5,
+      "question": "Comment activer le profiler avant d'appeler `request()` ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->enableProfiler();`",
+        "`$client->startProfiler();`",
+        "`APP_DEBUG=1`",
+        "Il est toujours actif"
+      ],
+      "correct_answers": [
+        "`$client->enableProfiler();`"
+      ],
+      "explanation": "Sans activation, `getProfile()` retournera null pour économiser des ressources."
+    },
+    {
+      "id": 6,
+      "question": "Quel collecteur fournit le nombre de requêtes SQL exécutées ?",
+      "type": "single_choice",
+      "options": [
+        "`$profile->getCollector('db')`",
+        "`$profile->getCollector('doctrine')`",
+        "`$profile->getCollector('orm')`",
+        "`$profile->getCollector('database')`"
+      ],
+      "correct_answers": [
+        "`$profile->getCollector('db')`"
+      ],
+      "explanation": "Le collector 'db' expose getQueryCount() et les requêtes."
+    },
+    {
+      "id": 7,
+      "question": "Comment récupérer les emails envoyés via le profiler ?",
+      "type": "single_choice",
+      "options": [
+        "`$profile->getCollector('mailer')->getEvents()`",
+        "`$profile->getCollector('mail')`",
+        "`$client->getMails()`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`$profile->getCollector('mailer')->getEvents()`"
+      ],
+      "explanation": "Le collecteur mailer expose les messages envoyés pour assertions."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi éviter d'activer le profiler globalement sur toute la suite ?",
+      "type": "single_choice",
+      "options": [
+        "Coût mémoire/temps élevé",
+        "Il casse Twig",
+        "Il supprime les logs",
+        "Il empêche les redirections"
+      ],
+      "correct_answers": [
+        "Coût mémoire/temps élevé"
+      ],
+      "explanation": "On l'active seulement sur les tests nécessitant ses données."
+    },
+    {
+      "id": 9,
+      "question": "Quel header HTTP donne le lien direct du profil pour une requête API ?",
+      "type": "single_choice",
+      "options": [
+        "`X-Debug-Token-Link`",
+        "`X-Profiler`",
+        "`X-Debug`",
+        "`X-Symfony-Profile`"
+      ],
+      "correct_answers": [
+        "`X-Debug-Token-Link`"
+      ],
+      "explanation": "Pratique quand la WDT n'est pas affichée (AJAX/API)."
+    },
+    {
+      "id": 10,
+      "question": "Que retourne `$client->getProfile()` si le profiler est désactivé ?",
+      "type": "single_choice",
+      "options": [
+        "null",
+        "Une exception",
+        "Le dernier profil quand même",
+        "Un tableau"
+      ],
+      "correct_answers": [
+        "null"
+      ],
+      "explanation": "Sans activation, aucun profil n'est collecté."
     }
   ]
 }

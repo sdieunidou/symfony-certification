@@ -91,6 +91,66 @@
         "`-iv` (si `v` est booléen et `i` attend une valeur, attention à l'ordre ou la syntaxe selon les shells)"
       ],
       "explanation": "L'agrégation de raccourcis est standard (ex: `ls -la`). Notez que si une option attend une valeur, elle doit être la dernière du groupe ou suivie immédiatement de sa valeur."
+    },
+    {
+      "id": 7,
+      "question": "Que permet `InputOption::VALUE_NEGATABLE` ?",
+      "type": "single_choice",
+      "options": [
+        "D'accepter `--foo` et `--no-foo`",
+        "D'accepter uniquement `--foo`",
+        "D'interdire les options",
+        "De forcer une valeur int"
+      ],
+      "correct_answers": [
+        "D'accepter `--foo` et `--no-foo`"
+      ],
+      "explanation": "Les options négatables offrent un flag et son inverse explicite."
+    },
+    {
+      "id": 8,
+      "question": "Comment injecter un argument directement dans une méthode invokable de commande en Symfony 7.x ?",
+      "type": "single_choice",
+      "options": [
+        "Avec l'attribut `#[Argument('desc')]` sur le paramètre",
+        "En lisant `$input` manuellement",
+        "Impossible",
+        "Via services.yaml"
+      ],
+      "correct_answers": [
+        "Avec l'attribut `#[Argument('desc')]` sur le paramètre"
+      ],
+      "explanation": "L'attribut Argument injecte la valeur directement."
+    },
+    {
+      "id": 9,
+      "question": "À quoi sert l'opérateur `--` dans la ligne de commande ?",
+      "type": "single_choice",
+      "options": [
+        "À stopper le parsing des options ; tout ce qui suit est traité comme arguments",
+        "À activer debug",
+        "À afficher l'aide",
+        "À exécuter en silencieux"
+      ],
+      "correct_answers": [
+        "À stopper le parsing des options ; tout ce qui suit est traité comme arguments"
+      ],
+      "explanation": "Utile pour passer des valeurs commençant par '-' en argument."
+    },
+    {
+      "id": 10,
+      "question": "Que se passe-t-il si un argument REQUIRED est placé après un OPTIONAL ?",
+      "type": "single_choice",
+      "options": [
+        "Le parsing devient ambigu et Symfony l'interdit",
+        "C'est autorisé",
+        "Cela force --no-interaction",
+        "Cela rend la commande cachée"
+      ],
+      "correct_answers": [
+        "Le parsing devient ambigu et Symfony l'interdit"
+      ],
+      "explanation": "Les arguments requis doivent précéder les optionnels."
     }
   ]
 }

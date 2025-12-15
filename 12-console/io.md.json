@@ -76,6 +76,81 @@
         "Elle propose une autocomplétion basée sur les choix disponibles."
       ],
       "explanation": "C'est très utile pour guider l'utilisateur dans une liste de choix prédéfinis."
+    },
+    {
+      "id": 6,
+      "question": "Quelle méthode afficher un tableau avec `SymfonyStyle` ?",
+      "type": "single_choice",
+      "options": [
+        "`$io->table($headers, $rows);`",
+        "`$io->grid()`",
+        "`$io->renderTable()`",
+        "`$io->array()`"
+      ],
+      "correct_answers": [
+        "`$io->table($headers, $rows);`"
+      ],
+      "explanation": "table() est le wrapper haut niveau du helper Table."
+    },
+    {
+      "id": 7,
+      "question": "Comment créer une barre de progression avec SymfonyStyle ?",
+      "type": "single_choice",
+      "options": [
+        "`$io->progressStart($max); ... $io->progressAdvance(); ... $io->progressFinish();`",
+        "`$io->bar()`",
+        "`$io->progress();`",
+        "`$io->wait();`"
+      ],
+      "correct_answers": [
+        "`$io->progressStart($max); ... $io->progressAdvance(); ... $io->progressFinish();`"
+      ],
+      "explanation": "SymfonyStyle expose progressStart/Advance/Finish."
+    },
+    {
+      "id": 8,
+      "question": "Comment valider une valeur saisie avec `ask()` ?",
+      "type": "single_choice",
+      "options": [
+        "Passer un 3e argument callback qui lance une exception si invalide",
+        "Impossible",
+        "Utiliser validate() après coup",
+        "Avec une annotation"
+      ],
+      "correct_answers": [
+        "Passer un 3e argument callback qui lance une exception si invalide"
+      ],
+      "explanation": "Le validateur est exécuté immédiatement."
+    },
+    {
+      "id": 9,
+      "question": "Quelle méthode afficher un message d'avertissement orange ?",
+      "type": "single_choice",
+      "options": [
+        "`$io->warning()`",
+        "`$io->alert()`",
+        "`$io->note()`",
+        "`$io->caution()`"
+      ],
+      "correct_answers": [
+        "`$io->warning()`"
+      ],
+      "explanation": "warning() affiche un bloc orange."
+    },
+    {
+      "id": 10,
+      "question": "Que fait `$io->askHidden()` en mode non interactif (`-n` / `--no-interaction`) ?",
+      "type": "single_choice",
+      "options": [
+        "Il échoue si aucune valeur par défaut n'est fournie",
+        "Il lit depuis STDIN",
+        "Il renvoie toujours null",
+        "Il ignore la question"
+      ],
+      "correct_answers": [
+        "Il échoue si aucune valeur par défaut n'est fournie"
+      ],
+      "explanation": "Sans interaction, une question sans valeur par défaut provoque une erreur."
     }
   ]
 }

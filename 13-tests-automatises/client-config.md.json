@@ -76,6 +76,81 @@
         "En argument de `createClient()` : `static::createClient([], ['HTTP_HOST' => 'api.com'])`."
       ],
       "explanation": "Le deuxième argument de `createClient` est un tableau de paramètres serveur passés au Kernel."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi ignorer `.env.local` en test ?",
+      "type": "single_choice",
+      "options": [
+        "Pour garantir la reproductibilité entre machines",
+        "Parce qu'il est vide",
+        "Parce qu'il supprime les logs",
+        "Pour activer le profiler"
+      ],
+      "correct_answers": [
+        "Pour garantir la reproductibilité entre machines"
+      ],
+      "explanation": "Les spécificités locales ne doivent pas influencer l'environnement de test."
+    },
+    {
+      "id": 7,
+      "question": "Comment laisser une exception remonter jusqu'à PHPUnit au lieu d'une page 500 HTML ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->catchExceptions(false);`",
+        "`$client->throwExceptions();`",
+        "`APP_DEBUG=1`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`$client->catchExceptions(false);`"
+      ],
+      "explanation": "On désactive la capture pour obtenir la trace directement dans la console."
+    },
+    {
+      "id": 8,
+      "question": "Comment activer le suivi automatique des redirections ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->followRedirects(true);`",
+        "`$client->autoRedirect();`",
+        "`$client->followRedirect();`",
+        "`$client->enableRedirects();`"
+      ],
+      "correct_answers": [
+        "`$client->followRedirects(true);`"
+      ],
+      "explanation": "Par défaut false pour inspecter les 3xx."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi définir `HTTP_HOST`/`HTTPS` dans `createClient` peut être critique ?",
+      "type": "single_choice",
+      "options": [
+        "Tester le routing par hôte ou les règles de sécurité (firewalls) dépendantes du schéma",
+        "Accélérer le client",
+        "Obligatoire pour Twig",
+        "Pour activer le cache"
+      ],
+      "correct_answers": [
+        "Tester le routing par hôte ou les règles de sécurité (firewalls) dépendantes du schéma"
+      ],
+      "explanation": "Certaines routes/configs varient selon le host/https."
+    },
+    {
+      "id": 10,
+      "question": "Comment définir un User-Agent global pour toutes les requêtes ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->setServerParameters(['HTTP_USER_AGENT' => 'Tests']);`",
+        "`$client->setHeaders(['User-Agent' => 'Tests']);`",
+        "`$client->userAgent('Tests');`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`$client->setServerParameters(['HTTP_USER_AGENT' => 'Tests']);`"
+      ],
+      "explanation": "Les headers par défaut se configurent via setServerParameters."
     }
   ]
 }

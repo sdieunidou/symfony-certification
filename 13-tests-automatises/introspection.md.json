@@ -76,6 +76,81 @@
         "`getResponse()` retourne la réponse HTTP Symfony (HttpFoundation), tandis que `getInternalResponse()` retourne l'objet BrowserKit utilisé par le moteur de test."
       ],
       "explanation": "Dans la plupart des cas, on utilise `getResponse()` pour faire des assertions sur le code statut, les headers, etc."
+    },
+    {
+      "id": 6,
+      "question": "Comment obtenir l'objet Request de la dernière requête ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->getRequest()`",
+        "`$client->getInternalRequest()`",
+        "`$client->request()`",
+        "`$crawler->getRequest()`"
+      ],
+      "correct_answers": [
+        "`$client->getRequest()`"
+      ],
+      "explanation": "getRequest retourne l'objet Request BrowserKit de la dernière requête."
+    },
+    {
+      "id": 7,
+      "question": "Comment vérifier une redirection sans la suivre ?",
+      "type": "single_choice",
+      "options": [
+        "Ne pas activer followRedirects et inspecter `getResponse()->headers->get('Location')`",
+        "Toujours suivre la redirection",
+        "Utiliser le Crawler",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Ne pas activer followRedirects et inspecter `getResponse()->headers->get('Location')`"
+      ],
+      "explanation": "Le suivi auto écrase la réponse initiale; on le désactive pour vérifier le 3xx."
+    },
+    {
+      "id": 8,
+      "question": "Comment vérifier facilement le JSON retourné contient une clé ?",
+      "type": "single_choice",
+      "options": [
+        "Décoder le contenu : `$data = json_decode($response->getContent(), true); $this->assertArrayHasKey('key', $data);`",
+        "Utiliser le Crawler",
+        "Regarder les logs",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Décoder le contenu : `$data = json_decode($response->getContent(), true); $this->assertArrayHasKey('key', $data);`"
+      ],
+      "explanation": "Le Crawler n'est pas adapté au JSON."
+    },
+    {
+      "id": 9,
+      "question": "Comment vérifier un header précis (ex: Cache-Control) ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->assertSame('no-cache', $client->getResponse()->headers->get('Cache-Control'));`",
+        "`$client->hasHeader('Cache-Control')`",
+        "`$crawler->header('Cache-Control')`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`$this->assertSame('no-cache', $client->getResponse()->headers->get('Cache-Control'));`"
+      ],
+      "explanation": "Les headers sont accessibles via l'objet Response."
+    },
+    {
+      "id": 10,
+      "question": "Que retourne `$client->getResponse()` après followRedirects(true) sur une 302 ?",
+      "type": "single_choice",
+      "options": [
+        "La réponse finale (ex: 200) après redirection",
+        "La 302 uniquement",
+        "Un tableau de réponses",
+        "Null"
+      ],
+      "correct_answers": [
+        "La réponse finale (ex: 200) après redirection"
+      ],
+      "explanation": "Le client a suivi la redirection, la réponse accessible est celle de destination."
     }
   ]
 }

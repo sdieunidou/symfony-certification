@@ -3,6 +3,96 @@
   "title": "PHPUnit - Fondamentaux",
   "questions": [
     {
+      "id": 5,
+      "question": "Quelle méthode remplace `@expectedException` (annotation) pour vérifier qu'une exception est levée ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->expectException(SomeException::class);`",
+        "`$this->shouldThrow(SomeException::class);`",
+        "`@throws`",
+        "`$this->expectError();`"
+      ],
+      "correct_answers": [
+        "`$this->expectException(SomeException::class);`"
+      ],
+      "explanation": "Les annotations @expectedException sont dépréciées ; on utilise les méthodes d'attente avant l'appel testé."
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert `@doesNotPerformAssertions` (ou l'attribut équivalent) ?",
+      "type": "single_choice",
+      "options": [
+        "Indiquer qu'un test sans assertion n'est pas en échec",
+        "Ignorer le test",
+        "Compter les assertions automatiquement",
+        "Exécuter deux fois le test"
+      ],
+      "correct_answers": [
+        "Indiquer qu'un test sans assertion n'est pas en échec"
+      ],
+      "explanation": "Utile pour vérifier simplement l'absence d'exception ou un contrat implicite."
+    },
+    {
+      "id": 7,
+      "question": "Quelle option CLI PHPUnit génère un rapport de couverture HTML ?",
+      "type": "single_choice",
+      "options": [
+        "`--coverage-html coverage/`",
+        "`--coverage`",
+        "`--html-report`",
+        "`--coverage-json`"
+      ],
+      "correct_answers": [
+        "`--coverage-html coverage/`"
+      ],
+      "explanation": "La couverture nécessite Xdebug/PCOV et un dossier cible."
+    },
+    {
+      "id": 8,
+      "question": "Comment marquer un test comme 'incomplet' pendant son exécution ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->markTestIncomplete('TODO');`",
+        "`@incomplete`",
+        "`$this->skip()`",
+        "`throw new IncompleteTest`"
+      ],
+      "correct_answers": [
+        "`$this->markTestIncomplete('TODO');`"
+      ],
+      "explanation": "markTestIncomplete signale un test non fini sans l'échouer."
+    },
+    {
+      "id": 9,
+      "question": "Quel attribut remplace l'annotation `@test` pour marquer une méthode comme test ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Test]`",
+        "`#[PhpUnitTest]`",
+        "`#[IsTest]`",
+        "`#[Run]`"
+      ],
+      "correct_answers": [
+        "`#[Test]`"
+      ],
+      "explanation": "Depuis PHPUnit 10, on peut utiliser l'attribut #[Test] au lieu du préfixe test ou de l'annotation."
+    },
+    {
+      "id": 10,
+      "question": "Quelle différence entre `setUp()` et `setUpBeforeClass()` ?",
+      "type": "single_choice",
+      "options": [
+        "setUpBeforeClass est static et exécutée une fois par classe; setUp est exécutée avant chaque test",
+        "Aucune",
+        "setUpBeforeClass est exécutée après chaque test",
+        "setUpBeforeClass nettoie la base"
+      ],
+      "correct_answers": [
+        "setUpBeforeClass est static et exécutée une fois par classe; setUp est exécutée avant chaque test"
+      ],
+      "explanation": "setUpBeforeClass sert aux initialisations coûteuses partagées."
+    },
+    {
       "id": 1,
       "question": "Quelle est la différence principale entre `createMock()` et `createStub()` (disponible depuis PHPUnit 10) ?",
       "type": "single_choice",

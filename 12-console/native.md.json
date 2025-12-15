@@ -91,6 +91,66 @@
         "`about`"
       ],
       "explanation": "`php bin/console about` est utile pour vérifier rapidement dans quel état se trouve l'application."
+    },
+    {
+      "id": 7,
+      "question": "Comment activer l'autocomplétion shell pour `bin/console` ?",
+      "type": "single_choice",
+      "options": [
+        "En exécutant `php bin/console completion` puis en sourçant le script généré",
+        "Automatiquement via Composer",
+        "En installant zsh",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "En exécutant `php bin/console completion` puis en sourçant le script généré"
+      ],
+      "explanation": "completion exporte le script d'auto-complétion pour bash/zsh/fish."
+    },
+    {
+      "id": 8,
+      "question": "Comment profiler une commande console avec le Web Profiler ?",
+      "type": "single_choice",
+      "options": [
+        "Ajouter l'option `--profile` lors de l'exécution",
+        "Activer Xdebug",
+        "Impossible",
+        "Mettre APP_DEBUG=1"
+      ],
+      "correct_answers": [
+        "Ajouter l'option `--profile` lors de l'exécution"
+      ],
+      "explanation": "--profile collecte les données dans le profiler Symfony."
+    },
+    {
+      "id": 9,
+      "question": "Quelle commande liste les types autowirables (interfaces) ?",
+      "type": "single_choice",
+      "options": [
+        "`debug:autowiring`",
+        "`debug:container`",
+        "`container:list`",
+        "`router:match`"
+      ],
+      "correct_answers": [
+        "`debug:autowiring`"
+      ],
+      "explanation": "debug:autowiring affiche les services par type pour l'injection."
+    },
+    {
+      "id": 10,
+      "question": "Quel risque en exécutant `cache:clear` sans `APP_ENV=prod` en déploiement ?",
+      "type": "single_choice",
+      "options": [
+        "Seul le cache dev est vidé, la prod reste avec l'ancien cache",
+        "La base est supprimée",
+        "Le serveur s'arrête",
+        "Aucun risque"
+      ],
+      "correct_answers": [
+        "Seul le cache dev est vidé, la prod reste avec l'ancien cache"
+      ],
+      "explanation": "La console tourne en dev par défaut; préciser l'env pour cibler le bon cache."
     }
   ]
 }

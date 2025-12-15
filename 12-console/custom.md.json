@@ -76,6 +76,81 @@
         "À exécuter du code avant `interact()` et `execute()`, par exemple pour définir des variables globales basées sur les options d'entrée."
       ],
       "explanation": "C'est utile pour configurer l'état de la commande avant toute interaction utilisateur."
+    },
+    {
+      "id": 6,
+      "question": "Dans une commande invokable (Symfony 7.3+), comment définir la signature ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `#[AsCommand]` sur la classe, même sans étendre `Command`",
+        "En surchargeant configure()",
+        "Impossible sans Command",
+        "Avec un fichier YAML"
+      ],
+      "correct_answers": [
+        "Avec `#[AsCommand]` sur la classe, même sans étendre `Command`"
+      ],
+      "explanation": "Les commandes invokables s'appuient sur l'attribut pour nom/description."
+    },
+    {
+      "id": 7,
+      "question": "Quelle méthode appeler pour poser des questions interactives si des arguments manquent ?",
+      "type": "single_choice",
+      "options": [
+        "interact() en utilisant `$io->ask()`",
+        "initialize()",
+        "execute()",
+        "construct()"
+      ],
+      "correct_answers": [
+        "interact() en utilisant `$io->ask()`"
+      ],
+      "explanation": "interact est le bon hook avant execute."
+    },
+    {
+      "id": 8,
+      "question": "Que se passe-t-il si une exception est levée dans `execute()` ?",
+      "type": "single_choice",
+      "options": [
+        "La commande échoue (exit code != 0) et affiche l'erreur selon la verbosité",
+        "La commande continue",
+        "Elle est silencieusement ignorée",
+        "Elle est convertie en notice"
+      ],
+      "correct_answers": [
+        "La commande échoue (exit code != 0) et affiche l'erreur selon la verbosité"
+      ],
+      "explanation": "Les exceptions non catchées font échouer la commande."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi `parent::__construct()` est obligatoire dans une commande personnalisée ?",
+      "type": "single_choice",
+      "options": [
+        "Pour initialiser la classe Command (nom, description) et éviter des comportements imprévisibles",
+        "Pour activer le lazy loading",
+        "Pour enregistrer les events",
+        "Pour configurer la verbosité"
+      ],
+      "correct_answers": [
+        "Pour initialiser la classe Command (nom, description) et éviter des comportements imprévisibles"
+      ],
+      "explanation": "Sans appel parent, certains comportements (help, nom) peuvent être invalides."
+    },
+    {
+      "id": 10,
+      "question": "Quel code de retour utiliser pour signaler une erreur métier contrôlée ?",
+      "type": "single_choice",
+      "options": [
+        "`Command::FAILURE`",
+        "`Command::SUCCESS`",
+        "`Command::INVALID`",
+        "`0` uniquement"
+      ],
+      "correct_answers": [
+        "`Command::FAILURE`"
+      ],
+      "explanation": "FAILURE (1) signale une erreur d'exécution contrôlée."
     }
   ]
 }

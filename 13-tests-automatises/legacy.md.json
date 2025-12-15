@@ -61,6 +61,96 @@
         "`@group legacy`"
       ],
       "explanation": "Le bridge PHPUnit traite les tests du groupe `legacy` différemment."
+    },
+    {
+      "id": 5,
+      "question": "Quel réglage SYMFONY_DEPRECATIONS_HELPER pour échouer sur vos dépréciations mais ignorer les vendors ?",
+      "type": "single_choice",
+      "options": [
+        "`max[self]=0`",
+        "`max[total]=0`",
+        "`disabled`",
+        "`weak_vendors`"
+      ],
+      "correct_answers": [
+        "`max[self]=0`"
+      ],
+      "explanation": "max[self]=0 tolère 0 dépréciation provenant de votre code uniquement."
+    },
+    {
+      "id": 6,
+      "question": "Comment tester qu'une dépréciation précise est déclenchée ?",
+      "type": "single_choice",
+      "options": [
+        "`$this->expectDeprecation('Message...');`",
+        "`$this->expectException(Deprecation::class);`",
+        "`$this->assertDeprecated();`",
+        "`$this->expectError();`"
+      ],
+      "correct_answers": [
+        "`$this->expectDeprecation('Message...');`"
+      ],
+      "explanation": "Fournie par ExpectDeprecationTrait du Bridge."
+    },
+    {
+      "id": 7,
+      "question": "Que fait le groupe `legacy` sur un test ?",
+      "type": "single_choice",
+      "options": [
+        "Les dépréciations n'échouent pas ce test mais sont comptabilisées comme legacy",
+        "Il ignore les assertions",
+        "Il désactive PHPUnit",
+        "Il exécute deux fois le test"
+      ],
+      "correct_answers": [
+        "Les dépréciations n'échouent pas ce test mais sont comptabilisées comme legacy"
+      ],
+      "explanation": "Utile pour isoler du code en transition."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi viser un objectif 'Deprecation-Free' avant une montée de version Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Les dépréciations d'une version deviennent des suppressions dans la suivante",
+        "Pour accélérer Twig",
+        "Pour réduire la taille du vendor",
+        "Pour éviter Xdebug"
+      ],
+      "correct_answers": [
+        "Les dépréciations d'une version deviennent des suppressions dans la suivante"
+      ],
+      "explanation": "Corriger les dépréciations facilite la migration majeure."
+    },
+    {
+      "id": 9,
+      "question": "Quelle variable d'env permet de voir le détail des dépréciations pendant les tests ?",
+      "type": "single_choice",
+      "options": [
+        "`SYMFONY_DEPRECATIONS_HELPER=verbose`",
+        "`APP_DEBUG=1`",
+        "`DEBUG_DEPRECATIONS=1`",
+        "`PHPUNIT_DEBUG=1`"
+      ],
+      "correct_answers": [
+        "`SYMFONY_DEPRECATIONS_HELPER=verbose`"
+      ],
+      "explanation": "Le mode verbose affiche les messages complets."
+    },
+    {
+      "id": 10,
+      "question": "Comment isoler des tests legacy pour qu'ils ne polluent pas les métriques principales ?",
+      "type": "single_choice",
+      "options": [
+        "En les marquant `@group legacy` et en configurant SYMFONY_DEPRECATIONS_HELPER pour autoriser ce groupe",
+        "En les plaçant dans un autre dossier",
+        "En désactivant PHPUnit",
+        "En supprimant les assertions"
+      ],
+      "correct_answers": [
+        "En les marquant `@group legacy` et en configurant SYMFONY_DEPRECATIONS_HELPER pour autoriser ce groupe"
+      ],
+      "explanation": "Le bridge distingue les dépréciations legacy de celles à corriger."
     }
   ]
 }

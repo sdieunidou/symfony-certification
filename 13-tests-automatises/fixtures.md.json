@@ -76,6 +76,81 @@
         "`DependentFixtureInterface`"
       ],
       "explanation": "Cette interface impose la méthode `getDependencies()` qui retourne la liste des classes de fixtures requises au préalable."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi exécuter `doctrine:fixtures:load --env=test` est-il plus sûr ?",
+      "type": "single_choice",
+      "options": [
+        "Évite d'écraser la base de dev/prod en chargeant les fixtures uniquement dans la base de test",
+        "C'est plus rapide",
+        "Cela nettoie les logs",
+        "Obligatoire pour Symfony 7"
+      ],
+      "correct_answers": [
+        "Évite d'écraser la base de dev/prod en chargeant les fixtures uniquement dans la base de test"
+      ],
+      "explanation": "On cible l'URL de BDD de test définie dans `.env.test`."
+    },
+    {
+      "id": 7,
+      "question": "Quel est l'effet de DAMADoctrineTestBundle sur l'EntityManager pendant les tests ?",
+      "type": "single_choice",
+      "options": [
+        "Chaque test s'exécute dans une transaction rollbackée, détachant les entités à la fin",
+        "Il supprime les entités",
+        "Il désactive Doctrine",
+        "Aucun impact"
+      ],
+      "correct_answers": [
+        "Chaque test s'exécute dans une transaction rollbackée, détachant les entités à la fin"
+      ],
+      "explanation": "Isolation + rapidité, mais attention aux entités détachées."
+    },
+    {
+      "id": 8,
+      "question": "Comment partager une entité créée dans une fixture avec d'autres fixtures ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `addReference('admin', $user)` puis `getReference('admin')`",
+        "Mettre en variable globale",
+        "Stocker en session",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Utiliser `addReference('admin', $user)` puis `getReference('admin')`"
+      ],
+      "explanation": "Les références permettent de réutiliser des entités entre fixtures."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi préférer les transactions rollback (DAMA) au drop/create schema entre tests ?",
+      "type": "single_choice",
+      "options": [
+        "Beaucoup plus rapide qu'un drop/create à chaque test",
+        "Obligatoire en CI",
+        "Cela supprime les migrations",
+        "Parce que sqlite l'impose"
+      ],
+      "correct_answers": [
+        "Beaucoup plus rapide qu'un drop/create à chaque test"
+      ],
+      "explanation": "Le rollback transactionnel garde l'état propre avec un coût minime."
+    },
+    {
+      "id": 10,
+      "question": "Où définir `DATABASE_URL` pour les tests ?",
+      "type": "single_choice",
+      "options": [
+        "Dans `.env.test` ou `.env.test.local`",
+        "Dans `.env.local`",
+        "Dans le contrôleur",
+        "Dans php.ini"
+      ],
+      "correct_answers": [
+        "Dans `.env.test` ou `.env.test.local`"
+      ],
+      "explanation": "L'environnement test surcharge DATABASE_URL pour isoler la base."
     }
   ]
 }

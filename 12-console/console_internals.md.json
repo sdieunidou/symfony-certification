@@ -76,6 +76,81 @@
         "Parce que contrairement à une requête HTTP, le processus PHP ne meurt pas après chaque tâche, donc la mémoire n'est pas libérée automatiquement."
       ],
       "explanation": "Il faut nettoyer l'EntityManager (`$em->clear()`) et les variables cycliques pour éviter que la consommation RAM n'explose sur le long terme."
+    },
+    {
+      "id": 6,
+      "question": "Quel est l'ordre d'appel du cycle de vie lors de `run()` d'une commande ?",
+      "type": "single_choice",
+      "options": [
+        "configure -> execute",
+        "initialize -> interact -> execute",
+        "interact -> initialize -> execute",
+        "execute uniquement"
+      ],
+      "correct_answers": [
+        "interact -> initialize -> execute"
+      ],
+      "explanation": "En mode interactif, interact précède initialize, puis vient execute."
+    },
+    {
+      "id": 7,
+      "question": "Que se passe-t-il si `execute()` ne retourne pas d'entier ?",
+      "type": "single_choice",
+      "options": [
+        "Symfony considère SUCCESS",
+        "C'est déprécié et finit par lancer une erreur : un int est requis",
+        "La commande est ignorée",
+        "Le code de sortie vaut -1"
+      ],
+      "correct_answers": [
+        "C'est déprécié et finit par lancer une erreur : un int est requis"
+      ],
+      "explanation": "Les commandes doivent retourner un code de sortie (0/1/2...)."
+    },
+    {
+      "id": 8,
+      "question": "Quel code retourner pour une mauvaise utilisation (arguments invalides) ?",
+      "type": "single_choice",
+      "options": [
+        "`Command::SUCCESS`",
+        "`Command::FAILURE`",
+        "`Command::INVALID`",
+        "`Command::USAGE_ERROR`"
+      ],
+      "correct_answers": [
+        "`Command::INVALID`"
+      ],
+      "explanation": "INVALID (2) signale une erreur d'usage."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi préférer l'injection par constructeur pour les dépendances ?",
+      "type": "single_choice",
+      "options": [
+        "Pour bénéficier de l'autowiring et éviter le conteneur statique",
+        "Pour cacher la commande",
+        "Pour éviter l'autoconfiguration",
+        "Pour empêcher le lazy loading"
+      ],
+      "correct_answers": [
+        "Pour bénéficier de l'autowiring et éviter le conteneur statique"
+      ],
+      "explanation": "Améliore testabilité et respect du DI."
+    },
+    {
+      "id": 10,
+      "question": "Quel est le point d'entrée principal d'une appli console Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\\Component\\Console\\Application`",
+        "`Kernel::boot`",
+        "`Command::run`",
+        "`ConsoleKernel`"
+      ],
+      "correct_answers": [
+        "`Symfony\\Component\\Console\\Application`"
+      ],
+      "explanation": "Application orchestre l'enregistrement et l'exécution des commandes."
     }
   ]
 }

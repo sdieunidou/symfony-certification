@@ -3,6 +3,82 @@
   "title": "Configuration des Commandes",
   "questions": [
     {
+      "id": 6,
+      "question": "Quel est l'effet principal de l'attribut `#[AsCommand]` sur le chargement des commandes ?",
+      "type": "single_choice",
+      "options": [
+        "Il force l'instanciation immédiate de la commande.",
+        "Il permet le lazy loading : `bin/console list` lit l'attribut sans instancier la commande.",
+        "Il désactive l'autowiring.",
+        "Il oblige à déclarer la commande manuellement dans services.yaml."
+      ],
+      "correct_answers": [
+        "Il permet le lazy loading : `bin/console list` lit l'attribut sans instancier la commande."
+      ],
+      "explanation": "L'attribut évite la construction des commandes coûteuses lors du listage."
+    },
+    {
+      "id": 7,
+      "question": "Comment définir des alias dans `#[AsCommand]` avec Symfony 7.4+ ?",
+      "type": "single_choice",
+      "options": [
+        "En séparant les noms par `|` dans `name:`",
+        "En passant `aliases:` uniquement",
+        "Impossible avec AsCommand",
+        "Via services.yaml"
+      ],
+      "correct_answers": [
+        "En séparant les noms par `|` dans `name:`"
+      ],
+      "explanation": "Symfony 7.4 accepte `name: 'app:foo|app:bar'` pour définir des alias."
+    },
+    {
+      "id": 8,
+      "question": "Où définir les exemples d'usage d'une commande (usage hints) en Symfony 7.4+ ?",
+      "type": "single_choice",
+      "options": [
+        "Dans `#[AsCommand(usages: [...])]`",
+        "Dans `configure()` uniquement",
+        "Dans `help()`",
+        "Dans phpunit.xml"
+      ],
+      "correct_answers": [
+        "Dans `#[AsCommand(usages: [...])]`"
+      ],
+      "explanation": "L'attribut supporte `usages` pour enrichir l'aide."
+    },
+    {
+      "id": 9,
+      "question": "Une commande sans attribut `#[AsCommand]` mais avec `configure()` est-elle encore valide ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, mais elle perd le lazy loading si le nom est calculé dynamiquement",
+        "Non",
+        "Uniquement en dev",
+        "Seulement si elle est publique"
+      ],
+      "correct_answers": [
+        "Oui, mais elle perd le lazy loading si le nom est calculé dynamiquement"
+      ],
+      "explanation": "configure() suffit mais peut forcer l'instanciation."
+    },
+    {
+      "id": 10,
+      "question": "Comment cacher une commande tout en la gardant exécutable ?",
+      "type": "multiple_choice",
+      "options": [
+        "`hidden: true` dans `#[AsCommand]`",
+        "Nom commençant par `_`",
+        "Supprimer `configure()`",
+        "Mettre `private: true` dans services.yaml"
+      ],
+      "correct_answers": [
+        "`hidden: true` dans `#[AsCommand]`",
+        "Nom commençant par `_`"
+      ],
+      "explanation": "Les deux premières cachent l'affichage dans `list`, la commande reste exécutable."
+    },
+    {
       "id": 1,
       "question": "Quelle est la méthode recommandée (depuis Symfony 5.3+) pour définir le nom et la description d'une commande, permettant le 'Lazy Loading' ?",
       "type": "single_choice",
