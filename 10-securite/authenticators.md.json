@@ -91,6 +91,66 @@
         "`CustomUserMessageAuthenticationException`"
       ],
       "explanation": "Cette exception permet de définir un message sûr ('safe') qui sera affiché à l'utilisateur (via `Security::AUTHENTICATION_ERROR`)."
+    },
+    {
+      "id": 7,
+      "question": "Quel badge active automatiquement la fonctionnalité 'Se souvenir de moi' ?",
+      "type": "single_choice",
+      "options": [
+        "`RememberMeBadge`",
+        "`CsrfTokenBadge`",
+        "`PasswordCredentials`",
+        "`CustomCredentials`"
+      ],
+      "correct_answers": [
+        "`RememberMeBadge`"
+      ],
+      "explanation": "Ajoutez-le au Passport pour générer le cookie remember-me."
+    },
+    {
+      "id": 8,
+      "question": "Dans quel ordre sont résolus les badges lors du `CheckPassportEvent` ?",
+      "type": "single_choice",
+      "options": [
+        "UserBadge d'abord, puis Credentials, puis autres badges",
+        "Aléatoire",
+        "Credentials d'abord",
+        "CSRF d'abord"
+      ],
+      "correct_answers": [
+        "UserBadge d'abord, puis Credentials, puis autres badges"
+      ],
+      "explanation": "L'utilisateur doit être chargé avant de vérifier les credentials ou le CSRF."
+    },
+    {
+      "id": 9,
+      "question": "Quel type de Passport choisir pour un login par lien magique (aucun mot de passe à vérifier) ?",
+      "type": "single_choice",
+      "options": [
+        "`SelfValidatingPassport`",
+        "`Passport`",
+        "`AnonymousPassport`",
+        "`TokenPassport`"
+      ],
+      "correct_answers": [
+        "`SelfValidatingPassport`"
+      ],
+      "explanation": "Aucun badge Credentials n'est nécessaire."
+    },
+    {
+      "id": 10,
+      "question": "Quelle interface un Authenticator doit-il implémenter pour fournir une réponse de démarrage (rediriger vers login ou 401) ?",
+      "type": "single_choice",
+      "options": [
+        "`AuthenticationEntryPointInterface`",
+        "`ResponseProviderInterface`",
+        "`EntryInterface`",
+        "`StartInterface`"
+      ],
+      "correct_answers": [
+        "`AuthenticationEntryPointInterface`"
+      ],
+      "explanation": "L'EntryPoint est invoqué quand l'utilisateur anonyme accède à une ressource protégée."
     }
   ]
 }

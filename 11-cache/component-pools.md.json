@@ -76,6 +76,83 @@
         "À définir le DSN (connexion) par défaut pour tous les pools qui utilisent l'adapter Redis, évitant de répéter l'URL."
       ],
       "explanation": "Si un pool utilise `cache.adapter.redis` sans spécifier de provider, il utilisera celui-ci."
+    },
+    {
+      "id": 6,
+      "question": "Comment définir un provider Redis avec options (timeout, retry) pour un pool ?",
+      "type": "single_choice",
+      "options": [
+        "Créer un service provider (factory RedisAdapter::createConnection) et l'indiquer dans `provider:` du pool",
+        "Mettre les options dans `default_redis_provider`",
+        "Impossible",
+        "Les options vont dans services.yaml global"
+      ],
+      "correct_answers": [
+        "Créer un service provider (factory RedisAdapter::createConnection) et l'indiquer dans `provider:` du pool"
+      ],
+      "explanation": "Permet de passer des options avancées via un service dédié."
+    },
+    {
+      "id": 7,
+      "question": "Quel alias autowirable est généré pour un pool nommé `foo.bar.cache` ?",
+      "type": "single_choice",
+      "options": [
+        "`$fooBarCache` (CacheInterface)`",
+        "`$foo_bar_cache`",
+        "`$foobar`",
+        "Aucun alias"
+      ],
+      "correct_answers": [
+        "`$fooBarCache` (CacheInterface)`"
+      ],
+      "explanation": "Le nom du pool est transformé en camelCase pour l'autowiring."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi créer plusieurs pools plutôt que partager `cache.app` ?",
+      "type": "multiple_choice",
+      "options": [
+        "Isolation des clés et vidage ciblé",
+        "Choisir des backends/TTL différents par domaine",
+        "Limiter l'impact d'un flush sur d'autres domaines",
+        "Augmenter le nombre de commandes cache:clear"
+      ],
+      "correct_answers": [
+        "Isolation des clés et vidage ciblé",
+        "Choisir des backends/TTL différents par domaine",
+        "Limiter l'impact d'un flush sur d'autres domaines"
+      ],
+      "explanation": "Pools séparés = isolation fonctionnelle et technique."
+    },
+    {
+      "id": 9,
+      "question": "Comment partager un même backend Redis entre plusieurs pools sans collision de clés ?",
+      "type": "single_choice",
+      "options": [
+        "L'isolation est assurée par le préfixe (namespace) généré automatiquement pour chaque pool",
+        "Impossible",
+        "Utiliser des bases Redis distinctes",
+        "Mettre des TTL différents"
+      ],
+      "correct_answers": [
+        "L'isolation est assurée par le préfixe (namespace) généré automatiquement pour chaque pool"
+      ],
+      "explanation": "Le composant ajoute un hash du nom du pool en préfixe."
+    },
+    {
+      "id": 10,
+      "question": "Comment stocker les tags d'un pool tagué dans un autre backend ?",
+      "type": "single_choice",
+      "options": [
+        "En configurant `tags: <nom_du_pool_tags>` dans la définition du pool",
+        "Impossible",
+        "En ajoutant `tag_provider:` dans .env",
+        "En chiffrant les clés"
+      ],
+      "correct_answers": [
+        "En configurant `tags: <nom_du_pool_tags>` dans la définition du pool"
+      ],
+      "explanation": "Séparer data/tags peut optimiser ou isoler les métadonnées."
     }
   ]
 }

@@ -61,6 +61,96 @@
         "`cache:clear` vide le dossier `var/cache` (conteneur, twig, routing), tandis que `cache:pool:clear` vide les données stockées dans les pools (Redis, etc.)."
       ],
       "explanation": "`cache:clear` appelle aussi le `cache.system_clearer` mais ne touche pas à vos données métier stockées dans `cache.app` si celui-ci est sur Redis."
+    },
+    {
+      "id": 5,
+      "question": "Que fait l'option `--all` de `cache:pool:clear` ?",
+      "type": "single_choice",
+      "options": [
+        "Vide tous les pools enregistrés (app + custom)",
+        "Vide seulement cache.app",
+        "Vide seulement cache.system",
+        "Warmup automatique"
+      ],
+      "correct_answers": [
+        "Vide tous les pools enregistrés (app + custom)"
+      ],
+      "explanation": "--all déclenche le clearer global sur tous les pools."
+    },
+    {
+      "id": 6,
+      "question": "Comment invalider des tags pour un pool taggable via la CLI ?",
+      "type": "single_choice",
+      "options": [
+        "`cache:pool:invalidate-tags <pool> tag1 tag2`",
+        "`cache:clear --tags=tag1`",
+        "`cache:pool:clear --tags=tag1`",
+        "Impossible en CLI"
+      ],
+      "correct_answers": [
+        "`cache:pool:invalidate-tags <pool> tag1 tag2`"
+      ],
+      "explanation": "Cette commande supprime tous les items ayant ces tags."
+    },
+    {
+      "id": 7,
+      "question": "Quel clearer est invoqué par `cache:clear` ?",
+      "type": "single_choice",
+      "options": [
+        "`cache.system_clearer` (et warmup)",
+        "`cache.app_clearer` uniquement",
+        "`cache.global_clearer`",
+        "Aucun"
+      ],
+      "correct_answers": [
+        "`cache.system_clearer` (et warmup)"
+      ],
+      "explanation": "cache:clear cible le système (conteneur/routing/twig)."
+    },
+    {
+      "id": 8,
+      "question": "Comment lister les clearers disponibles ?",
+      "type": "single_choice",
+      "options": [
+        "`cache:pool:list` affiche aussi les clearers",
+        "`debug:container cache.*clearer`",
+        "`cache:clear --list`",
+        "Pas possible"
+      ],
+      "correct_answers": [
+        "`cache:pool:list` affiche aussi les clearers"
+      ],
+      "explanation": "La liste montre pools et clearers enregistrés."
+    },
+    {
+      "id": 9,
+      "question": "Que se passe-t-il si vous videz `cache.app_clearer` ?",
+      "type": "single_choice",
+      "options": [
+        "Les données applicatives (cache.app + pools app) sont supprimées",
+        "Le conteneur est reconstruit",
+        "Le cache système est supprimé",
+        "Rien"
+      ],
+      "correct_answers": [
+        "Les données applicatives (cache.app + pools app) sont supprimées"
+      ],
+      "explanation": "app_clearer vise le cache applicatif et les pools déclarés."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi préférer `cache:pool:clear` pour Redis à `FLUSHALL` ?",
+      "type": "single_choice",
+      "options": [
+        "Pour ne pas effacer d'autres bases ou namespaces partagés",
+        "Parce que FLUSHALL est interdit",
+        "Parce que cache:pool:clear chiffre les données",
+        "Parce que FLUSHALL est plus lent"
+      ],
+      "correct_answers": [
+        "Pour ne pas effacer d'autres bases ou namespaces partagés"
+      ],
+      "explanation": "Les pools sont namespacés; clear respecte cet espace sans supprimer d'autres clés."
     }
   ]
 }

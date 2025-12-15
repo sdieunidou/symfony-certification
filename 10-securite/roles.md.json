@@ -76,6 +76,81 @@
         "L'ensemble des rôles qu'un utilisateur possède effectivement, c'est-à-dire ses rôles directs PLUS tous les rôles hérités via la hiérarchie."
       ],
       "explanation": "C'est cette liste calculée qui est utilisée par `is_granted`."
+    },
+    {
+      "id": 6,
+      "question": "Quel voter natif évalue les rôles `ROLE_*` ?",
+      "type": "single_choice",
+      "options": [
+        "RoleVoter",
+        "AuthenticatedVoter",
+        "ExpressionVoter",
+        "AccessDecisionVoter"
+      ],
+      "correct_answers": [
+        "RoleVoter"
+      ],
+      "explanation": "RoleVoter se prononce sur les attributs commençant par ROLE_."
+    },
+    {
+      "id": 7,
+      "question": "Un utilisateur sans rôle explicite doit-il tout de même avoir un rôle ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, généralement `ROLE_USER` ajouté par `getRoles()`",
+        "Non",
+        "Uniquement en prod",
+        "Seulement pour les admins"
+      ],
+      "correct_answers": [
+        "Oui, généralement `ROLE_USER` ajouté par `getRoles()`"
+      ],
+      "explanation": "Bonne pratique : garantir au moins un rôle."
+    },
+    {
+      "id": 8,
+      "question": "Comment vérifier un rôle dans Twig ?",
+      "type": "single_choice",
+      "options": [
+        "`{% if is_granted('ROLE_ADMIN') %}`",
+        "`{{ role('ROLE_ADMIN') }}`",
+        "`{% if has_role('ROLE_ADMIN') %}`",
+        "`{% check 'ROLE_ADMIN' %}`"
+      ],
+      "correct_answers": [
+        "`{% if is_granted('ROLE_ADMIN') %}`"
+      ],
+      "explanation": "Twig expose is_granted pour les permissions."
+    },
+    {
+      "id": 9,
+      "question": "Quel rôle virtuel correspond à un utilisateur connecté via cookie remember-me ?",
+      "type": "single_choice",
+      "options": [
+        "`IS_AUTHENTICATED_REMEMBERED`",
+        "`IS_AUTHENTICATED_FULLY`",
+        "`ROLE_REMEMBERED`",
+        "`PUBLIC_ACCESS`"
+      ],
+      "correct_answers": [
+        "`IS_AUTHENTICATED_REMEMBERED`"
+      ],
+      "explanation": "REMEMBERED inclut FULLY."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi la hiérarchie de rôles simplifie-t-elle les règles d'accès ?",
+      "type": "single_choice",
+      "options": [
+        "On peut vérifier seulement le rôle le plus élevé au lieu de tous les sous-rôles",
+        "Elle supprime les rôles",
+        "Elle remplace les voters",
+        "Elle force la stateless"
+      ],
+      "correct_answers": [
+        "On peut vérifier seulement le rôle le plus élevé au lieu de tous les sous-rôles"
+      ],
+      "explanation": "Moins de duplication et de gestion en base."
     }
   ]
 }

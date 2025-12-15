@@ -76,6 +76,81 @@
         "`If-None-Match` (ETag)"
       ],
       "explanation": "L'ETag est considéré comme un validateur plus fiable et précis que la date (qui est limitée à la seconde)."
+    },
+    {
+      "id": 6,
+      "question": "Quel est le corps d'une réponse 304 Not Modified ?",
+      "type": "single_choice",
+      "options": [
+        "Aucun corps, `Content-Length: 0`",
+        "Le HTML complet",
+        "Uniquement les headers de cache",
+        "Un JSON vide"
+      ],
+      "correct_answers": [
+        "Aucun corps, `Content-Length: 0`"
+      ],
+      "explanation": "304 ne renvoie pas de corps, seulement des headers de validation."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi appeler `$response->isNotModified($request)` avant tout rendu coûteux ?",
+      "type": "single_choice",
+      "options": [
+        "Pour court-circuiter le rendu si le cache client est valide",
+        "Pour changer l'ETag",
+        "Pour vider le cache",
+        "Pour forcer un 200"
+      ],
+      "correct_answers": [
+        "Pour court-circuiter le rendu si le cache client est valide"
+      ],
+      "explanation": "On évite CPU/DB si une 304 suffit."
+    },
+    {
+      "id": 8,
+      "question": "Quel risque si le calcul de l'ETag est plus coûteux que le rendu ?",
+      "type": "single_choice",
+      "options": [
+        "La validation ne réduit pas la charge CPU, n'économisant que la bande passante",
+        "L'ETag devient invalide",
+        "Le cache est vidé",
+        "Les 304 deviennent 500"
+      ],
+      "correct_answers": [
+        "La validation ne réduit pas la charge CPU, n'économisant que la bande passante"
+      ],
+      "explanation": "Les validateurs doivent être calculés à partir de métadonnées légères."
+    },
+    {
+      "id": 9,
+      "question": "Sur quelles méthodes HTTP la validation conditionnelle est-elle applicable ?",
+      "type": "single_choice",
+      "options": [
+        "GET et HEAD (safe)",
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
+      "correct_answers": [
+        "GET et HEAD (safe)"
+      ],
+      "explanation": "Les méthodes non safe ne sont pas censées être servies depuis un cache."
+    },
+    {
+      "id": 10,
+      "question": "Quel header conditionnel le client envoie pour valider un ETag ?",
+      "type": "single_choice",
+      "options": [
+        "`If-None-Match`",
+        "`If-Match` uniquement",
+        "`If-Modified-Since`",
+        "`If-Unmodified-Since`"
+      ],
+      "correct_answers": [
+        "`If-None-Match`"
+      ],
+      "explanation": "If-None-Match compare l'ETag client à celui du serveur pour décider d'un 304."
     }
   ]
 }

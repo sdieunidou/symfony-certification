@@ -76,6 +76,81 @@
         "`Surrogate-Capability`"
       ],
       "explanation": "C'est ce header (défini par le W3C) qui permet la négociation de contenu pour les surrogates."
+    },
+    {
+      "id": 6,
+      "question": "Que devient `render_esi()` si aucun proxy compatible n'est détecté ?",
+      "type": "single_choice",
+      "options": [
+        "Il tombe en fallback et agit comme `render()` côté PHP",
+        "Il jette une exception",
+        "Il laisse la balise ESI brute",
+        "Il retourne 404"
+      ],
+      "correct_answers": [
+        "Il tombe en fallback et agit comme `render()` côté PHP"
+      ],
+      "explanation": "Le comportement dégradé garantit le fonctionnement sans proxy ESI."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi trop de fragments ESI peuvent-ils dégrader les performances ?",
+      "type": "single_choice",
+      "options": [
+        "Chaque fragment peut déclencher une sous-requête backend si non caché",
+        "ESI compresse les réponses",
+        "ESI désactive HTTP/2",
+        "ESI force le no-cache"
+      ],
+      "correct_answers": [
+        "Chaque fragment peut déclencher une sous-requête backend si non caché"
+      ],
+      "explanation": "1 requête client peut devenir N sous-requêtes si les fragments ne sont pas en cache."
+    },
+    {
+      "id": 8,
+      "question": "Quelle configuration framework active le support ESI côté Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "`framework: esi: { enabled: true }`",
+        "`framework: http_cache: esi: true`",
+        "`framework: esi: false`",
+        "Aucune, c'est par défaut"
+      ],
+      "correct_answers": [
+        "`framework: esi: { enabled: true }`"
+      ],
+      "explanation": "Il faut activer ESI pour que Symfony génère les balises et gère le surrogate."
+    },
+    {
+      "id": 9,
+      "question": "Comment éviter les fuites de données utilisateur dans un fragment ESI ?",
+      "type": "single_choice",
+      "options": [
+        "Mettre le fragment en `private` ou non caché et s'assurer qu'il ne soit pas partagé",
+        "Mettre la page principale en private",
+        "Désactiver la session",
+        "Utiliser no-store sur la page"
+      ],
+      "correct_answers": [
+        "Mettre le fragment en `private` ou non caché et s'assurer qu'il ne soit pas partagé"
+      ],
+      "explanation": "Le fragment a sa propre politique de cache (setPrivate/headers)."
+    },
+    {
+      "id": 10,
+      "question": "Quel prérequis réseau pour que Symfony voit le header `Surrogate-Capability` ?",
+      "type": "single_choice",
+      "options": [
+        "Configurer le proxy dans `trusted_proxies`",
+        "Activer Xdebug",
+        "Désactiver HTTPS",
+        "Utiliser HTTP/3"
+      ],
+      "correct_answers": [
+        "Configurer le proxy dans `trusted_proxies`"
+      ],
+      "explanation": "Sinon le header est filtré et ESI ne sera pas activé."
     }
   ]
 }

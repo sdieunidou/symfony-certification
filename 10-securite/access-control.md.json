@@ -76,6 +76,81 @@
         "`allow_if`"
       ],
       "explanation": "Cela donne accès à l'objet request, user, et aux fonctions de sécurité pour des règles fines."
+    },
+    {
+      "id": 6,
+      "question": "Que se passe-t-il si une règle `access_control` plus générique est placée avant une règle spécifique ?",
+      "type": "single_choice",
+      "options": [
+        "La règle spécifique l'emporte",
+        "La règle générique matche en premier et bloque la spécifique (First Match Wins)",
+        "Les deux sont évaluées et combinées",
+        "Une erreur est levée"
+      ],
+      "correct_answers": [
+        "La règle générique matche en premier et bloque la spécifique (First Match Wins)"
+      ],
+      "explanation": "D'où l'importance de l'ordre : du plus spécifique au plus générique."
+    },
+    {
+      "id": 7,
+      "question": "Comment forcer le HTTPS pour un pattern dans `access_control` ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `requires_channel: https`",
+        "En configurant Apache",
+        "En ajoutant `https: true`",
+        "Ce n'est pas possible"
+      ],
+      "correct_answers": [
+        "Avec `requires_channel: https`"
+      ],
+      "explanation": "La directive redirige vers HTTPS pour le path concerné."
+    },
+    {
+      "id": 8,
+      "question": "Quelle différence entre firewall et access_control ?",
+      "type": "single_choice",
+      "options": [
+        "Firewall gère l'authentification (qui je suis), access_control l'autorisation (ai-je le droit)",
+        "Aucune, ce sont des synonymes",
+        "Firewall gère les rôles, access_control gère les providers",
+        "Firewall est optionnel"
+      ],
+      "correct_answers": [
+        "Firewall gère l'authentification (qui je suis), access_control l'autorisation (ai-je le droit)"
+      ],
+      "explanation": "Deux couches distinctes : identité vs accès."
+    },
+    {
+      "id": 9,
+      "question": "Quel attribut virtuel autorise l'accès même à un utilisateur impersonné ?",
+      "type": "single_choice",
+      "options": [
+        "`IS_IMPERSONATOR`",
+        "`ROLE_PREVIOUS_ADMIN`",
+        "`PUBLIC_ACCESS`",
+        "`IS_SWITCHED`"
+      ],
+      "correct_answers": [
+        "`IS_IMPERSONATOR`"
+      ],
+      "explanation": "IS_IMPERSONATOR est vrai quand on est en switch_user."
+    },
+    {
+      "id": 10,
+      "question": "Quelle est la bonne pratique pour autoriser le profiler et les assets en dev ?",
+      "type": "single_choice",
+      "options": [
+        "Mettre une règle `PUBLIC_ACCESS` sur `^/(_(profiler|wdt)|css|images|js)/` en tête",
+        "Les laisser protégés par ROLE_ADMIN",
+        "Ne rien configurer",
+        "Mettre après les règles admin"
+      ],
+      "correct_answers": [
+        "Mettre une règle `PUBLIC_ACCESS` sur `^/(_(profiler|wdt)|css|images|js)/` en tête"
+      ],
+      "explanation": "On exclut ces routes en premier pour éviter les redirections boucle."
     }
   ]
 }

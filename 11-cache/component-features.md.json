@@ -61,6 +61,96 @@
         "Il doit implémenter `TagAwareAdapterInterface` ou être enveloppé dans un `TagAwareAdapter`."
       ],
       "explanation": "Redis a un support natif (rapide), mais on peut ajouter le support des tags à n'importe quel adapter (Filesystem, etc.) via le wrapper générique."
+    },
+    {
+      "id": 5,
+      "question": "Que se passe-t-il lors d'une lecture avec un ChainAdapter (Array + Redis) ?",
+      "type": "single_choice",
+      "options": [
+        "Il lit toujours Redis",
+        "Il lit d'abord l'ArrayAdapter (L1), puis remplit L1 depuis Redis si hit en L2",
+        "Il lit uniquement l'ArrayAdapter",
+        "Il lit en parallèle les deux"
+      ],
+      "correct_answers": [
+        "Il lit d'abord l'ArrayAdapter (L1), puis remplit L1 depuis Redis si hit en L2"
+      ],
+      "explanation": "Le chaînage sert à avoir un cache chaud en RAM process."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi chiffrer avec `SodiumMarshaller` ne chiffre-t-il pas les clés ?",
+      "type": "single_choice",
+      "options": [
+        "Les clés restent en clair, seule la valeur est chiffrée; fuite de métadonnées possible",
+        "Parce que c'est inutile",
+        "Parce que les clés sont déjà hashées",
+        "Parce que les clés sont stockées en base"
+      ],
+      "correct_answers": [
+        "Les clés restent en clair, seule la valeur est chiffrée; fuite de métadonnées possible"
+      ],
+      "explanation": "Attention aux informations sensibles dans les noms de clés."
+    },
+    {
+      "id": 7,
+      "question": "Comment stocker les tags dans un pool séparé ?",
+      "type": "single_choice",
+      "options": [
+        "En configurant `tags: autre_pool` dans la définition du pool tagué",
+        "Impossible",
+        "En mettant `provider: tags`",
+        "En utilisant un autre marshaller"
+      ],
+      "correct_answers": [
+        "En configurant `tags: autre_pool` dans la définition du pool tagué"
+      ],
+      "explanation": "Permet de séparer données et métadonnées de tags."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi la TTL d'un item taggé doit-elle être gérée avec prudence ?",
+      "type": "single_choice",
+      "options": [
+        "Un item expiré reste référencé par ses tags jusqu'à cleanup",
+        "Les tags expirent toujours avant l'item",
+        "Les tags désactivent la TTL",
+        "La TTL n'est pas supportée"
+      ],
+      "correct_answers": [
+        "Un item expiré reste référencé par ses tags jusqu'à cleanup"
+      ],
+      "explanation": "Comprendre l'implémentation évite les fuites de références."
+    },
+    {
+      "id": 9,
+      "question": "Quel avantage offre un pool taggué pour l'invalidation fonctionnelle ?",
+      "type": "single_choice",
+      "options": [
+        "Invalidation fine par domaines métier (ex: product_123) sans connaître toutes les clés",
+        "Plus de performance CPU",
+        "Zéro sérialisation",
+        "Compatibilité PSR-4"
+      ],
+      "correct_answers": [
+        "Invalidation fine par domaines métier (ex: product_123) sans connaître toutes les clés"
+      ],
+      "explanation": "Les tags permettent une invalidation ciblée."
+    },
+    {
+      "id": 10,
+      "question": "Quand préférer un cache chainé plutôt qu'un unique Redis ?",
+      "type": "single_choice",
+      "options": [
+        "Quand on veut un L1 ultra rapide en RAM process pour réduire la latence sur les hits fréquents",
+        "Jamais",
+        "Uniquement en dev",
+        "Pour éviter la sérialisation"
+      ],
+      "correct_answers": [
+        "Quand on veut un L1 ultra rapide en RAM process pour réduire la latence sur les hits fréquents"
+      ],
+      "explanation": "ChainAdapter combine rapidité locale et cohérence du backend partagé."
     }
   ]
 }

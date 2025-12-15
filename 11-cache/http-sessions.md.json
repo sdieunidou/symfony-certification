@@ -77,6 +77,82 @@
         "Cela rend le cache inefficace car les cookies changent souvent (session, tracking), créant une version de cache par utilisateur au lieu d'une version partagée."
       ],
       "explanation": "Le but du cache public est de partager le contenu. `Vary: Cookie` fragmente le cache à l'extrême."
+    },
+    {
+      "id": 6,
+      "question": "Que fait Symfony si vous appelez `setPublic()` alors qu'une session est active ?",
+      "type": "single_choice",
+      "options": [
+        "Il respecte `public`, vous êtes responsable d'éviter les données perso",
+        "Il force quand même private",
+        "Il détruit la session",
+        "Il lève une exception"
+      ],
+      "correct_answers": [
+        "Il respecte `public`, vous êtes responsable d'éviter les données perso"
+      ],
+      "explanation": "SetPublic() écrase le comportement par défaut ; attention aux fuites."
+    },
+    {
+      "id": 7,
+      "question": "Quel header spécial désactive l'auto-forçage en private quand une session est utilisée ?",
+      "type": "single_choice",
+      "options": [
+        "`AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER` à true",
+        "`X-No-Session`",
+        "`Cache-Control: public`",
+        "`Vary: Session`"
+      ],
+      "correct_answers": [
+        "`AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER` à true"
+      ],
+      "explanation": "À utiliser seulement si vous maîtrisez la sécurité de vos headers."
+    },
+    {
+      "id": 8,
+      "question": "Quelles techniques permettent d'afficher des données utilisateur sur une page publique cachée ?",
+      "type": "multiple_choice",
+      "options": [
+        "ESI pour isoler le fragment user en privé/non caché",
+        "AJAX/Hinclude pour charger après coup",
+        "Mettre toute la page en public avec Vary: Cookie",
+        "Mettre no-store"
+      ],
+      "correct_answers": [
+        "ESI pour isoler le fragment user en privé/non caché",
+        "AJAX/Hinclude pour charger après coup"
+      ],
+      "explanation": "On sépare le contenu partagé et le contenu spécifique user."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi `private, must-revalidate` est appliqué par défaut dès qu'une session est touchée ?",
+      "type": "single_choice",
+      "options": [
+        "Pour éviter qu'un cache partagé serve des données de session à d'autres utilisateurs",
+        "Pour accélérer le site",
+        "Pour compatibilité HTTP/1.0",
+        "Pour forcer HTTPS"
+      ],
+      "correct_answers": [
+        "Pour éviter qu'un cache partagé serve des données de session à d'autres utilisateurs"
+      ],
+      "explanation": "Sécurité par défaut contre les leaks via proxy/CDN."
+    },
+    {
+      "id": 10,
+      "question": "Quel risque majeur si une page publique met en cache un message 'Bonjour Alice' issu de la session ?",
+      "type": "single_choice",
+      "options": [
+        "Tous les utilisateurs verront 'Bonjour Alice' (fuite de données)",
+        "Aucun, les cookies protègent",
+        "La page devient private automatiquement",
+        "Le cache est vidé"
+      ],
+      "correct_answers": [
+        "Tous les utilisateurs verront 'Bonjour Alice' (fuite de données)"
+      ],
+      "explanation": "Ne jamais mélanger session et cache public sans isoler le contenu user."
     }
   ]
 }

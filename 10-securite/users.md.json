@@ -76,6 +76,81 @@
         "`EquatableInterface`"
       ],
       "explanation": "La méthode `isEqualTo` permet de comparer l'utilisateur en session avec celui rechargé de la DB. Par défaut, Symfony vérifie le mot de passe, le sel et l'identifiant."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi l'objet User stocké en session doit-il être léger ?",
+      "type": "single_choice",
+      "options": [
+        "Pour éviter les problèmes de sérialisation (proxies Doctrine) et limiter la taille de session",
+        "Pour accélérer Doctrine",
+        "Parce que Twig l'exige",
+        "Parce que le hash ne peut être stocké"
+      ],
+      "correct_answers": [
+        "Pour éviter les problèmes de sérialisation (proxies Doctrine) et limiter la taille de session"
+      ],
+      "explanation": "Sérialiser des relations paresseuses peut casser la session."
+    },
+    {
+      "id": 7,
+      "question": "Quel champ doit garantir `getRoles()` ?",
+      "type": "single_choice",
+      "options": [
+        "Toujours au moins un rôle (souvent ROLE_USER) et unicité",
+        "Qu'il contient le mot de passe",
+        "Qu'il est vide",
+        "Qu'il renvoie un string"
+      ],
+      "correct_answers": [
+        "Toujours au moins un rôle (souvent ROLE_USER) et unicité"
+      ],
+      "explanation": "Bonne pratique pour éviter un utilisateur sans rôle."
+    },
+    {
+      "id": 8,
+      "question": "Quelle interface doit être implémentée si l'utilisateur possède un mot de passe stocké ?",
+      "type": "single_choice",
+      "options": [
+        "`PasswordAuthenticatedUserInterface`",
+        "`HasherAwareInterface`",
+        "`PasswordInterface`",
+        "`AuthUserInterface`"
+      ],
+      "correct_answers": [
+        "`PasswordAuthenticatedUserInterface`"
+      ],
+      "explanation": "Expose getPassword pour le hasher."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi `getUsername()` est déprécié ?",
+      "type": "single_choice",
+      "options": [
+        "Remplacé par `getUserIdentifier()` pour supporter des identifiants autres que 'username'",
+        "Parce que username est interdit",
+        "Parce que Twig ne l'utilise plus",
+        "Parce que Doctrine l'impose"
+      ],
+      "correct_answers": [
+        "Remplacé par `getUserIdentifier()` pour supporter des identifiants autres que 'username'"
+      ],
+      "explanation": "Identifier est générique (email, api key, phone)."
+    },
+    {
+      "id": 10,
+      "question": "Quel risque si on sérialise le mot de passe hashé dans la session ?",
+      "type": "single_choice",
+      "options": [
+        "Exposition potentielle du hash en cas de fuite de session",
+        "Ça supprime l'utilisateur",
+        "Aucun",
+        "Cela force le rehash"
+      ],
+      "correct_answers": [
+        "Exposition potentielle du hash en cas de fuite de session"
+      ],
+      "explanation": "Mieux vaut exclure le hash de la sérialisation et se reposer sur refreshUser."
     }
   ]
 }

@@ -76,6 +76,81 @@
         "`^/(_(profiler|wdt)|css|images|js)/`"
       ],
       "explanation": "Ce pattern couvre la barre de débogage web, le profiler et les assets statiques, qui ne doivent pas déclencher de mécanismes de sécurité."
+    },
+    {
+      "id": 6,
+      "question": "Comment activer un custom authenticator dans `security.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "Dans le firewall: `custom_authenticator: App\\Security\\MyAuthenticator`",
+        "Dans providers",
+        "Dans role_hierarchy",
+        "Dans access_control"
+      ],
+      "correct_answers": [
+        "Dans le firewall: `custom_authenticator: App\\Security\\MyAuthenticator`"
+      ],
+      "explanation": "Les authenticators sont déclarés au niveau du firewall."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi définir `security: false` sur le firewall `dev` ?",
+      "type": "single_choice",
+      "options": [
+        "Pour désactiver toute mécanique sécurité sur les assets/profiler et améliorer les perfs",
+        "Pour bloquer le profiler",
+        "Pour forcer HTTPS",
+        "Pour activer le debug"
+      ],
+      "correct_answers": [
+        "Pour désactiver toute mécanique sécurité sur les assets/profiler et améliorer les perfs"
+      ],
+      "explanation": "On évite session/user sur ces routes techniques."
+    },
+    {
+      "id": 8,
+      "question": "Comment partager la même session d'authentification entre deux firewalls ?",
+      "type": "single_choice",
+      "options": [
+        "En leur donnant le même `context`",
+        "En réutilisant le même provider",
+        "En mettant `stateless: true`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "En leur donnant le même `context`"
+      ],
+      "explanation": "Le contexte définit la clé de session utilisée pour stocker le token."
+    },
+    {
+      "id": 9,
+      "question": "Où configure-t-on `role_hierarchy` ?",
+      "type": "single_choice",
+      "options": [
+        "Dans `security: role_hierarchy`",
+        "Dans `services.yaml`",
+        "Dans `providers`",
+        "Dans `.env`"
+      ],
+      "correct_answers": [
+        "Dans `security: role_hierarchy`"
+      ],
+      "explanation": "La hiérarchie se déclare dans la section sécurité."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi `enable_authenticator_manager` n'apparaît plus dans les configs récentes ?",
+      "type": "single_choice",
+      "options": [
+        "Il est activé par défaut depuis Symfony 6",
+        "Il est déprécié et retiré",
+        "Parce qu'on utilise Guard",
+        "Parce que les firewalls sont stateless"
+      ],
+      "correct_answers": [
+        "Il est activé par défaut depuis Symfony 6"
+      ],
+      "explanation": "Le nouveau système d'authentification est l'option par défaut."
     }
   ]
 }

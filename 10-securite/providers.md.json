@@ -76,6 +76,81 @@
         "`loadUserByIdentifier`"
       ],
       "explanation": "Le terme 'Identifier' est plus générique que 'Username', s'adaptant aux emails, clés API, téléphones, etc."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi `refreshUser` peut déconnecter un utilisateur ?",
+      "type": "single_choice",
+      "options": [
+        "Si l'utilisateur n'existe plus ou si des données critiques (mot de passe) ont changé",
+        "Parce que la session expire",
+        "Parce que le provider est en mémoire",
+        "Parce que le firewall change"
+      ],
+      "correct_answers": [
+        "Si l'utilisateur n'existe plus ou si des données critiques (mot de passe) ont changé"
+      ],
+      "explanation": "RefreshUser garantit que l'utilisateur en session est toujours valide."
+    },
+    {
+      "id": 7,
+      "question": "Dans un firewall `stateless: true`, `refreshUser` est-il appelé ?",
+      "type": "single_choice",
+      "options": [
+        "Non, car pas de session",
+        "Oui, à chaque requête",
+        "Uniquement sur les erreurs",
+        "Uniquement en prod"
+      ],
+      "correct_answers": [
+        "Non, car pas de session"
+      ],
+      "explanation": "Stateless signifie pas de stockage du token en session."
+    },
+    {
+      "id": 8,
+      "question": "Quel provider utiliser pour des identifiants stockés dans un fichier YAML ?",
+      "type": "single_choice",
+      "options": [
+        "memory",
+        "entity",
+        "chain",
+        "custom"
+      ],
+      "correct_answers": [
+        "memory"
+      ],
+      "explanation": "Le provider memory permet de définir des utilisateurs en config."
+    },
+    {
+      "id": 9,
+      "question": "Comment combiner plusieurs sources utilisateur ?",
+      "type": "single_choice",
+      "options": [
+        "Provider `chain` listant d'autres providers",
+        "Dupliquer les users",
+        "Utiliser role_hierarchy",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Provider `chain` listant d'autres providers"
+      ],
+      "explanation": "ChainUserProvider essaie chaque provider dans l'ordre."
+    },
+    {
+      "id": 10,
+      "question": "Quelles méthodes obligatoires expose `UserProviderInterface` ?",
+      "type": "single_choice",
+      "options": [
+        "`loadUserByIdentifier`, `refreshUser`, `supportsClass`",
+        "`find`, `save`, `delete`",
+        "`authenticate`, `authorize`",
+        "`hash`, `verify`"
+      ],
+      "correct_answers": [
+        "`loadUserByIdentifier`, `refreshUser`, `supportsClass`"
+      ],
+      "explanation": "Ce trio couvre chargement initial, rechargement et compatibilité de classe."
     }
   ]
 }

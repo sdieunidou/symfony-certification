@@ -76,6 +76,81 @@
         "Désactiver la vérification CSRF pour cet appel."
       ],
       "explanation": "Par défaut, `logout()` exige un token CSRF valide pour la sécurité."
+    },
+    {
+      "id": 6,
+      "question": "Quelle configuration active le throttling natif des tentatives de login ?",
+      "type": "single_choice",
+      "options": [
+        "Dans le firewall: `login_throttling: { max_attempts: 3, interval: '15 minutes' }`",
+        "Dans php.ini",
+        "Dans le provider",
+        "Dans les voters"
+      ],
+      "correct_answers": [
+        "Dans le firewall: `login_throttling: { max_attempts: 3, interval: '15 minutes' }`"
+      ],
+      "explanation": "S'appuie sur RateLimiter pour limiter par IP/username."
+    },
+    {
+      "id": 7,
+      "question": "Quel événement est déclenché lors d'un login interactif réussi ?",
+      "type": "single_choice",
+      "options": [
+        "`SecurityEvents::INTERACTIVE_LOGIN`",
+        "`AuthenticationSuccessEvent` uniquement",
+        "`LoginEvent`",
+        "`TokenCreatedEvent`"
+      ],
+      "correct_answers": [
+        "`SecurityEvents::INTERACTIVE_LOGIN`"
+      ],
+      "explanation": "Spécifique aux connexions explicites (pas remember-me)."
+    },
+    {
+      "id": 8,
+      "question": "Comment déclencher un point d'entrée différent selon le firewall ?",
+      "type": "single_choice",
+      "options": [
+        "Configurer `entry_point` dans le firewall",
+        "Impossible, global uniquement",
+        "Via access_control",
+        "Via role_hierarchy"
+      ],
+      "correct_answers": [
+        "Configurer `entry_point` dans le firewall"
+      ],
+      "explanation": "Chaque firewall peut définir son AuthenticationEntryPoint."
+    },
+    {
+      "id": 9,
+      "question": "En mode stateless, où est stocké le token d'authentification ?",
+      "type": "single_choice",
+      "options": [
+        "Nulle part côté serveur, il doit être envoyé à chaque requête (ex: Bearer/JWT)",
+        "En session",
+        "En cache système",
+        "Dans une cookie CSRF"
+      ],
+      "correct_answers": [
+        "Nulle part côté serveur, il doit être envoyé à chaque requête (ex: Bearer/JWT)"
+      ],
+      "explanation": "Stateless signifie pas de session ni stockage côté serveur."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi le firewall est souvent configuré `lazy: true` en mode stateful ?",
+      "type": "single_choice",
+      "options": [
+        "Pour ne démarrer la session que si besoin (is_granted/getUser), améliorant perf et cache",
+        "Pour retarder l'auth jusqu'après le contrôleur",
+        "Pour forcer HTTPS",
+        "Pour éviter le CSRF"
+      ],
+      "correct_answers": [
+        "Pour ne démarrer la session que si besoin (is_granted/getUser), améliorant perf et cache"
+      ],
+      "explanation": "Lazy évite d'ouvrir la session sur les pages publiques."
     }
   ]
 }

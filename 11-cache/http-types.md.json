@@ -62,6 +62,96 @@
         "`$response->setSharedMaxAge()`"
       ],
       "explanation": "Cela configure la directive `s-maxage` qui est prioritaire sur `max-age` pour les caches partagés."
+    },
+    {
+      "id": 5,
+      "question": "Que se passe-t-il pour le cache partagé si la réponse contient un header `Authorization` ?",
+      "type": "single_choice",
+      "options": [
+        "Elle est considérée comme privée par défaut (non cacheable par les proxies) sauf si `public` est forcé",
+        "Elle est automatiquement publique",
+        "Elle est ignorée par le navigateur",
+        "Elle est chiffrée"
+      ],
+      "correct_answers": [
+        "Elle est considérée comme privée par défaut (non cacheable par les proxies) sauf si `public` est forcé"
+      ],
+      "explanation": "Standard HTTP pour éviter la mise en cache de contenu authentifié."
+    },
+    {
+      "id": 6,
+      "question": "Quel header ajoute Symfony en debug pour tracer le comportement du cache reverse proxy ?",
+      "type": "single_choice",
+      "options": [
+        "`X-Symfony-Cache`",
+        "`Cache-Status`",
+        "`X-Debug-Cache`",
+        "`Cache-Debug`"
+      ],
+      "correct_answers": [
+        "`X-Symfony-Cache`"
+      ],
+      "explanation": "Il renseigne HIT/MISS/STALE, configurable via trace_level."
+    },
+    {
+      "id": 7,
+      "question": "Quelle directive cible uniquement les caches privés (navigateur) et pas les partagés ?",
+      "type": "single_choice",
+      "options": [
+        "`private`",
+        "`public`",
+        "`s-maxage`",
+        "`stale-while-revalidate`"
+      ],
+      "correct_answers": [
+        "`private`"
+      ],
+      "explanation": "private interdit le stockage par un cache partagé."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi `Vary: Cookie` ruine le cache partagé ?",
+      "type": "single_choice",
+      "options": [
+        "Chaque valeur de cookie crée une variante différente, quasiment une entrée par utilisateur",
+        "Il supprime les cookies",
+        "Il désactive HTTPS",
+        "Il force no-store"
+      ],
+      "correct_answers": [
+        "Chaque valeur de cookie crée une variante différente, quasiment une entrée par utilisateur"
+      ],
+      "explanation": "On perd le bénéfice du partage entre utilisateurs."
+    },
+    {
+      "id": 9,
+      "question": "Quel cache est concerné par `setSharedMaxAge()` ?",
+      "type": "single_choice",
+      "options": [
+        "Les caches partagés (proxies/CDN)",
+        "Le cache navigateur uniquement",
+        "Aucun, c'est déprécié",
+        "Le cache doctrine"
+      ],
+      "correct_answers": [
+        "Les caches partagés (proxies/CDN)"
+      ],
+      "explanation": "s-maxage est ignoré par le navigateur, utilisé par les reverse proxies."
+    },
+    {
+      "id": 10,
+      "question": "Quel type de cache faut-il pour servir une homepage identique à tous avec forte perf ?",
+      "type": "single_choice",
+      "options": [
+        "Cache public partagé (Gateway/Reverse Proxy)",
+        "Cache privé",
+        "Pas de cache",
+        "Cache doctrine"
+      ],
+      "correct_answers": [
+        "Cache public partagé (Gateway/Reverse Proxy)"
+      ],
+      "explanation": "La homepage générique est un candidat idéal pour un CDN/Varnish/HttpCache."
     }
   ]
 }

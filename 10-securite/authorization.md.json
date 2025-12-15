@@ -76,6 +76,81 @@
         "Si connecté: Exception 403 (`AccessDeniedException`). Si non connecté: Redirection vers le login (ou 401) via l'`AuthenticationEntryPoint`."
       ],
       "explanation": "C'est le comportement standard : si on ne sait pas qui c'est, on lui demande de se connecter. Si on sait qui c'est mais qu'il n'a pas le droit, on lui interdit l'accès."
+    },
+    {
+      "id": 6,
+      "question": "Quelle stratégie de décision utiliser si vous souhaitez que toute objection d'un voter bloque l'accès ?",
+      "type": "single_choice",
+      "options": [
+        "unanimous",
+        "affirmative",
+        "consensus",
+        "priority"
+      ],
+      "correct_answers": [
+        "unanimous"
+      ],
+      "explanation": "En stratégie `unanimous`, tous les voters non abstains doivent dire OUI."
+    },
+    {
+      "id": 7,
+      "question": "Quel voter gère les rôles commençant par `ROLE_` ?",
+      "type": "single_choice",
+      "options": [
+        "RoleVoter",
+        "AuthenticatedVoter",
+        "ExpressionVoter",
+        "AccessDecisionVoter"
+      ],
+      "correct_answers": [
+        "RoleVoter"
+      ],
+      "explanation": "RoleVoter vote sur les attributs `ROLE_*`."
+    },
+    {
+      "id": 8,
+      "question": "Comment sécuriser déclarativement une méthode de contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "Avec l'attribut `#[IsGranted(...)]`",
+        "Avec un commentaire PHPDoc",
+        "Avec un middleware",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Avec l'attribut `#[IsGranted(...)]`"
+      ],
+      "explanation": "L'attribut est la méthode moderne recommandée."
+    },
+    {
+      "id": 9,
+      "question": "Quel service injecter dans un service pour tester une permission ?",
+      "type": "single_choice",
+      "options": [
+        "AuthorizationCheckerInterface",
+        "SecurityHelper",
+        "FirewallInterface",
+        "UserProviderInterface"
+      ],
+      "correct_answers": [
+        "AuthorizationCheckerInterface"
+      ],
+      "explanation": "AuthorizationChecker expose isGranted() pour tester les droits."
+    },
+    {
+      "id": 10,
+      "question": "Que fait l'attribut `#[IsGranted('POST_EDIT', subject: 'post')]` sur une action ?",
+      "type": "single_choice",
+      "options": [
+        "Il déclenche un voter avec l'attribut POST_EDIT et l'argument $post comme sujet",
+        "Il redirige vers /login automatiquement",
+        "Il change le route name",
+        "Il met en cache la réponse"
+      ],
+      "correct_answers": [
+        "Il déclenche un voter avec l'attribut POST_EDIT et l'argument $post comme sujet"
+      ],
+      "explanation": "Le sujet est résolu automatiquement par nom de paramètre."
     }
   ]
 }

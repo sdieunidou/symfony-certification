@@ -76,6 +76,81 @@
         "Rien, le navigateur utilisera la version en cache jusqu'à la fin du délai. C'est une limitation du modèle."
       ],
       "explanation": "Une fois que le navigateur a stocké la réponse avec une expiration future, le serveur ne peut plus le forcer à la mettre à jour. La solution habituelle est de changer l'URL (versioning des assets)."
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert `s-maxage` par rapport à `max-age` ?",
+      "type": "single_choice",
+      "options": [
+        "TTL spécifique aux caches partagés (proxies/CDN), prioritaire sur max-age pour eux",
+        "Il double max-age",
+        "Il désactive le cache navigateur",
+        "Il est ignoré par les proxies"
+      ],
+      "correct_answers": [
+        "TTL spécifique aux caches partagés (proxies/CDN), prioritaire sur max-age pour eux"
+      ],
+      "explanation": "Les navigateurs ignorent s-maxage; les proxies l'utilisent."
+    },
+    {
+      "id": 7,
+      "question": "Si un attribut `#[Cache]` définit `maxage=3600` mais que le contrôleur appelle `setMaxAge(10)`, quel TTL l'emporte ?",
+      "type": "single_choice",
+      "options": [
+        "10 secondes (le code du contrôleur écrase l'attribut)",
+        "3600",
+        "La moyenne",
+        "Aucun, les deux sont ignorés"
+      ],
+      "correct_answers": [
+        "10 secondes (le code du contrôleur écrase l'attribut)"
+      ],
+      "explanation": "Les headers définis dans la Response priment sur l'attribut."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi la synchronisation NTP du serveur est-elle importante pour l'expiration ?",
+      "type": "single_choice",
+      "options": [
+        "Un décalage d'horloge peut rendre une réponse expirée immédiatement ou la garder trop longtemps",
+        "Pour TLS",
+        "Pour HTTP/2",
+        "Pour le SEO"
+      ],
+      "correct_answers": [
+        "Un décalage d'horloge peut rendre une réponse expirée immédiatement ou la garder trop longtemps"
+      ],
+      "explanation": "L'âge du cache se calcule sur la date du serveur."
+    },
+    {
+      "id": 9,
+      "question": "Quels verbes HTTP bénéficient du modèle d'expiration ?",
+      "type": "single_choice",
+      "options": [
+        "GET et HEAD (méthodes safe)",
+        "POST seulement",
+        "PUT et DELETE",
+        "Tous"
+      ],
+      "correct_answers": [
+        "GET et HEAD (méthodes safe)"
+      ],
+      "explanation": "Les méthodes non safe ne sont pas cacheables par défaut."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi versionner les assets (ex: `/app.css?v=123`) dans le modèle d'expiration ?",
+      "type": "single_choice",
+      "options": [
+        "Pour invalider immédiatement le cache client en changeant l'URL",
+        "Pour chiffrer le fichier",
+        "Pour forcer HTTP/2",
+        "Pour éviter les cookies"
+      ],
+      "correct_answers": [
+        "Pour invalider immédiatement le cache client en changeant l'URL"
+      ],
+      "explanation": "L'expiration seule ne permet pas d'invalidation anticipée; changer l'URL contourne le cache existant."
     }
   ]
 }

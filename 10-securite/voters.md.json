@@ -76,6 +76,81 @@
         "Parce que `supports()` est appelé à chaque vérification de sécurité (pour tous les voters), cela tuerait les performances."
       ],
       "explanation": "`supports()` doit être extrêmement rapide (vérification de type et de string uniquement). La logique lourde va dans `voteOnAttribute()`."
+    },
+    {
+      "id": 6,
+      "question": "Quel type de retour produit un voter dans `voteOnAttribute` ?",
+      "type": "single_choice",
+      "options": [
+        "bool (true/false) qui sera converti en ACCESS_GRANTED/ACCESS_DENIED",
+        "string",
+        "int",
+        "array"
+      ],
+      "correct_answers": [
+        "bool (true/false) qui sera converti en ACCESS_GRANTED/ACCESS_DENIED"
+      ],
+      "explanation": "La classe Voter transforme le bool en décision de vote."
+    },
+    {
+      "id": 7,
+      "question": "Comment injecter des services (ex: Repository) dans un Voter ?",
+      "type": "single_choice",
+      "options": [
+        "Comme dans n'importe quel service via le constructeur (autowiring)",
+        "Impossible",
+        "Via une variable globale",
+        "Via Twig"
+      ],
+      "correct_answers": [
+        "Comme dans n'importe quel service via le constructeur (autowiring)"
+      ],
+      "explanation": "Les voters sont des services standards autowirés."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi utiliser un voter au lieu de vérifier directement dans le contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "Centraliser la logique métier de sécurité, la rendre testable et réutilisable (Twig, services)",
+        "C'est obligatoire",
+        "Pour aller plus vite",
+        "Pour éviter CSRF"
+      ],
+      "correct_answers": [
+        "Centraliser la logique métier de sécurité, la rendre testable et réutilisable (Twig, services)"
+      ],
+      "explanation": "Un seul endroit pour les règles, utilisé partout via is_granted."
+    },
+    {
+      "id": 9,
+      "question": "Avec la stratégie affirmative, qu'advient-il si un voter s'abstient et un autre refuse ?",
+      "type": "single_choice",
+      "options": [
+        "L'accès est refusé (aucun voter ne dit oui)",
+        "L'accès est accordé",
+        "Une exception est levée",
+        "Cela dépend du provider"
+      ],
+      "correct_answers": [
+        "L'accès est refusé (aucun voter ne dit oui)"
+      ],
+      "explanation": "Affirmative n'accorde que si au moins un voter GRANT."
+    },
+    {
+      "id": 10,
+      "question": "Comment restreindre l'évaluation d'un voter à un type d'objet précis ?",
+      "type": "single_choice",
+      "options": [
+        "En filtrant dans `supports()` (ex: `$subject instanceof Post`)",
+        "En configurant access_control",
+        "En changeant role_hierarchy",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "En filtrant dans `supports()` (ex: `$subject instanceof Post`)"
+      ],
+      "explanation": "supports doit rapidement éliminer les sujets non concernés."
     }
   ]
 }

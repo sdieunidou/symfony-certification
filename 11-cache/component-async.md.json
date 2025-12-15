@@ -61,6 +61,96 @@
         "`early_expiration_message_bus: 'nom_du_bus'`"
       ],
       "explanation": "Cette option indique au cache d'envoyer un message de type `EarlyExpirationMessage` au lieu de re-calculer synchrone."
+    },
+    {
+      "id": 5,
+      "question": "Que se passe-t-il pour l'utilisateur quand un item est élu en expiration probabiliste ?",
+      "type": "single_choice",
+      "options": [
+        "Il attend le recalcul complet",
+        "Il reçoit immédiatement l'ancienne valeur (stale) pendant que le recalcul se déclenche",
+        "Il reçoit une 503",
+        "Le cache est vidé"
+      ],
+      "correct_answers": [
+        "Il reçoit immédiatement l'ancienne valeur (stale) pendant que le recalcul se déclenche"
+      ],
+      "explanation": "Le but est d'éviter tout délai côté utilisateur."
+    },
+    {
+      "id": 6,
+      "question": "Quel message est dispatché sur le bus en recalcul asynchrone ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\\Component\\Cache\\Messenger\\EarlyExpirationMessage`",
+        "`Symfony\\Component\\Messenger\\Envelope`",
+        "`CacheRecomputeMessage`",
+        "`AsyncCacheMessage`"
+      ],
+      "correct_answers": [
+        "`Symfony\\Component\\Cache\\Messenger\\EarlyExpirationMessage`"
+      ],
+      "explanation": "Ce message contient la clé et le callback pour recalculer."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi le recalcul asynchrone réduit-il le risque de Stampede ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'une seule requête déclenche un message worker et les autres continuent sur la valeur existante",
+        "Parce que le cache est désactivé",
+        "Parce que les clés changent",
+        "Parce que le TTL est infini"
+      ],
+      "correct_answers": [
+        "Parce qu'une seule requête déclenche un message worker et les autres continuent sur la valeur existante"
+      ],
+      "explanation": "On évite que toutes les requêtes recalculent en même temps."
+    },
+    {
+      "id": 8,
+      "question": "Sur quel bus Messenger router l'EarlyExpirationMessage ?",
+      "type": "single_choice",
+      "options": [
+        "Un bus consommé par un worker (ex: `async_bus`)",
+        "Toujours sur le bus sync",
+        "Sur le bus mailer",
+        "Sur le bus notifier"
+      ],
+      "correct_answers": [
+        "Un bus consommé par un worker (ex: `async_bus`)"
+      ],
+      "explanation": "Sinon le message ne sera jamais traité et le cache restera stale."
+    },
+    {
+      "id": 9,
+      "question": "Que change `early_expiration_message_bus` par rapport au comportement par défaut de `$cache->get()` ?",
+      "type": "single_choice",
+      "options": [
+        "Le callback est exécuté dans un worker Messenger au lieu du processus HTTP courant",
+        "Le cache est vidé",
+        "Le TTL est doublé",
+        "Les tags sont ignorés"
+      ],
+      "correct_answers": [
+        "Le callback est exécuté dans un worker Messenger au lieu du processus HTTP courant"
+      ],
+      "explanation": "Par défaut, le callback est exécuté dans la requête courante lors de l'expiration probabiliste."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi le probabilistic early expiration sélectionne-t-il UNE requête au hasard ?",
+      "type": "single_choice",
+      "options": [
+        "Pour éviter que toutes les requêtes recalculent en parallèle et saturent le backend",
+        "Pour équilibrer la charge sur plusieurs serveurs",
+        "Pour vider les cookies",
+        "Pour forcer un 304"
+      ],
+      "correct_answers": [
+        "Pour éviter que toutes les requêtes recalculent en parallèle et saturent le backend"
+      ],
+      "explanation": "Une seule requête recalculera, les autres continueront d'utiliser la valeur actuelle."
     }
   ]
 }

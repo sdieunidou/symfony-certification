@@ -76,6 +76,81 @@
         "En ajoutant l'ID du token dans la liste `stateless_token_ids` de `framework.yaml`."
       ],
       "explanation": "Cela permet de générer des tokens signés qui n'ont pas besoin d'être stockés en session, permettant la mise en cache de la page."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi un formulaire CSRF stateful ne doit pas être placé sur une page cacheable publiquement ?",
+      "type": "single_choice",
+      "options": [
+        "Le token du premier utilisateur serait mis en cache et réutilisé par tous → erreurs CSRF",
+        "Parce que le HTML serait chiffré",
+        "Parce que le cache invalide la session",
+        "Parce que Twig ne permet pas les tokens en cache"
+      ],
+      "correct_answers": [
+        "Le token du premier utilisateur serait mis en cache et réutilisé par tous → erreurs CSRF"
+      ],
+      "explanation": "Solution : ESI/AJAX ou CSRF stateless."
+    },
+    {
+      "id": 7,
+      "question": "Quel champ génère automatiquement un Form Symfony pour le CSRF ?",
+      "type": "single_choice",
+      "options": [
+        "`_token`",
+        "`csrf`",
+        "`_csrf`",
+        "`token_csrf`"
+      ],
+      "correct_answers": [
+        "`_token`"
+      ],
+      "explanation": "Nom configurable via `csrf_field_name`."
+    },
+    {
+      "id": 8,
+      "question": "Quelle fonction Twig génère un token CSRF ?",
+      "type": "single_choice",
+      "options": [
+        "`csrf_token('id')`",
+        "`token_csrf()`",
+        "`csrf()`",
+        "`form_csrf('id')`"
+      ],
+      "correct_answers": [
+        "`csrf_token('id')`"
+      ],
+      "explanation": "Elle doit matcher l'ID utilisé côté contrôleur."
+    },
+    {
+      "id": 9,
+      "question": "Quel attribut PHP valide automatiquement un token CSRF avant d'exécuter l'action ?",
+      "type": "single_choice",
+      "options": [
+        "`#[IsCsrfTokenValid('id', tokenKey: 'token')]`",
+        "`#[CsrfCheck]`",
+        "`#[ValidateCsrf]`",
+        "`#[CheckToken]`"
+      ],
+      "correct_answers": [
+        "`#[IsCsrfTokenValid('id', tokenKey: 'token')]`"
+      ],
+      "explanation": "Introduit en Symfony 7.1."
+    },
+    {
+      "id": 10,
+      "question": "Quelle différence entre CSRF et XSS ?",
+      "type": "single_choice",
+      "options": [
+        "CSRF force une requête authentifiée; XSS injecte du script dans la page pour voler des infos",
+        "Aucune",
+        "CSRF est côté serveur uniquement",
+        "XSS est protégé par CSRF"
+      ],
+      "correct_answers": [
+        "CSRF force une requête authentifiée; XSS injecte du script dans la page pour voler des infos"
+      ],
+      "explanation": "Les protections et impacts diffèrent."
     }
   ]
 }

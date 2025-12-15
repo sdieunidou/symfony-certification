@@ -91,6 +91,66 @@
         "La verbosité du header `X-Symfony-Cache` (none, short, full)."
       ],
       "explanation": "`full` ajoute des détails sur le corps de la réponse, `short` donne juste HIT/MISS."
+    },
+    {
+      "id": 7,
+      "question": "Où le reverse proxy Symfony stocke-t-il son cache par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "`var/cache/<env>/http_cache`",
+        "En mémoire partagée",
+        "Dans Redis",
+        "Dans /tmp/http"
+      ],
+      "correct_answers": [
+        "`var/cache/<env>/http_cache`"
+      ],
+      "explanation": "Le store par défaut est un filesystem store sous var/cache."
+    },
+    {
+      "id": 8,
+      "question": "Comment purger le cache du reverse proxy Symfony côté HTTP ?",
+      "type": "single_choice",
+      "options": [
+        "En envoyant une requête PURGE (configurée) vers le proxy",
+        "En exécutant cache:clear",
+        "Impossible",
+        "En supprimant var/log"
+      ],
+      "correct_answers": [
+        "En envoyant une requête PURGE (configurée) vers le proxy"
+      ],
+      "explanation": "HttpCache supporte les PURGE pour invalider une ressource."
+    },
+    {
+      "id": 9,
+      "question": "Quel header d'annonce du proxy active le support ESI côté Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "`Surrogate-Capability`",
+        "`X-Proxy`",
+        "`Accept-Encoding`",
+        "`Cache-Status`"
+      ],
+      "correct_answers": [
+        "`Surrogate-Capability`"
+      ],
+      "explanation": "Sans ce header (et trusted_proxies), Symfony ne génère pas de balises ESI."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi HttpCache reste moins performant que Varnish pour du très haut trafic ?",
+      "type": "single_choice",
+      "options": [
+        "HttpCache instancie PHP à chaque requête, Varnish est en C et garde tout en RAM",
+        "HttpCache ne supporte pas les ESI",
+        "HttpCache ne gère pas les 304",
+        "Varnish chiffre les réponses"
+      ],
+      "correct_answers": [
+        "HttpCache instancie PHP à chaque requête, Varnish est en C et garde tout en RAM"
+      ],
+      "explanation": "D'où la préférence pour Varnish/CDN en haute charge."
     }
   ]
 }

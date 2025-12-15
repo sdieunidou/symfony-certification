@@ -76,6 +76,81 @@
         "Un Event Listener sur l'événement `kernel.request`."
       ],
       "explanation": "Il intercepte la requête très tôt pour vérifier l'authentification avant que le contrôleur ne soit atteint."
+    },
+    {
+      "id": 6,
+      "question": "Que stocke la session en matière de sécurité ?",
+      "type": "single_choice",
+      "options": [
+        "Le token de sécurité (sérialisé) pour éviter de réauthentifier à chaque requête stateful",
+        "Les mots de passe en clair",
+        "Les rôles uniquement",
+        "Rien, la session n'est pas utilisée"
+      ],
+      "correct_answers": [
+        "Le token de sécurité (sérialisé) pour éviter de réauthentifier à chaque requête stateful"
+      ],
+      "explanation": "Le token est rechargé puis rafraîchi via le provider."
+    },
+    {
+      "id": 7,
+      "question": "Dans un firewall `stateless: true`, le token est-il stocké en session ?",
+      "type": "single_choice",
+      "options": [
+        "Non, il doit être fourni à chaque requête (ex: JWT)",
+        "Oui",
+        "Uniquement en dev",
+        "Uniquement pour remember-me"
+      ],
+      "correct_answers": [
+        "Non, il doit être fourni à chaque requête (ex: JWT)"
+      ],
+      "explanation": "Stateless supprime toute persistance côté serveur."
+    },
+    {
+      "id": 8,
+      "question": "Quel composant vérifie les badges d'un Passport (CSRF, Password, User) ?",
+      "type": "single_choice",
+      "options": [
+        "AuthenticationManager via le `CheckPassportEvent`",
+        "TokenStorage",
+        "FirewallMap",
+        "RoleHierarchy"
+      ],
+      "correct_answers": [
+        "AuthenticationManager via le `CheckPassportEvent`"
+      ],
+      "explanation": "Des listeners résolvent chaque badge sur cet event."
+    },
+    {
+      "id": 9,
+      "question": "Quel service utiliser dans un service métier pour vérifier un droit ?",
+      "type": "single_choice",
+      "options": [
+        "AuthorizationCheckerInterface",
+        "TokenStorageInterface",
+        "FirewallContext",
+        "UserProviderInterface"
+      ],
+      "correct_answers": [
+        "AuthorizationCheckerInterface"
+      ],
+      "explanation": "Expose `isGranted()`."
+    },
+    {
+      "id": 10,
+      "question": "Quels sont les trois éléments majeurs du flux AuthN/AuthZ en Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Firewall + Authenticator/Passport + Voters/AccessDecisionManager",
+        "Router + Controller + Twig",
+        "Kernel + Cache + Logger",
+        "DI Container + Messenger + Mailer"
+      ],
+      "correct_answers": [
+        "Firewall + Authenticator/Passport + Voters/AccessDecisionManager"
+      ],
+      "explanation": "Firewall identifie, Passport transporte, Voters décident."
     }
   ]
 }

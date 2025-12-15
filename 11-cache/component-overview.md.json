@@ -76,6 +76,81 @@
         "Il stocke les données dans la mémoire du processus PHP courant, elles sont perdues à la fin de la requête (utile pour les tests)."
       ],
       "explanation": "C'est l'adapter idéal pour l'environnement de test (`APP_ENV=test`) pour garantir l'isolation entre les tests."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi est-il déconseillé de remplacer `cache.adapter.system` par Redis ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que system est optimisé pour des fichiers PHP précompilés/OPcache et un accès ultra rapide local",
+        "Parce que Redis ne supporte pas PSR-6",
+        "Parce que Redis est non persistant",
+        "Parce que Symfony l'interdit"
+      ],
+      "correct_answers": [
+        "Parce que system est optimisé pour des fichiers PHP précompilés/OPcache et un accès ultra rapide local"
+      ],
+      "explanation": "Mettre Redis peut rallonger le boot (I/O réseau) pour les métadonnées internes."
+    },
+    {
+      "id": 7,
+      "question": "Quel bénéfice apporte `$cache->get('key', callback)` des Cache Contracts ?",
+      "type": "single_choice",
+      "options": [
+        "Gestion automatique du 'get or compute' avec protection contre le Stampede",
+        "Pas de sérialisation",
+        "Obligation d'utiliser PSR-6",
+        "Suppression des TTL"
+      ],
+      "correct_answers": [
+        "Gestion automatique du 'get or compute' avec protection contre le Stampede"
+      ],
+      "explanation": "Le callback est exécuté au besoin, avec verrou pour éviter les recalculs concurrents."
+    },
+    {
+      "id": 8,
+      "question": "Depuis Symfony 7.1, quel adapter supporte un DSN comme provider supplémentaire ?",
+      "type": "single_choice",
+      "options": [
+        "PDO/DBAL adapter",
+        "Array",
+        "APCu",
+        "Memcached"
+      ],
+      "correct_answers": [
+        "PDO/DBAL adapter"
+      ],
+      "explanation": "Le provider peut être un DSN pour le cache SQL."
+    },
+    {
+      "id": 9,
+      "question": "Quel service est autowiré par défaut quand on tape-hint `CacheInterface` ?",
+      "type": "single_choice",
+      "options": [
+        "`cache.app`",
+        "`cache.system`",
+        "`cache.default`",
+        "Aucun, il faut configurer"
+      ],
+      "correct_answers": [
+        "`cache.app`"
+      ],
+      "explanation": "CacheInterface mappe au pool applicatif principal."
+    },
+    {
+      "id": 10,
+      "question": "Que permet `TagAwareAdapter` au-dessus d'un adapter classique ?",
+      "type": "single_choice",
+      "options": [
+        "Associer des tags à des items pour invalider en masse",
+        "Chiffrer les valeurs",
+        "Désactiver la sérialisation",
+        "Faire du preloading"
+      ],
+      "correct_answers": [
+        "Associer des tags à des items pour invalider en masse"
+      ],
+      "explanation": "L'invalidation par tags est clé pour les caches de données relationnelles."
     }
   ]
 }

@@ -76,6 +76,81 @@
         "`PasswordHasherAwareInterface`"
       ],
       "explanation": "Cette interface oblige à implémenter `getPasswordHasherName()` qui retourne le nom du hasher configuré dans `security.yaml`."
+    },
+    {
+      "id": 6,
+      "question": "Comment configurer une migration de hash depuis md5 vers un algo moderne ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `migrate_from` dans `password_hashers` (md5 -> auto)",
+        "En supprimant les anciens mots de passe",
+        "En stockant en clair",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Avec `migrate_from` dans `password_hashers` (md5 -> auto)"
+      ],
+      "explanation": "Associé à `PasswordUpgraderInterface`, cela met à jour au login."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi réduire le coût des hashers en environnement de test ?",
+      "type": "single_choice",
+      "options": [
+        "Pour accélérer la suite de tests",
+        "Pour plus de sécurité",
+        "Pour empêcher le login",
+        "Pour chiffrer les logs"
+      ],
+      "correct_answers": [
+        "Pour accélérer la suite de tests"
+      ],
+      "explanation": "On baisse cost/time_cost/memory_cost dans `config/packages/test/security.yaml`."
+    },
+    {
+      "id": 8,
+      "question": "Quelle interface doit implémenter une entité User qui a un mot de passe stocké ?",
+      "type": "single_choice",
+      "options": [
+        "`PasswordAuthenticatedUserInterface`",
+        "`HasherInterface`",
+        "`Encryptable`",
+        "`AuthUser`"
+      ],
+      "correct_answers": [
+        "`PasswordAuthenticatedUserInterface`"
+      ],
+      "explanation": "Elle expose getPassword pour le hasher."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi ne jamais utiliser md5/sha1 pour les mots de passe ?",
+      "type": "single_choice",
+      "options": [
+        "Algorithmes rapides vulnérables au brute-force, non salés",
+        "Incompatibles PHP 8",
+        "Parce qu'ils génèrent des collisions sur les emails",
+        "Parce qu'ils ne sont pas disponibles sur Windows"
+      ],
+      "correct_answers": [
+        "Algorithmes rapides vulnérables au brute-force, non salés"
+      ],
+      "explanation": "Toujours utiliser des algos lents adaptés à la résistance GPU/ASIC."
+    },
+    {
+      "id": 10,
+      "question": "Quel attribut permet d'injecter un hasher nommé dans un service (Symfony 7.4+) ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Target('my_hasher_name')] PasswordHasherInterface $hasher`",
+        "`#[Hasher('my_hasher_name')]`",
+        "`#[Named('hasher')]`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`#[Target('my_hasher_name')] PasswordHasherInterface $hasher`"
+      ],
+      "explanation": "L'attribut Target permet de sélectionner le hasher nommé."
     }
   ]
 }

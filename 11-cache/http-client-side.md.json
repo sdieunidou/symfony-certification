@@ -91,6 +91,66 @@
         "Que le cache ne doit JAMAIS servir une réponse périmée (stale), même si le serveur est injoignable (erreur réseau)."
       ],
       "explanation": "Sans cette directive, certains navigateurs pourraient décider de servir une version périmée s'ils n'arrivent pas à contacter le serveur."
+    },
+    {
+      "id": 7,
+      "question": "Quelle directive indique au navigateur qu'il ne doit même pas revalider lors d'un rafraîchissement manuel si le TTL n'est pas expiré ?",
+      "type": "single_choice",
+      "options": [
+        "`immutable`",
+        "`must-revalidate`",
+        "`no-cache`",
+        "`no-store`"
+      ],
+      "correct_answers": [
+        "`immutable`"
+      ],
+      "explanation": "Cache-Control: immutable évite les revalidations pour les assets versionnés."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi `no-store` est-il plus strict que `no-cache` ?",
+      "type": "single_choice",
+      "options": [
+        "no-store interdit tout stockage local, no-cache autorise le stockage mais impose une validation avant usage",
+        "no-cache interdit le stockage, no-store autorise",
+        "Ils sont équivalents",
+        "no-store chiffre la réponse"
+      ],
+      "correct_answers": [
+        "no-store interdit tout stockage local, no-cache autorise le stockage mais impose une validation avant usage"
+      ],
+      "explanation": "no-store est requis pour données sensibles (banque)."
+    },
+    {
+      "id": 9,
+      "question": "Quel impact a `Vary: Cookie` sur une réponse publique ?",
+      "type": "single_choice",
+      "options": [
+        "Il fragmente le cache par valeur de cookie, le rendant quasi inefficace",
+        "Il accélère le cache",
+        "Il force le chiffrement",
+        "Aucun"
+      ],
+      "correct_answers": [
+        "Il fragmente le cache par valeur de cookie, le rendant quasi inefficace"
+      ],
+      "explanation": "Chaque cookie différent crée une version différente, tuant le partage."
+    },
+    {
+      "id": 10,
+      "question": "Comment forcer une réponse publique malgré une session ouverte (en connaissance de cause) ?",
+      "type": "single_choice",
+      "options": [
+        "Appeler `$response->setPublic()` explicitement",
+        "Détruire la session",
+        "Utiliser no-store",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Appeler `$response->setPublic()` explicitement"
+      ],
+      "explanation": "Symfony met private par défaut si session; setPublic() écrase mais attention aux données perso."
     }
   ]
 }

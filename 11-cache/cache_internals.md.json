@@ -75,7 +75,7 @@
       "correct_answers": [
         "`$item->expiresAfter(3600)` (secondes ou DateInterval)"
       ],
-      "explanation": "Il existe aussi `expiresAt(\DateTimeInterface)` pour une date précise."
+      "explanation": "Il existe aussi `expiresAt(\\DateTimeInterface)` pour une date précise."
     },
     {
       "id": 6,
@@ -91,6 +91,66 @@
         "Sérialiser et désérialiser les valeurs PHP pour qu'elles puissent être stockées."
       ],
       "explanation": "Par défaut, le `DefaultMarshaller` utilise `serialize()` de PHP, mais on peut le remplacer (ex: JSON, Encryption)."
+    },
+    {
+      "id": 7,
+      "question": "Quelle différence clé entre PSR-6 et PSR-16 dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-6 est orienté objets (Item/Pool), PSR-16 fournit une API simple `get/set` (SimpleCache).",
+        "PSR-16 supporte le tagging, PSR-6 non.",
+        "PSR-6 est déprécié.",
+        "PSR-16 interdit Redis."
+      ],
+      "correct_answers": [
+        "PSR-6 est orienté objets (Item/Pool), PSR-16 fournit une API simple `get/set` (SimpleCache)."
+      ],
+      "explanation": "Symfony expose les deux, mais recommande les Cache Contracts plus ergonomiques."
+    },
+    {
+      "id": 8,
+      "question": "À quoi sert `ChainAdapter` ?",
+      "type": "single_choice",
+      "options": [
+        "À chaîner plusieurs backends (L1/L2) en lecture/écriture",
+        "À chiffrer les valeurs",
+        "À gérer les tags",
+        "À invalider tout le cache"
+      ],
+      "correct_answers": [
+        "À chaîner plusieurs backends (L1/L2) en lecture/écriture"
+      ],
+      "explanation": "Il permet un cache multi-niveaux : ex Array (RAM) puis Redis (distribué)."
+    },
+    {
+      "id": 9,
+      "question": "Que garantit le namespacing des pools ?",
+      "type": "single_choice",
+      "options": [
+        "Qu'une clé d'un pool ne peut écraser celle d'un autre même backend",
+        "Le chiffrement",
+        "L'absence de sérialisation",
+        "La suppression automatique des clés expirées"
+      ],
+      "correct_answers": [
+        "Qu'une clé d'un pool ne peut écraser celle d'un autre même backend"
+      ],
+      "explanation": "Chaque pool préfixe ses clés (hash) assurant isolation logique."
+    },
+    {
+      "id": 10,
+      "question": "Quel risque si vous mettez en cache un objet contenant une ressource non sérialisable (ex: connexion DB) ?",
+      "type": "single_choice",
+      "options": [
+        "Serialization failure et item non stocké",
+        "L'objet est tronqué proprement",
+        "Symfony convertit en JSON automatiquement",
+        "Aucun risque"
+      ],
+      "correct_answers": [
+        "Serialization failure et item non stocké"
+      ],
+      "explanation": "Les ressources/closures ne sont pas sérialisables : le marshaller échoue, l'item n'est pas écrit."
     }
   ]
 }

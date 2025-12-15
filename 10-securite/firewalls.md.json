@@ -76,6 +76,81 @@
         "Non, chaque firewall est isolé. Pour partager l'authentification, il faut qu'ils aient le même `context`."
       ],
       "explanation": "Si vous vous connectez sur le firewall 'main', vous ne serez pas connecté sur le firewall 'admin' à moins d'avoir configuré le même contexte de session."
+    },
+    {
+      "id": 6,
+      "question": "Que fait `security: false` dans un firewall ?",
+      "type": "single_choice",
+      "options": [
+        "Désactive complètement tous les listeners de sécurité pour ce pattern (pas de session, pas d'user)",
+        "Force stateless",
+        "Supprime les rôles",
+        "Active le debug"
+      ],
+      "correct_answers": [
+        "Désactive complètement tous les listeners de sécurité pour ce pattern (pas de session, pas d'user)"
+      ],
+      "explanation": "Utilisé pour profiler/assets en dev."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi `lazy: true` est-il recommandé sur un firewall stateful ?",
+      "type": "single_choice",
+      "options": [
+        "Pour ne charger l'utilisateur/session que si nécessaire, améliorant perf et cacheabilité des pages publiques",
+        "Pour retarder les erreurs",
+        "Pour forcer HTTPS",
+        "Pour désactiver CSRF"
+      ],
+      "correct_answers": [
+        "Pour ne charger l'utilisateur/session que si nécessaire, améliorant perf et cacheabilité des pages publiques"
+      ],
+      "explanation": "Lazy évite de démarrer une session inutilement."
+    },
+    {
+      "id": 8,
+      "question": "Quel paramètre de firewall utiliser pour une API JWT sans session ?",
+      "type": "single_choice",
+      "options": [
+        "`stateless: true`",
+        "`lazy: true`",
+        "`switch_user: true`",
+        "`security: false`"
+      ],
+      "correct_answers": [
+        "`stateless: true`"
+      ],
+      "explanation": "Stateless désactive la session : le token doit être envoyé à chaque requête."
+    },
+    {
+      "id": 9,
+      "question": "Comment limiter l'impersonnation au rôle autorisé ?",
+      "type": "single_choice",
+      "options": [
+        "Donner `ROLE_ALLOWED_TO_SWITCH` à l'admin",
+        "Mettre `switch_user: false`",
+        "Utiliser `IS_IMPERSONATOR`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Donner `ROLE_ALLOWED_TO_SWITCH` à l'admin"
+      ],
+      "explanation": "Le rôle spécial autorise switch_user."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi l'ordre des firewalls est-il critique ?",
+      "type": "single_choice",
+      "options": [
+        "Premier pattern qui matche gagne; mettre le plus spécifique avant le générique",
+        "Parce que Symfony trie par nom",
+        "Aucune importance",
+        "Uniquement pour les roles"
+      ],
+      "correct_answers": [
+        "Premier pattern qui matche gagne; mettre le plus spécifique avant le générique"
+      ],
+      "explanation": "Éviter qu'un firewall générique capture tout (ex: main) avant un firewall /api."
     }
   ]
 }
