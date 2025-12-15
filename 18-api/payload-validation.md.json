@@ -4,63 +4,159 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle contrainte de validation est cruciale pour activer la validation en cascade sur les sous-objets (ex: valider l'objet `Address` imbriqué dans l'objet `User`) ?",
+      "question": "Quelle différence entre validation 400 et 422 dans une API ?",
       "type": "single_choice",
       "options": [
-        "`#[Assert\\Cascade]`",
+        "400 = JSON mal formé (parse error), 422 = JSON valide mais données non conformes aux règles métier",
+        "422 = deprecated",
+        "400 = server error",
+        "Aucune"
+      ],
+      "correct_answers": [
+        "400 = JSON mal formé (parse error), 422 = JSON valide mais données non conformes aux règles métier"
+      ],
+      "explanation": "400 pour syntaxe invalide, 422 pour violation métier/validation."
+    },
+    {
+      "id": 2,
+      "question": "Quelle contrainte déclenche la validation en cascade des sous-objets ?",
+      "type": "single_choice",
+      "options": [
         "`#[Assert\\Valid]`",
-        "`#[Assert\\Recursive]`",
+        "`#[Assert\\Cascade]`",
+        "`#[Assert\\Nested]`",
         "`#[Assert\\All]`"
       ],
       "correct_answers": [
         "`#[Assert\\Valid]`"
       ],
-      "explanation": "Sans `#[Assert\\Valid]`, le validateur ne descendra pas dans les propriétés objet pour vérifier leurs propres contraintes."
-    },
-    {
-      "id": 2,
-      "question": "Quelle est la différence sémantique entre une erreur HTTP 400 et une erreur HTTP 422 ?",
-      "type": "single_choice",
-      "options": [
-        "400 est pour les erreurs serveur, 422 pour le client.",
-        "400 indique une requête mal formée syntaxiquement (ex: JSON invalide), 422 indique une requête bien formée mais avec des erreurs sémantiques (ex: validation échouée).",
-        "422 est déprécié.",
-        "Il n'y a aucune différence."
-      ],
-      "correct_answers": [
-        "400 indique une requête mal formée syntaxiquement (ex: JSON invalide), 422 indique une requête bien formée mais avec des erreurs sémantiques (ex: validation échouée)."
-      ],
-      "explanation": "Le code 422 (Unprocessable Entity) est le standard pour les erreurs de validation métier."
+      "explanation": "Valid force la descente dans l'objet imbriqué."
     },
     {
       "id": 3,
-      "question": "Quel standard RFC est supporté nativement par Symfony pour structurer les réponses d'erreur d'API en JSON ?",
+      "question": "Quel standard d'erreur JSON Symfony peut produire nativement ?",
       "type": "single_choice",
       "options": [
-        "RFC 7807 (Problem Details for HTTP APIs)",
-        "JSON:API",
-        "GraphQL Error Format",
-        "SOAP Fault"
+        "RFC 7807 Problem Details",
+        "SOAP Fault",
+        "WSDL",
+        "RAML"
       ],
       "correct_answers": [
-        "RFC 7807 (Problem Details for HTTP APIs)"
+        "RFC 7807 Problem Details"
       ],
-      "explanation": "Ce format standardise les champs `type`, `title`, `status`, `detail` pour décrire une erreur."
+      "explanation": "Le format Problem Details structure type/title/status/detail."
     },
     {
       "id": 4,
-      "question": "Pourquoi utilise-t-on souvent le Validator directement sur des DTOs en API plutôt que de passer par le composant Form ?",
+      "question": "Pourquoi éviter le composant Form pour valider des payloads JSON simples ?",
       "type": "single_choice",
       "options": [
-        "Le composant Form est payant.",
-        "Le composant Form est orienté HTML et peut être trop lourd/complexe pour une simple désérialisation JSON.",
-        "Le Validator est plus rapide.",
-        "Les DTOs ne supportent pas les Formulaires."
+        "Form est orienté HTML et lourd ; Serializer/Validator ou MapRequestPayload sont plus directs",
+        "Form ne fonctionne pas en API",
+        "Form n'a pas de validation",
+        "Form est payant"
       ],
       "correct_answers": [
-        "Le composant Form est orienté HTML et peut être trop lourd/complexe pour une simple désérialisation JSON."
+        "Form est orienté HTML et lourd ; Serializer/Validator ou MapRequestPayload sont plus directs"
       ],
-      "explanation": "Bien que Form puisse gérer les APIs, la combinaison Serializer + Validator (ou `MapRequestPayload`) est souvent plus directe et 'API-first'."
+      "explanation": "On préfère un flux API-first simple sans le surcoût des Form."
+    },
+    {
+      "id": 5,
+      "question": "Quelles étapes couvre `MapRequestPayload` automatiquement ?",
+      "type": "multiple_choice",
+      "options": [
+        "Désérialisation du body vers l'objet",
+        "Validation via Validator",
+        "Lève une exception 422 en cas de violations",
+        "Conversion auto en entité Doctrine"
+      ],
+      "correct_answers": [
+        "Désérialisation du body vers l'objet",
+        "Validation via Validator",
+        "Lève une exception 422 en cas de violations"
+      ],
+      "explanation": "Il gère mapping + validation + exception 422 ; la persistance reste à faire."
+    },
+    {
+      "id": 6,
+      "question": "Quels codes HTTP liés aux formats sont typiquement associés aux erreurs de validation ?",
+      "type": "multiple_choice",
+      "options": [
+        "400 pour JSON mal formé",
+        "415 pour Content-Type non supporté",
+        "422 pour données invalides mais bien formées",
+        "500 systématique"
+      ],
+      "correct_answers": [
+        "400 pour JSON mal formé",
+        "415 pour Content-Type non supporté",
+        "422 pour données invalides mais bien formées"
+      ],
+      "explanation": "400/415/422 couvrent parse, media type, validation."
+    },
+    {
+      "id": 7,
+      "question": "À quoi sert `#[Assert\\Choice]` dans un DTO ?",
+      "type": "single_choice",
+      "options": [
+        "Limiter les valeurs autorisées (enum-like)",
+        "Forcer un type numérique",
+        "Valider un email",
+        "Gérer la cascade"
+      ],
+      "correct_answers": [
+        "Limiter les valeurs autorisées (enum-like)"
+      ],
+      "explanation": "Choice restreint le set de valeurs acceptées."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi appliquer `#[Assert\\Type]` peut être utile même avec le typage PHP ?",
+      "type": "single_choice",
+      "options": [
+        "Pour contrôler des types scalaires sur des valeurs mal typées venant du JSON (ex: string au lieu d'int)",
+        "Pour accélérer le CPU",
+        "Pour remplacer le Serializer",
+        "Pour supprimer les warnings"
+      ],
+      "correct_answers": [
+        "Pour contrôler des types scalaires sur des valeurs mal typées venant du JSON (ex: string au lieu d'int)"
+      ],
+      "explanation": "Type vérifie les valeurs après désérialisation."
+    },
+    {
+      "id": 9,
+      "question": "Comment construire une réponse 422 structurée manuellement ?",
+      "type": "single_choice",
+      "options": [
+        "Boucler sur les `ConstraintViolation` et retourner un JSON `violations` avec status 422",
+        "Retourner 200 avec un message",
+        "Lever une FatalError",
+        "Utiliser Twig"
+      ],
+      "correct_answers": [
+        "Boucler sur les `ConstraintViolation` et retourner un JSON `violations` avec status 422"
+      ],
+      "explanation": "Pattern classique : lister field/message et répondre 422."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi valider tôt (fail fast) avant la logique métier ou la BDD ?",
+      "type": "multiple_choice",
+      "options": [
+        "Pour éviter des effets de bord (écriture BDD) avec des données invalides",
+        "Pour fournir un feedback rapide et clair au client",
+        "Pour économiser des ressources serveur",
+        "Pour forcer un timeout"
+      ],
+      "correct_answers": [
+        "Pour éviter des effets de bord (écriture BDD) avec des données invalides",
+        "Pour fournir un feedback rapide et clair au client",
+        "Pour économiser des ressources serveur"
+      ],
+      "explanation": "Valider en amont protège la logique et réduit le coût serveur."
     }
   ]
 }

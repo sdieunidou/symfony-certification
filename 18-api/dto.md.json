@@ -4,63 +4,161 @@
   "questions": [
     {
       "id": 1,
-      "question": "Qu'est-ce qu'un DTO (Data Transfer Object) ?",
-      "type": "single_choice",
+      "question": "Quels objectifs principaux couvre un DTO en API ?",
+      "type": "multiple_choice",
       "options": [
-        "Une entité Doctrine.",
-        "Un objet simple (POPO) utilisé pour transférer des données entre des sous-systèmes (ex: entre l'API et le Contrôleur), sans logique métier complexe.",
-        "Un service Symfony.",
-        "Une table de base de données."
+        "Séparer le contrat d'API du modèle de persistance",
+        "Limiter le mass assignment sur les entités",
+        "Adapter le format d'entrée/sortie (ex: confirm_password vs passwordHash)",
+        "Améliorer la vitesse du GC"
       ],
       "correct_answers": [
-        "Un objet simple (POPO) utilisé pour transférer des données entre des sous-systèmes (ex: entre l'API et le Contrôleur), sans logique métier complexe."
+        "Séparer le contrat d'API du modèle de persistance",
+        "Limiter le mass assignment sur les entités",
+        "Adapter le format d'entrée/sortie (ex: confirm_password vs passwordHash)"
       ],
-      "explanation": "Le DTO sert de conteneur de données pour structurer l'entrée/sortie de l'API indépendamment du modèle de persistance."
+      "explanation": "DTO = tampon contractuel, sécurité et adaptation de format."
     },
     {
       "id": 2,
-      "question": "Quel attribut Symfony (6.3+) permet de mapper et valider automatiquement le corps JSON d'une requête vers un objet DTO typé ?",
+      "question": "Quel attribut mappe et valide le corps JSON vers un DTO en Symfony 6.3+ ?",
       "type": "single_choice",
       "options": [
-        "`#[MapQueryString]`",
         "`#[MapRequestPayload]`",
+        "`#[MapQueryString]`",
         "`#[RequestBody]`",
         "`#[MapEntity]`"
       ],
       "correct_answers": [
         "`#[MapRequestPayload]`"
       ],
-      "explanation": "Cet attribut gère la désérialisation du Body et la validation (via le Validator component) en une seule étape."
+      "explanation": "MapRequestPayload orchestre désérialisation + validation du body."
     },
     {
       "id": 3,
-      "question": "Pourquoi est-il préférable d'utiliser des DTOs plutôt que des Entités directement dans une API ?",
-      "type": "single_choice",
+      "question": "Quelles propriétés recommandées pour un DTO moderne sont citées ?",
+      "type": "multiple_choice",
       "options": [
-        "Pour des raisons de performance uniquement.",
-        "Pour éviter le 'Mass Assignment' (sécurité), découpler l'API de la base de données (stabilité) et gérer les différences de format.",
-        "C'est obligatoire dans Symfony.",
-        "Les entités ne peuvent pas être sérialisées."
+        "Immuabilité (`readonly`)",
+        "Typage strict",
+        "Annotations/attributs de validation",
+        "Propriétés publiques non typées"
       ],
       "correct_answers": [
-        "Pour éviter le 'Mass Assignment' (sécurité), découpler l'API de la base de données (stabilité) et gérer les différences de format."
+        "Immuabilité (`readonly`)",
+        "Typage strict",
+        "Annotations/attributs de validation"
       ],
-      "explanation": "Le découplage est essentiel pour maintenir une API stable même si le schéma de base de données change."
+      "explanation": "DTOs immuables, typés et validés simplifient le flux et la sécurité."
     },
     {
       "id": 4,
-      "question": "Quelle réponse HTTP Symfony retourne-t-il automatiquement si la validation d'un DTO mappé via `#[MapRequestPayload]` échoue ?",
+      "question": "Que se passe-t-il si la validation échoue lors du mapping payload -> DTO ?",
       "type": "single_choice",
       "options": [
-        "400 Bad Request",
-        "422 Unprocessable Entity (avec la liste des erreurs)",
-        "500 Internal Server Error",
-        "403 Forbidden"
+        "Symfony jette une `UnprocessableEntityHttpException` transformée en 422 avec violations",
+        "Symfony renvoie 500",
+        "Symfony ignore les erreurs",
+        "Symfony crée la ressource quand même"
       ],
       "correct_answers": [
-        "422 Unprocessable Entity (avec la liste des erreurs)"
+        "Symfony jette une `UnprocessableEntityHttpException` transformée en 422 avec violations"
       ],
-      "explanation": "Le code 422 est le standard pour indiquer que la syntaxe est correcte mais que le contenu sémantique (validation) est invalide."
+      "explanation": "L'échec de validation retourne 422 + détails des violations."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert `#[MapQueryString]` ?",
+      "type": "single_choice",
+      "options": [
+        "Mapper les paramètres de query (GET) vers un objet (filtres/pagination)",
+        "Mapper le body JSON",
+        "Mapper un fichier upload",
+        "Mapper les cookies"
+      ],
+      "correct_answers": [
+        "Mapper les paramètres de query (GET) vers un objet (filtres/pagination)"
+      ],
+      "explanation": "MapQueryString cible la query string, utile pour filtres."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi éviter de désérialiser directement un JSON utilisateur sur une entité Doctrine ?",
+      "type": "multiple_choice",
+      "options": [
+        "Risque de mass assignment (ex: isAdmin=true)",
+        "Couplage fort API/BDD (difficile de versionner)",
+        "Données entrantes ne correspondent pas toujours au modèle interne",
+        "Parce que Doctrine refuse le JSON"
+      ],
+      "correct_answers": [
+        "Risque de mass assignment (ex: isAdmin=true)",
+        "Couplage fort API/BDD (difficile de versionner)",
+        "Données entrantes ne correspondent pas toujours au modèle interne"
+      ],
+      "explanation": "DTOs réduisent risques sécurité/BC et ajustent le format."
+    },
+    {
+      "id": 7,
+      "question": "Quelle différence entre validation 400 et 422 dans ce contexte ?",
+      "type": "single_choice",
+      "options": [
+        "400 = JSON mal formé (parse error), 422 = JSON valide mais données non conformes aux contraintes",
+        "400 = serveur en panne, 422 = OK",
+        "Aucune différence",
+        "422 = réservé aux DELETE"
+      ],
+      "correct_answers": [
+        "400 = JSON mal formé (parse error), 422 = JSON valide mais données non conformes aux contraintes"
+      ],
+      "explanation": "Parse error → 400 ; validation métier → 422."
+    },
+    {
+      "id": 8,
+      "question": "Comment renvoyer rapidement un JSON de validation custom sans MapRequestPayload ?",
+      "type": "single_choice",
+      "options": [
+        "Valider manuellement avec Validator, boucler sur violations et retourner 422",
+        "Utiliser le composant Form",
+        "Lever toujours 500",
+        "Utiliser Twig"
+      ],
+      "correct_answers": [
+        "Valider manuellement avec Validator, boucler sur violations et retourner 422"
+      ],
+      "explanation": "Exemple dans la doc : validator->validate puis construction d'une réponse 422."
+    },
+    {
+      "id": 9,
+      "question": "Quel est l'impact d'un DTO bien défini sur les tests d'API ?",
+      "type": "multiple_choice",
+      "options": [
+        "Cas de validation testables sans toucher à la BDD",
+        "Schemas OpenAPI alignés (via Model) si réutilisés",
+        "Moins de mocks nécessaires pour les entités",
+        "Oblige à tester le front"
+      ],
+      "correct_answers": [
+        "Cas de validation testables sans toucher à la BDD",
+        "Schemas OpenAPI alignés (via Model) si réutilisés",
+        "Moins de mocks nécessaires pour les entités"
+      ],
+      "explanation": "DTOs isolent validation/contract et facilitent tests/docs."
+    },
+    {
+      "id": 10,
+      "question": "Quel pattern de contrôleur correspond au flux JSON -> DTO -> Validation -> Domaine ?",
+      "type": "single_choice",
+      "options": [
+        "Controller fin (thin controller) déléguant au domaine/service",
+        "Controller anémique inutilisable",
+        "Fat controller",
+        "Microkernel"
+      ],
+      "correct_answers": [
+        "Controller fin (thin controller) déléguant au domaine/service"
+      ],
+      "explanation": "DTO + validation précoce permettent un contrôleur mince qui délègue la logique."
     }
   ]
 }

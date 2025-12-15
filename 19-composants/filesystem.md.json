@@ -4,63 +4,156 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle méthode du composant `Filesystem` permet d'écrire le contenu d'un fichier de manière atomique (via un fichier temporaire) pour éviter la corruption en cas de crash ?",
-      "type": "single_choice",
+      "question": "Pourquoi utiliser `Filesystem` plutôt que les fonctions natives ?",
+      "type": "multiple_choice",
       "options": [
-        "`file_put_contents()`",
-        "`write()`",
-        "`dumpFile()`",
-        "`save()`"
+        "Exceptions typées (IOException) au lieu de warnings",
+        "Portabilité Windows/Linux",
+        "Opérations atomiques (dumpFile)",
+        "Helpers de chemins via `Path`"
       ],
       "correct_answers": [
-        "`dumpFile()`"
+        "Exceptions typées (IOException) au lieu de warnings",
+        "Portabilité Windows/Linux",
+        "Opérations atomiques (dumpFile)",
+        "Helpers de chemins via `Path`"
       ],
-      "explanation": "`dumpFile()` écrit d'abord dans un fichier temporaire, puis le renomme. Si le script plante pendant l'écriture, le fichier original n'est pas corrompu."
+      "explanation": "Filesystem normalise erreurs/chemins et fournit des helpers sûrs."
     },
     {
       "id": 2,
-      "question": "Comment copier un DOSSIER entier avec le composant `Filesystem` ?",
+      "question": "Comment écrire un fichier de façon atomique ?",
       "type": "single_choice",
       "options": [
-        "Avec `$filesystem->copy()`.",
-        "Avec `$filesystem->mirror()`.",
-        "Ce n'est pas possible.",
-        "Avec `$filesystem->clone()`."
+        "dumpFile()",
+        "file_put_contents()",
+        "write()",
+        "appendToFile()"
       ],
       "correct_answers": [
-        "Avec `$filesystem->mirror()`."
+        "dumpFile()"
       ],
-      "explanation": "`copy()` est réservé aux fichiers. `mirror()` copie récursivement un répertoire."
+      "explanation": "dumpFile écrit dans un tmp puis renomme (opération atomique POSIX)."
     },
     {
       "id": 3,
-      "question": "Quelle classe utilitaire permet de manipuler les chemins de manière multiplateforme (Windows/Linux) et de gérer les chemins relatifs/absolus ?",
+      "question": "Quelle méthode copie récursivement un dossier ?",
       "type": "single_choice",
       "options": [
-        "`Symfony\\Component\\Filesystem\\Path`",
-        "`Symfony\\Component\\Filesystem\\Url`",
-        "`DirectoryIterator`",
-        "`SplFileInfo`"
+        "mirror()",
+        "copy()",
+        "link()",
+        "symlink()"
       ],
       "correct_answers": [
-        "`Symfony\\Component\\Filesystem\\Path`"
+        "mirror()"
       ],
-      "explanation": "La classe `Path` (introduite récemment) fournit des méthodes statiques comme `join`, `makeAbsolute`, `normalize`..."
+      "explanation": "mirror copie un répertoire entier; copy est pour les fichiers."
     },
     {
       "id": 4,
-      "question": "Quelle exception spécifique le composant lance-t-il en cas d'erreur (ex: permission refusée) ?",
+      "question": "Quelle classe manipule les chemins (join/normalize/relative) de manière multiplateforme ?",
       "type": "single_choice",
       "options": [
-        "`\\Exception`",
-        "`\\RuntimeException`",
-        "`Symfony\\Component\\Filesystem\\Exception\\IOException`",
-        "`\\Error`"
+        "Path",
+        "SplFileInfo",
+        "DirectoryIterator",
+        "Url"
       ],
       "correct_answers": [
-        "`Symfony\\Component\\Filesystem\\Exception\\IOException`"
+        "Path"
       ],
-      "explanation": "Contrairement aux fonctions natives PHP qui émettent des Warnings, le composant utilise des Exceptions typées pour une gestion d'erreur propre."
+      "explanation": "Path fournit join/normalize/makeAbsolute/makeRelative."
+    },
+    {
+      "id": 5,
+      "question": "Quelle exception typée est levée en cas d'erreur (permissions, disque plein) ?",
+      "type": "single_choice",
+      "options": [
+        "IOException (IOExceptionInterface)",
+        "RuntimeException",
+        "Warning",
+        "Error"
+      ],
+      "correct_answers": [
+        "IOException (IOExceptionInterface)"
+      ],
+      "explanation": "Filesystem encapsule les erreurs dans IOException."
+    },
+    {
+      "id": 6,
+      "question": "Comment créer un répertoire récursivement avec droits ?",
+      "type": "single_choice",
+      "options": [
+        "mkdir($path, 0700)",
+        "touchDir()",
+        "link()",
+        "copy()"
+      ],
+      "correct_answers": [
+        "mkdir($path, 0700)"
+      ],
+      "explanation": "Filesystem::mkdir gère la récursivité et les permissions."
+    },
+    {
+      "id": 7,
+      "question": "Comment supprimer fichiers/dossiers (équivalent rm -rf) ?",
+      "type": "single_choice",
+      "options": [
+        "remove(['path1','path2'])",
+        "unlink() seulement",
+        "rmdir() seulement",
+        "mirror()"
+      ],
+      "correct_answers": [
+        "remove(['path1','path2'])"
+      ],
+      "explanation": "remove accepte fichiers et dossiers, tableau ou string."
+    },
+    {
+      "id": 8,
+      "question": "Comment créer un lien symbolique avec fallback copie si non supporté ?",
+      "type": "single_choice",
+      "options": [
+        "symlink(source, link)",
+        "link()",
+        "copy()",
+        "mirror()"
+      ],
+      "correct_answers": [
+        "symlink(source, link)"
+      ],
+      "explanation": "Filesystem::symlink gère la création ou copie selon l'OS."
+    },
+    {
+      "id": 9,
+      "question": "Comment ajuster les timestamps d'un fichier ?",
+      "type": "single_choice",
+      "options": [
+        "touch($file, $mtime, $atime)",
+        "chmod()",
+        "appendToFile()",
+        "dumpFile()"
+      ],
+      "correct_answers": [
+        "touch($file, $mtime, $atime)"
+      ],
+      "explanation": "touch permet de créer/mettre à jour mtime/atime."
+    },
+    {
+      "id": 10,
+      "question": "Comment limiter les risques de directory traversal en normalisant un chemin ?",
+      "type": "single_choice",
+      "options": [
+        "Path::normalize()/canonicalize() pour résoudre `..` et `.`",
+        "Changer d'OS",
+        "Utiliser copy()",
+        "Désactiver les liens"
+      ],
+      "correct_answers": [
+        "Path::normalize()/canonicalize() pour résoudre `..` et `.`"
+      ],
+      "explanation": "La canonicalisation résout les segments suspects."
     }
   ]
 }

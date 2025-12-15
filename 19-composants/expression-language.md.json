@@ -4,63 +4,160 @@
   "questions": [
     {
       "id": 1,
-      "question": "À quoi sert principalement le composant `ExpressionLanguage` ?",
-      "type": "single_choice",
+      "question": "Quels usages courants d'ExpressionLanguage sont cités ?",
+      "type": "multiple_choice",
       "options": [
-        "À traduire l'application.",
-        "À exécuter des expressions logiques dynamiques ('one-liners') de manière sécurisée, souvent utilisées dans la configuration (sécurité, validation, routing).",
-        "À écrire des expressions régulières.",
-        "À compiler du code PHP."
+        "Règles de sécurité/routing/validation en config",
+        "Évaluer une expression 'one-liner' sécurisée",
+        "Compiler des expressions pour les réutiliser (cache)",
+        "Traduire les fichiers YAML"
       ],
       "correct_answers": [
-        "À exécuter des expressions logiques dynamiques ('one-liners') de manière sécurisée, souvent utilisées dans la configuration (sécurité, validation, routing)."
+        "Règles de sécurité/routing/validation en config",
+        "Évaluer une expression 'one-liner' sécurisée",
+        "Compiler des expressions pour les réutiliser (cache)"
       ],
-      "explanation": "Il permet d'avoir de la logique (ex: `user.isAdmin() and object.price < 100`) sans écrire de PHP complet."
+      "explanation": "Expressions dynamiques, compile/evaluate ; pas de traduction YAML."
     },
     {
       "id": 2,
-      "question": "Quelle est la différence entre `evaluate()` et `compile()` ?",
+      "question": "Différence entre `evaluate()` et `compile()` ?",
       "type": "single_choice",
       "options": [
-        "`evaluate` exécute l'expression et retourne le résultat, `compile` transforme l'expression en code PHP pour être mis en cache.",
-        "`evaluate` est pour les maths, `compile` pour les chaînes.",
-        "`compile` est plus lent que `evaluate`.",
-        "Il n'y en a aucune."
+        "evaluate exécute et retourne la valeur ; compile produit du code PHP (pour cache/perf)",
+        "evaluate compile, compile exécute",
+        "compile est toujours plus lent",
+        "Pas de différence"
       ],
       "correct_answers": [
-        "`evaluate` exécute l'expression et retourne le résultat, `compile` transforme l'expression en code PHP pour être mis en cache."
+        "evaluate exécute et retourne la valeur ; compile produit du code PHP (pour cache/perf)"
       ],
-      "explanation": "La compilation est utilisée par Symfony (ex: conteneur de services, routeur) pour la performance en production."
+      "explanation": "compile génère une string PHP utilisable pour du caching."
     },
     {
       "id": 3,
-      "question": "Par défaut, le langage d'expression a-t-il accès aux fonctions PHP natives (comme `exec` ou `file_get_contents`) ?",
+      "question": "Le langage a-t-il accès aux fonctions PHP natives par défaut ?",
       "type": "single_choice",
       "options": [
-        "Oui, toutes.",
-        "Non, il est sandboxé. Seules les fonctions explicitement enregistrées sont disponibles.",
-        "Oui, mais seulement en mode debug.",
-        "Oui, si l'utilisateur est admin."
+        "Non, sandbox : seulement les fonctions/variables enregistrées",
+        "Oui, toutes",
+        "Oui en debug",
+        "Oui si `allow_php_functions=true`"
       ],
       "correct_answers": [
-        "Non, il est sandboxé. Seules les fonctions explicitement enregistrées sont disponibles."
+        "Non, sandbox : seulement les fonctions/variables enregistrées"
       ],
-      "explanation": "C'est ce qui le rend plus sûr que `eval()` : on contrôle strictement ce qui est accessible."
+      "explanation": "ExpressionLanguage limite l'exposition par sécurité."
     },
     {
       "id": 4,
-      "question": "Quelle syntaxe permet de tester si une valeur est présente dans un tableau ?",
+      "question": "Quelle syntaxe pour vérifier l'appartenance à une liste ?",
       "type": "single_choice",
       "options": [
         "`value in [1, 2, 3]`",
-        "`in_array(value, [1, 2, 3])`",
-        "`[1, 2, 3].contains(value)`",
-        "`exists(value, [1, 2, 3])`"
+        "`in_array(value)`",
+        "`[1,2,3].has(value)`",
+        "`exists(value)`"
       ],
       "correct_answers": [
         "`value in [1, 2, 3]`"
       ],
-      "explanation": "L'opérateur `in` est natif au langage d'expression."
+      "explanation": "L'opérateur `in` est natif."
+    },
+    {
+      "id": 5,
+      "question": "Comment ajouter une fonction custom ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `register(name, compiler, evaluator)` ou via un Provider (`ExpressionFunctionProviderInterface`)",
+        "En surchargeant PHP",
+        "Avec un service Twig",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Avec `register(name, compiler, evaluator)` ou via un Provider (`ExpressionFunctionProviderInterface`)"
+      ],
+      "explanation": "register ou registerProvider ajoutent des fonctions custom."
+    },
+    {
+      "id": 6,
+      "question": "Que retourne `compile('1 + 2')` ?",
+      "type": "single_choice",
+      "options": [
+        "Une string de code PHP '(1 + 2)'",
+        "3",
+        "Un AST",
+        "Un booléen"
+      ],
+      "correct_answers": [
+        "Une string de code PHP '(1 + 2)'"
+      ],
+      "explanation": "compile transforme l'expression en code PHP utilisable/cachable."
+    },
+    {
+      "id": 7,
+      "question": "Comment vérifier la validité syntaxique sans exécuter ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `lint()` (ou parse) qui peut lever `SyntaxError`",
+        "En exécutant evaluate",
+        "En utilisant var_dump",
+        "En appelant compile puis eval"
+      ],
+      "correct_answers": [
+        "Avec `lint()` (ou parse) qui peut lever `SyntaxError`"
+      ],
+      "explanation": "lint/parse détecte les erreurs de syntaxe."
+    },
+    {
+      "id": 8,
+      "question": "Quel rôle joue un cache PSR-6 (ex: PhpArrayAdapter) avec ExpressionLanguage ?",
+      "type": "single_choice",
+      "options": [
+        "Stocker les expressions parsées/compilées pour éviter le parsing coûteux",
+        "Stocker les réponses HTTP",
+        "Chiffrer les tokens",
+        "Gérer les sessions"
+      ],
+      "correct_answers": [
+        "Stocker les expressions parsées/compilées pour éviter le parsing coûteux"
+      ],
+      "explanation": "Le cache accélère en évitant re-parse/compile."
+    },
+    {
+      "id": 9,
+      "question": "Quelles composantes internes forment le pipeline ?",
+      "type": "multiple_choice",
+      "options": [
+        "Lexer (tokens)",
+        "Parser (AST)",
+        "Compiler (PHP string)",
+        "Evaluator (exécution AST)"
+      ],
+      "correct_answers": [
+        "Lexer (tokens)",
+        "Parser (AST)",
+        "Compiler (PHP string)",
+        "Evaluator (exécution AST)"
+      ],
+      "explanation": "Le flux est lexer->parser->compiler/evaluator."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi ExpressionLanguage est plus sûr que `eval()` ?",
+      "type": "multiple_choice",
+      "options": [
+        "Variables explicites uniquement",
+        "Pas d'accès implicite aux fonctions PHP ni au FS",
+        "Sandbox limité aux fonctions enregistrées",
+        "Il chiffrerait les résultats"
+      ],
+      "correct_answers": [
+        "Variables explicites uniquement",
+        "Pas d'accès implicite aux fonctions PHP ni au FS",
+        "Sandbox limité aux fonctions enregistrées"
+      ],
+      "explanation": "L'accès est limité à ce qui est exposé, pas d'exécution PHP libre."
     }
   ]
 }

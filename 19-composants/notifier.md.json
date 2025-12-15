@@ -4,65 +4,155 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle est la différence conceptuelle majeure entre le composant `Mailer` et le composant `Notifier` ?",
+      "question": "Différence Mailer vs Notifier ?",
       "type": "single_choice",
       "options": [
-        "Notifier est plus rapide.",
-        "Mailer envoie des emails bruts. Notifier envoie des messages conceptuels (Notification) à un Destinataire (Recipient) via différents canaux (SMS, Chat, Email) choisis selon l'importance.",
-        "Notifier ne supporte pas les emails.",
-        "Mailer est déprécié."
+        "Mailer envoie des emails bruts; Notifier envoie des Notifications à des Recipients via des canaux (sms/chat/email) selon l'importance",
+        "Notifier ne supporte pas l'email",
+        "Mailer choisit automatiquement le canal",
+        "Notifier est déprécié"
       ],
       "correct_answers": [
-        "Mailer envoie des emails bruts. Notifier envoie des messages conceptuels (Notification) à un Destinataire (Recipient) via différents canaux (SMS, Chat, Email) choisis selon l'importance."
+        "Mailer envoie des emails bruts; Notifier envoie des Notifications à des Recipients via des canaux (sms/chat/email) selon l'importance"
       ],
-      "explanation": "Notifier ajoute une couche d'abstraction de haut niveau centrée sur l'utilisateur et l'urgence, pas sur le protocole technique."
+      "explanation": "Notifier ajoute l'abstraction Notification/Recipient/Channel/Importance."
     },
     {
       "id": 2,
-      "question": "Dans la configuration `channel_policy`, si vous définissez `urgent: ['sms', 'email']`, que se passe-t-il pour une notification d'importance 'Urgent' ?",
+      "question": "Que fait `channel_policy` avec `urgent: ['sms','email']` ?",
       "type": "single_choice",
       "options": [
-        "Elle est envoyée par SMS uniquement.",
-        "Elle est envoyée par Email uniquement.",
-        "Elle est envoyée par SMS ET par Email simultanément.",
-        "Elle est envoyée aléatoirement sur l'un des deux."
+        "Envoie sur sms ET email",
+        "Envoie seulement sms",
+        "Envoie seulement email",
+        "Choisit aléatoirement"
       ],
       "correct_answers": [
-        "Elle est envoyée par SMS ET par Email simultanément."
+        "Envoie sur sms ET email"
       ],
-      "explanation": "Le Notifier envoie la notification sur tous les canaux listés pour ce niveau d'importance."
+      "explanation": "Tous les canaux listés pour l'importance sont utilisés."
     },
     {
       "id": 3,
-      "question": "Quelle interface doit implémenter votre entité User pour être utilisée facilement comme destinataire (`Recipient`) dans `Notifier` ?",
+      "question": "Quelle interface pour un destinataire custom ?",
       "type": "single_choice",
       "options": [
-        "`UserInterface`",
-        "`RecipientInterface` (ou `EmailRecipientInterface` / `SmsRecipientInterface`)",
-        "`NotifiableInterface`",
-        "`MessageInterface`"
+        "RecipientInterface (ou EmailRecipientInterface/SmsRecipientInterface)",
+        "UserInterface",
+        "NotifiableInterface",
+        "MessageInterface"
       ],
       "correct_answers": [
-        "`RecipientInterface` (ou `EmailRecipientInterface` / `SmsRecipientInterface`)"
+        "RecipientInterface (ou EmailRecipientInterface/SmsRecipientInterface)"
       ],
-      "explanation": "Ces interfaces obligent l'entité à exposer `getEmail()` ou `getPhone()`, permettant au Notifier de savoir où envoyer le message."
+      "explanation": "Expose getEmail()/getPhone() pour router la notification."
     },
     {
       "id": 4,
-      "question": "Quels types de canaux sont supportés par Notifier ?",
+      "question": "Canaux supportés nativement ?",
       "type": "multiple_choice",
       "options": [
         "Texter (SMS)",
-        "Chatter (Slack, Telegram, Discord)",
-        "Browser / Push (Firebase, Mercure)",
+        "Chatter (Slack/Telegram/Discord)",
+        "Browser/Push (Firebase, Mercure)",
         "Fax"
       ],
       "correct_answers": [
         "Texter (SMS)",
-        "Chatter (Slack, Telegram, Discord)",
-        "Browser / Push (Firebase, Mercure)"
+        "Chatter (Slack/Telegram/Discord)",
+        "Browser/Push (Firebase, Mercure)"
       ],
-      "explanation": "Notifier couvre la plupart des moyens de communication modernes."
+      "explanation": "Fax n'est pas fourni nativement."
+    },
+    {
+      "id": 5,
+      "question": "Comment router par importance ?",
+      "type": "single_choice",
+      "options": [
+        "Configurer channel_policy dans notifier.yaml",
+        "Configurer mailer.yaml",
+        "Utiliser les tags Twig",
+        "Modifier php.ini"
+      ],
+      "correct_answers": [
+        "Configurer channel_policy dans notifier.yaml"
+      ],
+      "explanation": "channel_policy mappe importance -> liste de canaux."
+    },
+    {
+      "id": 6,
+      "question": "Comment envoyer asynchrone avec Messenger ?",
+      "type": "single_choice",
+      "options": [
+        "Router NotificationMessage vers un transport Messenger",
+        "Impossible",
+        "Utiliser sleep()",
+        "Créer un cron"
+      ],
+      "correct_answers": [
+        "Router NotificationMessage vers un transport Messenger"
+      ],
+      "explanation": "Notifier peut dispatcher via Messenger pour l'envoi différé."
+    },
+    {
+      "id": 7,
+      "question": "À quoi servent `admin_recipients` ?",
+      "type": "single_choice",
+      "options": [
+        "Déclarer des destinataires globaux pour les notifications critiques",
+        "Créer des rôles",
+        "Gérer les logs",
+        "Envoyer des emails de confirmation"
+      ],
+      "correct_answers": [
+        "Déclarer des destinataires globaux pour les notifications critiques"
+      ],
+      "explanation": "admin_recipients simplifie l'envoi vers des admins définis en config."
+    },
+    {
+      "id": 8,
+      "question": "Quelle classe représente le message abstrait ?",
+      "type": "single_choice",
+      "options": [
+        "Notification",
+        "MessageInterface",
+        "Email",
+        "SmsMessage uniquement"
+      ],
+      "correct_answers": [
+        "Notification"
+      ],
+      "explanation": "Notification porte sujet/importance/contenu; le Channel l'adapte."
+    },
+    {
+      "id": 9,
+      "question": "Qu'apporte `Recipient` par rapport à une simple adresse email ?",
+      "type": "single_choice",
+      "options": [
+        "Il peut contenir email et/ou téléphone pour router vers plusieurs canaux",
+        "Il chiffre l'adresse",
+        "Il gère le quota",
+        "Rien de plus"
+      ],
+      "correct_answers": [
+        "Il peut contenir email et/ou téléphone pour router vers plusieurs canaux"
+      ],
+      "explanation": "Recipient encapsule les coordonnées multi-canaux."
+    },
+    {
+      "id": 10,
+      "question": "Quel piège avec l'importance si non configurée dans channel_policy ?",
+      "type": "single_choice",
+      "options": [
+        "La notification peut ne partir sur aucun canal",
+        "Elle part toujours sur tous les canaux",
+        "Elle part uniquement par email",
+        "Elle lève toujours une exception"
+      ],
+      "correct_answers": [
+        "La notification peut ne partir sur aucun canal"
+      ],
+      "explanation": "Sans policy pour une importance donnée, aucun canal n'est routé."
     }
   ]
 }

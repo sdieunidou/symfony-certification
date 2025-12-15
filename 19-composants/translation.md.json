@@ -4,78 +4,193 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle est la classe ou fonction recommandée pour créer un message qui sera traduit plus tard (ex: dans une Entité ou DTO) ?",
-      "type": "single_choice",
+      "question": "Quelles sont les manières recommandées de créer un message traduisible sans traduire immédiatement ?",
+      "type": "multiple_choice",
       "options": [
-        "Translator::defer()",
-        "`TranslatableMessage` ou la fonction helper `t()`",
-        "StringReader",
-        "DeferredTranslation"
+        "`new TranslatableMessage('key', params, domain)`",
+        "`t('key', params, domain)`",
+        "`Translator::defer()`",
+        "Stocker directement la chaîne traduite"
       ],
       "correct_answers": [
-        "`TranslatableMessage` ou la fonction helper `t()`"
+        "`new TranslatableMessage('key', params, domain)`",
+        "`t('key', params, domain)`"
       ],
-      "explanation": "Ces objets stockent l'ID, les paramètres et le domaine, et sont traduits automatiquement lorsqu'ils sont passés au filtre `trans` de Twig ou au Translator."
+      "explanation": "TranslatableMessage et le helper t() portent clé/params/domaine et seront traduits plus tard (Twig `|trans`)."
     },
     {
       "id": 2,
-      "question": "Quel format standard Symfony utilise-t-il pour gérer la pluralisation complexe (ex: `one`, `other`) ?",
+      "question": "Quels usages sont adaptés au filtre Twig `|trans` versus au tag `{% trans %}` ?",
+      "type": "multiple_choice",
+      "options": [
+        "`|trans` pour traduire des variables/expressions",
+        "`{% trans %}` pour des blocs de texte statique",
+        "`|trans` pour forcer un domaine custom",
+        "`{% trans %}` pour interpoler du HTML dynamique"
+      ],
+      "correct_answers": [
+        "`|trans` pour traduire des variables/expressions",
+        "`{% trans %}` pour des blocs de texte statique",
+        "`|trans` pour forcer un domaine custom"
+      ],
+      "explanation": "Le filtre est plus flexible sur les paramètres/domaine ; le tag vise le statique."
+    },
+    {
+      "id": 3,
+      "question": "Quels formats de ressources sont mentionnés et dans quels cas les privilégier ?",
+      "type": "multiple_choice",
+      "options": [
+        "YAML pour messages simples (`messages.fr.yaml`)",
+        "XLIFF pour échanges pro avec traducteurs/outils",
+        "PHP arrays pour les fixtures",
+        "CSV obligatoire"
+      ],
+      "correct_answers": [
+        "YAML pour messages simples (`messages.fr.yaml`)",
+        "XLIFF pour échanges pro avec traducteurs/outils"
+      ],
+      "explanation": "La doc cite YAML (simple) et XLIFF (standard industriel)."
+    },
+    {
+      "id": 4,
+      "question": "Quel standard de pluralisation est utilisé par le formatter par défaut ?",
       "type": "single_choice",
       "options": [
-        "Gettext",
         "ICU MessageFormat",
-        "ArrayChoice",
-        "SwitchCase"
+        "PluralRules PHP custom",
+        "Gettext PO",
+        "Switch/case maison"
       ],
       "correct_answers": [
         "ICU MessageFormat"
       ],
-      "explanation": "C'est le standard industriel utilisé par l'extension Intl de PHP. Syntaxe : `{count, plural, =0 {Rien} other {# objets}}`."
-    },
-    {
-      "id": 3,
-      "question": "Dans quel ordre le Translator cherche-t-il une traduction si la locale demandée est 'fr_CA' ?",
-      "type": "single_choice",
-      "options": [
-        "Uniquement `fr_CA`.",
-        "`fr_CA` puis `fr` puis la locale de fallback (ex: `en`).",
-        "`fr` puis `fr_CA`.",
-        "Uniquement dans la locale définie dans `framework.yaml`."
-      ],
-      "correct_answers": [
-        "`fr_CA` puis `fr` puis la locale de fallback (ex: `en`)."
-      ],
-      "explanation": "Symfony gère automatiquement le fallback vers la langue parente (`fr`) puis vers la configuration `fallbacks`."
-    },
-    {
-      "id": 4,
-      "question": "Quelle commande permet de scanner les templates et classes PHP pour mettre à jour les fichiers de traduction ?",
-      "type": "single_choice",
-      "options": [
-        "translation:update",
-        "translation:extract",
-        "translation:dump",
-        "translation:scan"
-      ],
-      "correct_answers": [
-        "translation:extract"
-      ],
-      "explanation": "`php bin/console translation:extract --force fr` extrait les nouvelles clés et les ajoute aux fichiers existants."
+      "explanation": "ICU gère les pluriels complexes et le formatting (IntlMessageFormatter)."
     },
     {
       "id": 5,
-      "question": "Quel composant interne contient l'ensemble des traductions chargées pour une locale donnée ?",
+      "question": "Quel est l'ordre de fallback si la locale est `fr_CA` ?",
       "type": "single_choice",
       "options": [
-        "TranslationBag",
-        "MessageCatalogue",
-        "LoaderResolver",
-        "Dictionary"
+        "`fr_CA` -> `fr` -> locale par défaut (`en` souvent)`",
+        "`fr` -> `fr_CA`",
+        "Uniquement `fr_CA`",
+        "`en` directement"
       ],
       "correct_answers": [
-        "MessageCatalogue"
+        "`fr_CA` -> `fr` -> locale par défaut (`en` souvent)`"
       ],
-      "explanation": "Le `MessageCatalogue` stocke toutes les paires clé-valeur pour une locale et fusionne les catalogues de fallback."
+      "explanation": "Symfony remonte de la locale spécifique vers la générique puis vers la fallback globale."
+    },
+    {
+      "id": 6,
+      "question": "Quels éléments composent le pipeline interne de traduction ?",
+      "type": "multiple_choice",
+      "options": [
+        "LocaleListener pour déterminer la locale de requête",
+        "Loaders (YamlFileLoader, XliffFileLoader...)",
+        "MessageCatalogue (cache + fusion des fallbacks)",
+        "AssetMapper manifest"
+      ],
+      "correct_answers": [
+        "LocaleListener pour déterminer la locale de requête",
+        "Loaders (YamlFileLoader, XliffFileLoader...)",
+        "MessageCatalogue (cache + fusion des fallbacks)"
+      ],
+      "explanation": "Listener -> chargement via loaders -> catalogue/fallback -> formatting."
+    },
+    {
+      "id": 7,
+      "question": "Comment extraire automatiquement les clés manquantes depuis PHP/Twig ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console translation:extract fr --force`",
+        "`php bin/console translation:scan`",
+        "`php bin/console trans:find`",
+        "Éditer manuellement les fichiers"
+      ],
+      "correct_answers": [
+        "`php bin/console translation:extract fr --force`"
+      ],
+      "explanation": "La commande extrait et alimente les fichiers du domaine cible."
+    },
+    {
+      "id": 8,
+      "question": "Quels domaines par défaut sont cités et à quoi servent-ils ?",
+      "type": "multiple_choice",
+      "options": [
+        "`messages` pour le général",
+        "`validators` pour les messages de validation",
+        "`security` pour les messages liés à la sécurité",
+        "`assets` pour les noms de fichiers"
+      ],
+      "correct_answers": [
+        "`messages` pour le général",
+        "`validators` pour les messages de validation",
+        "`security` pour les messages liés à la sécurité"
+      ],
+      "explanation": "Les domaines organisent les clés ; `assets` n'est pas un domaine natif."
+    },
+    {
+      "id": 9,
+      "question": "Quelles bonnes pratiques de perf sont rappelées ?",
+      "type": "multiple_choice",
+      "options": [
+        "Ne pas traduire inutilement dans une boucle serrée",
+        "Profiter du cache de catalogue généré en PHP",
+        "Éviter d'instancier un nouveau Translator par requête",
+        "Forcer une extraction à chaque requête"
+      ],
+      "correct_answers": [
+        "Ne pas traduire inutilement dans une boucle serrée",
+        "Profiter du cache de catalogue généré en PHP",
+        "Éviter d'instancier un nouveau Translator par requête"
+      ],
+      "explanation": "Catalogue caché, Translator partagé ; limiter les trans répétitives en boucle."
+    },
+    {
+      "id": 10,
+      "question": "Comment nommer les fichiers de traduction et où les placer ?",
+      "type": "single_choice",
+      "options": [
+        "`translations/<domaine>.<locale>.<format>` (ex: messages.fr.yaml)",
+        "`config/<locale>/<domaine>.yaml` obligatoire",
+        "`var/trans/<locale>.php`",
+        "`translations/<locale>/<domaine>.php` uniquement"
+      ],
+      "correct_answers": [
+        "`translations/<domaine>.<locale>.<format>` (ex: messages.fr.yaml)"
+      ],
+      "explanation": "Symfony charge `translations/` avec la convention domaine.locale.format."
+    },
+    {
+      "id": 11,
+      "question": "Pourquoi typer sur `TranslatorInterface` (Contracts) plutôt que l'implémentation concrète ?",
+      "type": "single_choice",
+      "options": [
+        "Pour permettre le remplacement (ex: décorateurs, faux pour tests) et respecter l'abstraction",
+        "Parce que l'implémentation ne supporte pas l'autowiring",
+        "Parce que les contrats ne gèrent pas les domaines",
+        "Pour forcer le cache"
+      ],
+      "correct_answers": [
+        "Pour permettre le remplacement (ex: décorateurs, faux pour tests) et respecter l'abstraction"
+      ],
+      "explanation": "Le contrat facilite la substitution et évite le couplage à une implémentation."
+    },
+    {
+      "id": 12,
+      "question": "Quel piège courant avec ICU MessageFormat doit-on anticiper ?",
+      "type": "single_choice",
+      "options": [
+        "Oublier d'échapper les accolades `{}` dans les messages dynamiques",
+        "ICU ne supporte pas les pluriels",
+        "ICU nécessite YAML uniquement",
+        "ICU ignore les paramètres nommés"
+      ],
+      "correct_answers": [
+        "Oublier d'échapper les accolades `{}` dans les messages dynamiques"
+      ],
+      "explanation": "ICU utilise les accolades pour la syntaxe ; les accolades littérales doivent être doublées."
     }
   ]
 }

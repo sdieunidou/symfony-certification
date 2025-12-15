@@ -4,63 +4,162 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est le premier événement déclenché lors du traitement d'une requête par le HttpKernel ?",
-      "type": "single_choice",
+      "question": "Quel est l'ordre des événements principaux (quand une Response est retournée) ?",
+      "type": "multiple_choice",
       "options": [
-        "`kernel.controller`",
-        "`kernel.request`",
-        "`kernel.view`",
-        "`kernel.response`"
+        "kernel.request",
+        "kernel.controller",
+        "kernel.controller_arguments",
+        "kernel.view (si pas de Response)",
+        "kernel.response",
+        "kernel.terminate"
       ],
       "correct_answers": [
-        "`kernel.request`"
+        "kernel.request",
+        "kernel.controller",
+        "kernel.controller_arguments",
+        "kernel.view (si pas de Response)",
+        "kernel.response",
+        "kernel.terminate"
       ],
-      "explanation": "C'est l'événement initial, avant même que le contrôleur ne soit déterminé."
+      "explanation": "Connaître l'ordre exact est clé pour intercepter au bon moment."
     },
     {
       "id": 2,
-      "question": "À quel moment l'événement `kernel.view` est-il déclenché ?",
+      "question": "Quand `kernel.view` est-il déclenché ?",
       "type": "single_choice",
       "options": [
-        "Toujours après l'exécution du contrôleur.",
-        "Uniquement si le contrôleur ne retourne PAS un objet `Response` (ex: il retourne un tableau de données).",
-        "Avant le rendu Twig.",
-        "En cas d'erreur."
+        "Uniquement si le contrôleur ne retourne pas une Response",
+        "Toujours",
+        "Avant le routing",
+        "Après terminate"
       ],
       "correct_answers": [
-        "Uniquement si le contrôleur ne retourne PAS un objet `Response` (ex: il retourne un tableau de données)."
+        "Uniquement si le contrôleur ne retourne pas une Response"
       ],
-      "explanation": "Il sert à transformer la valeur de retour brute (ex: DTO, Array) en une `Response` HTTP valide (ex: JSON serialization)."
+      "explanation": "Il sert à transformer une valeur (array/DTO) en Response."
     },
     {
       "id": 3,
-      "question": "Quel événement est déclenché APRÈS que la réponse a été envoyée au client, permettant d'effectuer des tâches lourdes sans faire attendre l'utilisateur ?",
+      "question": "Quel événement survient après l'envoi de la réponse au client ?",
       "type": "single_choice",
       "options": [
-        "`kernel.finish_request`",
-        "`kernel.terminate`",
-        "`kernel.response`",
-        "`kernel.close`"
+        "kernel.terminate",
+        "kernel.response",
+        "kernel.view",
+        "kernel.exception"
       ],
       "correct_answers": [
-        "`kernel.terminate`"
+        "kernel.terminate"
       ],
-      "explanation": "`kernel.terminate` intervient après `fastcgi_finish_request()`, donc la connexion avec le client est close."
+      "explanation": "terminate est exécuté après fastcgi_finish_request."
     },
     {
       "id": 4,
-      "question": "Quel composant est responsable de déterminer quel contrôleur exécuter à partir de la Request ?",
+      "question": "Quel resolver choisit le contrôleur ?",
       "type": "single_choice",
       "options": [
-        "`ArgumentResolver`",
-        "`ControllerResolver`",
-        "`RouterListener`",
-        "`Dispatcher`"
+        "ControllerResolver",
+        "ArgumentResolver",
+        "RouterListener",
+        "EventDispatcher"
       ],
       "correct_answers": [
-        "`ControllerResolver`"
+        "ControllerResolver"
       ],
-      "explanation": "Le `ControllerResolver` lit les attributs de requête (définis par le routeur) pour retourner un callable PHP."
+      "explanation": "ControllerResolver transforme _controller en callable."
+    },
+    {
+      "id": 5,
+      "question": "Quel resolver injecte les arguments (Request, params, services) dans le contrôleur ?",
+      "type": "single_choice",
+      "options": [
+        "ArgumentResolver",
+        "ControllerResolver",
+        "KernelListener",
+        "RouterListener"
+      ],
+      "correct_answers": [
+        "ArgumentResolver"
+      ],
+      "explanation": "ArgumentResolver mappe la signature du contrôleur aux valeurs."
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert `kernel.exception` ?",
+      "type": "single_choice",
+      "options": [
+        "Convertir une exception en Response d'erreur",
+        "Toujours couper la connexion",
+        "Gérer le cache",
+        "Déclencher terminate"
+      ],
+      "correct_answers": [
+        "Convertir une exception en Response d'erreur"
+      ],
+      "explanation": "Les listeners peuvent retourner une Response personnalisée."
+    },
+    {
+      "id": 7,
+      "question": "Main Request vs Sub Request : distinction ?",
+      "type": "single_choice",
+      "options": [
+        "Main = requête principale navigateur; Sub = forward/render interne",
+        "Main = GET, Sub = POST",
+        "Aucune",
+        "Sub = requêtes API"
+      ],
+      "correct_answers": [
+        "Main = requête principale navigateur; Sub = forward/render interne"
+      ],
+      "explanation": "Les sous-requêtes sont internes; listeners doivent souvent les ignorer."
+    },
+    {
+      "id": 8,
+      "question": "Comment éviter d'exécuter un listener sur une Sub Request ?",
+      "type": "single_choice",
+      "options": [
+        "Tester `$event->isMainRequest()`",
+        "Tester la méthode HTTP",
+        "Tester l'IP",
+        "C'est impossible"
+      ],
+      "correct_answers": [
+        "Tester `$event->isMainRequest()`"
+      ],
+      "explanation": "isMainRequest filtre les sous-requêtes."
+    },
+    {
+      "id": 9,
+      "question": "Que fait `kernel.finish_request` ?",
+      "type": "single_choice",
+      "options": [
+        "Reset d'état (locale, services) après le traitement d'une requête (main ou sub)",
+        "Envoi de la réponse",
+        "Dispatch de l'exception",
+        "Rien"
+      ],
+      "correct_answers": [
+        "Reset d'état (locale, services) après le traitement d'une requête (main ou sub)"
+      ],
+      "explanation": "finish_request intervient après chaque requête pour nettoyer."
+    },
+    {
+      "id": 10,
+      "question": "Quel est le flux global géré par HttpKernel ?",
+      "type": "multiple_choice",
+      "options": [
+        "handle(request) -> events -> resolvers -> controller -> view (si besoin) -> response -> terminate",
+        "Boucle dispatch via EventDispatcher",
+        "Gestion try/catch pour kernel.exception",
+        "Pas de view possible"
+      ],
+      "correct_answers": [
+        "handle(request) -> events -> resolvers -> controller -> view (si besoin) -> response -> terminate",
+        "Boucle dispatch via EventDispatcher",
+        "Gestion try/catch pour kernel.exception"
+      ],
+      "explanation": "Le kernel orchestre handle, dispatch des events, resolvers, view, response, terminate."
     }
   ]
 }

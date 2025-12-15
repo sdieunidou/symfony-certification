@@ -4,63 +4,153 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle est la principale différence architecturale entre le Scheduler Symfony et une tâche CRON classique ?",
+      "question": "En quoi le Scheduler diffère d'un cron système classique ?",
       "type": "single_choice",
       "options": [
-        "Le Scheduler utilise une base de données.",
-        "Cron lance un nouveau processus PHP à chaque exécution (froid), alors que le Scheduler utilise un Worker longue durée (chaud) qui dort entre les tâches.",
-        "Le Scheduler est moins précis.",
-        "Cron ne fonctionne que sur Linux."
+        "Cron démarre un nouveau process à chaque tick, le Scheduler est un worker longue durée qui dort et se réveille pour dispatcher",
+        "Scheduler est plus lent car redémarre à chaque exécution",
+        "Cron ne marche pas sous Linux",
+        "Scheduler ne fonctionne qu'en CLI"
       ],
       "correct_answers": [
-        "Cron lance un nouveau processus PHP à chaque exécution (froid), alors que le Scheduler utilise un Worker longue durée (chaud) qui dort entre les tâches."
+        "Cron démarre un nouveau process à chaque tick, le Scheduler est un worker longue durée qui dort et se réveille pour dispatcher"
       ],
-      "explanation": "Le Scheduler est un daemon (via Messenger) qui reste en mémoire, ce qui est plus performant mais nécessite de gérer les fuites de mémoire."
+      "explanation": "Scheduler reste chaud (daemon Messenger) et se réveille aux échéances."
     },
     {
       "id": 2,
-      "question": "Sur quel composant Symfony s'appuie le Scheduler pour dispatcher et exécuter les tâches ?",
+      "question": "Sur quel composant s'appuie le Scheduler pour exécuter les tâches ?",
       "type": "single_choice",
       "options": [
-        "HttpKernel",
-        "EventDispatcher",
         "Messenger",
-        "Process"
+        "HttpKernel",
+        "Process",
+        "EventDispatcher uniquement"
       ],
       "correct_answers": [
         "Messenger"
       ],
-      "explanation": "Le Scheduler génère des messages Messenger standard. Ils sont traités par les mêmes mécanismes (Handlers, Middlewares, Transports)."
+      "explanation": "Les tâches sont des messages Messenger dispatchés/consommés."
     },
     {
       "id": 3,
-      "question": "À quoi sert l'attribut `#[AsSchedule]` sur une classe implémentant `ScheduleProviderInterface` ?",
+      "question": "Quel est le rôle de `#[AsSchedule]` sur un provider ?",
       "type": "single_choice",
       "options": [
-        "À définir la fréquence.",
-        "À déclarer cette classe comme fournisseur de planning (Schedule) pour qu'elle soit détectée automatiquement par Symfony.",
-        "À désactiver le scheduler.",
-        "À sécuriser l'accès."
+        "Le déclarer comme ScheduleProvider détecté automatiquement",
+        "Définir la fréquence directement",
+        "Choisir le transport",
+        "Créer un cron"
       ],
       "correct_answers": [
-        "À déclarer cette classe comme fournisseur de planning (Schedule) pour qu'elle soit détectée automatiquement par Symfony."
+        "Le déclarer comme ScheduleProvider détecté automatiquement"
       ],
-      "explanation": "C'est le point d'entrée pour configurer quelles tâches doivent s'exécuter et quand."
+      "explanation": "AsSchedule marque un provider qui retourne un Schedule."
     },
     {
       "id": 4,
-      "question": "Pourquoi est-il important de rendre le schedule 'Stateful' (avec un Cache/Lock) dans un environnement avec plusieurs workers (ou redémarrages) ?",
+      "question": "Pourquoi rendre le schedule stateful avec un cache/lock ?",
       "type": "single_choice",
       "options": [
-        "Pour sauvegarder les logs.",
-        "Pour éviter qu'une tâche ne soit exécutée plusieurs fois par erreur (doublon) si le worker redémarre ou s'il y en a plusieurs.",
-        "Pour accélérer l'exécution.",
-        "C'est obligatoire."
+        "Éviter les doublons lors de redémarrages ou multi-workers",
+        "Accélérer le worker",
+        "Obligatoire pour prod",
+        "Gérer le SSL"
       ],
       "correct_answers": [
-        "Pour éviter qu'une tâche ne soit exécutée plusieurs fois par erreur (doublon) si le worker redémarre ou s'il y en a plusieurs."
+        "Éviter les doublons lors de redémarrages ou multi-workers"
       ],
-      "explanation": "Le lock permet de mémoriser 'J'ai déjà lancé la tâche de 12:00' pour ne pas la relancer si le worker reboot à 12:01."
+      "explanation": "Stateful mémorise la dernière exécution pour ne pas rejouer."
+    },
+    {
+      "id": 5,
+      "question": "Comment lancer la consommation d'un schedule nommé `default` ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console messenger:consume scheduler_default`",
+        "`php bin/console scheduler:run default`",
+        "`cron -f`",
+        "`php bin/console worker:run`"
+      ],
+      "correct_answers": [
+        "`php bin/console messenger:consume scheduler_default`"
+      ],
+      "explanation": "Le scheduler crée un transport virtuel consommé par messenger:consume."
+    },
+    {
+      "id": 6,
+      "question": "Comment définir une tâche quotidienne à 12h heure de Paris ?",
+      "type": "single_choice",
+      "options": [
+        "RecurringMessage::cron('0 12 * * *', new Message(), new \\DateTimeZone('Europe/Paris'))",
+        "RecurringMessage::every('12h', ...)",
+        "Trigger::daily('Paris')",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "RecurringMessage::cron('0 12 * * *', new Message(), new \\DateTimeZone('Europe/Paris'))"
+      ],
+      "explanation": "cron() accepte l'expression et la timezone."
+    },
+    {
+      "id": 7,
+      "question": "À quoi sert le jitter ?",
+      "type": "single_choice",
+      "options": [
+        "Décaler aléatoirement l'exécution pour éviter les réveils simultanés (thundering herd)",
+        "Ajouter un délai de retry",
+        "Changer de fuseau",
+        "Accélérer les tâches"
+      ],
+      "correct_answers": [
+        "Décaler aléatoirement l'exécution pour éviter les réveils simultanés (thundering herd)"
+      ],
+      "explanation": "Le jitter lisse les déclenchements."
+    },
+    {
+      "id": 8,
+      "question": "Que fait `RecurringMessage::every('10 minutes', new Msg(), jitter:5)` ?",
+      "type": "single_choice",
+      "options": [
+        "Planifie toutes les 10 minutes avec +/-5 minutes d'aléa",
+        "Planifie toutes les 5 minutes",
+        "Planifie une fois",
+        "Rien"
+      ],
+      "correct_answers": [
+        "Planifie toutes les 10 minutes avec +/-5 minutes d'aléa"
+      ],
+      "explanation": "Jitter ajoute une variabilité autour de la période."
+    },
+    {
+      "id": 9,
+      "question": "Comment éviter de relancer une tâche déjà en cours si le worker redémarre juste après l'avoir déclenchée ?",
+      "type": "single_choice",
+      "options": [
+        "En rendant le schedule stateful (cache/lock) pour mémoriser la dernière exécution",
+        "Impossible",
+        "En doublant le cron",
+        "En désactivant le cache"
+      ],
+      "correct_answers": [
+        "En rendant le schedule stateful (cache/lock) pour mémoriser la dernière exécution"
+      ],
+      "explanation": "Stateful garde l'état pour éviter les doublons au redémarrage."
+    },
+    {
+      "id": 10,
+      "question": "Quelle commande aide à visualiser les prochaines exécutions prévues ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console debug:scheduler`",
+        "`php bin/console scheduler:list`",
+        "`php bin/console debug:messenger`",
+        "`crontab -l`"
+      ],
+      "correct_answers": [
+        "`php bin/console debug:scheduler`"
+      ],
+      "explanation": "debug:scheduler affiche le planning des tâches."
     }
   ]
 }

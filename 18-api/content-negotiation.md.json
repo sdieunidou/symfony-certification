@@ -4,63 +4,159 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel en-tête HTTP le client utilise-t-il pour indiquer au serveur le format de réponse souhaité (ex: JSON ou XML) ?",
-      "type": "single_choice",
+      "question": "Quels rôles jouent `Accept` et `Content-Type` dans une requête HTTP ?",
+      "type": "multiple_choice",
       "options": [
-        "`Content-Type`",
-        "`Accept`",
-        "`Authorization`",
-        "`User-Agent`"
+        "`Accept` indique le format souhaité pour la réponse",
+        "`Content-Type` indique le format du corps envoyé par le client",
+        "`Accept` définit le charset de la requête",
+        "`Content-Type` n'est utile que pour les réponses"
       ],
       "correct_answers": [
-        "`Accept`"
+        "`Accept` indique le format souhaité pour la réponse",
+        "`Content-Type` indique le format du corps envoyé par le client"
       ],
-      "explanation": "L'en-tête `Accept` sert à la négociation de contenu pour la réponse. `Content-Type` décrit le format du corps de la requête envoyée."
+      "explanation": "Accept = préférence réponse, Content-Type = format du payload entrant."
     },
     {
       "id": 2,
-      "question": "Quelle est la méthode la plus simple et courante pour versionner une API ?",
+      "question": "Comment Symfony peut-il choisir un format de réponse adapté ?",
       "type": "single_choice",
       "options": [
-        "Le Versioning par Média Type (`Accept: application/vnd.v1+json`).",
-        "Le Versioning par URI (ex: `/api/v1/users`).",
-        "Le Versioning par paramètre de requête (`?v=1`).",
-        "Ne pas versionner."
+        "En lisant `$request->getPreferredFormat()` (basé sur Accept et formats connus)",
+        "En lisant uniquement l'URL",
+        "En lisant les cookies",
+        "En devinant aléatoirement"
       ],
       "correct_answers": [
-        "Le Versioning par URI (ex: `/api/v1/users`)."
+        "En lisant `$request->getPreferredFormat()` (basé sur Accept et formats connus)"
       ],
-      "explanation": "Bien que moins 'REST pur' que le Media Type, le versioning par URI est le plus répandu car explicite et facile à explorer."
+      "explanation": "La méthode retourne le meilleur format supporté selon Accept."
     },
     {
       "id": 3,
-      "question": "Dans Symfony, quelle méthode de l'objet `Request` permet de connaître le format préféré du client (basé sur le header Accept) ?",
-      "type": "single_choice",
+      "question": "Quelles stratégies de versioning sont décrites, et laquelle est la plus courante en pratique ?",
+      "type": "multiple_choice",
       "options": [
-        "`$request->getFormat()`",
-        "`$request->getPreferredFormat()`",
-        "`$request->getContentType()`",
-        "`$request->getAcceptableContentTypes()`"
+        "URI versioning `/api/v1` (la plus courante)",
+        "Header custom `X-API-VERSION`",
+        "Media type versioning `application/vnd.company.v1+json`",
+        "Paramètre de query obligatoire"
       ],
       "correct_answers": [
-        "`$request->getPreferredFormat()`"
+        "URI versioning `/api/v1` (la plus courante)",
+        "Header custom `X-API-VERSION`",
+        "Media type versioning `application/vnd.company.v1+json`"
       ],
-      "explanation": "Cette méthode analyse la chaîne `Accept` (avec les poids `q=`) et retourne le meilleur format supporté (ex: 'json')."
+      "explanation": "Plusieurs stratégies existent ; l'URI est la plus répandue."
     },
     {
       "id": 4,
-      "question": "Quelle est la règle d'or concernant l'évolution d'une API publique ?",
+      "question": "Quel préfixe de routing YAML illustre un versioning par URI ?",
       "type": "single_choice",
       "options": [
-        "Toujours utiliser la dernière version de PHP.",
-        "Ne jamais introduire de 'Breaking Changes' (rupture de compatibilité) sans changer de version majeure.",
-        "Forcer les clients à se mettre à jour chaque semaine.",
-        "Utiliser uniquement des méthodes POST."
+        "prefix: /v1",
+        "prefix: /api/v1",
+        "prefix: /version",
+        "prefix: /_next"
       ],
       "correct_answers": [
-        "Ne jamais introduire de 'Breaking Changes' (rupture de compatibilité) sans changer de version majeure."
+        "prefix: /api/v1"
       ],
-      "explanation": "Casser un client existant est la pire chose à faire pour une API. La rétrocompatibilité (BC) est essentielle."
+      "explanation": "Le fichier de routes peut préfixer `/api/v1` pour isoler une version."
+    },
+    {
+      "id": 5,
+      "question": "Pourquoi le versioning par Media Type (Accept: application/vnd...+json) est-il moins courant malgré son élégance REST ?",
+      "type": "single_choice",
+      "options": [
+        "Trop difficile à cacher et à tester pour les clients",
+        "Non compatible avec HTTP",
+        "Obligatoire en Symfony",
+        "Incompatible avec JSON"
+      ],
+      "correct_answers": [
+        "Trop difficile à cacher et à tester pour les clients"
+      ],
+      "explanation": "Plus granulaire mais plus complexe à gérer côté clients/navigateurs et caches."
+    },
+    {
+      "id": 6,
+      "question": "Quelles bonnes pratiques de compatibilité sont rappelées pour les évolutions d'API ?",
+      "type": "multiple_choice",
+      "options": [
+        "Ne pas casser les clients existants (BC)",
+        "Annoncer les dépréciations (Warning header ou champ dédié)",
+        "Supporter temporairement plusieurs versions/alias de champs",
+        "Forcer la mise à jour immédiate de tous les clients"
+      ],
+      "correct_answers": [
+        "Ne pas casser les clients existants (BC)",
+        "Annoncer les dépréciations (Warning header ou champ dédié)",
+        "Supporter temporairement plusieurs versions/alias de champs"
+      ],
+      "explanation": "BC + dépréciation progressive ; éviter le breaking brutal."
+    },
+    {
+      "id": 7,
+      "question": "Quel code HTTP retourner si le serveur ne peut pas produire le format demandé par `Accept` ?",
+      "type": "single_choice",
+      "options": [
+        "400",
+        "406 Not Acceptable",
+        "415 Unsupported Media Type",
+        "422"
+      ],
+      "correct_answers": [
+        "406 Not Acceptable"
+      ],
+      "explanation": "406 signale l'impossibilité de satisfaire le format demandé."
+    },
+    {
+      "id": 8,
+      "question": "Quel code HTTP retourner si le payload est envoyé dans un format non supporté (mauvais Content-Type) ?",
+      "type": "single_choice",
+      "options": [
+        "400",
+        "406",
+        "415 Unsupported Media Type",
+        "204"
+      ],
+      "correct_answers": [
+        "415 Unsupported Media Type"
+      ],
+      "explanation": "415 est adapté pour un Content-Type refusé."
+    },
+    {
+      "id": 9,
+      "question": "Quels outils/approches Symfony peuvent aider pour servir plusieurs formats (HTML/JSON) sur une même route ?",
+      "type": "multiple_choice",
+      "options": [
+        "Inspecter `$request->getPreferredFormat()`",
+        "Utiliser un format listener (ex: FOSRest, API Platform)",
+        "Retourner systématiquement du JSON",
+        "Lire les cookies uniquement"
+      ],
+      "correct_answers": [
+        "Inspecter `$request->getPreferredFormat()`",
+        "Utiliser un format listener (ex: FOSRest, API Platform)"
+      ],
+      "explanation": "Le format peut être choisi via Accept/format listener ; pas uniquement cookies."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi le header `Vary` peut-il être important avec un versioning par header ou media type ?",
+      "type": "single_choice",
+      "options": [
+        "Pour forcer le cache à varier selon `Accept` ou header de version",
+        "Pour compresser la réponse",
+        "Pour éviter les CORS",
+        "Pour accélérer TLS"
+      ],
+      "correct_answers": [
+        "Pour forcer le cache à varier selon `Accept` ou header de version"
+      ],
+      "explanation": "Les caches doivent distinguer les variantes selon Accept ou X-API-VERSION."
     }
   ]
 }

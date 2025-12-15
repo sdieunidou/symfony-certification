@@ -4,63 +4,156 @@
   "questions": [
     {
       "id": 1,
-      "question": "À quoi sert le composant `Lock` ?",
-      "type": "single_choice",
+      "question": "Quelles sont les briques essentielles du composant Lock ?",
+      "type": "multiple_choice",
       "options": [
-        "À crypter des données.",
-        "À gérer des verrous (Mutex/Sémaphores) pour empêcher l'exécution simultanée de code critique (Race Condition).",
-        "À bloquer les utilisateurs bannis.",
-        "À sécuriser les routes."
+        "LockFactory pour créer les verrous",
+        "StoreInterface (Redis, Flock, Semaphore, PDO...) pour persister le lock",
+        "Key pour identifier la ressource",
+        "EventDispatcher"
       ],
       "correct_answers": [
-        "À gérer des verrous (Mutex/Sémaphores) pour empêcher l'exécution simultanée de code critique (Race Condition)."
+        "LockFactory pour créer les verrous",
+        "StoreInterface (Redis, Flock, Semaphore, PDO...) pour persister le lock",
+        "Key pour identifier la ressource"
       ],
-      "explanation": "Il permet de s'assurer qu'une seule instance d'un script (ex: génération de PDF, CRON) s'exécute à la fois."
+      "explanation": "Factory+Store+Key structurent l'API des verrous."
     },
     {
       "id": 2,
-      "question": "Que se passe-t-il si vous appelez `$lock->acquire(true)` (mode bloquant) alors que le verrou est déjà pris ?",
+      "question": "Différence entre `acquire()` et `acquire(true)` ?",
       "type": "single_choice",
       "options": [
-        "La méthode retourne `false` immédiatement.",
-        "Le script se met en pause et attend indéfiniment (ou jusqu'au timeout) que le verrou se libère.",
-        "Une exception est lancée.",
-        "Le script s'arrête."
+        "Non-bloquant vs bloquant (attend la libération)",
+        "Lecture vs écriture",
+        "Toujours bloquant",
+        "Toujours non bloquant"
       ],
       "correct_answers": [
-        "Le script se met en pause et attend indéfiniment (ou jusqu'au timeout) que le verrou se libère."
+        "Non-bloquant vs bloquant (attend la libération)"
       ],
-      "explanation": "C'est le principe du verrou bloquant : on attend son tour."
+      "explanation": "acquire(true) attend, nécessite un BlockingStore."
     },
     {
       "id": 3,
-      "question": "Pourquoi définir un TTL (Time To Live) sur un verrou ?",
-      "type": "single_choice",
+      "question": "Pourquoi définir un TTL sur un lock ?",
+      "type": "multiple_choice",
       "options": [
-        "Pour qu'il soit plus rapide.",
-        "Pour s'assurer que le verrou expire automatiquement si le processus qui l'a acquis crashe sans le relâcher (évitant un blocage infini).",
-        "Pour le partager entre serveurs.",
-        "C'est obligatoire."
+        "Éviter un verrou zombie si le processus crashe",
+        "Permettre un auto-expire et le refresh via `refresh()`",
+        "Accélérer la prise du verrou",
+        "Obligatoire en distribué"
       ],
       "correct_answers": [
-        "Pour s'assurer que le verrou expire automatiquement si le processus qui l'a acquis crashe sans le relâcher (évitant un blocage infini)."
+        "Éviter un verrou zombie si le processus crashe",
+        "Permettre un auto-expire et le refresh via `refresh()`"
       ],
-      "explanation": "Sans TTL, un `kill -9` sur un worker pourrait laisser un verrou actif pour toujours dans Redis ou en base."
+      "explanation": "TTL protège contre les crashs ; on peut rafraîchir si traitement long."
     },
     {
       "id": 4,
-      "question": "Quel type de Store est recommandé pour gérer des verrous dans un environnement distribué (plusieurs serveurs web) ?",
+      "question": "Quels stores pour un environnement distribué ?",
       "type": "single_choice",
       "options": [
-        "`FlockStore` (Fichiers locaux).",
-        "`SemaphoreStore` (Kernel local).",
-        "`RedisStore`, `MemcachedStore` ou `PdoStore` (Base de données/Cache centralisé).",
-        "`ArrayStore` (Mémoire PHP)."
+        "RedisStore/MemcachedStore/PdoStore (ou autres stores centralisés)",
+        "FlockStore uniquement",
+        "SemaphoreStore uniquement",
+        "ArrayStore"
       ],
       "correct_answers": [
-        "`RedisStore`, `MemcachedStore` ou `PdoStore` (Base de données/Cache centralisé)."
+        "RedisStore/MemcachedStore/PdoStore (ou autres stores centralisés)"
       ],
-      "explanation": "Les stores locaux ne fonctionnent que sur une seule machine. En cluster, il faut un store central partagé."
+      "explanation": "Un store partagé est nécessaire en multi-serveurs."
+    },
+    {
+      "id": 5,
+      "question": "Comment créer un verrou partagé (lecture) vs exclusif (écriture) ?",
+      "type": "single_choice",
+      "options": [
+        "acquireRead() pour partagé, acquire() pour exclusif",
+        "acquire(true) pour partagé",
+        "Il n'y a que l'exclusif",
+        "Il n'y a que le partagé"
+      ],
+      "correct_answers": [
+        "acquireRead() pour partagé, acquire() pour exclusif"
+      ],
+      "explanation": "Shared lock autorise plusieurs lecteurs, l'exclusif bloque tout."
+    },
+    {
+      "id": 6,
+      "question": "Comment transmettre un lock entre processus ?",
+      "type": "single_choice",
+      "options": [
+        "Sérialiser une `Key` et recréer le lock avec `createLockFromKey`",
+        "Copier l'objet Lock",
+        "Impossible",
+        "Passer par un fichier"
+      ],
+      "correct_answers": [
+        "Sérialiser une `Key` et recréer le lock avec `createLockFromKey`"
+      ],
+      "explanation": "La Key est sérialisable pour cross-process."
+    },
+    {
+      "id": 7,
+      "question": "Quel trait utilise les locks pour éviter l'exécution concurrente d'une commande ?",
+      "type": "single_choice",
+      "options": [
+        "`LockableTrait`",
+        "`CommandLockTrait`",
+        "`SynchronizedTrait`",
+        "Aucun"
+      ],
+      "correct_answers": [
+        "`LockableTrait`"
+      ],
+      "explanation": "LockableTrait propose `$this->lock()` dans les commandes."
+    },
+    {
+      "id": 8,
+      "question": "Quel risque avec Redis/Memcached stores ?",
+      "type": "single_choice",
+      "options": [
+        "Perte des locks en cas de restart du service (RAM)",
+        "Pas de compatibilité POSIX",
+        "Pas de TTL",
+        "Incompatible PHP 8"
+      ],
+      "correct_answers": [
+        "Perte des locks en cas de restart du service (RAM)"
+      ],
+      "explanation": "Stockage en RAM => lock perdu au redémarrage."
+    },
+    {
+      "id": 9,
+      "question": "Comment libérer un lock de manière fiable ?",
+      "type": "single_choice",
+      "options": [
+        "Toujours appeler `release()` dans un `finally`",
+        "Ne jamais libérer",
+        "Attendre le TTL",
+        "Utiliser GC"
+      ],
+      "correct_answers": [
+        "Toujours appeler `release()` dans un `finally`"
+      ],
+      "explanation": "release en finally garantit la libération même en cas d'exception."
+    },
+    {
+      "id": 10,
+      "question": "Que signifie autoRelease ?",
+      "type": "single_choice",
+      "options": [
+        "Le lock est libéré à la destruction de l'objet",
+        "Le lock se régénère",
+        "Le lock est partagé",
+        "Le lock se renouvelle automatiquement"
+      ],
+      "correct_answers": [
+        "Le lock est libéré à la destruction de l'objet"
+      ],
+      "explanation": "autoRelease (défaut) libère le lock au GC ; sinon release manuel requis."
     }
   ]
 }

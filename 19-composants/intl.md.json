@@ -4,63 +4,158 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est le rôle principal du composant `Intl` ?",
-      "type": "single_choice",
+      "question": "Quelles données standard le composant Intl expose-t-il ?",
+      "type": "multiple_choice",
       "options": [
-        "Traduire les messages de l'application.",
-        "Fournir l'accès aux données de localisation standardisées (Noms de pays, Langues, Devises) et aux formateurs ICU.",
-        "Gérer les routes multilingues.",
-        "Détecter la langue du navigateur."
+        "Noms de pays (ISO 3166) via `Countries`",
+        "Langues (ISO 639) via `Languages`",
+        "Devises (ISO 4217) via `Currencies`",
+        "Locales système"
       ],
       "correct_answers": [
-        "Fournir l'accès aux données de localisation standardisées (Noms de pays, Langues, Devises) et aux formateurs ICU."
+        "Noms de pays (ISO 3166) via `Countries`",
+        "Langues (ISO 639) via `Languages`",
+        "Devises (ISO 4217) via `Currencies`"
       ],
-      "explanation": "Contrairement au composant `Translation` (qui gère vos textes), `Intl` gère les données standards mondiales."
+      "explanation": "Intl fournit les données standards traduites ; pas la détection auto des locales."
     },
     {
       "id": 2,
-      "question": "Quelle classe permet d'obtenir la liste des noms de pays traduits dans une langue donnée ?",
+      "question": "Quelle différence entre Intl et Translation ?",
       "type": "single_choice",
       "options": [
-        "`Symfony\\Component\\Intl\\Countries`",
-        "`Symfony\\Component\\Intl\\Region`",
-        "`Locale::getDisplayCountries()`",
-        "`IntlDateFormatter`"
+        "Intl fournit des données standardisées (pays/langues/devises), Translation gère vos messages applicatifs",
+        "Intl traduit vos messages, Translation gère les devises",
+        "Ils sont identiques",
+        "Translation dépend d'ICU, pas Intl"
       ],
       "correct_answers": [
-        "`Symfony\\Component\\Intl\\Countries`"
+        "Intl fournit des données standardisées (pays/langues/devises), Translation gère vos messages applicatifs"
       ],
-      "explanation": "`Countries::getNames('fr')` retourne la liste des pays en français."
+      "explanation": "Intl ≠ vos messages ; Translation s'occupe de vos fichiers messages.*"
     },
     {
       "id": 3,
-      "question": "Quelle extension PHP est recommandée pour les performances du composant Intl ?",
+      "question": "Quelle extension est recommandée en prod pour de meilleures perfs Intl ?",
       "type": "single_choice",
       "options": [
-        "`mbstring`",
-        "`intl` (ICU)",
-        "`iconv`",
-        "`gd`"
+        "L'extension native `intl` (ICU) plutôt que le polyfill",
+        "`mbstring` uniquement",
+        "Aucune, le polyfill suffit toujours",
+        "gd"
       ],
       "correct_answers": [
-        "`intl` (ICU)"
+        "L'extension native `intl` (ICU) plutôt que le polyfill"
       ],
-      "explanation": "Bien que Symfony fournisse un polyfill (données PHP), l'extension native C (ICU) est beaucoup plus rapide et complète."
+      "explanation": "ICU natif est plus rapide et complet."
     },
     {
       "id": 4,
-      "question": "Le composant Intl gère-t-il les traductions de vos fichiers `messages.yaml` ?",
+      "question": "Comment récupérer la liste des pays traduits en français ?",
       "type": "single_choice",
       "options": [
-        "Oui.",
-        "Non, c'est le rôle du composant `Translation`.",
-        "Seulement pour les dates.",
-        "Oui, si configuré."
+        "`Countries::getNames('fr')`",
+        "`Languages::getNames('fr')`",
+        "`Locale::getCountries('fr')`",
+        "`Intl::countries()`"
       ],
       "correct_answers": [
-        "Non, c'est le rôle du composant `Translation`."
+        "`Countries::getNames('fr')`"
       ],
-      "explanation": "Il ne faut pas confondre Internationalisation (Intl - Données/Formats) et Traduction (Translation - Vos textes)."
+      "explanation": "Countries::getNames(locale) retourne le tableau code→nom."
+    },
+    {
+      "id": 5,
+      "question": "Que fait `Currencies::exists('BTC')` ?",
+      "type": "single_choice",
+      "options": [
+        "Vérifie si un code ISO 4217 est reconnu par Intl",
+        "Vérifie si une devise est dans la BDD",
+        "Crée une devise",
+        "Convertit des montants"
+      ],
+      "correct_answers": [
+        "Vérifie si un code ISO 4217 est reconnu par Intl"
+      ],
+      "explanation": "BTC n'est pas ISO 4217, donc false."
+    },
+    {
+      "id": 6,
+      "question": "Qu'apporte le package `symfony/intl` s'il n'y a pas l'extension `intl` ?",
+      "type": "single_choice",
+      "options": [
+        "Un polyfill des données ICU en PHP",
+        "Un cache HTTP",
+        "Une détection de langue navigateur",
+        "Un bundle Twig"
+      ],
+      "correct_answers": [
+        "Un polyfill des données ICU en PHP"
+      ],
+      "explanation": "Les données ICU sont embarquées pour fallback."
+    },
+    {
+      "id": 7,
+      "question": "Quels Form Types exploitent les données Intl ?",
+      "type": "multiple_choice",
+      "options": [
+        "CountryType",
+        "LanguageType",
+        "CurrencyType",
+        "TimezoneType"
+      ],
+      "correct_answers": [
+        "CountryType",
+        "LanguageType",
+        "CurrencyType",
+        "TimezoneType"
+      ],
+      "explanation": "Ces types utilisent Countries/Languages/Currencies/Timezones."
+    },
+    {
+      "id": 8,
+      "question": "Dans quels formats de locale Intl travaille-t-il ?",
+      "type": "single_choice",
+      "options": [
+        "`fr`, `fr_CA`, `zh_Hans_CN`",
+        "`fr_FR.UTF-8` uniquement",
+        "Toujours en anglais",
+        "Uniquement codes pays"
+      ],
+      "correct_answers": [
+        "`fr`, `fr_CA`, `zh_Hans_CN`"
+      ],
+      "explanation": "Intl supporte les locales BCP47 (langue+script+territoire)."
+    },
+    {
+      "id": 9,
+      "question": "Intl fournit-il la détection automatique de la locale navigateur ?",
+      "type": "single_choice",
+      "options": [
+        "Non, il fournit les données ; la détection se fait côté app (LocaleListener/Request)",
+        "Oui, automatiquement",
+        "Oui mais seulement en CLI",
+        "Uniquement via Twig"
+      ],
+      "correct_answers": [
+        "Non, il fournit les données ; la détection se fait côté app (LocaleListener/Request)"
+      ],
+      "explanation": "Intl ne détecte pas, il expose les données et formats."
+    },
+    {
+      "id": 10,
+      "question": "Comment Intl stocke/charge ses données standard ?",
+      "type": "single_choice",
+      "options": [
+        "Via ResourceBundle ICU (ou fichiers PHP du polyfill)",
+        "Via MySQL",
+        "Via Redis",
+        "Via YAML"
+      ],
+      "correct_answers": [
+        "Via ResourceBundle ICU (ou fichiers PHP du polyfill)"
+      ],
+      "explanation": "Les données proviennent d'ICU (bundles `.res`) ou du polyfill PHP."
     }
   ]
 }

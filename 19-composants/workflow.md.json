@@ -4,63 +4,198 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle est la différence principale entre un type `state_machine` et un type `workflow` dans la configuration ?",
-      "type": "single_choice",
+      "question": "Quelles différences fonctionnelles séparent `state_machine` et `workflow` ?",
+      "type": "multiple_choice",
       "options": [
-        "Il n'y en a pas.",
-        "Dans une `state_machine`, l'objet ne peut être que dans UN seul état à la fois. Dans un `workflow`, il peut être dans plusieurs places simultanément (parallélisme).",
-        "La `state_machine` est dépréciée.",
-        "Le `workflow` ne supporte pas les événements."
+        "`state_machine` : une seule place active à la fois",
+        "`workflow` : plusieurs places actives possibles (Petri Net)",
+        "`state_machine` interdit les transitions multiples",
+        "`workflow` est requis pour du parallélisme (relu ET traduit)"
       ],
       "correct_answers": [
-        "Dans une `state_machine`, l'objet ne peut être que dans UN seul état à la fois. Dans un `workflow`, il peut être dans plusieurs places simultanément (parallélisme)."
+        "`state_machine` : une seule place active à la fois",
+        "`workflow` : plusieurs places actives possibles (Petri Net)",
+        "`workflow` est requis pour du parallélisme (relu ET traduit)"
       ],
-      "explanation": "Une commande e-commerce est typiquement une State Machine (Panier -> Payée). Un processus de publication complexe peut être un Workflow."
+      "explanation": "State machine = état unique ; workflow = marquage multi-places pour flux parallèles."
     },
     {
       "id": 2,
-      "question": "Comment appliquer une transition (ex: 'publish') sur un objet via le service Workflow ?",
-      "type": "single_choice",
+      "question": "Quels éléments minimaux doit contenir la config d'un workflow dans `framework.yaml` ?",
+      "type": "multiple_choice",
       "options": [
-        "`$workflow->transition($subject, 'publish')`",
-        "`$workflow->apply($subject, 'publish')`",
-        "`$workflow->changeState($subject, 'publish')`",
-        "`$workflow->do($subject, 'publish')`"
+        "type (`workflow` ou `state_machine`)",
+        "places",
+        "transitions (from/to)",
+        "supports (classes concernées)",
+        "event_dispatcher obligatoire"
       ],
       "correct_answers": [
-        "`$workflow->apply($subject, 'publish')`"
+        "type (`workflow` ou `state_machine`)",
+        "places",
+        "transitions (from/to)",
+        "supports (classes concernées)"
       ],
-      "explanation": "`apply()` tente d'effectuer la transition et lance une exception si elle n'est pas valide."
+      "explanation": "Type, places, transitions et supports sont essentiels ; l'event dispatcher est implicite."
     },
     {
       "id": 3,
-      "question": "Quel événement permet de bloquer conditionnellement une transition (Validation métier, 'Guard') ?",
+      "question": "Comment stocker le marquage (état) d'un sujet dans l'exemple fourni ?",
       "type": "single_choice",
       "options": [
-        "`workflow.enter`",
-        "`workflow.guard` (ex: `workflow.blog_publishing.guard.publish`)",
-        "`workflow.completed`",
-        "`workflow.leave`"
+        "Via `marking_store: { type: method, property: currentPlace }`",
+        "Uniquement en base de données",
+        "Toujours dans la session",
+        "Dans un fichier YAML"
       ],
       "correct_answers": [
-        "`workflow.guard` (ex: `workflow.blog_publishing.guard.publish`)"
+        "Via `marking_store: { type: method, property: currentPlace }`"
       ],
-      "explanation": "Les écouteurs sur `guard` peuvent appeler `$event->setBlocked(true)` pour empêcher la transition même si elle est valide structurellement."
+      "explanation": "Le MethodMarkingStore appelle getter/setter sur la propriété déclarée."
     },
     {
       "id": 4,
-      "question": "Quelle commande permet de visualiser graphiquement (Graphviz/PNG) votre workflow configuré ?",
-      "type": "single_choice",
+      "question": "Quelles injections sont possibles pour manipuler un workflow ?",
+      "type": "multiple_choice",
       "options": [
-        "`php bin/console debug:workflow`",
-        "`php bin/console workflow:dump nom_workflow`",
-        "`php bin/console workflow:visualize`",
-        "`php bin/console make:workflow`"
+        "Injecter `WorkflowInterface` nommé (`$blogPublishingWorkflow`)",
+        "Passer par le `Registry` pour récupérer un workflow",
+        "Instancier manuellement `Definition` en contrôleur",
+        "Accéder via un paramètre de route"
       ],
       "correct_answers": [
-        "`php bin/console workflow:dump nom_workflow`"
+        "Injecter `WorkflowInterface` nommé (`$blogPublishingWorkflow`)",
+        "Passer par le `Registry` pour récupérer un workflow"
       ],
-      "explanation": "Cette commande génère le code DOT pour Graphviz, permettant de créer des diagrammes clairs du processus."
+      "explanation": "L'autowiring nommé ou le Registry sont prévus ; instancier à la main en contrôleur est à éviter."
+    },
+    {
+      "id": 5,
+      "question": "Quel est l'ordre d'exécution des événements clés autour d'une transition ?",
+      "type": "multiple_choice",
+      "options": [
+        "`workflow.guard` avant toute chose",
+        "`workflow.leave` puis `workflow.transition` puis `workflow.enter`/`entered`",
+        "`workflow.completed` en fin de cycle",
+        "`workflow.cache` avant le guard"
+      ],
+      "correct_answers": [
+        "`workflow.guard` avant toute chose",
+        "`workflow.leave` puis `workflow.transition` puis `workflow.enter`/`entered`",
+        "`workflow.completed` en fin de cycle"
+      ],
+      "explanation": "La séquence suit guard -> leave -> transition -> enter/entered -> completed."
+    },
+    {
+      "id": 6,
+      "question": "Comment bloquer une transition pour une raison métier (ex: titre vide) ?",
+      "type": "single_choice",
+      "options": [
+        "Écouter `workflow.<name>.guard.<transition>` et appeler `$event->setBlocked(true)`",
+        "Supprimer la transition du YAML à chaud",
+        "Ajouter une contrainte de validation Symfony Validator",
+        "Modifier le manifest AssetMapper"
+      ],
+      "correct_answers": [
+        "Écouter `workflow.<name>.guard.<transition>` et appeler `$event->setBlocked(true)`"
+      ],
+      "explanation": "Les listeners sur guard peuvent stopper une transition même si elle est structurally valide."
+    },
+    {
+      "id": 7,
+      "question": "Quels helpers Twig permettent de travailler avec le workflow d'un objet ?",
+      "type": "multiple_choice",
+      "options": [
+        "`workflow_can(subject, 'transition')`",
+        "`workflow_transitions(subject)`",
+        "`workflow_has_marked_place(subject, 'place')`",
+        "`workflow_apply(subject, 'transition')` directement dans Twig"
+      ],
+      "correct_answers": [
+        "`workflow_can(subject, 'transition')`",
+        "`workflow_transitions(subject)`",
+        "`workflow_has_marked_place(subject, 'place')`"
+      ],
+      "explanation": "Les helpers exposent can/transitions/marking ; l'application se fait côté PHP pour la logique."
+    },
+    {
+      "id": 8,
+      "question": "À quoi servent les métadonnées sur places/transitions ?",
+      "type": "single_choice",
+      "options": [
+        "Définir des titres/couleurs pour l'UI récupérables via `workflow_metadata()`",
+        "Forcer les rôles de sécurité",
+        "Définir le cache HTTP",
+        "Configurer Twig globalement"
+      ],
+      "correct_answers": [
+        "Définir des titres/couleurs pour l'UI récupérables via `workflow_metadata()`"
+      ],
+      "explanation": "Les metadata servent à l'affichage (ex: bouton, titre) sans modifier la logique."
+    },
+    {
+      "id": 9,
+      "question": "Comment visualiser un workflow pour l'audit ou la doc ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console workflow:dump <name> | dot -Tpng -o graph.png`",
+        "`php bin/console debug:router`",
+        "`php bin/console make:workflow --graph`",
+        "Afficher le cache de config"
+      ],
+      "correct_answers": [
+        "`php bin/console workflow:dump <name> | dot -Tpng -o graph.png`"
+      ],
+      "explanation": "La commande dump produit du DOT utilisable par Graphviz."
+    },
+    {
+      "id": 10,
+      "question": "Quels composants internes structurent un workflow ?",
+      "type": "multiple_choice",
+      "options": [
+        "Definition (places + transitions)",
+        "MarkingStore (stockage de l'état)",
+        "Marking (état courant)",
+        "ControllerResolver"
+      ],
+      "correct_answers": [
+        "Definition (places + transitions)",
+        "MarkingStore (stockage de l'état)",
+        "Marking (état courant)"
+      ],
+      "explanation": "Definition = carte, MarkingStore = persistance, Marking = jetons actifs."
+    },
+    {
+      "id": 11,
+      "question": "Quels pièges/points de vigilance sont cités pour la certification ?",
+      "type": "multiple_choice",
+      "options": [
+        "Un même objet peut être supporté par plusieurs workflows",
+        "Les places peuvent être des Enums (PHP 8.1+)",
+        "On peut créer un `DefinitionValidatorInterface` (Symfony 7.3+) pour valider la structure à la compilation",
+        "Les transitions doivent toujours être bidirectionnelles"
+      ],
+      "correct_answers": [
+        "Un même objet peut être supporté par plusieurs workflows",
+        "Les places peuvent être des Enums (PHP 8.1+)",
+        "On peut créer un `DefinitionValidatorInterface` (Symfony 7.3+) pour valider la structure à la compilation"
+      ],
+      "explanation": "Multiples workflows/supports, enums et validators structurels sont possibles ; les transitions n'ont pas à être bidirectionnelles."
+    },
+    {
+      "id": 12,
+      "question": "Que fait concrètement `apply()` sur un sujet quand la transition est possible ?",
+      "type": "single_choice",
+      "options": [
+        "Retire les jetons des places de départ, ajoute sur les places d'arrivée, met à jour le MarkingStore et déclenche la séquence d'événements",
+        "Se contente de changer une propriété sans événements",
+        "Recharge le container",
+        "Vide le cache HTTP"
+      ],
+      "correct_answers": [
+        "Retire les jetons des places de départ, ajoute sur les places d'arrivée, met à jour le MarkingStore et déclenche la séquence d'événements"
+      ],
+      "explanation": "Apply orchestre le marquage et la dispatch des événements (leave, transition, enter, completed)."
     }
   ]
 }

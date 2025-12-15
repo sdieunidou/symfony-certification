@@ -4,63 +4,191 @@
   "questions": [
     {
       "id": 1,
-      "question": "Dans Symfony Messenger, quel est le rôle du 'Bus' ?",
-      "type": "single_choice",
+      "question": "Quelles sont les briques principales de Messenger ?",
+      "type": "multiple_choice",
       "options": [
-        "Traiter le message.",
-        "Dispatcher le message vers les bons Handlers (via des middlewares).",
-        "Stocker le message en base.",
-        "Afficher le message à l'utilisateur."
+        "Message (DTO)",
+        "Bus + Middleware",
+        "Handler(s)",
+        "Transport (sync/async) et Envelope/Stamps"
       ],
       "correct_answers": [
-        "Dispatcher le message vers les bons Handlers (via des middlewares)."
+        "Message (DTO)",
+        "Bus + Middleware",
+        "Handler(s)",
+        "Transport (sync/async) et Envelope/Stamps"
       ],
-      "explanation": "Le Bus est le point d'entrée (`dispatch()`). Il ne connaît pas la logique métier, il orchestre juste le flux."
+      "explanation": "Messenger structure un flux unidirectionnel message→bus→middleware→handler→transport."
     },
     {
       "id": 2,
-      "question": "Comment traite-t-on un message de manière asynchrone avec Messenger ?",
+      "question": "Comment rendre un message asynchrone ?",
       "type": "single_choice",
       "options": [
-        "En ajoutant `implements AsyncInterface` au message.",
-        "En configurant le `routing` dans `messenger.yaml` pour diriger la classe du message vers un transport asynchrone (ex: `async`).",
-        "En utilisant `bus->dispatchAsync()`.",
-        "C'est automatique pour tous les messages."
+        "En le routant vers un transport non `sync://` dans `messenger.yaml`",
+        "En ajoutant `implements AsyncInterface`",
+        "En appelant `dispatchAsync()`",
+        "En ajoutant un délai dans le code"
       ],
       "correct_answers": [
-        "En configurant le `routing` dans `messenger.yaml` pour diriger la classe du message vers un transport asynchrone (ex: `async`)."
+        "En le routant vers un transport non `sync://` dans `messenger.yaml`"
       ],
-      "explanation": "Le routing décide si un message est traité immédiatement (sync) ou envoyé dans une file d'attente (transport) pour être consommé plus tard."
+      "explanation": "Le routing décide du transport (queue) à utiliser."
     },
     {
       "id": 3,
-      "question": "Si un handler échoue (exception), que fait Messenger par défaut si une stratégie de retry est configurée ?",
+      "question": "Que se passe-t-il si un Handler lève une exception avec une stratégie de retry ?",
       "type": "single_choice",
       "options": [
-        "Il supprime le message.",
-        "Il arrête le serveur.",
-        "Il remet le message dans la file pour être rejoué plus tard (avec un délai/backoff), jusqu'au nombre max d'essais.",
-        "Il envoie un email à l'admin."
+        "Le message est perdu",
+        "Il est ré-queue avec backoff jusqu'à `max_retries`, puis envoyé en failure_transport",
+        "Le worker s'arrête",
+        "Rien, l'exception est ignorée"
       ],
       "correct_answers": [
-        "Il remet le message dans la file pour être rejoué plus tard (avec un délai/backoff), jusqu'au nombre max d'essais."
+        "Il est ré-queue avec backoff jusqu'à `max_retries`, puis envoyé en failure_transport"
       ],
-      "explanation": "C'est la résilience native de Messenger. Après l'épuisement des retries, le message va dans le transport `failure`."
+      "explanation": "Retry puis DLQ (failure transport) si échec après tous les essais."
     },
     {
       "id": 4,
-      "question": "Pourquoi faut-il redémarrer les workers (`messenger:stop-workers`) lors d'un déploiement ?",
+      "question": "Comment consommer les messages d'un transport asynchrone ?",
       "type": "single_choice",
       "options": [
-        "Pour vider la mémoire.",
-        "Parce que les workers sont des processus PHP longue durée qui ont chargé le code en mémoire au démarrage. Ils ne voient pas les modifications de code du nouveau déploiement.",
-        "Pour réinitialiser la connexion BDD.",
-        "Ce n'est pas nécessaire."
+        "`php bin/console messenger:consume <transport>`",
+        "`php bin/console messenger:run`",
+        "`php bin/console queue:work`",
+        "Automatiquement sans worker"
       ],
       "correct_answers": [
-        "Parce que les workers sont des processus PHP longue durée qui ont chargé le code en mémoire au démarrage. Ils ne voient pas les modifications de code du nouveau déploiement."
+        "`php bin/console messenger:consume <transport>`"
       ],
-      "explanation": "Sans redémarrage, le worker continuerait d'exécuter l'ancien code, potentiellement incompatible avec la nouvelle structure de base de données."
+      "explanation": "Un worker `messenger:consume` lit le transport et traite les messages."
+    },
+    {
+      "id": 5,
+      "question": "À quoi sert `HandledStamp` ?",
+      "type": "single_choice",
+      "options": [
+        "À stocker le résultat d'un Handler pour un dispatch synchrone",
+        "À gérer les retries",
+        "À définir le transport",
+        "À retarder l'exécution"
+      ],
+      "correct_answers": [
+        "À stocker le résultat d'un Handler pour un dispatch synchrone"
+      ],
+      "explanation": "Le HandledStamp permet de récupérer la valeur de retour du Handler."
+    },
+    {
+      "id": 6,
+      "question": "Quels middlewares natifs sont cités ?",
+      "type": "multiple_choice",
+      "options": [
+        "validation",
+        "doctrine_transaction",
+        "doctrine_ping_connection/doctrine_close_connection",
+        "router_context"
+      ],
+      "correct_answers": [
+        "validation",
+        "doctrine_transaction",
+        "doctrine_ping_connection/doctrine_close_connection",
+        "router_context"
+      ],
+      "explanation": "Ces middlewares gèrent validation, transactions, connexions BDD, contexte routeur."
+    },
+    {
+      "id": 7,
+      "question": "Quel rôle du `failure_transport` ?",
+      "type": "single_choice",
+      "options": [
+        "Stocker définitivement les messages ayant échoué après retries",
+        "Accélérer les messages",
+        "Gérer les priorités",
+        "Envoyer des emails"
+      ],
+      "correct_answers": [
+        "Stocker définitivement les messages ayant échoué après retries"
+      ],
+      "explanation": "Le failure transport sert de DLQ pour inspection/ré-essai manuel."
+    },
+    {
+      "id": 8,
+      "question": "Comment déboguer/relancer les messages en échec ?",
+      "type": "multiple_choice",
+      "options": [
+        "`messenger:failed:show`",
+        "`messenger:failed:retry`",
+        "`messenger:failed:remove`",
+        "`queue:inspect`"
+      ],
+      "correct_answers": [
+        "`messenger:failed:show`",
+        "`messenger:failed:retry`",
+        "`messenger:failed:remove`"
+      ],
+      "explanation": "Des commandes dédiées existent pour voir, relancer ou supprimer."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi redémarrer les workers après un déploiement ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'ils ont chargé l'ancien code en mémoire",
+        "Pour vider les logs",
+        "Pour régénérer le cache HTTP",
+        "Pour recharger .env"
+      ],
+      "correct_answers": [
+        "Parce qu'ils ont chargé l'ancien code en mémoire"
+      ],
+      "explanation": "Workers longue durée doivent être recyclés pour prendre le nouveau code."
+    },
+    {
+      "id": 10,
+      "question": "Comment retarder l'exécution d'un message unique ?",
+      "type": "single_choice",
+      "options": [
+        "En ajoutant un `DelayStamp` au dispatch",
+        "En modifiant le DSN",
+        "En changeant le bus",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "En ajoutant un `DelayStamp` au dispatch"
+      ],
+      "explanation": "DelayStamp applique un délai sur un message donné."
+    },
+    {
+      "id": 11,
+      "question": "Quel middleware rend l'exécution idempotente ?",
+      "type": "single_choice",
+      "options": [
+        "Aucun, c'est à l'handler d'être idempotent",
+        "`idempotent` middleware",
+        "retry_strategy",
+        "router_context"
+      ],
+      "correct_answers": [
+        "Aucun, c'est à l'handler d'être idempotent"
+      ],
+      "explanation": "Les handlers doivent supporter la relecture (retry/double délivrance)."
+    },
+    {
+      "id": 12,
+      "question": "Comment séparer commandes/queries/événements avec Messenger ?",
+      "type": "single_choice",
+      "options": [
+        "Configurer plusieurs bus (command.bus, query.bus, event.bus) avec middlewares adaptés",
+        "Utiliser un seul bus avec tags",
+        "Désactiver le routage",
+        "Utiliser EventDispatcher"
+      ],
+      "correct_answers": [
+        "Configurer plusieurs bus (command.bus, query.bus, event.bus) avec middlewares adaptés"
+      ],
+      "explanation": "Messenger supporte plusieurs bus pour CQRS et flux distincts."
     }
   ]
 }

@@ -4,63 +4,156 @@
   "questions": [
     {
       "id": 1,
-      "question": "Pourquoi est-il recommandé d'utiliser le composant `Process` plutôt que les fonctions natives PHP comme `exec` ou `system` ?",
-      "type": "single_choice",
+      "question": "Pourquoi préférer `Process` à `exec/system` ?",
+      "type": "multiple_choice",
       "options": [
-        "Pour la coloration syntaxique.",
-        "Pour l'abstraction multiplateforme (Windows/Linux), la gestion de l'échappement des arguments (sécurité) et la gestion des timeouts.",
-        "Parce que `exec` est supprimé en PHP 8.",
-        "Pour utiliser Docker."
+        "Échappement sécurisé des arguments",
+        "Portabilité Windows/Linux",
+        "Gestion des timeouts et idle timeouts",
+        "Streaming stdout/stderr via callback"
       ],
       "correct_answers": [
-        "Pour l'abstraction multiplateforme (Windows/Linux), la gestion de l'échappement des arguments (sécurité) et la gestion des timeouts."
+        "Échappement sécurisé des arguments",
+        "Portabilité Windows/Linux",
+        "Gestion des timeouts et idle timeouts",
+        "Streaming stdout/stderr via callback"
       ],
-      "explanation": "Le composant Process sécurise et normalise l'exécution de commandes, évitant les pièges classiques de l'injection de commande."
+      "explanation": "Process uniformise l'exécution, sécurise les arguments et gère délais/flux."
     },
     {
       "id": 2,
-      "question": "Quelle est la différence entre la méthode `run()` et la méthode `start()` ?",
+      "question": "Différence entre `run()` et `start()` ?",
       "type": "single_choice",
       "options": [
-        "`run()` est asynchrone, `start()` est synchrone.",
-        "`run()` est bloquant (attend la fin du processus), `start()` est asynchrone (lance le processus en arrière-plan et rend la main au script PHP).",
-        "`start()` est déprécié.",
-        "Aucune."
+        "`run` est bloquant, `start` est asynchrone (rend la main)",
+        "`run` est async, `start` est bloquant",
+        "Les deux sont async",
+        "Les deux sont bloquants"
       ],
       "correct_answers": [
-        "`run()` est bloquant (attend la fin du processus), `start()` est asynchrone (lance le processus en arrière-plan et rend la main au script PHP)."
+        "`run` est bloquant, `start` est asynchrone (rend la main)"
       ],
-      "explanation": "`start()` est essentiel pour paralléliser des tâches ou gérer des processus longs tout en gardant le contrôle."
+      "explanation": "run attend la fin du process; start lance en arrière-plan."
     },
     {
       "id": 3,
-      "question": "Comment passer des arguments de manière sécurisée au constructeur de `Process` ?",
+      "question": "Comment passer des arguments de façon sûre ?",
       "type": "single_choice",
       "options": [
-        "Sous forme d'une seule chaîne : `new Process('ls -l ' . $dir)`.",
-        "Sous forme d'un tableau : `new Process(['ls', '-l', $dir])`.",
-        "En concaténant avec `escapeshellarg`.",
-        "En utilisant `Process::fromShellCommandline`."
+        "`new Process(['cmd', $arg])`",
+        "Concaténer une chaîne",
+        "Via eval",
+        "Base64 obligatoire"
       ],
       "correct_answers": [
-        "Sous forme d'un tableau : `new Process(['ls', '-l', $dir])`."
+        "`new Process(['cmd', $arg])`"
       ],
-      "explanation": "L'utilisation du tableau garantit que chaque argument est échappé individuellement, rendant l'injection impossible."
+      "explanation": "Le tableau protège de l'injection shell."
     },
     {
       "id": 4,
-      "question": "Comment récupérer la sortie (STDOUT) d'un processus en temps réel (streaming) pendant son exécution ?",
+      "question": "Comment streamer stdout/err en temps réel ?",
       "type": "single_choice",
       "options": [
-        "Ce n'est pas possible.",
-        "En passant une fonction de callback (closure) à la méthode `run()` ou `start()`.",
-        "En lisant le fichier `/tmp/output`.",
-        "Avec `getOutput()` à la fin."
+        "Passer un callback à `run()` ou `start()`",
+        "Impossible",
+        "Attendre la fin puis `getOutput()`",
+        "Lire un fichier temporaire"
       ],
       "correct_answers": [
-        "En passant une fonction de callback (closure) à la méthode `run()` ou `start()`."
+        "Passer un callback à `run()` ou `start()`"
       ],
-      "explanation": "Le callback reçoit le type (ERR/OUT) et le buffer au fur et à mesure qu'il est émis par le processus."
+      "explanation": "Le callback reçoit OUT/ERR au fil de l'eau."
+    },
+    {
+      "id": 5,
+      "question": "Comment fixer un délai max d'exécution ?",
+      "type": "single_choice",
+      "options": [
+        "`setTimeout()` pour la durée totale, `setIdleTimeout()` pour l'inactivité",
+        "`setTimeLimit()`",
+        "php.ini",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`setTimeout()` pour la durée totale, `setIdleTimeout()` pour l'inactivité"
+      ],
+      "explanation": "Deux timeouts : global et idle."
+    },
+    {
+      "id": 6,
+      "question": "Comment envoyer des données sur stdin du process ?",
+      "type": "single_choice",
+      "options": [
+        "`setInput()` avant `run()`/`start()`",
+        "Écrire dans /proc",
+        "Toujours via fichier",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`setInput()` avant `run()`/`start()`"
+      ],
+      "explanation": "setInput alimente stdin."
+    },
+    {
+      "id": 7,
+      "question": "Quand utiliser `Process::fromShellCommandline()` ?",
+      "type": "single_choice",
+      "options": [
+        "Quand on a besoin de syntaxe shell (pipes/redirections) et qu'on maîtrise les entrées pour éviter l'injection",
+        "Toujours",
+        "Jamais",
+        "Uniquement sur Windows"
+      ],
+      "correct_answers": [
+        "Quand on a besoin de syntaxe shell (pipes/redirections) et qu'on maîtrise les entrées pour éviter l'injection"
+      ],
+      "explanation": "fromShellCommandline est pratique mais moins sûr que le tableau."
+    },
+    {
+      "id": 8,
+      "question": "Comment envoyer un signal au processus ?",
+      "type": "single_choice",
+      "options": [
+        "`signal(SIGTERM)`",
+        "`kill()`",
+        "Impossible",
+        "`interrupt()`"
+      ],
+      "correct_answers": [
+        "`signal(SIGTERM)`"
+      ],
+      "explanation": "Process expose signal() pour envoyer SIG*."
+    },
+    {
+      "id": 9,
+      "question": "Quelle classe exécute un snippet PHP isolé ?",
+      "type": "single_choice",
+      "options": [
+        "`PhpProcess`",
+        "`PhpRunner`",
+        "`EvalProcess`",
+        "`ShellProcess`"
+      ],
+      "correct_answers": [
+        "`PhpProcess`"
+      ],
+      "explanation": "PhpProcess exécute du code PHP dans un sous-processus."
+    },
+    {
+      "id": 10,
+      "question": "Que teste `isSuccessful()` ?",
+      "type": "single_choice",
+      "options": [
+        "Code de sortie == 0",
+        "Présence de sortie",
+        "Absence d'exception PHP",
+        "La durée"
+      ],
+      "correct_answers": [
+        "Code de sortie == 0"
+      ],
+      "explanation": "Un process est réussi si exit code 0."
     }
   ]
 }

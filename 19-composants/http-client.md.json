@@ -4,63 +4,194 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle est la caractéristique principale du composant `HttpClient` de Symfony par rapport à `file_get_contents` ou `Guzzle` (par défaut) ?",
-      "type": "single_choice",
+      "question": "Quelles caractéristiques différencient HttpClient d'un appel bloquant classique ?",
+      "type": "multiple_choice",
       "options": [
-        "Il est synchrone et bloquant.",
-        "Il est asynchrone par défaut : la requête est envoyée mais PHP ne bloque pas tant que vous ne lisez pas la réponse.",
-        "Il ne supporte pas HTTPS.",
-        "Il n'a aucune dépendance."
+        "Asynchrone par défaut (la requête progresse tant que vous ne lisez pas)",
+        "Support HTTP/2/3 via curl",
+        "Streaming chunk par chunk",
+        "Oblige à bloquer après request()"
       ],
       "correct_answers": [
-        "Il est asynchrone par défaut : la requête est envoyée mais PHP ne bloque pas tant que vous ne lisez pas la réponse."
+        "Asynchrone par défaut (la requête progresse tant que vous ne lisez pas)",
+        "Support HTTP/2/3 via curl",
+        "Streaming chunk par chunk"
       ],
-      "explanation": "Cela permet d'envoyer plusieurs requêtes en parallèle (multiplexing) sans complexité additionnelle."
+      "explanation": "Il est async, sait streamer et tirer parti de HTTP/2/3 ; request() n'est pas bloquant."
     },
     {
       "id": 2,
-      "question": "À quoi servent les 'Scoped Clients' dans la configuration `framework.yaml` ?",
-      "type": "single_choice",
+      "question": "Quels usages des options `request()` sont cités ?",
+      "type": "multiple_choice",
       "options": [
-        "À limiter la portée des variables.",
-        "À pré-configurer des options spécifiques (URL de base, headers d'auth) pour des services tiers (ex: GitHub, Stripe) et les injecter facilement.",
-        "À créer des clients privés.",
-        "À gérer les scopes OAuth."
+        "`json` pour encoder et ajouter Content-Type",
+        "`query` pour la query string",
+        "`auth_basic` / `auth_bearer`",
+        "`user_data` pour attacher des métadonnées à la réponse"
       ],
       "correct_answers": [
-        "À pré-configurer des options spécifiques (URL de base, headers d'auth) pour des services tiers (ex: GitHub, Stripe) et les injecter facilement."
+        "`json` pour encoder et ajouter Content-Type",
+        "`query` pour la query string",
+        "`auth_basic` / `auth_bearer`",
+        "`user_data` pour attacher des métadonnées à la réponse"
       ],
-      "explanation": "Cela évite de répéter l'URL de base ou le token à chaque appel dans le code."
+      "explanation": "Les options couvrent headers, auth, query, json, user_data, etc."
     },
     {
       "id": 3,
-      "question": "Si le code HTTP de la réponse est 404 ou 500, quand l'exception est-elle lancée par défaut ?",
+      "question": "Comment configurer des options globales et limiter les connexions par hôte ?",
       "type": "single_choice",
       "options": [
-        "Immédiatement lors de l'appel à `$client->request()`.",
-        "Jamais.",
-        "Uniquement lorsque vous essayez de lire le contenu de la réponse (ex: `$response->getContent()`).",
-        "Au moment du destructeur de l'objet."
+        "Via `framework.http_client.default_options` et `max_host_connections`",
+        "Uniquement dans le code",
+        "En modifiant php.ini",
+        "Par fichier .env"
       ],
       "correct_answers": [
-        "Uniquement lorsque vous essayez de lire le contenu de la réponse (ex: `$response->getContent()`)."
+        "Via `framework.http_client.default_options` et `max_host_connections`"
       ],
-      "explanation": "Le client est paresseux. Il ne vérifie le statut que lorsque vous consommez la réponse, sauf si vous désactivez le `throw`."
+      "explanation": "Le YAML permet de fixer headers/timeouts et le nombre de connexions simultanées par host."
     },
     {
       "id": 4,
-      "question": "Quelle classe utiliser pour tester des services qui dépendent de `HttpClientInterface` sans faire de vraies requêtes HTTP ?",
-      "type": "single_choice",
+      "question": "À quoi servent les scoped clients ?",
+      "type": "multiple_choice",
       "options": [
-        "`MockHttpClient`",
-        "`TestHttpClient`",
-        "`NullHttpClient`",
-        "`VoidHttpClient`"
+        "Préconfigurer base_uri/headers pour un domaine (ex: GitHub)",
+        "Adapter un client selon un motif d'URL",
+        "Être injecté par nom de variable (named autowiring)",
+        "Limiter l'usage à un contrôleur"
       ],
       "correct_answers": [
-        "`MockHttpClient`"
+        "Préconfigurer base_uri/headers pour un domaine (ex: GitHub)",
+        "Adapter un client selon un motif d'URL",
+        "Être injecté par nom de variable (named autowiring)"
       ],
-      "explanation": "`MockHttpClient` permet de simuler des réponses (statut, body) de manière déterministe."
+      "explanation": "Scopes par regex/base_uri ; injection via nom de service en camelCase."
+    },
+    {
+      "id": 5,
+      "question": "Comment activer un retry automatique en cas de 429/5xx ?",
+      "type": "single_choice",
+      "options": [
+        "Configurer `retry_failed` (max_retries, delay, multiplier, http_codes) dans `default_options`",
+        "Boucler manuellement sur request()",
+        "Utiliser Messenger obligatoirement",
+        "Activer un paramètre php.ini"
+      ],
+      "correct_answers": [
+        "Configurer `retry_failed` (max_retries, delay, multiplier, http_codes) dans `default_options`"
+      ],
+      "explanation": "Le client peut relancer automatiquement selon la config YAML."
+    },
+    {
+      "id": 6,
+      "question": "Quand les exceptions sont-elles levées ?",
+      "type": "multiple_choice",
+      "options": [
+        "`TransportExceptionInterface` : dès accès au réseau (DNS/connexion)",
+        "`ClientExceptionInterface`/`ServerExceptionInterface` : quand on lit le contenu (getContent/toArray) et que throw=true",
+        "`RedirectionExceptionInterface` : si max_redirects dépassé",
+        "Jamais en mode async"
+      ],
+      "correct_answers": [
+        "`TransportExceptionInterface` : dès accès au réseau (DNS/connexion)",
+        "`ClientExceptionInterface`/`ServerExceptionInterface` : quand on lit le contenu (getContent/toArray) et que throw=true",
+        "`RedirectionExceptionInterface` : si max_redirects dépassé"
+      ],
+      "explanation": "Les 4xx/5xx se lèvent à la consommation, pas à request(); les erreurs réseau se lèvent dès l'accès."
+    },
+    {
+      "id": 7,
+      "question": "Comment paralléliser plusieurs requêtes et traiter en streaming ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `stream($responses)` et itérer sur les chunks",
+        "Lancer plusieurs threads PHP",
+        "Utiliser un worker externe",
+        "Impossible avec HttpClient"
+      ],
+      "correct_answers": [
+        "Utiliser `stream($responses)` et itérer sur les chunks"
+      ],
+      "explanation": "stream() multiplexe et fournit les chunks first/last/timeout."
+    },
+    {
+      "id": 8,
+      "question": "Comment consommer un flux SSE avec HttpClient ?",
+      "type": "single_choice",
+      "options": [
+        "Envoyer `Accept: text/event-stream` et itérer sur `stream()`",
+        "Lire tout en une fois",
+        "Passer par WebSocket obligatoire",
+        "Utiliser Guzzle"
+      ],
+      "correct_answers": [
+        "Envoyer `Accept: text/event-stream` et itérer sur `stream()`"
+      ],
+      "explanation": "Le client peut traiter les events chunk par chunk en SSE."
+    },
+    {
+      "id": 9,
+      "question": "Quels moyens de mocking sont fournis pour les tests ?",
+      "type": "multiple_choice",
+      "options": [
+        "`MockHttpClient` avec `MockResponse`",
+        "Callback dynamique dans MockHttpClient",
+        "Simulation d'erreur réseau via option `error`",
+        "Requêtes réelles obligatoires"
+      ],
+      "correct_answers": [
+        "`MockHttpClient` avec `MockResponse`",
+        "Callback dynamique dans MockHttpClient",
+        "Simulation d'erreur réseau via option `error`"
+      ],
+      "explanation": "MockHttpClient supporte réponses statiques, callbacks, et erreurs simulées."
+    },
+    {
+      "id": 10,
+      "question": "Quel client concret est utilisé si l'extension curl est présente ?",
+      "type": "single_choice",
+      "options": [
+        "CurlHttpClient (pour perfs et HTTP/2/3)",
+        "NativeHttpClient toujours",
+        "GuzzleHttpClient",
+        "StreamOnlyClient"
+      ],
+      "correct_answers": [
+        "CurlHttpClient (pour perfs et HTTP/2/3)"
+      ],
+      "explanation": "HttpClient::create bascule sur curl si dispo, sinon fallback natif streams."
+    },
+    {
+      "id": 11,
+      "question": "Comment injecter un scoped client nommé `github.client` ?",
+      "type": "single_choice",
+      "options": [
+        "Via autowiring nommé : paramètre `$githubClient` type-hint HttpClientInterface",
+        "Via un service id obligatoire dans YAML",
+        "Uniquement par `ContainerInterface`",
+        "Impossible, il faut factory manuelle"
+      ],
+      "correct_answers": [
+        "Via autowiring nommé : paramètre `$githubClient` type-hint HttpClientInterface"
+      ],
+      "explanation": "Le nom de variable camelCase doit correspondre à l'id du client scopé."
+    },
+    {
+      "id": 12,
+      "question": "Pourquoi le temps total d'exécution lors de multiples requêtes parallèles peut-il être égal à la plus lente seulement ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que HttpClient multiplexe et ne somme pas les durées quand on streame les réponses en parallèle",
+        "Parce qu'il annule les autres requêtes",
+        "Parce qu'il exécute en série",
+        "Parce qu'il tronque les réponses"
+      ],
+      "correct_answers": [
+        "Parce que HttpClient multiplexe et ne somme pas les durées quand on streame les réponses en parallèle"
+      ],
+      "explanation": "L'asynchronisme fait que seules les requêtes les plus lentes dominent le temps total."
     }
   ]
 }

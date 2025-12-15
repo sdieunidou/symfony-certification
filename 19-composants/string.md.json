@@ -4,63 +4,160 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle classe du composant String est recommandée pour manipuler du texte humain contenant potentiellement des emojis ou des caractères internationaux ?",
-      "type": "single_choice",
+      "question": "Quelles sont les trois classes principales du composant String ?",
+      "type": "multiple_choice",
       "options": [
-        "`ByteString`",
-        "`UnicodeString`",
-        "`CodePointString`",
-        "`AsciiString`"
+        "UnicodeString (graphèmes)",
+        "ByteString (octets/ASCII/binaire)",
+        "CodePointString (points de code)",
+        "AsciiString"
       ],
       "correct_answers": [
-        "`UnicodeString`"
+        "UnicodeString (graphèmes)",
+        "ByteString (octets/ASCII/binaire)",
+        "CodePointString (points de code)"
       ],
-      "explanation": "`UnicodeString` gère correctement les graphèmes complexes (emojis, accents composés), là où les fonctions PHP natives échouent souvent."
+      "explanation": "Trois implémentations selon le niveau d'abstraction : graphème, code point, octet."
     },
     {
       "id": 2,
-      "question": "Quelle méthode permet de générer un slug d'URL sécurisé (translittération des accents, minuscules) ?",
+      "question": "UnicodeString vs ByteString : différence clef ?",
       "type": "single_choice",
       "options": [
-        "`u($string)->slug()`",
-        "`$slugger->slug($string)`",
-        "`str_slug($string)`",
-        "`urlencode($string)`"
+        "Graphèmes UTF-8 vs octets bruts",
+        "UnicodeString ne gère pas les emojis",
+        "ByteString est toujours plus lent",
+        "Aucune différence"
       ],
       "correct_answers": [
-        "`$slugger->slug($string)`"
+        "Graphèmes UTF-8 vs octets bruts"
       ],
-      "explanation": "Le service `SluggerInterface` (implémenté par `AsciiSlugger`) est dédié à cette tâche."
+      "explanation": "UnicodeString compte les graphèmes (emojis), ByteString traite des bytes."
     },
     {
       "id": 3,
-      "question": "Les objets `UnicodeString` et `ByteString` sont-ils mutables ou immutables ?",
+      "question": "Les objets String sont-ils mutables ?",
       "type": "single_choice",
       "options": [
-        "Mutables (on modifie l'objet lui-même).",
-        "Immutables (chaque opération retourne une nouvelle instance).",
-        "Cela dépend de la configuration.",
-        "Mutables en mode debug."
+        "Non, immutables : chaque opération retourne un nouvel objet",
+        "Oui, mutables",
+        "Cela dépend d'une option",
+        "ByteString seulement est mutable"
       ],
       "correct_answers": [
-        "Immutables (chaque opération retourne une nouvelle instance)."
+        "Non, immutables : chaque opération retourne un nouvel objet"
       ],
-      "explanation": "L'immutabilité évite les effets de bord. `$u->append('a')` ne modifie pas `$u` mais retourne un nouvel objet."
+      "explanation": "append/replace créent un nouvel objet."
     },
     {
       "id": 4,
-      "question": "Quelle est la différence entre `ByteString` et `UnicodeString` ?",
+      "question": "Comment générer un token aléatoire sécurisé ?",
       "type": "single_choice",
       "options": [
-        "`ByteString` traite la chaîne comme une suite d'octets (binaire/ASCII), `UnicodeString` comme une suite de graphèmes (UTF-8).",
-        "`ByteString` est plus lent.",
-        "`UnicodeString` ne supporte pas les emojis.",
-        "Il n'y en a aucune."
+        "ByteString::fromRandom(32)",
+        "rand()",
+        "uniqid()",
+        "md5(time())"
       ],
       "correct_answers": [
-        "`ByteString` traite la chaîne comme une suite d'octets (binaire/ASCII), `UnicodeString` comme une suite de graphèmes (UTF-8)."
+        "ByteString::fromRandom(32)"
       ],
-      "explanation": "Utilisez `ByteString` pour des tokens aléatoires ou des données binaires, et `UnicodeString` pour du texte."
+      "explanation": "fromRandom utilise un CSPRNG pour générer une chaîne."
+    },
+    {
+      "id": 5,
+      "question": "Quelles méthodes facilitent la normalisation d'une chaîne ?",
+      "type": "multiple_choice",
+      "options": [
+        "trim()",
+        "lower()/upper()",
+        "title(true)",
+        "camel()/snake()"
+      ],
+      "correct_answers": [
+        "trim()",
+        "lower()/upper()",
+        "title(true)",
+        "camel()/snake()"
+      ],
+      "explanation": "API fluide pour nettoyer et formater la casse."
+    },
+    {
+      "id": 6,
+      "question": "Comment compter la longueur perçue d'un texte contenant des emojis ?",
+      "type": "single_choice",
+      "options": [
+        "u($txt)->length()",
+        "strlen()",
+        "mb_strlen() uniquement",
+        "count()"
+      ],
+      "correct_answers": [
+        "u($txt)->length()"
+      ],
+      "explanation": "length() de UnicodeString compte les graphèmes (emoji = 1)."
+    },
+    {
+      "id": 7,
+      "question": "Comment produire un slug d'URL propre ?",
+      "type": "single_choice",
+      "options": [
+        "$slugger->slug('Crème brûlée 100%')",
+        "urlencode()",
+        "strtolower()",
+        "substr()"
+      ],
+      "correct_answers": [
+        "$slugger->slug('Crème brûlée 100%')"
+      ],
+      "explanation": "SluggerInterface translittère, normalise et nettoie."
+    },
+    {
+      "id": 8,
+      "question": "À quoi sert `withEmoji()` sur le slugger ?",
+      "type": "single_choice",
+      "options": [
+        "Translittérer les emojis en mots (❤️ -> love)",
+        "Ajouter des emojis",
+        "Supprimer les espaces",
+        "Rien"
+      ],
+      "correct_answers": [
+        "Translittérer les emojis en mots (❤️ -> love)"
+      ],
+      "explanation": "withEmoji traduit les emojis pour des slugs lisibles."
+    },
+    {
+      "id": 9,
+      "question": "Comment découper une chaîne en morceaux/segments ?",
+      "type": "multiple_choice",
+      "options": [
+        "chunk()",
+        "split(' ')",
+        "slice()",
+        "explodeString()"
+      ],
+      "correct_answers": [
+        "chunk()",
+        "split(' ')",
+        "slice()"
+      ],
+      "explanation": "chunk/split/slice sont disponibles; explodeString n'existe pas."
+    },
+    {
+      "id": 10,
+      "question": "Quel composant String fournit le pluriel/singulier ?",
+      "type": "single_choice",
+      "options": [
+        "EnglishInflector/FrenchInflector",
+        "Slugger",
+        "UnicodeString",
+        "Intl"
+      ],
+      "correct_answers": [
+        "EnglishInflector/FrenchInflector"
+      ],
+      "explanation": "Inflector gère pluralize/singularize (EN/FR/ES)."
     }
   ]
 }

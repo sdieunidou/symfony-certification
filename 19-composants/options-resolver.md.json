@@ -4,78 +4,191 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle exception est levée par `resolve()` si l'utilisateur passe une option qui n'a pas été définie dans le resolver ?",
-      "type": "single_choice",
+      "question": "Quelles exceptions peuvent être levées par `resolve()` ?",
+      "type": "multiple_choice",
       "options": [
-        "`InvalidOptionsException`",
-        "`MissingOptionsException`",
-        "`UndefinedOptionsException`",
-        "`OptionNotFoundException`"
+        "`UndefinedOptionsException` pour une option inconnue",
+        "`MissingOptionsException` pour une option requise absente",
+        "`InvalidOptionsException` pour type/valeur incorrects",
+        "`LogicException` pour boucle circulaire"
       ],
       "correct_answers": [
-        "`UndefinedOptionsException`"
+        "`UndefinedOptionsException` pour une option inconnue",
+        "`MissingOptionsException` pour une option requise absente",
+        "`InvalidOptionsException` pour type/valeur incorrects"
       ],
-      "explanation": "C'est une sécurité pour détecter les fautes de frappe. Seules les options configurées (via `setDefault`, `setRequired` ou `setDefined`) sont autorisées."
+      "explanation": "resolve() valide existence, obligation et type/valeur."
     },
     {
       "id": 2,
-      "question": "Quelle méthode permet de définir une option qui **doit** être fournie par l'utilisateur (pas de valeur par défaut) ?",
-      "type": "single_choice",
+      "question": "Différence entre `setDefined`, `setDefaults` et `setRequired` ?",
+      "type": "multiple_choice",
       "options": [
-        "`setDefaults()`",
-        "`setRequired()`",
-        "`setMandatory()`",
-        "`setDefined()`"
+        "`setDefined` : déclare sans valeur par défaut ni obligation",
+        "`setDefaults` : fixe une valeur par défaut (option facultative)",
+        "`setRequired` : impose la présence d'une valeur fournie",
+        "`setDefined` rend l'option obligatoire"
       ],
       "correct_answers": [
-        "`setRequired()`"
+        "`setDefined` : déclare sans valeur par défaut ni obligation",
+        "`setDefaults` : fixe une valeur par défaut (option facultative)",
+        "`setRequired` : impose la présence d'une valeur fournie"
       ],
-      "explanation": "Si une option requise manque lors de l'appel à `resolve()`, une `MissingOptionsException` est levée."
+      "explanation": "Defined = connue ; Defaults = connue + valeur ; Required = doit être fournie."
     },
     {
       "id": 3,
-      "question": "À quel moment intervient un **Normalizer** (`setNormalizer`) ?",
-      "type": "single_choice",
+      "question": "Comment restreindre types et valeurs autorisés ?",
+      "type": "multiple_choice",
       "options": [
-        "Avant la validation des types.",
-        "Après la validation des types et des valeurs, pour transformer la donnée finale.",
-        "Au moment de la définition de l'option.",
-        "Avant de fusionner les tableaux."
+        "`setAllowedTypes('port', ['int','null'])`",
+        "`setAllowedValues('encryption', [null,'ssl','tls'])`",
+        "`setAllowedValues('age', fn($v)=>$v>=18)`",
+        "`setTypes('port')`"
       ],
       "correct_answers": [
-        "Après la validation des types et des valeurs, pour transformer la donnée finale."
+        "`setAllowedTypes('port', ['int','null'])`",
+        "`setAllowedValues('encryption', [null,'ssl','tls'])`",
+        "`setAllowedValues('age', fn($v)=>$v>=18)`"
       ],
-      "explanation": "La normalisation s'exécute en dernier (ou presque), une fois qu'on est sûr que la valeur brute est valide."
+      "explanation": "Types et valeurs se configurent séparément via allowedTypes/allowedValues."
     },
     {
       "id": 4,
-      "question": "Dans le contexte de Symfony, où utilisez-vous le plus souvent l'OptionsResolver ?",
+      "question": "Dans quel ordre se fait la résolution d'une option ?",
       "type": "single_choice",
       "options": [
-        "Dans les contrôleurs.",
-        "Dans les entités Doctrine.",
-        "Dans la méthode `configureOptions` des Form Types.",
-        "Dans le Kernel."
+        "Validation type/valeur puis normalisation",
+        "Normalisation puis validation",
+        "Fusion puis cache",
+        "Cache puis validation"
       ],
       "correct_answers": [
-        "Dans la méthode `configureOptions` des Form Types."
+        "Validation type/valeur puis normalisation"
       ],
-      "explanation": "C'est le mécanisme standard pour gérer les options des formulaires (`label`, `required`, `attr`, etc.)."
+      "explanation": "Le normalizer agit après que la valeur est jugée valide."
     },
     {
       "id": 5,
-      "question": "Comment définir qu'une option doit être un entier OU null ?",
+      "question": "Comment définir une valeur par défaut dépendante d'une autre option ?",
       "type": "single_choice",
       "options": [
-        "`$resolver->setAllowedTypes('port', 'int|null')` (ou `['int', 'null']`)",
-        "`$resolver->setAllowedTypes('port', '?int')`",
-        "`$resolver->setNullable('port', true)`",
-        "`$resolver->setAllowedValues('port', [null])`"
+        "Avec `setDefault('port', fn(Options $o) => $o['encryption']==='ssl'?465:25)`",
+        "Avec `setLinkedDefault()`",
+        "Impossible",
+        "Avec `setNormalizer()` uniquement"
       ],
       "correct_answers": [
-        "`$resolver->setAllowedTypes('port', 'int|null')` (ou `['int', 'null']`)"
+        "Avec `setDefault('port', fn(Options $o) => $o['encryption']==='ssl'?465:25)`"
       ],
-      "explanation": "La méthode `setAllowedTypes` accepte une chaîne (union type) ou un tableau de types."
+      "explanation": "Les closures de setDefault reçoivent Options pour créer des dépendances."
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert `setNormalizer()` versus `setAllowedValues()` ?",
+      "type": "single_choice",
+      "options": [
+        "Normalizer transforme la valeur finale après validation, AllowedValues valide la valeur",
+        "Ils font la même chose",
+        "AllowedValues transforme, Normalizer valide",
+        "Normalizer définit une valeur par défaut"
+      ],
+      "correct_answers": [
+        "Normalizer transforme la valeur finale après validation, AllowedValues valide la valeur"
+      ],
+      "explanation": "AllowedValues vérifie, Normalizer modifie."
+    },
+    {
+      "id": 7,
+      "question": "Comment valider des options imbriquées ?",
+      "type": "single_choice",
+      "options": [
+        "Définir un `setDefault('database', function(OptionsResolver $r){ ... })` pour configurer un sous-resolver",
+        "Impossible",
+        "En ajoutant un `ArrayValidator`",
+        "Avec `setNested()`"
+      ],
+      "correct_answers": [
+        "Définir un `setDefault('database', function(OptionsResolver $r){ ... })` pour configurer un sous-resolver"
+      ],
+      "explanation": "On peut imbriquer des resolvers via un callback dans setDefault."
+    },
+    {
+      "id": 8,
+      "question": "Que fait la syntaxe fluide `define('port')->required()->default(25)->allowedTypes('int')` ?",
+      "type": "single_choice",
+      "options": [
+        "Définit une option requise, avec défaut 25 si fournie vide, de type int",
+        "Crée une option facultative sans défaut",
+        "Ignore la validation de type",
+        "Transforme la valeur en string"
+      ],
+      "correct_answers": [
+        "Définit une option requise, avec défaut 25 si fournie vide, de type int"
+      ],
+      "explanation": "La DSL fluide enchaîne required/default/allowedTypes/info."
+    },
+    {
+      "id": 9,
+      "question": "Quel avantage du composant sur `array_replace` ?",
+      "type": "multiple_choice",
+      "options": [
+        "Validation stricte des options et types",
+        "Exceptions explicites en cas d'option inconnue",
+        "Normalisation des valeurs",
+        "Fusionne silencieusement les clés inconnues"
+      ],
+      "correct_answers": [
+        "Validation stricte des options et types",
+        "Exceptions explicites en cas d'option inconnue",
+        "Normalisation des valeurs"
+      ],
+      "explanation": "OptionsResolver évite les typos et permet validation/normalisation."
+    },
+    {
+      "id": 10,
+      "question": "Quel pattern d'usage est recommandé pour des traitements massifs (boucles) ?",
+      "type": "single_choice",
+      "options": [
+        "Réutiliser ou cloner un resolver préconfiguré plutôt que recréer les règles à chaque itération",
+        "Recréer le resolver à chaque fois",
+        "Désactiver la validation",
+        "Utiliser array_merge"
+      ],
+      "correct_answers": [
+        "Réutiliser ou cloner un resolver préconfiguré plutôt que recréer les règles à chaque itération"
+      ],
+      "explanation": "Éviter de reconstruire les règles à chaque boucle pour les perfs."
+    },
+    {
+      "id": 11,
+      "question": "Quelle méthode détecte une option inconnue mais définie comme `setDefined` ?",
+      "type": "single_choice",
+      "options": [
+        "Aucune, `setDefined` rend l'option connue donc pas d'UndefinedOptionsException",
+        "`resolveDefined()`",
+        "`setAllowedValues()`",
+        "`setMandatory()`"
+      ],
+      "correct_answers": [
+        "Aucune, `setDefined` rend l'option connue donc pas d'UndefinedOptionsException"
+      ],
+      "explanation": "setDefined enregistre l'option même sans défaut, elle devient autorisée."
+    },
+    {
+      "id": 12,
+      "question": "Comment interdire toute option non déclarée ?",
+      "type": "single_choice",
+      "options": [
+        "C'est le comportement par défaut de `resolve()`",
+        "Appeler `forbidUnknownOptions()`",
+        "Passer `strict=true` à resolve",
+        "Ajouter `setAllowedOptions([])`"
+      ],
+      "correct_answers": [
+        "C'est le comportement par défaut de `resolve()`"
+      ],
+      "explanation": "Toute option non définie lève UndefinedOptionsException sans config supplémentaire."
     }
   ]
 }

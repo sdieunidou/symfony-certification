@@ -4,63 +4,155 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est l'avantage principal d'utiliser le composant `Clock` (et l'interface `ClockInterface`) plutôt que `new \\DateTime()` directement dans votre code ?",
-      "type": "single_choice",
+      "question": "Pourquoi injecter `ClockInterface` plutôt que `new DateTime()` ?",
+      "type": "multiple_choice",
       "options": [
-        "C'est plus rapide.",
-        "Cela permet de mocker le temps dans les tests (ex: avancer d'une heure instantanément) sans dépendre de l'horloge système.",
-        "Cela corrige automatiquement les fuseaux horaires.",
-        "Cela formate automatiquement la date."
+        "Testabilité (MockClock pour figer/avancer le temps)",
+        "Respect PSR-20",
+        "Centraliser fuseau/horloge",
+        "Formatage automatique des dates"
       ],
       "correct_answers": [
-        "Cela permet de mocker le temps dans les tests (ex: avancer d'une heure instantanément) sans dépendre de l'horloge système."
+        "Testabilité (MockClock pour figer/avancer le temps)",
+        "Respect PSR-20",
+        "Centraliser fuseau/horloge"
       ],
-      "explanation": "Le couplage à l'horloge système (`time()`) rend les tests temporels (expiration de token, délais) fragiles ou lents (sleep réel)."
+      "explanation": "Clock rend le temps injectable/mockable ; PSR-20 standardise."
     },
     {
       "id": 2,
-      "question": "Quelle classe du composant Clock doit-on utiliser dans les tests pour contrôler le temps ?",
+      "question": "Quelle implémentation utiliser en prod ?",
       "type": "single_choice",
       "options": [
-        "`NativeClock`",
-        "`MockClock`",
-        "`SystemClock`",
-        "`TestClock`"
+        "NativeClock",
+        "MockClock",
+        "SystemClock",
+        "FakeClock"
       ],
       "correct_answers": [
-        "`MockClock`"
+        "NativeClock"
       ],
-      "explanation": "`MockClock` permet d'initialiser l'heure à une valeur fixe et de la faire avancer manuellement (`sleep()`) sans attente réelle."
+      "explanation": "NativeClock lit l'horloge système."
     },
     {
       "id": 3,
-      "question": "Quelle interface standardisée (PSR-20) le composant Clock implémente-t-il ?",
+      "question": "Comment avancer le temps d'1h01 en test ?",
       "type": "single_choice",
       "options": [
-        "`Psr\\Log\\LoggerInterface`",
-        "`Psr\\Clock\\ClockInterface`",
-        "`Psr\\Date\\DateInterface`",
-        "`Psr\\Time\\TimeInterface`"
+        "`$clock->sleep(3660);` sur une MockClock",
+        "`sleep(3660)` PHP",
+        "`DateTime::add()`",
+        "Impossible"
       ],
       "correct_answers": [
-        "`Psr\\Clock\\ClockInterface`"
+        "`$clock->sleep(3660);` sur une MockClock"
       ],
-      "explanation": "Symfony 7 adopte le standard PSR-20 pour l'interopérabilité des horloges."
+      "explanation": "MockClock avance instantanément sans attendre réellement."
     },
     {
       "id": 4,
-      "question": "Que retourne la méthode `now()` de l'interface `ClockInterface` ?",
+      "question": "Que retourne `now()` ?",
       "type": "single_choice",
       "options": [
-        "Un timestamp (int).",
-        "Un objet `DateTimeImmutable`.",
-        "Un objet `DateTime` (mutable).",
-        "Une chaîne de caractères (string)."
+        "DateTimeImmutable",
+        "Timestamp",
+        "DateTime mutable",
+        "String"
       ],
       "correct_answers": [
-        "Un objet `DateTimeImmutable`."
+        "DateTimeImmutable"
       ],
-      "explanation": "L'immutabilité est une bonne pratique pour éviter les effets de bord lors de la manipulation de dates."
+      "explanation": "ClockInterface impose un DateTimeImmutable."
+    },
+    {
+      "id": 5,
+      "question": "PSR associée au composant Clock ?",
+      "type": "single_choice",
+      "options": [
+        "PSR-20",
+        "PSR-3",
+        "PSR-7",
+        "PSR-14"
+      ],
+      "correct_answers": [
+        "PSR-20"
+      ],
+      "explanation": "PSR-20 définit ClockInterface."
+    },
+    {
+      "id": 6,
+      "question": "Quel risque avec `time()` direct en prod/tests ?",
+      "type": "single_choice",
+      "options": [
+        "Difficile à tester (non mockable) et peut ralentir les tests (sleep réel)",
+        "Plus rapide",
+        "Toujours UTC",
+        "Toujours en cache"
+      ],
+      "correct_answers": [
+        "Difficile à tester (non mockable) et peut ralentir les tests (sleep réel)"
+      ],
+      "explanation": "Coupler au système rend les tests lents et fragiles."
+    },
+    {
+      "id": 7,
+      "question": "Comment changer de fuseau pour l'horloge ?",
+      "type": "single_choice",
+      "options": [
+        "`withTimeZone()` sur l'horloge",
+        "Changer php.ini",
+        "Impossible",
+        "Utiliser date_default_timezone_set"
+      ],
+      "correct_answers": [
+        "`withTimeZone()` sur l'horloge"
+      ],
+      "explanation": "Clock peut être clonée avec un autre timezone."
+    },
+    {
+      "id": 8,
+      "question": "À quoi sert `sleep()` sur l'interface Clock ?",
+      "type": "single_choice",
+      "options": [
+        "Dans MockClock, avance virtuellement le temps; dans NativeClock, dort réellement",
+        "Toujours attendre 1s",
+        "Toujours lever une exception",
+        "Changer la locale"
+      ],
+      "correct_answers": [
+        "Dans MockClock, avance virtuellement le temps; dans NativeClock, dort réellement"
+      ],
+      "explanation": "sleep est mocké pour éviter l'attente en test."
+    },
+    {
+      "id": 9,
+      "question": "Quelle classe Clock aide à manipuler les dates avec une API fluide (extends DateTimeImmutable) ?",
+      "type": "single_choice",
+      "options": [
+        "DatePoint",
+        "NativeClock",
+        "MockClock",
+        "ClockImmutable"
+      ],
+      "correct_answers": [
+        "DatePoint"
+      ],
+      "explanation": "DatePoint offre une API fluide, ClockInterface reste l'entrée principale."
+    },
+    {
+      "id": 10,
+      "question": "Comment injecter l'horloge dans un service Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Type-hinter `Psr\\Clock\\ClockInterface` dans le constructeur (autowiring)",
+        "Utiliser `new NativeClock()` partout",
+        "Via un paramètre de config",
+        "En lisant $_SERVER['TIME']"
+      ],
+      "correct_answers": [
+        "Type-hinter `Psr\\Clock\\ClockInterface` dans le constructeur (autowiring)"
+      ],
+      "explanation": "Symfony autowire ClockInterface avec NativeClock ou MockClock selon l'env/test."
     }
   ]
 }

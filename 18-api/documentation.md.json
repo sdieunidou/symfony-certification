@@ -4,63 +4,158 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est le format standard actuel pour décrire les APIs REST ?",
-      "type": "single_choice",
+      "question": "Quels sont les artefacts principaux d'une spec OpenAPI ?",
+      "type": "multiple_choice",
       "options": [
-        "WSDL",
-        "SOAP",
-        "OpenAPI (anciennement Swagger)",
-        "RAML"
+        "Les paths (routes) et leurs opérations",
+        "Les schemas (définitions des objets)",
+        "Les securitySchemes (auth)",
+        "Le manifest Webpack"
       ],
       "correct_answers": [
-        "OpenAPI (anciennement Swagger)"
+        "Les paths (routes) et leurs opérations",
+        "Les schemas (définitions des objets)",
+        "Les securitySchemes (auth)"
       ],
-      "explanation": "OpenAPI est la spécification standardisée (fichier JSON/YAML) pour décrire la structure d'une API."
+      "explanation": "OpenAPI décrit endpoints, modèles, et mécanismes d'auth."
     },
     {
       "id": 2,
-      "question": "Quel bundle est couramment utilisé dans l'écosystème Symfony (hors API Platform) pour générer une documentation OpenAPI ?",
+      "question": "Quel format standard pour documenter une API REST est mentionné ?",
       "type": "single_choice",
       "options": [
-        "`SymfonyDocBundle`",
+        "OpenAPI (ex-Swagger)",
+        "WSDL",
+        "ProtoBuf",
+        "RAML uniquement"
+      ],
+      "correct_answers": [
+        "OpenAPI (ex-Swagger)"
+      ],
+      "explanation": "OpenAPI est le standard JSON/YAML courant."
+    },
+    {
+      "id": 3,
+      "question": "Quel bundle Symfony est couramment utilisé (hors API Platform) pour générer OpenAPI à partir du code ?",
+      "type": "single_choice",
+      "options": [
         "`NelmioApiDocBundle`",
+        "`SensioDocBundle`",
         "`SwaggerBundle`",
-        "`OpenApiBundle`"
+        "`YamlDocBundle`"
       ],
       "correct_answers": [
         "`NelmioApiDocBundle`"
       ],
-      "explanation": "Ce bundle génère la doc à partir des routes, des types PHP et des attributs/annotations."
-    },
-    {
-      "id": 3,
-      "question": "Qu'est-ce que 'Swagger UI' ?",
-      "type": "single_choice",
-      "options": [
-        "Un outil en ligne de commande.",
-        "Une interface web interactive générée à partir de la spec OpenAPI, permettant de visualiser et tester les endpoints de l'API.",
-        "Un éditeur de code.",
-        "Un outil de test de performance."
-      ],
-      "correct_answers": [
-        "Une interface web interactive générée à partir de la spec OpenAPI, permettant de visualiser et tester les endpoints de l'API."
-      ],
-      "explanation": "C'est l'interface visuelle standard fournie par NelmioApiDocBundle pour explorer l'API."
+      "explanation": "Nelmio génère la spec en inspectant routes, types, annotations/attributs."
     },
     {
       "id": 4,
-      "question": "Quelle approche consiste à écrire la spécification OpenAPI (YAML) AVANT d'écrire le code ?",
+      "question": "Qu'apporte Swagger UI dans un projet documenté ?",
       "type": "single_choice",
       "options": [
-        "Code-First",
+        "Une interface web pour visualiser et tester les endpoints à partir de la spec",
+        "Un benchmarkeur de performance",
+        "Un linter de code PHP",
+        "Un outil de déploiement"
+      ],
+      "correct_answers": [
+        "Une interface web pour visualiser et tester les endpoints à partir de la spec"
+      ],
+      "explanation": "Swagger UI rend l'OpenAPI interactive pour les devs front/mobile."
+    },
+    {
+      "id": 5,
+      "question": "Quelle approche consiste à écrire le YAML OpenAPI avant le code ?",
+      "type": "single_choice",
+      "options": [
         "Design-First",
+        "Code-First",
         "Test-First",
-        "Database-First"
+        "Schema-Last"
       ],
       "correct_answers": [
         "Design-First"
       ],
-      "explanation": "L'approche Design-First permet de se mettre d'accord sur le contrat d'interface avant de commencer l'implémentation."
+      "explanation": "Design-First fixe le contrat avant l'implémentation."
+    },
+    {
+      "id": 6,
+      "question": "Dans un contrôleur, quel attribut Nelmio permet de décrire un corps de requête JSON lié à un DTO ?",
+      "type": "single_choice",
+      "options": [
+        "`#[OA\\RequestBody(content: new OA\\JsonContent(ref: new Model(...)))]`",
+        "`#[RouteDoc]`",
+        "`#[ApiDoc]`",
+        "`#[DocBody]`"
+      ],
+      "correct_answers": [
+        "`#[OA\\RequestBody(content: new OA\\JsonContent(ref: new Model(...)))]`"
+      ],
+      "explanation": "Les attributs OpenApi\\Attributes décrivent body et réponses."
+    },
+    {
+      "id": 7,
+      "question": "Comment lier un schéma OpenAPI à une classe PHP pour éviter la duplication ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `new Model(type: MyDto::class, groups: [...])`",
+        "En copiant/collant le YAML",
+        "En générant un WSDL",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Avec `new Model(type: MyDto::class, groups: [...])`"
+      ],
+      "explanation": "Model référence une classe + groupes Serializer pour générer le schema."
+    },
+    {
+      "id": 8,
+      "question": "Quelle différence entre approche Code-First et Design-First ?",
+      "type": "multiple_choice",
+      "options": [
+        "Code-First : on écrit le code, la doc est générée",
+        "Design-First : on écrit la spec avant le code",
+        "Code-First requiert toujours YAML manuel",
+        "Design-First empêche les tests"
+      ],
+      "correct_answers": [
+        "Code-First : on écrit le code, la doc est générée",
+        "Design-First : on écrit la spec avant le code"
+      ],
+      "explanation": "Deux approches complémentaires selon le projet/équipe."
+    },
+    {
+      "id": 9,
+      "question": "Quels avantages concrets apporte la doc OpenAPI pour les consommateurs front/mobile ?",
+      "type": "multiple_choice",
+      "options": [
+        "Découvrir routes et paramètres sans lire le code",
+        "Tester rapidement via Swagger UI",
+        "Générer des clients automatiques (TypeScript, Swift...)",
+        "Accéder aux logs serveur"
+      ],
+      "correct_answers": [
+        "Découvrir routes et paramètres sans lire le code",
+        "Tester rapidement via Swagger UI",
+        "Générer des clients automatiques (TypeScript, Swift...)"
+      ],
+      "explanation": "La spec sert à explorer, tester, et générer des SDKs."
+    },
+    {
+      "id": 10,
+      "question": "Quel piège fréquent en doc est évité en liant les schemas aux classes (Model) ?",
+      "type": "single_choice",
+      "options": [
+        "La divergence doc/implémentation quand les champs évoluent",
+        "La lenteur du serveur",
+        "La perte de logs",
+        "L'absence de CORS"
+      ],
+      "correct_answers": [
+        "La divergence doc/implémentation quand les champs évoluent"
+      ],
+      "explanation": "Réutiliser les classes et groupes limite les écarts entre code et spec."
     }
   ]
 }

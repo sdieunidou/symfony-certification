@@ -4,63 +4,163 @@
   "questions": [
     {
       "id": 1,
-      "question": "Pourquoi configure-t-on `stateless: true` dans le firewall d'une API ?",
-      "type": "single_choice",
+      "question": "Pourquoi `stateless: true` est-il essentiel sur le firewall d'une API ?",
+      "type": "multiple_choice",
       "options": [
-        "Pour empêcher l'utilisateur de se connecter.",
-        "Pour dire à Symfony de ne jamais créer de session PHP ni de cookie `PHPSESSID`, forçant une authentification à chaque requête.",
-        "Pour désactiver les logs.",
-        "Pour activer le mode maintenance."
+        "Désactive la session/cookie `PHPSESSID`",
+        "Force chaque requête à porter son token",
+        "Évite d'épingler un serveur spécifique (scalabilité)",
+        "Active CORS automatiquement"
       ],
       "correct_answers": [
-        "Pour dire à Symfony de ne jamais créer de session PHP ni de cookie `PHPSESSID`, forçant une authentification à chaque requête."
+        "Désactive la session/cookie `PHPSESSID`",
+        "Force chaque requête à porter son token",
+        "Évite d'épingler un serveur spécifique (scalabilité)"
       ],
-      "explanation": "C'est la définition d'une API REST Stateless. L'état d'authentification est porté par le client (Token) et non le serveur."
+      "explanation": "Stateless = pas de session, authent portées par la requête, facilite le scaling."
     },
     {
       "id": 2,
-      "question": "Quelle nouveauté de Symfony 6.2 simplifie la gestion des tokens d'API (Opaque tokens, JWT, etc.) ?",
-      "type": "single_choice",
+      "question": "Comment fonctionne le système Access Token authenticator (Symfony 6.2+) ?",
+      "type": "multiple_choice",
       "options": [
-        "Le système `AccessToken` authenticator.",
-        "Le bundle LexikJWT.",
-        "Le composant Security.",
-        "L'authentification par formulaire."
+        "Il extrait le token (Bearer/query/header custom) selon config",
+        "Il délègue la validation à un `AccessTokenHandlerInterface`",
+        "Il renvoie un `UserBadge` pour le UserProvider",
+        "Il stocke le token en session"
       ],
       "correct_answers": [
-        "Le système `AccessToken` authenticator."
+        "Il extrait le token (Bearer/query/header custom) selon config",
+        "Il délègue la validation à un `AccessTokenHandlerInterface`",
+        "Il renvoie un `UserBadge` pour le UserProvider"
       ],
-      "explanation": "Ce système natif extrait automatiquement le token (Bearer header, Query param...) et le passe à un `TokenHandler` que vous implémentez."
+      "explanation": "Le handler vérifie le token et retourne un UserBadge ; pas de session."
     },
     {
       "id": 3,
-      "question": "Quel est l'avantage principal des JSON Web Tokens (JWT) pour une API ?",
-      "type": "single_choice",
+      "question": "Quels avantages/inconvénients clés des JWT sont mentionnés ?",
+      "type": "multiple_choice",
       "options": [
-        "Ils sont cryptés.",
-        "Ils sont 'Self-contained' (auto-suffisants) : le serveur peut vérifier leur validité (signature) et lire les infos utilisateur sans interroger la base de données.",
-        "Ils ne périment jamais.",
-        "Ils sont plus courts que les tokens opaques."
+        "Self-contained, pas besoin d'appeler la BDD à chaque requête",
+        "Validation par signature",
+        "Révocation difficile (liste noire/exp courte)",
+        "Toujours chiffrés nativement"
       ],
       "correct_answers": [
-        "Ils sont 'Self-contained' (auto-suffisants) : le serveur peut vérifier leur validité (signature) et lire les infos utilisateur sans interroger la base de données."
+        "Self-contained, pas besoin d'appeler la BDD à chaque requête",
+        "Validation par signature",
+        "Révocation difficile (liste noire/exp courte)"
       ],
-      "explanation": "Cela améliore les performances en réduisant les appels à la BDD ou au serveur d'auth pour chaque requête."
+      "explanation": "JWT = performant mais révocation compliquée ; pas forcément chiffré (signé)."
     },
     {
       "id": 4,
-      "question": "Que doit implémenter votre `ApiTokenHandler` s'il valide le token avec succès ?",
+      "question": "Que doit retourner un `ApiTokenHandler` quand le token est valide ?",
       "type": "single_choice",
       "options": [
-        "Retourner `true`.",
-        "Retourner un objet `UserBadge` contenant l'identifiant de l'utilisateur.",
-        "Rediriger vers la page d'accueil.",
-        "Créer une session."
+        "Un `UserBadge` avec l'identifiant utilisateur",
+        "Un booléen true",
+        "Une Response",
+        "Une session"
       ],
       "correct_answers": [
-        "Retourner un objet `UserBadge` contenant l'identifiant de l'utilisateur."
+        "Un `UserBadge` avec l'identifiant utilisateur"
       ],
-      "explanation": "Le `UserBadge` est ensuite utilisé par le `UserProvider` pour charger l'objet User complet."
+      "explanation": "Le UserBadge est ensuite résolu par le UserProvider."
+    },
+    {
+      "id": 5,
+      "question": "Quelles sont les contraintes CORS à ne pas oublier avec un header Authorization en navigateur ?",
+      "type": "multiple_choice",
+      "options": [
+        "Autoriser le header `Authorization` dans `Access-Control-Allow-Headers`",
+        "Autoriser l'origine dans `Access-Control-Allow-Origin`",
+        "Permettre les requêtes OPTIONS (preflight)",
+        "Toujours mettre `Access-Control-Allow-Origin: *` avec credentials"
+      ],
+      "correct_answers": [
+        "Autoriser le header `Authorization` dans `Access-Control-Allow-Headers`",
+        "Autoriser l'origine dans `Access-Control-Allow-Origin`",
+        "Permettre les requêtes OPTIONS (preflight)"
+      ],
+      "explanation": "CORS doit autoriser origin+headers et preflight ; wildcard+credentials est interdit."
+    },
+    {
+      "id": 6,
+      "question": "Quels usages typiques pour les API Keys (header `X-API-KEY`) ?",
+      "type": "single_choice",
+      "options": [
+        "Communication machine-à-machine (M2M)",
+        "Authentification de formulaires HTML",
+        "Sessions front",
+        "Streaming vidéo"
+      ],
+      "correct_answers": [
+        "Communication machine-à-machine (M2M)"
+      ],
+      "explanation": "API keys sont fréquentes pour M2M, souvent via header custom."
+    },
+    {
+      "id": 7,
+      "question": "Quel rôle garde le UserProvider dans une API stateless ?",
+      "type": "single_choice",
+      "options": [
+        "Recharger l'utilisateur complet (rôles, données) à partir de l'identifiant du token",
+        "Stocker la session",
+        "Gérer les CORS",
+        "Servir les fichiers statiques"
+      ],
+      "correct_answers": [
+        "Recharger l'utilisateur complet (rôles, données) à partir de l'identifiant du token"
+      ],
+      "explanation": "UserProvider reste nécessaire pour construire le User après le UserBadge."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi la révocation des JWT est-elle difficile ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que le serveur ne stocke pas l'état du token ; il faut une blacklist ou une expiration courte",
+        "Parce qu'ils sont chiffrés",
+        "Parce qu'ils nécessitent Redis",
+        "Parce qu'ils sont en XML"
+      ],
+      "correct_answers": [
+        "Parce que le serveur ne stocke pas l'état du token ; il faut une blacklist ou une expiration courte"
+      ],
+      "explanation": "Les JWT sont vérifiés localement ; révoquer exige stratégie dédiée."
+    },
+    {
+      "id": 9,
+      "question": "Quel header porte typiquement un token Bearer ?",
+      "type": "single_choice",
+      "options": [
+        "Authorization: Bearer <token>",
+        "Cookie: token",
+        "X-Csrf-Token",
+        "Content-Type"
+      ],
+      "correct_answers": [
+        "Authorization: Bearer <token>"
+      ],
+      "explanation": "Bearer est le schéma standard dans Authorization."
+    },
+    {
+      "id": 10,
+      "question": "Quels risques si `stateless: true` est oublié sur un firewall API ?",
+      "type": "multiple_choice",
+      "options": [
+        "Sessions créées inutilement",
+        "Sticky sessions sur un seul serveur",
+        "Perte des bénéfices du scaling horizontal",
+        "Désactivation des CORS"
+      ],
+      "correct_answers": [
+        "Sessions créées inutilement",
+        "Sticky sessions sur un seul serveur",
+        "Perte des bénéfices du scaling horizontal"
+      ],
+      "explanation": "Sans stateless, sessions et affinité peuvent nuire à la scalabilité."
     }
   ]
 }

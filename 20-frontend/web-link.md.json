@@ -4,63 +4,160 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est l'objectif principal du composant `WebLink` (PSR-13) ?",
-      "type": "single_choice",
+      "question": "Quels rôles principaux du composant WebLink (PSR-13) dans Symfony 7 ?",
+      "type": "multiple_choice",
       "options": [
-        "Gérer les liens hypertextes `<a>`.",
-        "Gérer les en-têtes HTTP `Link` pour optimiser le chargement des ressources (Preload, Prefetch) par le navigateur.",
-        "Gérer le référencement (SEO).",
-        "Gérer les redirections."
+        "Gérer les en-têtes HTTP `Link` (preload/prefetch/prerender)",
+        "Optimiser le chargement des ressources critiques avant parsing complet",
+        "Gérer le SEO automatiquement",
+        "Remplacer le routeur Symfony"
       ],
       "correct_answers": [
-        "Gérer les en-têtes HTTP `Link` pour optimiser le chargement des ressources (Preload, Prefetch) par le navigateur."
+        "Gérer les en-têtes HTTP `Link` (preload/prefetch/prerender)",
+        "Optimiser le chargement des ressources critiques avant parsing complet"
       ],
-      "explanation": "Ces en-têtes indiquent au navigateur les ressources critiques à charger en priorité."
+      "explanation": "WebLink manipule les headers Link pour donner des indices de ressources au navigateur."
     },
     {
       "id": 2,
-      "question": "Que fait la fonction Twig `preload()` ?",
-      "type": "single_choice",
+      "question": "Quelles différences entre `preload`, `prefetch` et `prerender` ?",
+      "type": "multiple_choice",
       "options": [
-        "Elle télécharge le fichier sur le serveur.",
-        "Elle ajoute un en-tête HTTP `Link: <...>; rel=preload` à la réponse, indiquant au navigateur de télécharger la ressource immédiatement.",
-        "Elle affiche une barre de chargement.",
-        "Elle met le fichier en cache."
+        "Preload = ressource nécessaire immédiatement pour la page courante",
+        "Prefetch = ressource probablement utile pour la page suivante",
+        "Prerender = chargement et rendu d'une page complète en arrière-plan",
+        "Prefetch et Preload sont identiques"
       ],
       "correct_answers": [
-        "Elle ajoute un en-tête HTTP `Link: <...>; rel=preload` à la réponse, indiquant au navigateur de télécharger la ressource immédiatement."
+        "Preload = ressource nécessaire immédiatement pour la page courante",
+        "Prefetch = ressource probablement utile pour la page suivante",
+        "Prerender = chargement et rendu d'une page complète en arrière-plan"
       ],
-      "explanation": "C'est la méthode recommandée pour les assets critiques (polices, CSS principal)."
+      "explanation": "Chaque relation `rel=` cible une phase différente du cycle de navigation."
     },
     {
       "id": 3,
-      "question": "Qu'est-ce qu'une réponse HTTP '103 Early Hints' ?",
+      "question": "Comment ajouter un header `Link: <...>; rel=preload` depuis Twig avec WebLink actif ?",
       "type": "single_choice",
       "options": [
-        "Une erreur serveur.",
-        "Une réponse intermédiaire envoyée PENDANT que le serveur calcule la réponse finale, contenant des indices (Link headers) pour que le navigateur commence à télécharger les assets.",
-        "Une redirection.",
-        "Un code de succès."
+        "Avec `{{ preload(asset('build/app.css')) }}`",
+        "Avec `{{ asset('build/app.css') }}` seul",
+        "Avec `{{ link('preload', 'build/app.css') }}`",
+        "On ne peut pas depuis Twig"
       ],
       "correct_answers": [
-        "Une réponse intermédiaire envoyée PENDANT que le serveur calcule la réponse finale, contenant des indices (Link headers) pour que le navigateur commence à télécharger les assets."
+        "Avec `{{ preload(asset('build/app.css')) }}`"
       ],
-      "explanation": "Cela permet de paralléliser le temps de réflexion du serveur (Backend) avec le temps de téléchargement du navigateur (Frontend)."
+      "explanation": "Le helper `preload()` ajoute l'en-tête Link en plus du href dans le HTML."
     },
     {
       "id": 4,
-      "question": "Comment AssetMapper utilise-t-il le preloading ?",
+      "question": "Comment définir des links HTTP depuis un contrôleur Symfony ?",
       "type": "single_choice",
       "options": [
-        "Il ne l'utilise pas.",
-        "Il génère automatiquement des balises `<link rel=\"modulepreload\">` pour tous les modules JavaScript nécessaires au démarrage de l'application.",
-        "Il force le HTTP/1.1.",
-        "Il compresse les fichiers."
+        "En écrivant soi-même la chaîne `Link` dans `Response::headers`",
+        "En récupérant `$_SERVER['LINKS']`",
+        "En ajoutant un objet `Link` dans `$request->attributes->get('_links')`",
+        "En configurant `framework.link_headers: true`"
       ],
       "correct_answers": [
-        "Il génère automatiquement des balises `<link rel=\"modulepreload\">` pour tous les modules JavaScript nécessaires au démarrage de l'application."
+        "En ajoutant un objet `Link` dans `$request->attributes->get('_links')`"
       ],
-      "explanation": "Cela évite l'effet de cascade (waterfall) où le navigateur découvre les imports séquentiellement."
+      "explanation": "WebLink stocke les `Link` dans l'attribut `_links` puis les sérialise en en-têtes."
+    },
+    {
+      "id": 5,
+      "question": "Quel est l'intérêt des réponses HTTP 103 Early Hints en présence de WebLink ?",
+      "type": "single_choice",
+      "options": [
+        "Aucun, c'est uniquement pour WebSockets",
+        "Envoyer les en-têtes `Link` avant la réponse finale pour démarrer les téléchargements d'assets pendant le temps de calcul",
+        "Elles remplacent la réponse 200",
+        "Elles servent à annuler une requête"
+      ],
+      "correct_answers": [
+        "Envoyer les en-têtes `Link` avant la réponse finale pour démarrer les téléchargements d'assets pendant le temps de calcul"
+      ],
+      "explanation": "Le 103 parallélise CPU serveur et réseau client pour les ressources critiques."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi le Server Push HTTP/2 est-il moins privilégié aujourd'hui ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'il est interdit par la RFC",
+        "Parce qu'il est déprécié dans Chrome et souvent désactivé au profit des Early Hints",
+        "Parce qu'il ne fonctionne pas avec TLS",
+        "Parce qu'il ne supporte pas les CSS"
+      ],
+      "correct_answers": [
+        "Parce qu'il est déprécié dans Chrome et souvent désactivé au profit des Early Hints"
+      ],
+      "explanation": "Le support navigateur et serveur du Server Push diminue, d'où l'usage des 103."
+    },
+    {
+      "id": 7,
+      "question": "Comment AssetMapper s'appuie-t-il sur WebLink pour les modules JS ?",
+      "type": "single_choice",
+      "options": [
+        "Il ignore WebLink",
+        "Il génère des `<link rel=\"modulepreload\">` pour les modules nécessaires au démarrage",
+        "Il force le bundling",
+        "Il désactive HTTP/2"
+      ],
+      "correct_answers": [
+        "Il génère des `<link rel=\"modulepreload\">` pour les modules nécessaires au démarrage"
+      ],
+      "explanation": "Le modulepreload évite la cascade d'import de modules."
+    },
+    {
+      "id": 8,
+      "question": "Quelles bonnes pratiques de performance accompagner les headers Link ?",
+      "type": "multiple_choice",
+      "options": [
+        "Minifier JS/CSS en production",
+        "Compresser en Gzip/Brotli côté serveur",
+        "Configurer un cache long sur les fichiers versionnés (hash)",
+        "Désactiver HTTP/2 pour simplifier"
+      ],
+      "correct_answers": [
+        "Minifier JS/CSS en production",
+        "Compresser en Gzip/Brotli côté serveur",
+        "Configurer un cache long sur les fichiers versionnés (hash)"
+      ],
+      "explanation": "Les hints sont complémentaires aux optimisations classiques de build/serveur."
+    },
+    {
+      "id": 9,
+      "question": "Dans Twig, quel piège avec `preload()` si on oublie de typer la ressource (ex: font) ?",
+      "type": "single_choice",
+      "options": [
+        "Le preload est ignoré si `as` ou `crossorigin` appropriés ne sont pas fournis",
+        "La page plante",
+        "La ressource est supprimée du cache",
+        "Le header Link devient un cookie"
+      ],
+      "correct_answers": [
+        "Le preload est ignoré si `as` ou `crossorigin` appropriés ne sont pas fournis"
+      ],
+      "explanation": "Les navigateurs peuvent ignorer un preload mal typé (fonts, scripts)."
+    },
+    {
+      "id": 10,
+      "question": "Comment éviter de précharger inutilement des ressources ?",
+      "type": "multiple_choice",
+      "options": [
+        "N'utiliser `preload` que pour les ressources critiques de la page courante",
+        "Préférer `prefetch` pour les assets probables mais non critiques",
+        "Limiter les preloads massifs qui peuvent bloquer les autres downloads",
+        "Tout passer en `preload` pour être sûr"
+      ],
+      "correct_answers": [
+        "N'utiliser `preload` que pour les ressources critiques de la page courante",
+        "Préférer `prefetch` pour les assets probables mais non critiques",
+        "Limiter les preloads massifs qui peuvent bloquer les autres downloads"
+      ],
+      "explanation": "Un excès de preload peut saturer la bande passante et nuire au TTFB/TBT."
     }
   ]
 }

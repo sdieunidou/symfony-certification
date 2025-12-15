@@ -4,63 +4,161 @@
   "questions": [
     {
       "id": 1,
-      "question": "À quoi servent les 'Groupes de Sérialisation' (`#[Groups]`) dans le composant Serializer ?",
-      "type": "single_choice",
+      "question": "À quoi servent les groupes de sérialisation `#[Groups]` dans une API ?",
+      "type": "multiple_choice",
       "options": [
-        "À grouper les utilisateurs.",
-        "À contrôler précisément quels attributs d'un objet sont exposés lors de la sérialisation (lecture) ou acceptés lors de la désérialisation (écriture).",
-        "À améliorer les performances de la base de données.",
-        "À définir des groupes de validation."
+        "Limiter l'exposition en lecture (ex: user:read)",
+        "Limiter les champs acceptés en écriture (ex: user:write)",
+        "Éviter la fuite de données sensibles",
+        "Structurer les rôles de sécurité"
       ],
       "correct_answers": [
-        "À contrôler précisément quels attributs d'un objet sont exposés lors de la sérialisation (lecture) ou acceptés lors de la désérialisation (écriture)."
+        "Limiter l'exposition en lecture (ex: user:read)",
+        "Limiter les champs acceptés en écriture (ex: user:write)",
+        "Éviter la fuite de données sensibles"
       ],
-      "explanation": "Sans groupes, le sérialiseur exposerait toutes les propriétés publiques (ou via getters), ce qui risque de fuiter des données sensibles (password) ou de créer des boucles infinies."
+      "explanation": "Les groupes contrôlent ce qui sort ou entre ; la sécurité reste gérée par Security/Voters."
     },
     {
       "id": 2,
-      "question": "Quel problème survient fréquemment lors de la sérialisation d'entités avec des relations bidirectionnelles (User <-> Post) et comment le résoudre ?",
-      "type": "single_choice",
+      "question": "Comment résoudre une référence circulaire (User->Posts->User) ?",
+      "type": "multiple_choice",
       "options": [
-        "Une erreur SQL. Solution : désactiver Doctrine.",
-        "Une erreur 'Circular Reference' (boucle infinie). Solution : Utiliser des groupes distincts pour ne pas inclure le parent dans l'enfant, ou configurer un `CIRCULAR_REFERENCE_HANDLER`.",
-        "Une erreur 404. Solution : créer la route.",
-        "Une erreur de type. Solution : caster en string."
+        "Séparer les groupes pour casser le cycle",
+        "Configurer `AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER` pour retourner un identifiant",
+        "Utiliser `#[MaxDepth]` avec `enable_max_depth`",
+        "Activer les sessions"
       ],
       "correct_answers": [
-        "Une erreur 'Circular Reference' (boucle infinie). Solution : Utiliser des groupes distincts pour ne pas inclure le parent dans l'enfant, ou configurer un `CIRCULAR_REFERENCE_HANDLER`."
+        "Séparer les groupes pour casser le cycle",
+        "Configurer `AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER` pour retourner un identifiant",
+        "Utiliser `#[MaxDepth]` avec `enable_max_depth`"
       ],
-      "explanation": "Le sérialiseur suit les liens. Si A pointe vers B et B vers A, il boucle. Il faut casser ce cycle via la configuration."
+      "explanation": "Groupes, handler ou MaxDepth sont les stratégies classiques."
     },
     {
       "id": 3,
-      "question": "Quelle est la différence entre un `Normalizer` et un `Encoder` ?",
+      "question": "Quelle différence de rôle entre Normalizer et Encoder ?",
       "type": "single_choice",
       "options": [
-        "Le Normalizer transforme l'objet en tableau (array), l'Encoder transforme le tableau en chaîne (JSON/XML).",
-        "Le Normalizer valide les données, l'Encoder les chiffre.",
-        "C'est la même chose.",
-        "L'Encoder est pour l'entrée, le Normalizer pour la sortie."
+        "Normalizer: Objet->Array ; Encoder: Array->String (JSON/XML)",
+        "Normalizer chiffre les données",
+        "Encoder valide les données",
+        "Ils sont identiques"
       ],
       "correct_answers": [
-        "Le Normalizer transforme l'objet en tableau (array), l'Encoder transforme le tableau en chaîne (JSON/XML)."
+        "Normalizer: Objet->Array ; Encoder: Array->String (JSON/XML)"
       ],
-      "explanation": "Le processus de sérialisation est : Objet -> Normalisation -> Array -> Encodage -> String."
+      "explanation": "Le pipeline est Objet -> normalize -> encode."
     },
     {
       "id": 4,
-      "question": "Comment ignorer une propriété spécifique lors de la sérialisation sans utiliser de groupes ?",
+      "question": "Comment renommer ou mapper une propriété imbriquée lors de la sérialisation ?",
       "type": "single_choice",
       "options": [
-        "Avec l'attribut `#[Ignore]`.",
-        "En la mettant en `private`.",
-        "En supprimant le getter.",
-        "Avec l'attribut `#[Hidden]`."
+        "`#[SerializedName]` pour renommer, `#[SerializedPath]` pour mapper une structure imbriquée",
+        "`#[Alias]`",
+        "`#[Rename]`",
+        "Impossible"
       ],
       "correct_answers": [
-        "Avec l'attribut `#[Ignore]`."
+        "`#[SerializedName]` pour renommer, `#[SerializedPath]` pour mapper une structure imbriquée"
       ],
-      "explanation": "L'attribut `#[Ignore]` dit explicitement au sérialiseur de ne jamais toucher à cette propriété."
+      "explanation": "SerializedName change la clé ; SerializedPath cible une clé imbriquée."
+    },
+    {
+      "id": 5,
+      "question": "Comment ignorer une propriété ponctuellement sans toucher aux groupes ?",
+      "type": "single_choice",
+      "options": [
+        "Passer `AbstractNormalizer::IGNORED_ATTRIBUTES` dans le contexte",
+        "Supprimer le getter",
+        "Utiliser une exception",
+        "Modifier Doctrine"
+      ],
+      "correct_answers": [
+        "Passer `AbstractNormalizer::IGNORED_ATTRIBUTES` dans le contexte"
+      ],
+      "explanation": "ignored_attributes dans le contexte exclut certaines propriétés à la volée."
+    },
+    {
+      "id": 6,
+      "question": "Quel attribut exclut définitivement une propriété du Serializer ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Ignore]`",
+        "`#[Hidden]`",
+        "`#[Private]`",
+        "`#[Skip]`"
+      ],
+      "correct_answers": [
+        "`#[Ignore]`"
+      ],
+      "explanation": "Ignore interdit toute sérialisation/désérialisation de la propriété."
+    },
+    {
+      "id": 7,
+      "question": "Quels contextes courants peuvent être passés à `serialize()` ou `json()` ?",
+      "type": "multiple_choice",
+      "options": [
+        "`groups`",
+        "`datetime_format`",
+        "`enable_max_depth`",
+        "`hydration_mode`"
+      ],
+      "correct_answers": [
+        "`groups`",
+        "`datetime_format`",
+        "`enable_max_depth`"
+      ],
+      "explanation": "Ces clés influent sur groupes, format des dates et profondeur."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi les DTOs peuvent-ils améliorer les performances de sérialisation sur de grosses collections ?",
+      "type": "single_choice",
+      "options": [
+        "Moins de relations à hydrater, moins de réflexion, structure plate",
+        "Parce qu'ils désactivent Doctrine",
+        "Parce qu'ils compressent le JSON",
+        "Parce qu'ils sont toujours cacheables"
+      ],
+      "correct_answers": [
+        "Moins de relations à hydrater, moins de réflexion, structure plate"
+      ],
+      "explanation": "DTOs évitent l'hydratation profonde et la réflexion sur des graphes complexes."
+    },
+    {
+      "id": 9,
+      "question": "Comment contrôler la profondeur de sérialisation d'une relation ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `#[MaxDepth]` et `enable_max_depth` dans le contexte",
+        "Avec `#[DepthLimit]`",
+        "Avec `#[Groups]` uniquement",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Avec `#[MaxDepth]` et `enable_max_depth` dans le contexte"
+      ],
+      "explanation": "MaxDepth nécessite l'option de contexte pour être active."
+    },
+    {
+      "id": 10,
+      "question": "Quel choix est recommandé pour éviter de serialiser par mégarde des mots de passe ?",
+      "type": "multiple_choice",
+      "options": [
+        "Ne pas mettre le groupe de lecture sur la propriété",
+        "Utiliser `#[Ignore]` sur le password",
+        "Utiliser des DTOs qui n'ont pas le password en sortie",
+        "Forcer `groups: 'all'`"
+      ],
+      "correct_answers": [
+        "Ne pas mettre le groupe de lecture sur la propriété",
+        "Utiliser `#[Ignore]` sur le password",
+        "Utiliser des DTOs qui n'ont pas le password en sortie"
+      ],
+      "explanation": "Groupes/Ignore/DTO protègent contre l'exposition de secrets."
     }
   ]
 }

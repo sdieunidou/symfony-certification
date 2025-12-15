@@ -4,63 +4,156 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est le fichier de configuration d'environnement qui doit être commité dans Git et contenir les valeurs par défaut ?",
+      "question": "Quel fichier .env doit être commité et contient les valeurs par défaut ?",
       "type": "single_choice",
       "options": [
-        "`.env.local`",
-        "`.env`",
-        "`.env.prod`",
-        "`.env.dist`"
+        ".env",
+        ".env.local",
+        ".env.prod",
+        ".env.dist"
       ],
       "correct_answers": [
-        "`.env`"
+        ".env"
       ],
-      "explanation": "Le fichier `.env` définit l'interface des variables attendues. `.env.local` contient les surcharges locales et est ignoré par Git."
+      "explanation": ".env est versionné et décrit les variables attendues."
     },
     {
       "id": 2,
-      "question": "Si une vraie variable d'environnement système (définie via `export` ou Docker) existe, que fait le composant Dotenv ?",
-      "type": "single_choice",
+      "question": "Ordre de surcharge des fichiers .env dans Symfony (du premier chargé au dernier) ?",
+      "type": "multiple_choice",
       "options": [
-        "Il l'écrase avec la valeur du fichier `.env`.",
-        "Il ne l'écrase pas (la variable système a la priorité).",
-        "Il lance une erreur.",
-        "Il concatène les deux valeurs."
+        ".env",
+        ".env.local",
+        ".env.{env}",
+        ".env.{env}.local"
       ],
       "correct_answers": [
-        "Il ne l'écrase pas (la variable système a la priorité)."
+        ".env",
+        ".env.local",
+        ".env.{env}",
+        ".env.{env}.local"
       ],
-      "explanation": "C'est le principe fondamental : l'infrastructure (serveur) a toujours raison sur le code."
+      "explanation": "Le dernier chargé l'emporte, .env.{env}.local gagne sur les autres."
     },
     {
       "id": 3,
-      "question": "Comment accéder à une variable chargée par Dotenv en PHP ?",
+      "question": "Que se passe-t-il si une variable existe déjà dans l'environnement système ?",
       "type": "single_choice",
       "options": [
-        "Via `$this->getParameter()`.",
-        "Via `$_ENV['NOM_VAR']` ou `$_SERVER['NOM_VAR']`.",
-        "Via `Dotenv::get('NOM_VAR')`.",
-        "Via `config('NOM_VAR')`."
+        "Dotenv ne l'écrase pas (système prioritaire)",
+        "Dotenv l'écrase",
+        "Dotenv concatène",
+        "Dotenv lève une exception"
       ],
       "correct_answers": [
-        "Via `$_ENV['NOM_VAR']` ou `$_SERVER['NOM_VAR']`."
+        "Dotenv ne l'écrase pas (système prioritaire)"
       ],
-      "explanation": "Dotenv peuple les superglobales PHP standard."
+      "explanation": "Les vraies variables env priment sur le contenu .env."
     },
     {
       "id": 4,
-      "question": "Est-il possible de référencer une variable dans une autre à l'intérieur d'un fichier .env (ex: `URL=$HOST/api`) ?",
+      "question": "Comment accéder aux variables chargées ?",
       "type": "single_choice",
       "options": [
-        "Non, ce n'est pas supporté.",
-        "Oui, le composant Dotenv résout les références (ex: `$HOST`).",
-        "Uniquement en utilisant `Putenv`.",
-        "Uniquement en environnement de dev."
+        "Via $_ENV/$_SERVER",
+        "Via Dotenv::get()",
+        "Via config()",
+        "Via Request"
       ],
       "correct_answers": [
-        "Oui, le composant Dotenv résout les références (ex: `$HOST`)."
+        "Via $_ENV/$_SERVER"
       ],
-      "explanation": "Dotenv supporte l'interpolation de variables."
+      "explanation": "Dotenv peuple les superglobales standard."
+    },
+    {
+      "id": 5,
+      "question": "L'interpolation est-elle supportée dans .env (ex: `API_URL=$HOST/api`) ?",
+      "type": "single_choice",
+      "options": [
+        "Oui",
+        "Non",
+        "Seulement en prod",
+        "Seulement en dev"
+      ],
+      "correct_answers": [
+        "Oui"
+      ],
+      "explanation": "Dotenv résout les références aux autres variables."
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert `.env.local` ?",
+      "type": "single_choice",
+      "options": [
+        "Surcharger localement sans commit (gitignore)",
+        "Remplacer .env en prod",
+        "Activer le cache",
+        "Régler le timezone"
+      ],
+      "correct_answers": [
+        "Surcharger localement sans commit (gitignore)"
+      ],
+      "explanation": ".env.local est propre à la machine et ignoré par Git."
+    },
+    {
+      "id": 7,
+      "question": "Comment définir des variables propres à l'environnement de test ?",
+      "type": "single_choice",
+      "options": [
+        ".env.test et .env.test.local",
+        ".env.override",
+        ".env.cache",
+        "Uniquement .env"
+      ],
+      "correct_answers": [
+        ".env.test et .env.test.local"
+      ],
+      "explanation": "Les variantes .env.{env} ciblent un environnement."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi ne pas utiliser .env en production ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'en prod les variables doivent venir de l'environnement (12-factor app)",
+        "Parce que .env est trop lent",
+        "Parce que Symfony l'interdit",
+        "Parce que Docker l'interdit"
+      ],
+      "correct_answers": [
+        "Parce qu'en prod les variables doivent venir de l'environnement (12-factor app)"
+      ],
+      "explanation": "En prod, l'infra fournit les variables; .env est pour dev/local."
+    },
+    {
+      "id": 9,
+      "question": "Que fait `Dotenv::loadEnv()` dans bin/console/public/index.php ?",
+      "type": "single_choice",
+      "options": [
+        "Charge les fichiers .env appropriés et peuple $_ENV/$_SERVER",
+        "Compile le container",
+        "Efface le cache",
+        "Envoie un mail"
+      ],
+      "correct_answers": [
+        "Charge les fichiers .env appropriés et peuple $_ENV/$_SERVER"
+      ],
+      "explanation": "loadEnv() orchestre le chargement selon l'env courant."
+    },
+    {
+      "id": 10,
+      "question": "Comment forcer Dotenv à écraser des variables déjà définies ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `overload()` au lieu de `load()`",
+        "Impossible",
+        "Modifier php.ini",
+        "Utiliser export -f"
+      ],
+      "correct_answers": [
+        "Utiliser `overload()` au lieu de `load()`"
+      ],
+      "explanation": "overload() remplace même les variables déjà présentes."
     }
   ]
 }

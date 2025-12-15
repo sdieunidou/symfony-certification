@@ -4,63 +4,163 @@
   "questions": [
     {
       "id": 1,
-      "question": "Qu'est-ce qu'API Platform par rapport à Symfony ?",
-      "type": "single_choice",
+      "question": "Quels éléments API Platform fournit-il automatiquement à partir d'une classe annotée `#[ApiResource]` ?",
+      "type": "multiple_choice",
       "options": [
-        "Un simple bundle de sérialisation.",
-        "Un framework complet construit au-dessus de Symfony pour créer des APIs REST et GraphQL modernes et standardisées.",
-        "Un remplaçant de Doctrine.",
-        "Un outil de documentation uniquement."
+        "CRUD REST (GET/POST/PUT/PATCH/DELETE) + pagination",
+        "Documentation OpenAPI/Swagger UI",
+        "Sérialisation/validation via Symfony",
+        "Un front React prêt à l'emploi"
       ],
       "correct_answers": [
-        "Un framework complet construit au-dessus de Symfony pour créer des APIs REST et GraphQL modernes et standardisées."
+        "CRUD REST (GET/POST/PUT/PATCH/DELETE) + pagination",
+        "Documentation OpenAPI/Swagger UI",
+        "Sérialisation/validation via Symfony"
       ],
-      "explanation": "API Platform utilise les composants Symfony (Kernel, Serializer, Validator, Security) pour fournir une solution clé en main pour les APIs."
+      "explanation": "API Platform génère opérations, docs, sérialisation/validation ; pas de front React par défaut."
     },
     {
       "id": 2,
-      "question": "Quelle annotation (ou attribut) suffit souvent à transformer une entité Doctrine en une API REST complète (CRUD) avec API Platform ?",
+      "question": "Quels formats hypermedia/API sont supportés nativement par API Platform v3 ?",
+      "type": "multiple_choice",
+      "options": [
+        "JSON-LD/Hydra",
+        "JSON:API",
+        "HAL",
+        "CSV uniquement"
+      ],
+      "correct_answers": [
+        "JSON-LD/Hydra",
+        "JSON:API",
+        "HAL"
+      ],
+      "explanation": "API Platform expose plusieurs formats hypermedia (Hydra par défaut) et JSON:API/HAL configurables."
+    },
+    {
+      "id": 3,
+      "question": "Quelle ligne minimale expose une entité Doctrine en ressource REST complète ?",
       "type": "single_choice",
       "options": [
         "`#[Route]`",
         "`#[ApiResource]`",
-        "`#[ORM\\Entity]`",
-        "`#[REST]`"
+        "`#[ApiFilter]`",
+        "`#[ApiOperation]`"
       ],
       "correct_answers": [
         "`#[ApiResource]`"
       ],
-      "explanation": "L'attribut `#[ApiResource]` déclare la classe comme une ressource exposée par l'API, activant automatiquement les opérations par défaut."
-    },
-    {
-      "id": 3,
-      "question": "Dans l'architecture d'API Platform (v3+), quel composant est responsable de récupérer les données (lecture) ?",
-      "type": "single_choice",
-      "options": [
-        "Le State Processor.",
-        "Le State Provider.",
-        "Le Contrôleur.",
-        "Le Repository."
-      ],
-      "correct_answers": [
-        "Le State Provider."
-      ],
-      "explanation": "Les Providers fournissent la ressource (Item ou Collection). Les Processors gèrent les mutations (POST/PUT/DELETE)."
+      "explanation": "L'attribut ApiResource déclare la classe comme ressource ; les opérations par défaut sont générées."
     },
     {
       "id": 4,
-      "question": "Pourquoi est-il recommandé d'utiliser des DTOs avec API Platform plutôt que d'exposer directement les entités ?",
+      "question": "Qui fournit les données en lecture dans l'architecture Provider/Processor ?",
       "type": "single_choice",
       "options": [
-        "Pour ralentir l'application.",
-        "Pour découpler la ressource API (contrat public) de l'entité Doctrine (stockage interne) et éviter les problèmes de sécurité ou de versioning.",
-        "API Platform ne supporte pas les entités.",
-        "Pour empêcher l'utilisation de GraphQL."
+        "State Provider",
+        "State Processor",
+        "Controller Symfony",
+        "Security Voter"
       ],
       "correct_answers": [
-        "Pour découpler la ressource API (contrat public) de l'entité Doctrine (stockage interne) et éviter les problèmes de sécurité ou de versioning."
+        "State Provider"
       ],
-      "explanation": "Cela permet de changer la structure de la base sans casser l'API et de contrôler précisément ce qui est exposé."
+      "explanation": "Provider = lecture (GET, collection/item). Processor = mutations (POST/PUT/PATCH/DELETE)."
+    },
+    {
+      "id": 5,
+      "question": "Pourquoi privilégier des DTOs via `input`/`output` plutôt que les entités Doctrine directement ?",
+      "type": "multiple_choice",
+      "options": [
+        "Limiter le mass assignment",
+        "Découpler contrat public et modèle persistance",
+        "Faciliter le versioning de l'API",
+        "Améliorer automatiquement les performances SQL"
+      ],
+      "correct_answers": [
+        "Limiter le mass assignment",
+        "Découpler contrat public et modèle persistance",
+        "Faciliter le versioning de l'API"
+      ],
+      "explanation": "DTOs contrôlent l'exposition et la stabilité ; les perfs SQL ne sont pas garanties automatiquement."
+    },
+    {
+      "id": 6,
+      "question": "Quels filtres/paginations API Platform active-t-il par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "Pagination paginée Offset/Limit (Hydra) par défaut",
+        "Aucun, il faut tout coder",
+        "Uniquement la recherche full-text",
+        "Uniquement le tri"
+      ],
+      "correct_answers": [
+        "Pagination paginée Offset/Limit (Hydra) par défaut"
+      ],
+      "explanation": "La pagination est fournie d'office (page, itemsPerPage) dans la sortie Hydra."
+    },
+    {
+      "id": 7,
+      "question": "Comment exposer une opération custom (ex: `POST /books/{id}/publish`) sur une ressource ?",
+      "type": "multiple_choice",
+      "options": [
+        "Déclarer une `ApiPlatform\\Metadata\\Post` custom avec `uriTemplate`",
+        "Spécifier un `processor` dédié",
+        "Passer par un `Route` standard sans ApiResource",
+        "Recompiler le kernel"
+      ],
+      "correct_answers": [
+        "Déclarer une `ApiPlatform\\Metadata\\Post` custom avec `uriTemplate`",
+        "Spécifier un `processor` dédié"
+      ],
+      "explanation": "Les opérations custom se déclarent via les métadonnées et peuvent pointer vers un Processor custom."
+    },
+    {
+      "id": 8,
+      "question": "Quelle différence entre `input` et `output` dans ApiResource ?",
+      "type": "single_choice",
+      "options": [
+        "`input` définit la classe utilisée pour désérialiser la requête, `output` la classe utilisée pour sérialiser la réponse",
+        "`input` est pour GraphQL, `output` pour REST",
+        "Aucune différence",
+        "`input` est toujours l'entité, `output` toujours un DTO"
+      ],
+      "correct_answers": [
+        "`input` définit la classe utilisée pour désérialiser la requête, `output` la classe utilisée pour sérialiser la réponse"
+      ],
+      "explanation": "On peut choisir des DTO différents pour l'entrée et la sortie."
+    },
+    {
+      "id": 9,
+      "question": "Quels canaux de sortie documentation API Platform propose-t-il par défaut ?",
+      "type": "multiple_choice",
+      "options": [
+        "OpenAPI/Swagger UI",
+        "JSON-LD/Hydra docs",
+        "GraphQL Playground",
+        "Postman collection générée automatiquement"
+      ],
+      "correct_answers": [
+        "OpenAPI/Swagger UI",
+        "JSON-LD/Hydra docs"
+      ],
+      "explanation": "Swagger UI et docs Hydra sont exposées ; pas de Postman collection auto par défaut."
+    },
+    {
+      "id": 10,
+      "question": "Quelles intégrations symfony le cœur d’API Platform exploite-t-il fortement ?",
+      "type": "multiple_choice",
+      "options": [
+        "Serializer (groupes, normalizers)",
+        "Validator (contraintes sur DTO/Entités)",
+        "Security (voters, expressions)",
+        "AssetMapper"
+      ],
+      "correct_answers": [
+        "Serializer (groupes, normalizers)",
+        "Validator (contraintes sur DTO/Entités)",
+        "Security (voters, expressions)"
+      ],
+      "explanation": "API Platform repose sur Serializer/Validator/Security ; AssetMapper est hors périmètre."
     }
   ]
 }

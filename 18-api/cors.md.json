@@ -4,63 +4,160 @@
   "questions": [
     {
       "id": 1,
-      "question": "Pourquoi les navigateurs bloquent-ils par défaut les requêtes AJAX vers un domaine différent (Cross-Origin) ?",
-      "type": "single_choice",
+      "question": "Quelles sont les causes du blocage CORS côté navigateur ?",
+      "type": "multiple_choice",
       "options": [
-        "Pour économiser la bande passante.",
-        "Pour des raisons de sécurité (Same-Origin Policy), afin d'empêcher des sites malveillants de voler des données via le navigateur de l'utilisateur.",
-        "Parce que le protocole HTTP l'interdit.",
-        "Pour forcer l'utilisation de HTTPS."
+        "Same-Origin Policy applique une restriction sur les réponses cross-domain",
+        "Le navigateur filtre si les headers CORS attendus ne sont pas présents",
+        "Le serveur HTTP refuse toujours les origines externes",
+        "Curl/Postman ne sont pas concernés"
       ],
       "correct_answers": [
-        "Pour des raisons de sécurité (Same-Origin Policy), afin d'empêcher des sites malveillants de voler des données via le navigateur de l'utilisateur."
+        "Same-Origin Policy applique une restriction sur les réponses cross-domain",
+        "Le navigateur filtre si les headers CORS attendus ne sont pas présents",
+        "Curl/Postman ne sont pas concernés"
       ],
-      "explanation": "Sans cela, un site `mal evil.com` pourrait faire une requête vers `votre-banque.com` (où vous êtes connecté) et lire votre solde."
+      "explanation": "CORS est une protection navigateur ; les clients non-navigateurs ne sont pas bloqués."
     },
     {
       "id": 2,
-      "question": "Quel en-tête HTTP le serveur doit-il renvoyer pour autoriser un domaine spécifique à accéder à l'API ?",
-      "type": "single_choice",
+      "question": "Quels headers CORS minimaux doivent être renvoyés pour autoriser un domaine précis ?",
+      "type": "multiple_choice",
       "options": [
-        "`Access-Control-Allow-Origin`",
-        "`X-Allowed-Domain`",
-        "`Origin-Control`",
-        "`CORS-Allow`"
+        "`Access-Control-Allow-Origin` avec le domaine ou `*`",
+        "`Access-Control-Allow-Methods` pour lister les verbes",
+        "`Access-Control-Allow-Headers` pour autoriser Authorization/Content-Type",
+        "`Content-Security-Policy`"
       ],
       "correct_answers": [
-        "`Access-Control-Allow-Origin`"
+        "`Access-Control-Allow-Origin` avec le domaine ou `*`",
+        "`Access-Control-Allow-Methods` pour lister les verbes",
+        "`Access-Control-Allow-Headers` pour autoriser Authorization/Content-Type"
       ],
-      "explanation": "C'est l'en-tête standard. Il peut contenir `*` ou un domaine précis (`https://mon-app.com`)."
+      "explanation": "Origin + Methods + Headers sont essentiels pour autoriser la requête."
     },
     {
       "id": 3,
-      "question": "Qu'est-ce qu'une requête 'Preflight' ?",
+      "question": "Quand le navigateur envoie-t-il une requête preflight OPTIONS ?",
       "type": "single_choice",
       "options": [
-        "Une requête envoyée avant le décollage d'un avion.",
-        "Une requête HTTP de type `OPTIONS` envoyée automatiquement par le navigateur avant certaines requêtes 'complexes' pour vérifier les permissions CORS.",
-        "Une requête pour tester la vitesse du réseau.",
-        "Une requête annulée."
+        "Pour toute requête GET",
+        "Pour les requêtes 'complexes' (headers custom, Content-Type non simple, méthodes autres que GET/HEAD/POST form-encoded)",
+        "Jamais",
+        "Uniquement en HTTP/2"
       ],
       "correct_answers": [
-        "Une requête HTTP de type `OPTIONS` envoyée automatiquement par le navigateur avant certaines requêtes 'complexes' pour vérifier les permissions CORS."
+        "Pour les requêtes 'complexes' (headers custom, Content-Type non simple, méthodes autres que GET/HEAD/POST form-encoded)"
       ],
-      "explanation": "Si la requête contient des headers personnalisés (ex: `Authorization`) ou un Content-Type `application/json`, le navigateur demande d'abord la permission."
+      "explanation": "Le preflight vérifie l'autorisation avant d'envoyer la vraie requête."
     },
     {
       "id": 4,
-      "question": "Quel bundle Symfony est le standard de facto pour gérer la configuration CORS ?",
+      "question": "Pourquoi `Access-Control-Allow-Origin: *` est-il incompatible avec `Access-Control-Allow-Credentials: true` ?",
       "type": "single_choice",
       "options": [
-        "`SensioFrameworkExtraBundle`",
-        "`NelmioCorsBundle`",
-        "`FOSRestBundle`",
-        "`ApiPlatformBundle`"
+        "Pour des raisons de sécurité : les navigateurs refusent cookies+`*`",
+        "Parce que HTTP/1.1 l'interdit",
+        "Parce que TLS l'interdit",
+        "Parce que les proxies le bloquent toujours"
       ],
       "correct_answers": [
-        "`NelmioCorsBundle`"
+        "Pour des raisons de sécurité : les navigateurs refusent cookies+`*`"
       ],
-      "explanation": "Ce bundle intercepte les requêtes et ajoute automatiquement les bons en-têtes selon la configuration."
+      "explanation": "On doit refléter l'origine exacte quand on autorise les credentials."
+    },
+    {
+      "id": 5,
+      "question": "Comment configurer CORS dans Symfony de manière centralisée ?",
+      "type": "single_choice",
+      "options": [
+        "Avec NelmioCorsBundle (config `nelmio_cors.yaml`)",
+        "En ajoutant manuellement les headers dans chaque contrôleur",
+        "En modifiant php.ini",
+        "En configurant .htaccess uniquement"
+      ],
+      "correct_answers": [
+        "Avec NelmioCorsBundle (config `nelmio_cors.yaml`)"
+      ],
+      "explanation": "Nelmio gère headers et préflight automatiquement selon la configuration."
+    },
+    {
+      "id": 6,
+      "question": "Quelles options sont typiquement définies dans `nelmio_cors.yaml` ?",
+      "type": "multiple_choice",
+      "options": [
+        "`allow_origin`",
+        "`allow_methods`",
+        "`allow_headers` et `expose_headers`",
+        "`max_age`"
+      ],
+      "correct_answers": [
+        "`allow_origin`",
+        "`allow_methods`",
+        "`allow_headers` et `expose_headers`",
+        "`max_age`"
+      ],
+      "explanation": "Ces clés définissent origines, verbes, headers autorisés/exposés, et durée de cache du preflight."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi faut-il permettre l'accès non authentifié aux requêtes OPTIONS ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que le navigateur exige le preflight avant d'envoyer les credentials",
+        "Parce que OPTIONS est toujours public",
+        "Parce que le RFC l'impose",
+        "Pour éviter les logs"
+      ],
+      "correct_answers": [
+        "Parce que le navigateur exige le preflight avant d'envoyer les credentials"
+      ],
+      "explanation": "Bloquer OPTIONS avec auth empêcherait le preflight d'aboutir."
+    },
+    {
+      "id": 8,
+      "question": "Quel impact a CORS sur des appels faits via Curl ou Postman ?",
+      "type": "single_choice",
+      "options": [
+        "Aucun : CORS est une restriction navigateur",
+        "Ils sont bloqués pareil",
+        "Ils transforment les requêtes en GET",
+        "Ils désactivent TLS"
+      ],
+      "correct_answers": [
+        "Aucun : CORS est une restriction navigateur"
+      ],
+      "explanation": "Les clients non-navigateurs ne mettent pas en œuvre CORS."
+    },
+    {
+      "id": 9,
+      "question": "Quels headers doivent être exposés si le client JS doit les lire via `fetch` ?",
+      "type": "multiple_choice",
+      "options": [
+        "`expose_headers` pour les headers personnalisés (ex: Link, X-Total-Count)",
+        "Aucun, tout est exposé par défaut",
+        "Uniquement Content-Type",
+        "Uniquement Authorization"
+      ],
+      "correct_answers": [
+        "`expose_headers` pour les headers personnalisés (ex: Link, X-Total-Count)"
+      ],
+      "explanation": "Seuls certains headers sont exposés par défaut ; les autres doivent être listés."
+    },
+    {
+      "id": 10,
+      "question": "Quel risque courant en config CORS dans un contexte API publique avec authentification ?",
+      "type": "single_choice",
+      "options": [
+        "Mettre `allow_origin: *` tout en autorisant `Access-Control-Allow-Credentials: true`",
+        "Oublier TLS",
+        "Bloquer les GET",
+        "Autoriser uniquement les cookies"
+      ],
+      "correct_answers": [
+        "Mettre `allow_origin: *` tout en autorisant `Access-Control-Allow-Credentials: true`"
+      ],
+      "explanation": "Combiner wildcard et credentials est refusé par les navigateurs ; il faut refléter l'origine."
     }
   ]
 }

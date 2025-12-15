@@ -4,63 +4,172 @@
   "questions": [
     {
       "id": 1,
-      "question": "Dans le cycle de vie de la configuration d'un Bundle, à quoi sert la classe `TreeBuilder` ?",
-      "type": "single_choice",
+      "question": "Quelles étapes clés composent le cycle Config (bundle) ?",
+      "type": "multiple_choice",
       "options": [
-        "À charger les fichiers YAML.",
-        "À définir la structure (schéma) de la configuration autorisée, à définir les valeurs par défaut et à valider les données.",
-        "À mettre en cache la configuration.",
-        "À fusionner les fichiers."
+        "Load (FileLocator + loaders YAML/XML/PHP)",
+        "Define/Validate (TreeBuilder)",
+        "Process (Processor fusion/validation)",
+        "Cache (ConfigCache)"
       ],
       "correct_answers": [
-        "À définir la structure (schéma) de la configuration autorisée, à définir les valeurs par défaut et à valider les données."
+        "Load (FileLocator + loaders YAML/XML/PHP)",
+        "Define/Validate (TreeBuilder)",
+        "Process (Processor fusion/validation)",
+        "Cache (ConfigCache)"
       ],
-      "explanation": "Le TreeBuilder permet de dire : 'J'attends une clé `api_key` qui est une string obligatoire, et une clé `timeout` qui est un entier avec 30 par défaut'."
+      "explanation": "Les 4 étapes structurelles du composant Config."
     },
     {
       "id": 2,
-      "question": "Quel mécanisme permet à un Bundle de modifier la configuration d'un AUTRE Bundle avant qu'elle ne soit traitée (ex: DoctrineBundle configure Twig) ?",
+      "question": "À quoi sert `TreeBuilder`/`ConfigurationInterface` ?",
       "type": "single_choice",
       "options": [
-        "L'héritage de Bundle.",
-        "L'interface `PrependExtensionInterface` implémentée par l'Extension du Bundle.",
-        "Le Compiler Pass.",
-        "Le fichier `services.yaml`."
+        "Définir le schéma, defaults et validation de la configuration",
+        "Charger les fichiers YAML",
+        "Mettre en cache la config",
+        "Compiler le container"
       ],
       "correct_answers": [
-        "L'interface `PrependExtensionInterface` implémentée par l'Extension du Bundle."
+        "Définir le schéma, defaults et validation de la configuration"
       ],
-      "explanation": "C'est le seul moyen pour un bundle d'injecter de la config dans un autre sans demander à l'utilisateur de le faire manuellement."
+      "explanation": "C'est le contrat de structure/validation des clés autorisées."
     },
     {
       "id": 3,
-      "question": "Dans une définition `TreeBuilder`, à quoi sert `prototype('scalar')` (ou `scalarPrototype()`) ?",
+      "question": "Quel mécanisme permet à un bundle d'injecter de la config dans un autre avant traitement ?",
       "type": "single_choice",
       "options": [
-        "À définir une seule valeur scalaire.",
-        "À définir un tableau (liste) dont on ne connaît pas le nombre d'éléments à l'avance, mais où chaque élément doit être un scalaire (string/int/bool).",
-        "À cloner l'objet.",
-        "À définir un prototype de service."
+        "`PrependExtensionInterface` sur l'Extension du bundle",
+        "Un CompilerPass",
+        "Un service taggé",
+        "Un fichier env"
       ],
       "correct_answers": [
-        "À définir un tableau (liste) dont on ne connaît pas le nombre d'éléments à l'avance, mais où chaque élément doit être un scalaire (string/int/bool)."
+        "`PrependExtensionInterface` sur l'Extension du bundle"
       ],
-      "explanation": "Cela permet de valider des structures comme `servers: ['s1', 's2', 's3']`."
+      "explanation": "Prepend permet de modifier la config d'un autre bundle en amont."
     },
     {
       "id": 4,
-      "question": "Si une clé de configuration est définie à la fois dans `config.yaml` et dans `config_prod.yaml`, laquelle est utilisée en environnement de production ?",
+      "question": "Que permet `scalarPrototype()` dans un `ArrayNode` ?",
       "type": "single_choice",
       "options": [
-        "Celle de `config.yaml`.",
-        "Celle de `config_prod.yaml` (le dernier fichier chargé écrase les valeurs précédentes).",
-        "Les deux sont fusionnées en un tableau.",
-        "Symfony lance une erreur de conflit."
+        "Valider une liste de scalaires de taille inconnue",
+        "Forcer un unique scalaire",
+        "Créer des services",
+        "Ajouter des routes"
       ],
       "correct_answers": [
-        "Celle de `config_prod.yaml` (le dernier fichier chargé écrase les valeurs précédentes)."
+        "Valider une liste de scalaires de taille inconnue"
       ],
-      "explanation": "La configuration fonctionne par remplacement (merge) : les fichiers spécifiques à l'environnement surchargent la configuration globale."
+      "explanation": "Prototype décrit chaque élément d'un tableau."
+    },
+    {
+      "id": 5,
+      "question": "Que fait `addDefaultsIfNotSet()` sur un `ArrayNode` ?",
+      "type": "single_choice",
+      "options": [
+        "Crée le tableau avec defaults même si l'utilisateur n'a rien défini",
+        "Lève une erreur si non défini",
+        "Désactive la validation",
+        "Force un null"
+      ],
+      "correct_answers": [
+        "Crée le tableau avec defaults même si l'utilisateur n'a rien défini"
+      ],
+      "explanation": "Sans lui, un sous-array est absent tant que non déclaré."
+    },
+    {
+      "id": 6,
+      "question": "Comment normaliser avant validation une valeur dans TreeBuilder ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `beforeNormalization()->ifString()->then(fn($v)=>[$v])`",
+        "Avec `normalizeFirst()`",
+        "Impossible",
+        "Via ConfigCache"
+      ],
+      "correct_answers": [
+        "Avec `beforeNormalization()->ifString()->then(fn($v)=>[$v])`"
+      ],
+      "explanation": "Le hook beforeNormalization prépare les données avant validation."
+    },
+    {
+      "id": 7,
+      "question": "Comment ajouter une règle de validation custom sur un node ?",
+      "type": "single_choice",
+      "options": [
+        "`->validate()->ifTrue(fn($v)=>...)->thenInvalid('message')`",
+        "`->assert()`",
+        "`->guard()`",
+        "`->throw()`"
+      ],
+      "correct_answers": [
+        "`->validate()->ifTrue(fn($v)=>...)->thenInvalid('message')`"
+      ],
+      "explanation": "validate/thenInvalid permet des règles spécifiques."
+    },
+    {
+      "id": 8,
+      "question": "Comment sont fusionnées plusieurs configs (`config.yaml`, `config_prod.yaml`) ?",
+      "type": "single_choice",
+      "options": [
+        "Le dernier fichier chargé écrase les valeurs précédentes clé par clé",
+        "La première valeur gagne toujours",
+        "Concaténation simple",
+        "Symfony refuse la surcharge"
+      ],
+      "correct_answers": [
+        "Le dernier fichier chargé écrase les valeurs précédentes clé par clé"
+      ],
+      "explanation": "Fusion clé par clé, le dernier (prod) a priorité."
+    },
+    {
+      "id": 9,
+      "question": "À quoi sert `ConfigCache` et `FileResource` ?",
+      "type": "multiple_choice",
+      "options": [
+        "Éviter de parser/revalider la config à chaque requête",
+        "Invalider le cache si un fichier source change",
+        "Stocker la config dans Redis",
+        "Compiler le kernel"
+      ],
+      "correct_answers": [
+        "Éviter de parser/revalider la config à chaque requête",
+        "Invalider le cache si un fichier source change"
+      ],
+      "explanation": "ConfigCache met en cache le résultat, FileResource surveille les fichiers."
+    },
+    {
+      "id": 10,
+      "question": "Quel rôle joue le `Processor` ?",
+      "type": "single_choice",
+      "options": [
+        "Fusionner/valider les tableaux bruts contre l'arbre de configuration",
+        "Charger les fichiers YAML",
+        "Compiler le conteneur de services",
+        "Gérer le cache HTTP"
+      ],
+      "correct_answers": [
+        "Fusionner/valider les tableaux bruts contre l'arbre de configuration"
+      ],
+      "explanation": "Processor applique l'arbre au set de configs collectées."
+    },
+    {
+      "id": 11,
+      "question": "À quoi sert `FileLocator` et le couple `LoaderResolver/DelegatingLoader` ?",
+      "type": "single_choice",
+      "options": [
+        "Localiser les fichiers de config et déléguer au loader adapté (YAML/XML/PHP)",
+        "Charger Twig",
+        "Résoudre les routes",
+        "Gérer la sécurité"
+      ],
+      "correct_answers": [
+        "Localiser les fichiers de config et déléguer au loader adapté (YAML/XML/PHP)"
+      ],
+      "explanation": "FileLocator trouve les fichiers, LoaderResolver choisit le loader, DelegatingLoader délègue."
     }
   ]
 }

@@ -4,37 +4,44 @@
   "questions": [
     {
       "id": 1,
-      "question": "Que signifie la contrainte 'Stateless' (Sans état) dans une architecture REST ?",
-      "type": "single_choice",
+      "question": "Quelles contraintes REST sont listées parmi les 6 fondamentales ?",
+      "type": "multiple_choice",
       "options": [
-        "Le serveur ne doit pas avoir de base de données.",
-        "Le serveur ne garde aucun contexte client (session) entre deux requêtes. Chaque requête doit contenir toutes les informations nécessaires (ex: Token).",
-        "L'application ne doit pas avoir d'état (State Pattern).",
-        "Le client ne doit pas stocker de cookies."
+        "Client-Serveur",
+        "Stateless",
+        "Cacheable",
+        "Layered System",
+        "Code on Demand (optionnel)",
+        "Uniform Interface"
       ],
       "correct_answers": [
-        "Le serveur ne garde aucun contexte client (session) entre deux requêtes. Chaque requête doit contenir toutes les informations nécessaires (ex: Token)."
+        "Client-Serveur",
+        "Stateless",
+        "Cacheable",
+        "Layered System",
+        "Code on Demand (optionnel)",
+        "Uniform Interface"
       ],
-      "explanation": "C'est fondamental pour la scalabilité : n'importe quel serveur doit pouvoir répondre à n'importe quelle requête sans connaître l'historique."
+      "explanation": "Ce sont les 6 contraintes de REST."
     },
     {
       "id": 2,
-      "question": "Quel code HTTP doit être retourné après la création réussie d'une ressource (POST) ?",
+      "question": "Que signifie 'Stateless' pour une API REST ?",
       "type": "single_choice",
       "options": [
-        "200 OK",
-        "201 Created",
-        "204 No Content",
-        "202 Accepted"
+        "Pas de contexte session serveur ; chaque requête porte son état (ex: token)",
+        "Pas de base de données",
+        "Pas de cache HTTP",
+        "Pas de cookies client"
       ],
       "correct_answers": [
-        "201 Created"
+        "Pas de contexte session serveur ; chaque requête porte son état (ex: token)"
       ],
-      "explanation": "Le code 201 indique spécifiquement une création. Il est généralement accompagné d'un en-tête `Location` pointant vers la nouvelle ressource."
+      "explanation": "Le serveur ne garde pas de session ; toute info doit être dans la requête."
     },
     {
       "id": 3,
-      "question": "Quel niveau du modèle de maturité de Richardson introduit l'Hypermedia (HATEOAS) ?",
+      "question": "Quel niveau du modèle de Richardson introduit HATEOAS (Hypermedia) ?",
       "type": "single_choice",
       "options": [
         "Niveau 0",
@@ -45,7 +52,120 @@
       "correct_answers": [
         "Niveau 3"
       ],
-      "explanation": "Le niveau 3 est le stade ultime de REST, où l'API guide le client via des liens hypertextes dans les réponses."
+      "explanation": "Le niveau 3 ajoute hypermedia pour guider le client."
+    },
+    {
+      "id": 4,
+      "question": "Quels codes HTTP sont particulièrement importants en API REST selon le tableau ?",
+      "type": "multiple_choice",
+      "options": [
+        "201 Created avec Location",
+        "204 No Content pour DELETE/PUT",
+        "406 Not Acceptable pour format non disponible",
+        "415 Unsupported Media Type pour Content-Type non supporté",
+        "429 Too Many Requests pour rate limiting"
+      ],
+      "correct_answers": [
+        "201 Created avec Location",
+        "204 No Content pour DELETE/PUT",
+        "406 Not Acceptable pour format non disponible",
+        "415 Unsupported Media Type pour Content-Type non supporté",
+        "429 Too Many Requests pour rate limiting"
+      ],
+      "explanation": "Ces codes figurent dans la table des codes utiles en API."
+    },
+    {
+      "id": 5,
+      "question": "Quelle est la différence entre ressource et représentation ?",
+      "type": "single_choice",
+      "options": [
+        "La ressource est le concept abstrait, la représentation est le document concret (JSON/XML) à un instant T",
+        "Elles sont identiques",
+        "La ressource est toujours JSON",
+        "La représentation est toujours HTML"
+      ],
+      "correct_answers": [
+        "La ressource est le concept abstrait, la représentation est le document concret (JSON/XML) à un instant T"
+      ],
+      "explanation": "REST distingue l'entité logique (ressource) et sa représentation sérialisée."
+    },
+    {
+      "id": 6,
+      "question": "Quel comportement HTTP est requis pour respecter 'Uniform Interface' ?",
+      "type": "multiple_choice",
+      "options": [
+        "Identifier les ressources par URI",
+        "Manipuler les ressources via des représentations (JSON/XML)",
+        "Messages auto-descriptifs (Content-Type, status)",
+        "HATEOAS"
+      ],
+      "correct_answers": [
+        "Identifier les ressources par URI",
+        "Manipuler les ressources via des représentations (JSON/XML)",
+        "Messages auto-descriptifs (Content-Type, status)",
+        "HATEOAS"
+      ],
+      "explanation": "Uniform Interface regroupe ces sous-constantes."
+    },
+    {
+      "id": 7,
+      "question": "Quel code renvoyer après un POST réussi créant une ressource ?",
+      "type": "single_choice",
+      "options": [
+        "201 Created avec header Location",
+        "200 OK",
+        "202 Accepted",
+        "204 No Content"
+      ],
+      "correct_answers": [
+        "201 Created avec header Location"
+      ],
+      "explanation": "201 et Location signalent l'URL de la ressource créée."
+    },
+    {
+      "id": 8,
+      "question": "Quel code renvoyer après un DELETE réussi sans corps ?",
+      "type": "single_choice",
+      "options": [
+        "204 No Content",
+        "201 Created",
+        "301 Moved",
+        "500"
+      ],
+      "correct_answers": [
+        "204 No Content"
+      ],
+      "explanation": "DELETE réussi → 204 sans contenu."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi le cache HTTP est-il important en REST ?",
+      "type": "single_choice",
+      "options": [
+        "Pour respecter la contrainte Cacheable et réduire la charge serveur",
+        "Pour empêcher la statelessness",
+        "Pour forcer TLS",
+        "Pour remplacer les bases de données"
+      ],
+      "correct_answers": [
+        "Pour respecter la contrainte Cacheable et réduire la charge serveur"
+      ],
+      "explanation": "Cacheable est une contrainte REST, utile pour performances."
+    },
+    {
+      "id": 10,
+      "question": "Quel niveau du modèle de Richardson correspond à la plupart des APIs REST actuelles ?",
+      "type": "single_choice",
+      "options": [
+        "Niveau 0",
+        "Niveau 1",
+        "Niveau 2",
+        "Niveau 3"
+      ],
+      "correct_answers": [
+        "Niveau 2"
+      ],
+      "explanation": "La majorité s'arrête à niveau 2 (bon usage des verbes + codes)."
     }
   ]
 }

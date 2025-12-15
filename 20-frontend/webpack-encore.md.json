@@ -4,63 +4,165 @@
   "questions": [
     {
       "id": 1,
-      "question": "Qu'est-ce que Webpack Encore ?",
-      "type": "single_choice",
+      "question": "Quels fichiers/commandes créent la configuration de base Webpack Encore ?",
+      "type": "multiple_choice",
       "options": [
-        "Un nouveau framework JS.",
-        "Une bibliothèque (wrapper) qui simplifie la configuration de Webpack pour les applications Symfony.",
-        "Un remplaçant de PHP.",
-        "Un outil de base de données."
+        "`composer require symfony/webpack-encore-bundle`",
+        "`npm install` pour installer les dépendances Node",
+        "Création automatique de `webpack.config.js`",
+        "`php bin/console importmap:install`"
       ],
       "correct_answers": [
-        "Une bibliothèque (wrapper) qui simplifie la configuration de Webpack pour les applications Symfony."
+        "`composer require symfony/webpack-encore-bundle`",
+        "`npm install` pour installer les dépendances Node",
+        "Création automatique de `webpack.config.js`"
       ],
-      "explanation": "Webpack est complexe. Encore fournit une API fluide (`.addEntry()`, `.enableSassLoader()`) pour générer la config Webpack."
+      "explanation": "Encore repose sur Node/npm, pas sur importmap."
     },
     {
       "id": 2,
-      "question": "À quoi servent les fonctions Twig `encore_entry_link_tags()` et `encore_entry_script_tags()` ?",
-      "type": "single_choice",
+      "question": "Quelles options de base configure-t-on souvent dans `webpack.config.js` ?",
+      "type": "multiple_choice",
       "options": [
-        "À écrire du JS dans Twig.",
-        "À générer les balises HTML (`<link>`, `<script>`) pointant vers les fichiers CSS/JS compilés (et versionnés) pour une entrée donnée.",
-        "À installer Webpack.",
-        "À déboguer le build."
+        ".setOutputPath('public/build/')",
+        ".setPublicPath('/build')",
+        ".addEntry('app', './assets/app.js')",
+        ".enableSingleRuntimeChunk()"
       ],
       "correct_answers": [
-        "À générer les balises HTML (`<link>`, `<script>`) pointant vers les fichiers CSS/JS compilés (et versionnés) pour une entrée donnée."
+        ".setOutputPath('public/build/')",
+        ".setPublicPath('/build')",
+        ".addEntry('app', './assets/app.js')",
+        ".enableSingleRuntimeChunk()"
       ],
-      "explanation": "Elles lisent le fichier `entrypoints.json` généré par Encore pour trouver le bon chemin du fichier."
+      "explanation": "Ces appels définissent le dossier de sortie, l'URL publique, les entrées et l'optimisation du runtime."
     },
     {
       "id": 3,
-      "question": "Pourquoi utiliser `.enableVersioning()` en production ?",
+      "question": "Pourquoi activer `.enableVersioning(Encore.isProduction())` ?",
       "type": "single_choice",
       "options": [
-        "Pour connaître la version de Webpack.",
-        "Pour ajouter un hash unique au nom du fichier (ex: `app.a3f1.js`), ce qui permet de forcer le navigateur à retélécharger le fichier (Cache Busting) s'il a changé.",
-        "C'est obligatoire.",
-        "Pour la sécurité."
+        "Pour afficher la version Symfony",
+        "Pour ajouter un hash aux noms de fichiers et permettre un cache long sans risque",
+        "Pour réduire la taille du `node_modules`",
+        "Pour activer TypeScript"
       ],
       "correct_answers": [
-        "Pour ajouter un hash unique au nom du fichier (ex: `app.a3f1.js`), ce qui permet de forcer le navigateur à retélécharger le fichier (Cache Busting) s'il a changé."
+        "Pour ajouter un hash aux noms de fichiers et permettre un cache long sans risque"
       ],
-      "explanation": "Cela permet de configurer des caches longs (Long Term Caching) sur le serveur web sans risque de servir du vieux code."
+      "explanation": "Le hash déclenche un cache-busting automatique lors des déploiements."
     },
     {
       "id": 4,
-      "question": "Quelle commande npm doit-on lancer pour compiler les assets en mode production (minifiés) ?",
-      "type": "single_choice",
+      "question": "Quand utiliser `npm run dev`, `npm run watch` et `npm run build` ?",
+      "type": "multiple_choice",
       "options": [
-        "`npm run dev`",
-        "`npm run watch`",
-        "`npm run build`",
-        "`npm start`"
+        "`npm run dev` : build de développement ponctuel",
+        "`npm run watch` : rebuild à chaque changement",
+        "`npm run build` : build minifié optimisé prod",
+        "`npm run prod` : obligatoire pour le watch"
       ],
       "correct_answers": [
-        "`npm run build`"
+        "`npm run dev` : build de développement ponctuel",
+        "`npm run watch` : rebuild à chaque changement",
+        "`npm run build` : build minifié optimisé prod"
       ],
-      "explanation": "Cette commande déclenche le build optimisé (minification, tree-shaking, versioning)."
+      "explanation": "Les scripts couvrent dev ponctuel, watch continu et build prod."
+    },
+    {
+      "id": 5,
+      "question": "À quoi servent `encore_entry_link_tags()` et `encore_entry_script_tags()` dans Twig ?",
+      "type": "single_choice",
+      "options": [
+        "À inclure les fichiers générés (CSS/JS) en résolvant le manifest et le versioning",
+        "À injecter du JS inline",
+        "À configurer Webpack",
+        "À invalider le cache HTTP"
+      ],
+      "correct_answers": [
+        "À inclure les fichiers générés (CSS/JS) en résolvant le manifest et le versioning"
+      ],
+      "explanation": "Ces helpers lisent `entrypoints.json` pour fournir les bons tags."
+    },
+    {
+      "id": 6,
+      "question": "Quelles fonctionnalités de build Encore peuvent être activées via l'API fluide ?",
+      "type": "multiple_choice",
+      "options": [
+        ".enableSassLoader() pour SCSS",
+        ".enableReactPreset() pour JSX",
+        ".splitEntryChunks() pour extraire le vendor",
+        ".enableSingleRuntimeChunk() pour séparer le runtime"
+      ],
+      "correct_answers": [
+        ".enableSassLoader() pour SCSS",
+        ".enableReactPreset() pour JSX",
+        ".splitEntryChunks() pour extraire le vendor",
+        ".enableSingleRuntimeChunk() pour séparer le runtime"
+      ],
+      "explanation": "Encore expose ces optimisations et presets via sa DSL JavaScript."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi `public/build` est-il généralement ignoré par Git ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que Symfony l'impose",
+        "Parce que ce sont des artefacts générés, reproductibles via le build",
+        "Parce que cela contient les sources TypeScript",
+        "Parce que c'est un cache HTTP"
+      ],
+      "correct_answers": [
+        "Parce que ce sont des artefacts générés, reproductibles via le build"
+      ],
+      "explanation": "On évite de versionner les fichiers issus du bundler."
+    },
+    {
+      "id": 8,
+      "question": "Quelles différences clefs entre Webpack Encore et AssetMapper ?",
+      "type": "multiple_choice",
+      "options": [
+        "Encore requiert Node/npm et réalise du bundling",
+        "AssetMapper est no-build, s'appuie sur Import Maps et HTTP/2",
+        "Encore offre tree-shaking/optimisations avancées pour SPA lourdes",
+        "AssetMapper impose React"
+      ],
+      "correct_answers": [
+        "Encore requiert Node/npm et réalise du bundling",
+        "AssetMapper est no-build, s'appuie sur Import Maps et HTTP/2",
+        "Encore offre tree-shaking/optimisations avancées pour SPA lourdes"
+      ],
+      "explanation": "Les deux approches ciblent des cas d'usage différents."
+    },
+    {
+      "id": 9,
+      "question": "Quel piège avec `.enableSingleRuntimeChunk()` et plusieurs entrées ?",
+      "type": "single_choice",
+      "options": [
+        "Cela force un runtime commun qu'il faut inclure sur chaque page, sinon les bundles ne s'exécutent pas",
+        "Cela empêche le cache long",
+        "Cela supprime le manifest",
+        "Cela désactive React"
+      ],
+      "correct_answers": [
+        "Cela force un runtime commun qu'il faut inclure sur chaque page, sinon les bundles ne s'exécutent pas"
+      ],
+      "explanation": "Sans inclure le runtime, les chunks d'entrée ne trouvent pas leurs dépendances."
+    },
+    {
+      "id": 10,
+      "question": "Comment bénéficier du `splitEntryChunks()` ?",
+      "type": "single_choice",
+      "options": [
+        "En ayant plusieurs entrées et du code partagé : le vendor est extrait pour améliorer le cache",
+        "En ayant une seule entrée",
+        "En désactivant la minification",
+        "En supprimant Babel"
+      ],
+      "correct_answers": [
+        "En ayant plusieurs entrées et du code partagé : le vendor est extrait pour améliorer le cache"
+      ],
+      "explanation": "SplitChunks évite la duplication des dépendances communes entre entrées."
     }
   ]
 }

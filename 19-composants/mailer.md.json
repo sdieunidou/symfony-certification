@@ -4,63 +4,186 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle est la classe recommandée pour envoyer des emails utilisant des templates Twig dans Symfony ?",
+      "question": "Quelles étapes compose l'envoi d'email avec Mailer ?",
+      "type": "multiple_choice",
+      "options": [
+        "Construire un `Email/TemplatedEmail` (Mime)",
+        "Rendu Twig (BodyRenderer) si template",
+        "Dispatch d'un `SendEmailMessage` (sync ou via Messenger)",
+        "Écriture directe dans la BDD"
+      ],
+      "correct_answers": [
+        "Construire un `Email/TemplatedEmail` (Mime)",
+        "Rendu Twig (BodyRenderer) si template",
+        "Dispatch d'un `SendEmailMessage` (sync ou via Messenger)"
+      ],
+      "explanation": "Mime + rendu + transport (direct ou async via Messenger)."
+    },
+    {
+      "id": 2,
+      "question": "Classe recommandée pour mails Twig ?",
       "type": "single_choice",
       "options": [
-        "`Symfony\\Component\\Mime\\Email`",
         "`Symfony\\Bridge\\Twig\\Mime\\TemplatedEmail`",
+        "`Email`",
         "`Swift_Message`",
-        "`Symfony\\Component\\Mailer\\TwigEmail`"
+        "`TwigEmail`"
       ],
       "correct_answers": [
         "`Symfony\\Bridge\\Twig\\Mime\\TemplatedEmail`"
       ],
-      "explanation": "`TemplatedEmail` étend la classe de base `Email` en ajoutant des méthodes pour le contexte Twig (`context`, `htmlTemplate`)."
-    },
-    {
-      "id": 2,
-      "question": "Comment configurer le transport (DSN) du Mailer pour utiliser une stratégie de 'Failover' (haute disponibilité) ?",
-      "type": "single_choice",
-      "options": [
-        "Ce n'est pas possible nativement.",
-        "En utilisant le schéma `failover(...)` dans le DSN (ex: `failover(smtp1://... smtp2://...)`).",
-        "En créant deux services Mailer.",
-        "En utilisant un Load Balancer externe."
-      ],
-      "correct_answers": [
-        "En utilisant le schéma `failover(...)` dans le DSN (ex: `failover(smtp1://... smtp2://...)`)."
-      ],
-      "explanation": "Symfony supporte nativement le failover et le round-robin directement dans la chaîne de configuration DSN."
+      "explanation": "TemplatedEmail gère `htmlTemplate` + `context`."
     },
     {
       "id": 3,
-      "question": "Comment rendre l'envoi d'email asynchrone pour ne pas bloquer l'utilisateur ?",
+      "question": "Comment générer des tokens/attachments en sécurité ?",
       "type": "single_choice",
       "options": [
-        "Utiliser `swiftmailer`.",
-        "Configurer le routing Messenger pour envoyer les messages de type `SendEmailMessage` vers un transport asynchrone (queue).",
-        "Lancer un processus en arrière-plan manuellement.",
-        "Utiliser AJAX."
+        "Utiliser `attachFromPath()` pour fichiers disques ou `attach()` pour contenu en mémoire",
+        "Concaténer le binaire dans le corps",
+        "Utiliser base64 manuellement",
+        "Impossible"
       ],
       "correct_answers": [
-        "Configurer le routing Messenger pour envoyer les messages de type `SendEmailMessage` vers un transport asynchrone (queue)."
+        "Utiliser `attachFromPath()` pour fichiers disques ou `attach()` pour contenu en mémoire"
       ],
-      "explanation": "Le composant Mailer est conçu pour s'intégrer transparentement avec Messenger. Si configuré, `send()` ne fait que dispatcher un message dans le bus."
+      "explanation": "Mailer gère les entêtes MIME pour les PJ."
     },
     {
       "id": 4,
-      "question": "En développement, comment intercepter tous les emails sortants pour les rediriger vers une adresse unique (ex: le développeur) ?",
+      "question": "Comment configurer failover/roundrobin ?",
       "type": "single_choice",
       "options": [
-        "En modifiant le code PHP.",
-        "En configurant `framework.mailer.envelope.recipients` dans `config/packages/dev/mailer.yaml`.",
-        "En utilisant Mailtrap.",
-        "En désactivant le réseau."
+        "En DSN : `failover(...)` ou `roundrobin(...)`",
+        "En YAML uniquement",
+        "Impossible",
+        "Via un load-balancer externe obligatoire"
       ],
       "correct_answers": [
-        "En configurant `framework.mailer.envelope.recipients` dans `config/packages/dev/mailer.yaml`."
+        "En DSN : `failover(...)` ou `roundrobin(...)`"
       ],
-      "explanation": "Cette fonctionnalité d'interception (Envelope Listener) est native et évite d'envoyer accidentellement des mails aux vrais utilisateurs avec des données de prod/staging."
+      "explanation": "Le DSN peut combiner plusieurs transports avec stratégie."
+    },
+    {
+      "id": 5,
+      "question": "Comment rendre l'envoi asynchrone ?",
+      "type": "single_choice",
+      "options": [
+        "Routage Messenger du `SendEmailMessage` vers un transport async",
+        "Utiliser `sendAsync()`",
+        "Ajouter `sleep`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Routage Messenger du `SendEmailMessage` vers un transport async"
+      ],
+      "explanation": "Le send() dispatch dans Messenger si routé."
+    },
+    {
+      "id": 6,
+      "question": "Comment inline le CSS dans un email HTML ?",
+      "type": "single_choice",
+      "options": [
+        "Installer `twig/cssinliner-extra` et utiliser `TemplatedEmail`",
+        "Ajouter `<style>` classique",
+        "Non supporté",
+        "Utiliser Markdown"
+      ],
+      "correct_answers": [
+        "Installer `twig/cssinliner-extra` et utiliser `TemplatedEmail`"
+      ],
+      "explanation": "Le CSS Inliner convertit en styles inline pour compat mailers."
+    },
+    {
+      "id": 7,
+      "question": "Comment embarquer des images en CID via Twig ?",
+      "type": "single_choice",
+      "options": [
+        "`{{ email.image('@images/logo.png') }}``",
+        "`{{ asset() }}`",
+        "`<img src=\"/logo.png\">`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "`{{ email.image('@images/logo.png') }}``"
+      ],
+      "explanation": "email.image embarque l'image en pièce jointe CID."
+    },
+    {
+      "id": 8,
+      "question": "Quel header/option pour tagger un mail (Sendgrid/Mailgun) ?",
+      "type": "multiple_choice",
+      "options": [
+        "`TagHeader`",
+        "`MetadataHeader`",
+        "`Subject-Tag`",
+        "`X-Mailer`"
+      ],
+      "correct_answers": [
+        "`TagHeader`",
+        "`MetadataHeader`"
+      ],
+      "explanation": "Headers dédiés pour tracking/metadata côté provider."
+    },
+    {
+      "id": 9,
+      "question": "Comment intercepter tous les mails en dev sans toucher le code ?",
+      "type": "single_choice",
+      "options": [
+        "Configurer `framework.mailer.envelope.recipients` en env dev",
+        "Modifier chaque controller",
+        "Changer le DSN en prod",
+        "Utiliser `var_dump`"
+      ],
+      "correct_answers": [
+        "Configurer `framework.mailer.envelope.recipients` en env dev"
+      ],
+      "explanation": "Envelope listener redirige tous les destinataires."
+    },
+    {
+      "id": 10,
+      "question": "Quelle exception l'envoi peut-il lever ?",
+      "type": "single_choice",
+      "options": [
+        "`TransportExceptionInterface`",
+        "`MailerException`",
+        "`RuntimeException`",
+        "`HttpException`"
+      ],
+      "correct_answers": [
+        "`TransportExceptionInterface`"
+      ],
+      "explanation": "Levée si le transport échoue (connexion, 4xx/5xx API…)."
+    },
+    {
+      "id": 11,
+      "question": "Différence entre Envelope SMTP et headers MIME ?",
+      "type": "single_choice",
+      "options": [
+        "Envelope (MAIL FROM/RCPT TO) peut différer des headers From/To ; configurable via MessageEvent",
+        "Ils sont toujours identiques",
+        "Envelope n'est pas modifiable",
+        "Headers décident du transport"
+      ],
+      "correct_answers": [
+        "Envelope (MAIL FROM/RCPT TO) peut différer des headers From/To ; configurable via MessageEvent"
+      ],
+      "explanation": "On peut dissocier l'enveloppe SMTP des headers visibles."
+    },
+    {
+      "id": 12,
+      "question": "Que permet `DraftEmail` ?",
+      "type": "single_choice",
+      "options": [
+        "Générer un .eml sans envoyer",
+        "Envoyer en asynchrone",
+        "Signer en S/MIME",
+        "Envoyer via SMS"
+      ],
+      "correct_answers": [
+        "Générer un .eml sans envoyer"
+      ],
+      "explanation": "DraftEmail produit un brouillon téléchargeable."
     }
   ]
 }

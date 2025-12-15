@@ -4,63 +4,180 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est le rôle principal du composant `Webhook` ?",
-      "type": "single_choice",
+      "question": "Quelles responsabilités le composant Webhook prend-il en charge avant même votre code applicatif ?",
+      "type": "multiple_choice",
       "options": [
-        "Envoyer des requêtes HTTP.",
-        "Recevoir et traiter des notifications HTTP entrantes (webhooks) de services tiers (ex: Mailgun, Stripe) de manière sécurisée.",
-        "Gérer les formulaires.",
-        "Créer des sockets."
+        "Validation cryptographique de la signature avec le secret configuré",
+        "Parsing de la requête pour la transformer en `RemoteEvent`",
+        "Dispatch d'un événement RemoteEvent vers un Consumer enregistré",
+        "Sécurisation via login/password Basic Auth obligatoire"
       ],
       "correct_answers": [
-        "Recevoir et traiter des notifications HTTP entrantes (webhooks) de services tiers (ex: Mailgun, Stripe) de manière sécurisée."
+        "Validation cryptographique de la signature avec le secret configuré",
+        "Parsing de la requête pour la transformer en `RemoteEvent`",
+        "Dispatch d'un événement RemoteEvent vers un Consumer enregistré"
       ],
-      "explanation": "Il valide la signature, parse la requête et la transforme en événement `RemoteEvent` consommable."
+      "explanation": "Il sécurise, parse et dispatch ; aucune Basic Auth n'est imposée par défaut."
     },
     {
       "id": 2,
-      "question": "Comment sécuriser un endpoint de webhook avec ce composant ?",
-      "type": "single_choice",
+      "question": "Que contient la section `framework.webhook.routing` dans la config ?",
+      "type": "multiple_choice",
       "options": [
-        "Avec un firewall IP.",
-        "Le composant valide automatiquement la signature cryptographique envoyée par le service tiers en utilisant un secret partagé configuré.",
-        "Avec un htaccess.",
-        "Il n'y a pas de sécurité."
+        "La clé du webhook (ex: `mailer_mailgun`)",
+        "Le service de RequestParser associé",
+        "Le secret partagé pour vérifier la signature",
+        "Le nom de l'entrypoint AssetMapper"
       ],
       "correct_answers": [
-        "Le composant valide automatiquement la signature cryptographique envoyée par le service tiers en utilisant un secret partagé configuré."
+        "La clé du webhook (ex: `mailer_mailgun`)",
+        "Le service de RequestParser associé",
+        "Le secret partagé pour vérifier la signature"
       ],
-      "explanation": "C'est la fonction critique : s'assurer que la requête vient bien de Stripe/Mailgun et n'a pas été falsifiée."
+      "explanation": "Chaque route de webhook lie une clé, un parser et un secret ; rien à voir avec AssetMapper."
     },
     {
       "id": 3,
-      "question": "Quel attribut doit-on utiliser sur une classe pour qu'elle traite les événements d'un webhook spécifique (ex: `mailer_mailgun`) ?",
+      "question": "Quelle URL est exposée pour un webhook configuré `mailer_mailgun` dans l'exemple ?",
       "type": "single_choice",
       "options": [
-        "`#[AsEventListener]`",
-        "`#[AsRemoteEventConsumer('nom_du_webhook')]`",
-        "`#[WebhookHandler]`",
-        "`#[Route]`"
+        "`/webhook` générique",
+        "`/webhook/mailer_mailgun`",
+        "`/mailgun/webhook`",
+        "`/remote-event/mailer_mailgun`"
       ],
       "correct_answers": [
-        "`#[AsRemoteEventConsumer('nom_du_webhook')]`"
+        "`/webhook/mailer_mailgun`"
       ],
-      "explanation": "Cet attribut enregistre la classe comme consommateur (`ConsumerInterface`) pour ce type de webhook."
+      "explanation": "La clé du routing est suffixée à `/webhook/` pour former l'endpoint."
     },
     {
       "id": 4,
-      "question": "Avec quel autre composant Symfony le composant Webhook s'intègre-t-il naturellement pour traiter les événements asynchrones (RemoteEvent) ?",
+      "question": "Quel attribut enregistre une classe comme consommateur d'un webhook donné ?",
       "type": "single_choice",
       "options": [
-        "Mailer",
-        "Messenger",
-        "Twig",
-        "AssetMapper"
+        "`#[AsRemoteEventConsumer('mailer_mailgun')]`",
+        "`#[AsEventListener]`",
+        "`#[WebhookRoute]`",
+        "`#[AsMessengerHandler]`"
       ],
       "correct_answers": [
-        "Messenger"
+        "`#[AsRemoteEventConsumer('mailer_mailgun')]`"
       ],
-      "explanation": "Les `RemoteEvent` peuvent être envoyés dans le bus Messenger pour un traitement asynchrone."
+      "explanation": "Cet attribut déclare un `ConsumerInterface` pour la clé de webhook."
+    },
+    {
+      "id": 5,
+      "question": "Quels types d'événements RemoteEvent Mailer peuvent être consommés dans l'exemple ?",
+      "type": "multiple_choice",
+      "options": [
+        "`MailerDeliveryEvent` (livraison/bounce)",
+        "`MailerEngagementEvent` (ouverture/clic)",
+        "`SmsEvent` pour les SMS",
+        "`FormSubmitEvent`"
+      ],
+      "correct_answers": [
+        "`MailerDeliveryEvent` (livraison/bounce)",
+        "`MailerEngagementEvent` (ouverture/clic)"
+      ],
+      "explanation": "Delivery/Engagement proviennent des providers Mailer ; SmsEvent concerne Notifier."
+    },
+    {
+      "id": 6,
+      "question": "Pour Notifier (SMS), quel type d'événement RemoteEvent est manipulé ?",
+      "type": "single_choice",
+      "options": [
+        "`SmsEvent`",
+        "`MailerDeliveryEvent`",
+        "`GitHubPushEvent`",
+        "`RemoteEventInterface` uniquement"
+      ],
+      "correct_answers": [
+        "`SmsEvent`"
+      ],
+      "explanation": "Les SMS émettent des `SmsEvent` via les parsers Notifier (Twilio/Vonage...)."
+    },
+    {
+      "id": 7,
+      "question": "Que génère `php bin/console make:webhook` (MakerBundle >= 1.58) ?",
+      "type": "multiple_choice",
+      "options": [
+        "Un RequestParser pour le service choisi (validation signature + mapping payload)",
+        "Un Consumer prêt à consommer le RemoteEvent",
+        "Un contrôleur Twig",
+        "Un manifest importmap"
+      ],
+      "correct_answers": [
+        "Un RequestParser pour le service choisi (validation signature + mapping payload)",
+        "Un Consumer prêt à consommer le RemoteEvent"
+      ],
+      "explanation": "Maker crée parser + consumer ; rien à voir avec Twig ou importmap."
+    },
+    {
+      "id": 8,
+      "question": "Quels providers sont cités comme supportés côté Mailer ?",
+      "type": "multiple_choice",
+      "options": [
+        "Brevo",
+        "Mailgun",
+        "Sendgrid",
+        "GitHub"
+      ],
+      "correct_answers": [
+        "Brevo",
+        "Mailgun",
+        "Sendgrid"
+      ],
+      "explanation": "Exemples de providers mail : Brevo, Mailgun, Mailjet, Postmark, Sendgrid, etc."
+    },
+    {
+      "id": 9,
+      "question": "Quel est le flux interne type d'un webhook selon la doc ?",
+      "type": "multiple_choice",
+      "options": [
+        "Auth : vérifier la signature avec le secret",
+        "Parse : transformer le JSON fournisseur en `RemoteEvent`",
+        "Map : associer le nom d'événement à une classe ou un handler",
+        "Render : générer une vue Twig"
+      ],
+      "correct_answers": [
+        "Auth : vérifier la signature avec le secret",
+        "Parse : transformer le JSON fournisseur en `RemoteEvent`",
+        "Map : associer le nom d'événement à une classe ou un handler"
+      ],
+      "explanation": "Le flux est Auth -> Parse -> Map ; pas de rendu Twig dans la chaîne."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi le composant Webhook s'appuie-t-il sur RemoteEvent ?",
+      "type": "single_choice",
+      "options": [
+        "Pour normaliser les événements entrants indépendamment du provider et permettre un dispatch unifié (ex: vers Messenger)",
+        "Pour convertir en entités Doctrine automatiquement",
+        "Pour générer des templates Twig",
+        "Pour compiler du JS"
+      ],
+      "correct_answers": [
+        "Pour normaliser les événements entrants indépendamment du provider et permettre un dispatch unifié (ex: vers Messenger)"
+      ],
+      "explanation": "RemoteEvent fournit un format commun (name/id/payload) utilisable par Messenger ou vos listeners."
+    },
+    {
+      "id": 11,
+      "question": "Quel piège de sécurité à éviter avec la configuration du secret ?",
+      "type": "multiple_choice",
+      "options": [
+        "Oublier de définir le secret entraîne l'absence de vérification de signature",
+        "Mettre le secret en clair dans le dépôt au lieu d'une variable d'environnement",
+        "Réutiliser le même secret pour plusieurs providers sans le vouloir",
+        "Toujours forcer une Basic Auth"
+      ],
+      "correct_answers": [
+        "Oublier de définir le secret entraîne l'absence de vérification de signature",
+        "Mettre le secret en clair dans le dépôt au lieu d'une variable d'environnement",
+        "Réutiliser le même secret pour plusieurs providers sans le vouloir"
+      ],
+      "explanation": "Le secret doit être spécifique, stocké en env, et configuré par route de webhook."
     }
   ]
 }

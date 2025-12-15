@@ -4,63 +4,162 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle est la méthode recommandée pour compiler Sass ou Tailwind avec AssetMapper (approche 'No-Node') ?",
-      "type": "single_choice",
+      "question": "Quelles sont les commandes minimales pour activer Sass avec Webpack Encore ?",
+      "type": "multiple_choice",
       "options": [
-        "Utiliser `npm run build`.",
-        "Utiliser les bundles Symfony wrapper de binaires (ex: `symfony/sass-bundle`, `symfony/tailwind-bundle`) qui téléchargent et exécutent les binaires autonomes.",
-        "Utiliser un service en ligne.",
-        "Ce n'est pas possible sans Webpack."
+        "`npm install sass-loader sass --save-dev`",
+        "Ajouter `.enableSassLoader()` dans `webpack.config.js`",
+        "Créer `tailwind.config.js`",
+        "Renommer tous les fichiers en `.scss`"
       ],
       "correct_answers": [
-        "Utiliser les bundles Symfony wrapper de binaires (ex: `symfony/sass-bundle`, `symfony/tailwind-bundle`) qui téléchargent et exécutent les binaires autonomes."
+        "`npm install sass-loader sass --save-dev`",
+        "Ajouter `.enableSassLoader()` dans `webpack.config.js`"
       ],
-      "explanation": "Ces bundles permettent de compiler les assets modernes sans avoir besoin d'installer Node.js sur le serveur ou la machine de dev."
+      "explanation": "L'activation passe par l'installation des loaders et la configuration dans Encore."
     },
     {
       "id": 2,
-      "question": "Si vous développez une Single Page Application (SPA) complexe avec React ou Vue, quel outil de build est généralement le plus adapté ?",
-      "type": "single_choice",
+      "question": "Quels prérequis pour TypeScript avec Webpack Encore ?",
+      "type": "multiple_choice",
       "options": [
-        "AssetMapper.",
-        "Webpack Encore (ou Vite via bundle).",
-        "Assetic.",
-        "Un script PHP maison."
+        "`npm install typescript ts-loader --save-dev`",
+        "`Encore.enableTypeScriptLoader();`",
+        "Placer le code TS dans `assets/controllers.json`",
+        "Compiler via `php bin/console ts:build`"
       ],
       "correct_answers": [
-        "Webpack Encore (ou Vite via bundle)."
+        "`npm install typescript ts-loader --save-dev`",
+        "`Encore.enableTypeScriptLoader();`"
       ],
-      "explanation": "Pour les frameworks JS lourds nécessitant une compilation complexe (JSX, .vue) et du HMR, un bundler JS dédié reste la solution la plus robuste."
+      "explanation": "Encore s'appuie sur ts-loader + TypeScript, configurés via l'API fluide."
     },
     {
       "id": 3,
-      "question": "Avec Webpack Encore, comment active-t-on le support de Sass ?",
-      "type": "single_choice",
+      "question": "Pour Tailwind avec Webpack Encore, quelles étapes sont nécessaires ?",
+      "type": "multiple_choice",
       "options": [
-        "C'est activé par défaut.",
-        "En appelant `.enableSassLoader()` dans `webpack.config.js` et en installant les dépendances (`sass-loader`, `sass`).",
-        "En renommant le fichier en `.scss`.",
-        "En utilisant AssetMapper."
+        "`npm install postcss-loader autoprefixer tailwindcss --save-dev`",
+        "`npx tailwindcss init -p` pour générer la config",
+        "`Encore.enablePostCssLoader();`",
+        "Aucune configuration PostCSS"
       ],
       "correct_answers": [
-        "En appelant `.enableSassLoader()` dans `webpack.config.js` et en installant les dépendances (`sass-loader`, `sass`)."
+        "`npm install postcss-loader autoprefixer tailwindcss --save-dev`",
+        "`npx tailwindcss init -p` pour générer la config",
+        "`Encore.enablePostCssLoader();`"
       ],
-      "explanation": "Webpack nécessite une configuration explicite des loaders."
+      "explanation": "Tailwind repose sur PostCSS ; il faut le loader, la config et l'activation dans Encore."
     },
     {
       "id": 4,
-      "question": "Comment gérer les images (ex: logo) dans le CSS avec Webpack Encore ?",
-      "type": "single_choice",
+      "question": "Avec AssetMapper (sans Node), comment compiler Sass ou Tailwind ?",
+      "type": "multiple_choice",
       "options": [
-        "Il faut utiliser des URLs absolues.",
-        "Webpack réécrit automatiquement les URLs relatives (`url('../images/logo.png')`), copie les fichiers dans le dossier de build et ajoute un hash de versioning.",
-        "Il faut copier les images manuellement.",
-        "Webpack ne gère pas les images."
+        "En utilisant les bundles `symfony/sass-bundle`, `symfony/tailwind-bundle` qui téléchargent des binaires autonomes",
+        "En lançant `php bin/console sass:build --watch` ou `tailwind:build --watch`",
+        "En exécutant `npm run build` obligatoirement",
+        "En générant du CSS manuellement à la main"
       ],
       "correct_answers": [
-        "Webpack réécrit automatiquement les URLs relatives (`url('../images/logo.png')`), copie les fichiers dans le dossier de build et ajoute un hash de versioning."
+        "En utilisant les bundles `symfony/sass-bundle`, `symfony/tailwind-bundle` qui téléchargent des binaires autonomes",
+        "En lançant `php bin/console sass:build --watch` ou `tailwind:build --watch`"
       ],
-      "explanation": "C'est géré par `file-loader` ou les Asset Modules de Webpack, garantissant que les chemins sont toujours corrects après le build."
+      "explanation": "Les bundles PHP gèrent les binaires standalone ; aucun Node requis."
+    },
+    {
+      "id": 5,
+      "question": "Quels choix pour traiter TypeScript avec AssetMapper ?",
+      "type": "multiple_choice",
+      "options": [
+        "Utiliser `symfony/typescript-bundle` pour compiler TS en JS standard",
+        "Transpiler en amont avec un outil externe puis servir via AssetMapper",
+        "Laisser le navigateur exécuter directement des `.ts`",
+        "Passer par Webpack Encore ou Vite pour un workflow riche (HMR)"
+      ],
+      "correct_answers": [
+        "Utiliser `symfony/typescript-bundle` pour compiler TS en JS standard",
+        "Transpiler en amont avec un outil externe puis servir via AssetMapper",
+        "Passer par Webpack Encore ou Vite pour un workflow riche (HMR)"
+      ],
+      "explanation": "Les navigateurs ne comprennent pas nativement le TS ; il faut compiler ou utiliser un bundler dédié."
+    },
+    {
+      "id": 6,
+      "question": "Quelle approche privilégier pour une SPA lourde (React/Vue) avec HMR ?",
+      "type": "single_choice",
+      "options": [
+        "AssetMapper seul",
+        "Webpack Encore ou Vite via bundle (pentatrion/vite-bundle)",
+        "Un fichier PHP qui concatène du JS",
+        "Aucune compilation n'est nécessaire"
+      ],
+      "correct_answers": [
+        "Webpack Encore ou Vite via bundle (pentatrion/vite-bundle)"
+      ],
+      "explanation": "Les frameworks lourds nécessitent un bundler dédié pour JSX/.vue, HMR, tree-shaking."
+    },
+    {
+      "id": 7,
+      "question": "Comment AssetMapper gère-t-il les images et polices référencées depuis le CSS ?",
+      "type": "single_choice",
+      "options": [
+        "Il réécrit automatiquement les URL relatives comme Webpack",
+        "Les fichiers sont servis directement si le chemin logique est mappé, ou via `asset()` dans Twig",
+        "Il supprime les images",
+        "Il force un CDN externe"
+      ],
+      "correct_answers": [
+        "Les fichiers sont servis directement si le chemin logique est mappé, ou via `asset()` dans Twig"
+      ],
+      "explanation": "Pas de réécriture automatique comme Webpack ; on s'appuie sur les chemins logiques et Twig."
+    },
+    {
+      "id": 8,
+      "question": "Comment Webpack Encore gère-t-il les assets statiques (images) référencés depuis le CSS ?",
+      "type": "single_choice",
+      "options": [
+        "Il ignore les `url()`",
+        "Il copie les fichiers et réécrit les URL avec un hash (via file-loader/asset modules)",
+        "Il les met en base64 systématiquement",
+        "Il les met tous dans un seul sprite"
+      ],
+      "correct_answers": [
+        "Il copie les fichiers et réécrit les URL avec un hash (via file-loader/asset modules)"
+      ],
+      "explanation": "Encore gère la copie et le versioning pour conserver des URL valides en production."
+    },
+    {
+      "id": 9,
+      "question": "Quelles bonnes pratiques pour choisir entre AssetMapper et Encore/Vite selon le besoin ?",
+      "type": "multiple_choice",
+      "options": [
+        "AssetMapper pour une app Symfony classique avec Stimulus/Turbo et peu de build",
+        "Encore/Vite pour une SPA React/Vue avec besoin de HMR et bundling avancé",
+        "Toujours utiliser les deux en même temps",
+        "Préférer AssetMapper si on veut éviter Node en prod"
+      ],
+      "correct_answers": [
+        "AssetMapper pour une app Symfony classique avec Stimulus/Turbo et peu de build",
+        "Encore/Vite pour une SPA React/Vue avec besoin de HMR et bundling avancé",
+        "Préférer AssetMapper si on veut éviter Node en prod"
+      ],
+      "explanation": "Le choix dépend du niveau de complexité frontend et des contraintes d'outillage."
+    },
+    {
+      "id": 10,
+      "question": "Quel piège courant lorsqu'on tente d'exécuter du JSX/.vue avec AssetMapper seul ?",
+      "type": "single_choice",
+      "options": [
+        "Les navigateurs exécutent nativement le JSX",
+        "AssetMapper ne compile pas JSX/.vue : il faut pré-compiler ou utiliser un bundler",
+        "Il suffit d'ajouter un shim",
+        "Il faut désactiver HTTP/2"
+      ],
+      "correct_answers": [
+        "AssetMapper ne compile pas JSX/.vue : il faut pré-compiler ou utiliser un bundler"
+      ],
+      "explanation": "AssetMapper sert des modules déjà compatibles navigateur ; JSX/.vue doivent être transformés en JS standard."
     }
   ]
 }

@@ -4,63 +4,197 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle est la différence principale entre un UUID v4 et un UUID v7 ?",
-      "type": "single_choice",
+      "question": "Quelles versions d'UUID sont recommandées ou déconseillées pour des PK en base selon la doc ?",
+      "type": "multiple_choice",
       "options": [
-        "La longueur.",
-        "Le v4 est totalement aléatoire, le v7 est basé sur le temps (Time-ordered) et donc triable.",
-        "Le v7 est moins sécurisé.",
-        "Le v4 contient l'adresse MAC."
+        "v1 : déconseillé (MAC + ordre aléatoire peu performant)",
+        "v4 : aléatoire, fragmente les index",
+        "v6/v7 : ordonnables, recommandés pour les perfs d'index",
+        "v8 : format libre expérimental"
       ],
       "correct_answers": [
-        "Le v4 est totalement aléatoire, le v7 est basé sur le temps (Time-ordered) et donc triable."
+        "v1 : déconseillé (MAC + ordre aléatoire peu performant)",
+        "v4 : aléatoire, fragmente les index",
+        "v6/v7 : ordonnables, recommandés pour les perfs d'index",
+        "v8 : format libre expérimental"
       ],
-      "explanation": "Le caractère séquentiel du v7 (ou v6) est bien meilleur pour les performances d'indexation en base de données que le v4 aléatoire."
+      "explanation": "v7 est privilégié (RFC 9562) pour l'indexation ; v4 est aléatoire et fragmente."
     },
     {
       "id": 2,
-      "question": "Qu'est-ce qu'un ULID ?",
-      "type": "single_choice",
+      "question": "Quelles propriétés clés différencient un ULID d'un UUID v4 ?",
+      "type": "multiple_choice",
       "options": [
-        "Un UUID compressé.",
-        "Un identifiant unique de 128 bits, triable lexicographiquement, représenté en base 32 (URL safe, pas de tirets).",
-        "Un identifiant Linux.",
-        "Un ancien format déprécié."
+        "ULID est triable lexicographiquement (timestamp en tête)",
+        "ULID est encodé en Base32, sans tirets, case-insensitive",
+        "ULID garantit l'ordre même à la même milliseconde (monotone)",
+        "ULID fait 64 bits uniquement"
       ],
       "correct_answers": [
-        "Un identifiant unique de 128 bits, triable lexicographiquement, représenté en base 32 (URL safe, pas de tirets)."
+        "ULID est triable lexicographiquement (timestamp en tête)",
+        "ULID est encodé en Base32, sans tirets, case-insensitive",
+        "ULID garantit l'ordre même à la même milliseconde (monotone)"
       ],
-      "explanation": "ULID combine les avantages des UUIDs (unicité distribuée) et des auto-incréments (triable), avec une représentation plus compacte et lisible."
+      "explanation": "ULID reste 128 bits mais ordonnable et lisible."
     },
     {
       "id": 3,
-      "question": "Comment stocker un UUID/ULID de manière optimisée dans une base de données MySQL/MariaDB avec Doctrine ?",
+      "question": "Comment générer et convertir un UUID v7 en chaîne et binaire avec le composant UID ?",
       "type": "single_choice",
       "options": [
-        "En `VARCHAR(36)`.",
-        "En `TEXT`.",
-        "En `BINARY(16)` (via le type doctrine `uuid` ou `ulid`).",
-        "En `INTEGER`."
+        "`$uuid = Uuid::v7(); $uuid->toRfc4122(); $uuid->toBinary();`",
+        "`Uuid::generate(7); $uuid->string(); $uuid->binary();`",
+        "`new Uuid(7); $uuid->export();`",
+        "`Uuid::random(); $uuid->toHex();`"
       ],
       "correct_answers": [
-        "En `BINARY(16)` (via le type doctrine `uuid` ou `ulid`)."
+        "`$uuid = Uuid::v7(); $uuid->toRfc4122(); $uuid->toBinary();`"
       ],
-      "explanation": "Le stockage binaire prend 16 octets contre 36 pour la chaîne, ce qui économise de l'espace et de la RAM pour les index."
+      "explanation": "La façade `Uuid` expose v7 et les conversions RFC/binaire."
     },
     {
       "id": 4,
-      "question": "Quelle commande permet de générer un UUID v4 depuis la console ?",
-      "type": "single_choice",
+      "question": "Quelles commandes console couvrent génération et inspection des UID ?",
+      "type": "multiple_choice",
       "options": [
-        "`php bin/console uuid:generate`",
-        "`php bin/console make:uuid`",
-        "`php bin/console doctrine:uuid`",
-        "`php bin/console uid:create`"
+        "`uuid:generate --count=5`",
+        "`ulid:generate`",
+        "`uuid:inspect <uuid>`",
+        "`uid:dump`"
       ],
       "correct_answers": [
-        "`php bin/console uuid:generate`"
+        "`uuid:generate --count=5`",
+        "`ulid:generate`",
+        "`uuid:inspect <uuid>`"
       ],
-      "explanation": "Par défaut, `uuid:generate` crée un v4. On peut demander d'autres versions avec des options."
+      "explanation": "La doc cite generate/inspect pour UUID et ULID."
+    },
+    {
+      "id": 5,
+      "question": "Comment mapper une PK UUID avec Doctrine dans l'exemple fourni ?",
+      "type": "multiple_choice",
+      "options": [
+        "`#[ORM\\\\Column(type: 'uuid', unique: true)]`",
+        "`#[ORM\\\\GeneratedValue(strategy: 'CUSTOM')]`",
+        "`#[ORM\\\\CustomIdGenerator(class: 'doctrine.uuid_generator')]`",
+        "`#[ORM\\\\Column(type: 'varchar', length: 36)]` obligatoire"
+      ],
+      "correct_answers": [
+        "`#[ORM\\\\Column(type: 'uuid', unique: true)]`",
+        "`#[ORM\\\\GeneratedValue(strategy: 'CUSTOM')]`",
+        "`#[ORM\\\\CustomIdGenerator(class: 'doctrine.uuid_generator')]`"
+      ],
+      "explanation": "Type uuid + générateur custom ; pas besoin de varchar(36)."
+    },
+    {
+      "id": 6,
+      "question": "Quels stockages DB sont mentionnés pour UUID/ULID ?",
+      "type": "multiple_choice",
+      "options": [
+        "PostgreSQL : type natif `UUID`",
+        "MySQL/MariaDB : `BINARY(16)`",
+        "SQLite : `INTEGER`",
+        "MySQL : `VARCHAR(36)` obligatoire"
+      ],
+      "correct_answers": [
+        "PostgreSQL : type natif `UUID`",
+        "MySQL/MariaDB : `BINARY(16)`"
+      ],
+      "explanation": "Les drivers Doctrine gèrent UUID/ULID en natif ; pas de VARCHAR imposé."
+    },
+    {
+      "id": 7,
+      "question": "Quels risques de performance sont liés aux UUID v4 aléatoires ?",
+      "type": "single_choice",
+      "options": [
+        "Fragmentation d'index (page splitting) lors d'inserts massifs",
+        "Collisions fréquentes",
+        "Perte d'entropie",
+        "Taille supérieure à 256 bits"
+      ],
+      "correct_answers": [
+        "Fragmentation d'index (page splitting) lors d'inserts massifs"
+      ],
+      "explanation": "Le désordre des v4 perturbe l'ordre des index B-Tree."
+    },
+    {
+      "id": 8,
+      "question": "Quels flags/propriétés internes de `AbstractUid` sont mis en avant ?",
+      "type": "multiple_choice",
+      "options": [
+        "Conversion binaire <-> string",
+        "Encodage Base32/Base58",
+        "Gestion d'un timestamp pour ULID/UUID v7",
+        "Compilation en WebAssembly"
+      ],
+      "correct_answers": [
+        "Conversion binaire <-> string",
+        "Encodage Base32/Base58",
+        "Gestion d'un timestamp pour ULID/UUID v7"
+      ],
+      "explanation": "AbstractUid sert de base pour formats/encodages et time-based."
+    },
+    {
+      "id": 9,
+      "question": "Quel raccourci permet de convertir un ULID en format RFC 4122 ?",
+      "type": "single_choice",
+      "options": [
+        "`$ulid->toRfc4122()`",
+        "`$ulid->toUuidString()`",
+        "`Uuid::fromUlid()`",
+        "`$ulid->hex()`"
+      ],
+      "correct_answers": [
+        "`$ulid->toRfc4122()`"
+      ],
+      "explanation": "ULID peut se convertir en représentation UUID standard via cette méthode."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi stocker un UUID en `BINARY(16)` plutôt qu'en `VARCHAR(36)` ?",
+      "type": "multiple_choice",
+      "options": [
+        "Réduction de la taille disque",
+        "Meilleure densité d'index (RAM)",
+        "Moins de comparaisons lexicales coûteuses",
+        "Parce que Doctrine interdit VARCHAR"
+      ],
+      "correct_answers": [
+        "Réduction de la taille disque",
+        "Meilleure densité d'index (RAM)",
+        "Moins de comparaisons lexicales coûteuses"
+      ],
+      "explanation": "16 octets vs 36 chars ; impact direct sur index et cache."
+    },
+    {
+      "id": 11,
+      "question": "Comment générer un ULID côté PHP selon l'exemple ?",
+      "type": "single_choice",
+      "options": [
+        "`$ulid = new Ulid();`",
+        "`Ulid::v1();`",
+        "`Ulid::random();`",
+        "`Ulid::fromString();` uniquement"
+      ],
+      "correct_answers": [
+        "`$ulid = new Ulid();`"
+      ],
+      "explanation": "Le constructeur génère un ULID monotone."
+    },
+    {
+      "id": 12,
+      "question": "Que fournit la commande `uuid:inspect` ?",
+      "type": "single_choice",
+      "options": [
+        "Les versions PHP",
+        "Les métadonnées de l'UUID (version, variant, timestamp pour v1/v6/v7...)",
+        "La cartographie Doctrine",
+        "Le manifest Webpack"
+      ],
+      "correct_answers": [
+        "Les métadonnées de l'UUID (version, variant, timestamp pour v1/v6/v7...)"
+      ],
+      "explanation": "L'inspection affiche les infos structurelles de l'identifiant."
     }
   ]
 }

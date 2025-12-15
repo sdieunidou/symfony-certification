@@ -4,63 +4,156 @@
   "questions": [
     {
       "id": 1,
-      "question": "Le composant `Finder` exécute-t-il la recherche sur le disque dès que vous appelez les méthodes de configuration (`in()`, `name()`) ?",
+      "question": "Le Finder exécute-t-il la recherche immédiatement ?",
       "type": "single_choice",
       "options": [
-        "Oui, immédiatement.",
-        "Non, le Finder est 'Lazy'. La recherche ne commence que lorsque vous itérez sur l'objet (ex: `foreach`).",
-        "Cela dépend des options.",
-        "Uniquement si on appelle `execute()`."
+        "Non, il est lazy et ne parcourt qu'à l'itération (foreach)",
+        "Oui dès in()",
+        "Oui dès name()",
+        "Il faut call run()"
       ],
       "correct_answers": [
-        "Non, le Finder est 'Lazy'. La recherche ne commence que lorsque vous itérez sur l'objet (ex: `foreach`)."
+        "Non, il est lazy et ne parcourt qu'à l'itération (foreach)"
       ],
-      "explanation": "Le Finder construit un itérateur. Rien ne se passe tant qu'on ne le consomme pas."
+      "explanation": "Finder implémente IteratorAggregate, la recherche démarre au foreach."
     },
     {
       "id": 2,
-      "question": "Quel type d'objet est retourné lors de l'itération sur un Finder ?",
+      "question": "Quel type d'objet est yieldé par Finder ?",
       "type": "single_choice",
       "options": [
-        "Des chaînes de caractères (chemins).",
-        "Des objets `SplFileInfo`.",
-        "Des objets `File`.",
-        "Des tableaux."
+        "SplFileInfo (ou sous-classe)",
+        "string",
+        "array",
+        "File"
       ],
       "correct_answers": [
-        "Des objets `SplFileInfo`."
+        "SplFileInfo (ou sous-classe)"
       ],
-      "explanation": "Symfony retourne des instances de `SplFileInfo` (ou une sous-classe) qui permettent d'accéder aux métadonnées du fichier (taille, date, chemin...)."
+      "explanation": "Chaque résultat est un SplFileInfo avec métadonnées."
     },
     {
       "id": 3,
-      "question": "Comment filtrer les fichiers par contenu (rechercher un texte à l'intérieur du fichier) avec le Finder ?",
-      "type": "single_choice",
+      "question": "Quelles méthodes de filtrage existent ?",
+      "type": "multiple_choice",
       "options": [
-        "`->content('texte')`",
-        "`->contains('texte')`",
-        "`->grep('texte')`",
-        "`->search('texte')`"
+        "name()/notName()",
+        "path()/notPath()",
+        "contains()/notContains()",
+        "size()/date()"
       ],
       "correct_answers": [
-        "`->contains('texte')`"
+        "name()/notName()",
+        "path()/notPath()",
+        "contains()/notContains()",
+        "size()/date()"
       ],
-      "explanation": "La méthode `contains` permet de filtrer les fichiers qui contiennent une chaîne ou une expression régulière."
+      "explanation": "Finder empile des FilterIterators : nom, chemin, contenu, taille, date."
     },
     {
       "id": 4,
-      "question": "Les méthodes du Finder (comme `files()`, `in()`, `name()`) peuvent-elles être chaînées (Fluent Interface) ?",
+      "question": "Comment cibler uniquement les fichiers (pas les dossiers) ?",
       "type": "single_choice",
       "options": [
-        "Non.",
-        "Oui, elles retournent toutes l'instance du Finder (`$this`).",
-        "Uniquement `in()`.",
-        "Seulement dans Symfony 5."
+        "files()",
+        "directories()",
+        "type('file')",
+        "path()"
       ],
       "correct_answers": [
-        "Oui, elles retournent toutes l'instance du Finder (`$this`)."
+        "files()"
       ],
-      "explanation": "Cela permet une syntaxe très lisible : `$finder->files()->in(__DIR__)->name('*.php');`."
+      "explanation": "files() restreint aux fichiers."
+    },
+    {
+      "id": 5,
+      "question": "Comment filtrer sur le contenu d'un fichier ?",
+      "type": "single_choice",
+      "options": [
+        "contains('foo')",
+        "grep('foo')",
+        "search('foo')",
+        "content('foo')"
+      ],
+      "correct_answers": [
+        "contains('foo')"
+      ],
+      "explanation": "contains/notContains utilisent une regex ou chaîne."
+    },
+    {
+      "id": 6,
+      "question": "Comment exclure un répertoire (ex: vendor) ?",
+      "type": "single_choice",
+      "options": [
+        "notPath('vendor')",
+        "ignore('vendor')",
+        "exclude()",
+        "unset()"
+      ],
+      "correct_answers": [
+        "notPath('vendor')"
+      ],
+      "explanation": "notPath filtre les chemins; exclude n'existe pas."
+    },
+    {
+      "id": 7,
+      "question": "Comment filtrer par taille ?",
+      "type": "single_choice",
+      "options": [
+        "size('< 1K')",
+        "length('< 1K')",
+        "bytes('< 1K')",
+        "weight('< 1K')"
+      ],
+      "correct_answers": [
+        "size('< 1K')"
+      ],
+      "explanation": "size accepte des comparateurs (<, >, =)."
+    },
+    {
+      "id": 8,
+      "question": "Comment filtrer par date de modification ?",
+      "type": "single_choice",
+      "options": [
+        "date('since yesterday')",
+        "mtime('> now')",
+        "changed()",
+        "time()"
+      ],
+      "correct_answers": [
+        "date('since yesterday')"
+      ],
+      "explanation": "date() supporte since/after/before avec expressions relatives."
+    },
+    {
+      "id": 9,
+      "question": "Les méthodes du Finder sont-elles chaînables ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, elles retournent $this",
+        "Non",
+        "Seulement in()",
+        "Seulement name()"
+      ],
+      "correct_answers": [
+        "Oui, elles retournent $this"
+      ],
+      "explanation": "Fluent interface : files()->in()->name()->contains()."
+    },
+    {
+      "id": 10,
+      "question": "Quels pièges de sécurité avec in()/path() ?",
+      "type": "single_choice",
+      "options": [
+        "Valider/whitelister les chemins issus de l'utilisateur pour éviter l'accès à tout le FS",
+        "Aucun, Finder bloque tout",
+        "Finder crypte les chemins",
+        "Finder change les permissions"
+      ],
+      "correct_answers": [
+        "Valider/whitelister les chemins issus de l'utilisateur pour éviter l'accès à tout le FS"
+      ],
+      "explanation": "Entrées utilisateur doivent être contrôlées avant de les passer à Finder."
     }
   ]
 }

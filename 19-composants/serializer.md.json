@@ -4,63 +4,206 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelles sont les deux étapes du processus de sérialisation dans le composant Serializer de Symfony ?",
-      "type": "single_choice",
+      "question": "Quelles étapes compose le pipeline de sérialisation et de désérialisation ?",
+      "type": "multiple_choice",
       "options": [
-        "Parsing et Dumping.",
-        "Hydratation et Persistance.",
-        "Normalization (Objet vers Array) et Encoding (Array vers String JSON/XML).",
-        "Validation et Transformation."
+        "Normalization (Objet -> Array de scalaires)",
+        "Encoding (Array -> String JSON/XML/...)",
+        "Decoding (String -> Array)",
+        "Denormalization (Array -> Objet)"
       ],
       "correct_answers": [
-        "Normalization (Objet vers Array) et Encoding (Array vers String JSON/XML)."
+        "Normalization (Objet -> Array de scalaires)",
+        "Encoding (Array -> String JSON/XML/...)",
+        "Decoding (String -> Array)",
+        "Denormalization (Array -> Objet)"
       ],
-      "explanation": "Le sérialiseur orchestre des Normalizers (qui gèrent les objets) et des Encoders (qui gèrent le format)."
+      "explanation": "Sérialisation = normalize puis encode ; désérialisation = decode puis denormalize."
     },
     {
       "id": 2,
-      "question": "Comment contrôler quels champs d'un objet sont exposés lors de la sérialisation ?",
+      "question": "Comment initialiser un Serializer minimal à la main (hors DI) ?",
       "type": "single_choice",
       "options": [
-        "En mettant les propriétés en `private`.",
-        "En utilisant l'attribut `#[Groups(['nom_groupe'])]` sur les propriétés et en passant le contexte `groups` à la méthode `serialize`.",
-        "En supprimant les getters.",
-        "Ce n'est pas possible, tout est exposé."
+        "`new Serializer([new ObjectNormalizer()], [new JsonEncoder()])`",
+        "`new Serializer([])`",
+        "`Serializer::createDefault()`",
+        "`new Normalizer(JsonEncoder::class)`"
       ],
       "correct_answers": [
-        "En utilisant l'attribut `#[Groups(['nom_groupe'])]` sur les propriétés et en passant le contexte `groups` à la méthode `serialize`."
+        "`new Serializer([new ObjectNormalizer()], [new JsonEncoder()])`"
       ],
-      "explanation": "Les groupes de sérialisation sont le mécanisme principal pour filtrer les données (ex: ne pas exposer le mot de passe)."
+      "explanation": "On fournit la liste des normalizers puis des encoders au constructeur."
     },
     {
       "id": 3,
-      "question": "Quel attribut permet de renommer une clé dans le JSON généré (ex: `firstName` devient `first_name`) ?",
-      "type": "single_choice",
+      "question": "Comment limiter/exposer des champs selon un contexte donné ?",
+      "type": "multiple_choice",
       "options": [
-        "`#[SerializedName('first_name')]`",
-        "`#[Rename('first_name')]`",
-        "`#[Alias('first_name')]`",
-        "`#[JsonKey('first_name')]`"
+        "Attribuer `#[Groups(['read'])]` sur les propriétés",
+        "Passer `['groups' => 'read']` dans le contexte de `serialize()`",
+        "Cacher une propriété via `#[Ignore]`",
+        "Renommer via `#[SerializedName]`"
       ],
       "correct_answers": [
-        "`#[SerializedName('first_name')]`"
+        "Attribuer `#[Groups(['read'])]` sur les propriétés",
+        "Passer `['groups' => 'read']` dans le contexte de `serialize()`"
       ],
-      "explanation": "`SerializedName` permet de découpler le nom de la propriété PHP du nom de la clé dans le flux de sortie."
+      "explanation": "Les groupes filtrent ce qui sort ; Ignore/SerializedName servent à d'autres usages."
     },
     {
       "id": 4,
-      "question": "Comment gérer les références circulaires (A contient B qui contient A) pour éviter une boucle infinie lors de la sérialisation ?",
+      "question": "Quand utiliser `#[SerializedPath('[address][city]')]` ?",
       "type": "single_choice",
       "options": [
-        "Le sérialiseur s'arrête automatiquement.",
-        "En utilisant l'option `AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER` (callback) ou en configurant les `Groups` pour casser la boucle.",
-        "En augmentant la mémoire PHP.",
-        "En utilisant XML."
+        "Pour mapper une structure JSON imbriquée vers une propriété à plat",
+        "Pour renommer une propriété simple",
+        "Pour ignorer une propriété",
+        "Pour définir un discriminant"
       ],
       "correct_answers": [
-        "En utilisant l'option `AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER` (callback) ou en configurant les `Groups` pour casser la boucle."
+        "Pour mapper une structure JSON imbriquée vers une propriété à plat"
       ],
-      "explanation": "Si une boucle est détectée, le handler est appelé (ex: pour retourner l'ID au lieu de l'objet complet)."
+      "explanation": "SerializedPath permet de flattener ou de cibler une clé imbriquée."
+    },
+    {
+      "id": 5,
+      "question": "Quels attributs permettent de masquer ou limiter la profondeur d'une propriété ?",
+      "type": "multiple_choice",
+      "options": [
+        "`#[Ignore]` pour exclure totalement",
+        "`#[MaxDepth(1)]` avec `enable_max_depth` dans le contexte",
+        "`#[Hidden]`",
+        "`#[Private]`"
+      ],
+      "correct_answers": [
+        "`#[Ignore]` pour exclure totalement",
+        "`#[MaxDepth(1)]` avec `enable_max_depth` dans le contexte"
+      ],
+      "explanation": "Ignore supprime, MaxDepth limite la descente récursive."
+    },
+    {
+      "id": 6,
+      "question": "Quelles options de contexte sont mentionnées pour piloter la normalisation ?",
+      "type": "multiple_choice",
+      "options": [
+        "`AbstractNormalizer::IGNORED_ATTRIBUTES`",
+        "`AbstractNormalizer::CALLBACKS`",
+        "`AbstractNormalizer::OBJECT_TO_POPULATE`",
+        "`ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER`"
+      ],
+      "correct_answers": [
+        "`AbstractNormalizer::IGNORED_ATTRIBUTES`",
+        "`AbstractNormalizer::CALLBACKS`",
+        "`AbstractNormalizer::OBJECT_TO_POPULATE`",
+        "`ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER`"
+      ],
+      "explanation": "Ces clés pilotent exclusion, callbacks, population d'objet existant et gestion de boucle."
+    },
+    {
+      "id": 7,
+      "question": "Comment gérer les références circulaires ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER` (retourner un ID) ou en découpant via groupes",
+        "En augmentant la mémoire",
+        "En désactivant JSON",
+        "En forçant YAML"
+      ],
+      "correct_answers": [
+        "Avec `ObjectNormalizer::CIRCULAR_REFERENCE_HANDLER` (retourner un ID) ou en découpant via groupes"
+      ],
+      "explanation": "Un handler ou un design de groupes évite la boucle infinie."
+    },
+    {
+      "id": 8,
+      "question": "Que change l'attribut `#[Context([...])]` appliqué sur une propriété ?",
+      "type": "single_choice",
+      "options": [
+        "Il injecte un contexte par défaut (ex: format de DateTime) pour cette propriété lors de la (dé)sérialisation",
+        "Il force le groupe `default`",
+        "Il désactive le normalizer",
+        "Il encode toujours en XML"
+      ],
+      "correct_answers": [
+        "Il injecte un contexte par défaut (ex: format de DateTime) pour cette propriété lors de la (dé)sérialisation"
+      ],
+      "explanation": "Context sur propriété ajoute des options ciblées (ex: `DateTimeNormalizer::FORMAT_KEY`)."
+    },
+    {
+      "id": 9,
+      "question": "À quoi servent les Named Serializers (Symfony 7.2+) ?",
+      "type": "single_choice",
+      "options": [
+        "Avoir plusieurs instances de Serializer avec des configs distinctes (name_converter, contexte, etc.)",
+        "Forcer le cache HTTP",
+        "Remplacer le Serializer par défaut",
+        "Gérer les migrations DB"
+      ],
+      "correct_answers": [
+        "Avoir plusieurs instances de Serializer avec des configs distinctes (name_converter, contexte, etc.)"
+      ],
+      "explanation": "Chaque serializer nommé peut être injecté via `#[Target('apiClient.serializer')]`."
+    },
+    {
+      "id": 10,
+      "question": "Comment gérer le polymorphisme avec une propriété pouvant contenir plusieurs sous-types ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `#[DiscriminatorMap(typeProperty: 'type', mapping: [...])]`",
+        "Avec `#[Groups]` uniquement",
+        "Avec `#[Ignore]`",
+        "Avec un `switch` manuel obligatoire"
+      ],
+      "correct_answers": [
+        "Avec `#[DiscriminatorMap(typeProperty: 'type', mapping: [...])]`"
+      ],
+      "explanation": "Le discriminant indique au serializer quelle classe instancier selon le champ `type`."
+    },
+    {
+      "id": 11,
+      "question": "Quel piège sur les paramètres de `serialize` vs `deserialize` est rappelé ?",
+      "type": "single_choice",
+      "options": [
+        "`serialize($data, $format)` : 2e argument = format ; `deserialize($json, $type, $format)` : 2e = type, 3e = format",
+        "Ils prennent les mêmes arguments",
+        "Le format est toujours détecté automatiquement",
+        "Le type est ignoré"
+      ],
+      "correct_answers": [
+        "`serialize($data, $format)` : 2e argument = format ; `deserialize($json, $type, $format)` : 2e = type, 3e = format"
+      ],
+      "explanation": "Ne pas confondre ordre des arguments : format vs type."
+    },
+    {
+      "id": 12,
+      "question": "Comment le Serializer choisit-il quel Normalizer/Encoder utiliser ?",
+      "type": "single_choice",
+      "options": [
+        "En testant `supports*` sur chaque normalizer/encoder jusqu'à trouver le premier qui correspond",
+        "En prenant toujours le premier",
+        "En lisant un fichier de config unique",
+        "Au hasard"
+      ],
+      "correct_answers": [
+        "En testant `supports*` sur chaque normalizer/encoder jusqu'à trouver le premier qui correspond"
+      ],
+      "explanation": "Le Serializer interroge chaque normalizer/encoder pour savoir s'il supporte l'objet/format."
+    },
+    {
+      "id": 13,
+      "question": "Qu'essaie de faire le Serializer lors de la désérialisation si l'objet a un constructeur obligatoire ?",
+      "type": "single_choice",
+      "options": [
+        "Mapper les champs du tableau sur les arguments du constructeur par nom",
+        "Ignorer le constructeur",
+        "Toujours lancer une exception",
+        "Remplir uniquement les propriétés publiques"
+      ],
+      "correct_answers": [
+        "Mapper les champs du tableau sur les arguments du constructeur par nom"
+      ],
+      "explanation": "L'ObjectNormalizer tente d'appeler le constructeur avec les valeurs du payload si les noms concordent."
     }
   ]
 }

@@ -4,63 +4,161 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle est la principale différence d'approche entre AssetMapper et Webpack Encore ?",
-      "type": "single_choice",
+      "question": "Quelles affirmations décrivent correctement l'approche AssetMapper ?",
+      "type": "multiple_choice",
       "options": [
-        "AssetMapper est plus lent.",
-        "AssetMapper utilise une approche 'No-Build' (pas de Node.js/npm, utilisation des standards Import Maps), tandis que Webpack Encore nécessite une étape de compilation/bundling.",
-        "AssetMapper ne gère pas le CSS.",
-        "Webpack Encore est déprécié."
+        "Repose sur les Import Maps et évite le bundling Node.js",
+        "Nécessite un `npm install` systématique",
+        "Peut fonctionner sans `node_modules` grâce aux dépendances dans `assets/vendor`",
+        "Oblige à concaténer tous les JS dans un seul fichier"
       ],
       "correct_answers": [
-        "AssetMapper utilise une approche 'No-Build' (pas de Node.js/npm, utilisation des standards Import Maps), tandis que Webpack Encore nécessite une étape de compilation/bundling."
+        "Repose sur les Import Maps et évite le bundling Node.js",
+        "Peut fonctionner sans `node_modules` grâce aux dépendances dans `assets/vendor`"
       ],
-      "explanation": "AssetMapper vise la simplicité en servant les fichiers JS tels quels au navigateur, profitant des capacités modernes (ES Modules, HTTP/2)."
+      "explanation": "AssetMapper est 'no-build', s'appuie sur Import Maps et stocke les dépendances téléchargées dans `assets/vendor`."
     },
     {
       "id": 2,
-      "question": "Qu'est-ce qu'une 'Import Map' ?",
-      "type": "single_choice",
+      "question": "Quels fichiers/commandes initiaux mettent en place AssetMapper dans Symfony 7 ?",
+      "type": "multiple_choice",
       "options": [
-        "Une carte géographique.",
-        "Un fichier JSON inclus dans le HTML qui indique au navigateur comment résoudre les imports de modules JavaScript (ex: mapper 'bootstrap' vers '/assets/vendor/bootstrap.js').",
-        "Un fichier de configuration PHP.",
-        "Une liste de fichiers CSS."
+        "`composer require symfony/asset-mapper symfony/asset`",
+        "`php bin/console importmap:install`",
+        "Création d'un `webpack.config.js`",
+        "Ajout d'un fichier `importmap.php`"
       ],
       "correct_answers": [
-        "Un fichier JSON inclus dans le HTML qui indique au navigateur comment résoudre les imports de modules JavaScript (ex: mapper 'bootstrap' vers '/assets/vendor/bootstrap.js')."
+        "`composer require symfony/asset-mapper symfony/asset`",
+        "`php bin/console importmap:install`",
+        "Ajout d'un fichier `importmap.php`"
       ],
-      "explanation": "C'est un standard web qui permet d'utiliser `import 'bootstrap'` dans le navigateur sans bundler."
+      "explanation": "L'installation crée/attend `importmap.php`; aucun `webpack.config.js` n'est requis."
     },
     {
       "id": 3,
-      "question": "Comment installer une nouvelle librairie JavaScript (ex: bootstrap) avec AssetMapper ?",
+      "question": "Dans `importmap.php`, comment marquer un point d'entrée applicatif ?",
       "type": "single_choice",
       "options": [
-        "`npm install bootstrap`",
-        "`php bin/console importmap:require bootstrap`",
-        "`composer require bootstrap`",
-        "`yarn add bootstrap`"
+        "Avec la clé `entrypoint` à true sur l'entrée concernée",
+        "En nommant l'entrée `main.js`",
+        "En ajoutant un commentaire spécial",
+        "Ce n'est pas nécessaire"
       ],
       "correct_answers": [
-        "`php bin/console importmap:require bootstrap`"
+        "Avec la clé `entrypoint` à true sur l'entrée concernée"
       ],
-      "explanation": "Cette commande télécharge le fichier JS depuis un CDN (ex: JSDelivr) dans `assets/vendor/` et met à jour `importmap.php`."
+      "explanation": "La clé `entrypoint` indique quels modules doivent être préchargés et exposés comme points d'entrée."
     },
     {
       "id": 4,
-      "question": "En production, quelle commande faut-il exécuter pour que les assets soient servis efficacement par le serveur web ?",
+      "question": "À quoi sert `vendor_dir` dans `asset_mapper.yaml` ?",
       "type": "single_choice",
       "options": [
-        "`php bin/console assets:install`",
-        "`npm run build`",
-        "`php bin/console asset-map:compile`",
-        "`php bin/console cache:clear`"
+        "À définir où PHP télécharge les dépendances JS tierces (`assets/vendor` par défaut)",
+        "À définir le répertoire `vendor/` de Composer",
+        "À configurer le CDN de production",
+        "À activer le cache OPCache"
       ],
       "correct_answers": [
-        "`php bin/console asset-map:compile`"
+        "À définir où PHP télécharge les dépendances JS tierces (`assets/vendor` par défaut)"
       ],
-      "explanation": "Cette commande copie les fichiers depuis `assets/` vers `public/assets/` en ajoutant le hash de versioning au nom du fichier."
+      "explanation": "AssetMapper range les paquets récupérés via `importmap:require` dans ce dossier versionné."
+    },
+    {
+      "id": 5,
+      "question": "Quelles commandes gèrent le cycle de vie des dépendances avec ImportMap ?",
+      "type": "multiple_choice",
+      "options": [
+        "`php bin/console importmap:require <pkg>` pour ajouter",
+        "`php bin/console importmap:update <pkg>` pour mettre à jour",
+        "`php bin/console importmap:audit` pour détecter des failles",
+        "`npm audit` obligatoire"
+      ],
+      "correct_answers": [
+        "`php bin/console importmap:require <pkg>` pour ajouter",
+        "`php bin/console importmap:update <pkg>` pour mettre à jour",
+        "`php bin/console importmap:audit` pour détecter des failles"
+      ],
+      "explanation": "Le workflow se fait côté PHP ; `npm audit` n'est pas requis si on n'utilise pas Node."
+    },
+    {
+      "id": 6,
+      "question": "Comment AssetMapper gère-t-il le CSS ?",
+      "type": "multiple_choice",
+      "options": [
+        "On peut importer du CSS directement dans le JS (`import './styles/app.css';`)",
+        "Les navigateurs modernes supportent nativement l'import de CSS dans les modules (ou via un shim fourni)",
+        "Il faut forcément passer par Webpack Encore pour le CSS",
+        "Le CSS est ignoré en production"
+      ],
+      "correct_answers": [
+        "On peut importer du CSS directement dans le JS (`import './styles/app.css';`)",
+        "Les navigateurs modernes supportent nativement l'import de CSS dans les modules (ou via un shim fourni)"
+      ],
+      "explanation": "AssetMapper peut servir le CSS sans bundler ; aucune obligation d'Encore."
+    },
+    {
+      "id": 7,
+      "question": "Quels mécanismes de versioning/caching AssetMapper propose-t-il ?",
+      "type": "single_choice",
+      "options": [
+        "Aucun, il désactive le cache.",
+        "Il calcule un hash sur le contenu et l'ajoute au nom de fichier généré (/assets/app-<hash>.js).",
+        "Il ajoute toujours `?v=1`",
+        "Il renvoie du contenu inline"
+      ],
+      "correct_answers": [
+        "Il calcule un hash sur le contenu et l'ajoute au nom de fichier généré (/assets/app-<hash>.js)."
+      ],
+      "explanation": "Ce hash permet un cache long côté navigateur et invalide automatiquement sur changement."
+    },
+    {
+      "id": 8,
+      "question": "Que fait exactement `php bin/console asset-map:compile` en production ?",
+      "type": "single_choice",
+      "options": [
+        "Compile du JSX en JS",
+        "Copie les assets (avec hash) vers `public/assets/` pour que le serveur web les serve sans passer par PHP",
+        "Installe Node.js",
+        "Régénère le cache Symfony uniquement"
+      ],
+      "correct_answers": [
+        "Copie les assets (avec hash) vers `public/assets/` pour que le serveur web les serve sans passer par PHP"
+      ],
+      "explanation": "En prod, on évite le contrôleur PHP : les fichiers sont statiques dans `public/assets/`."
+    },
+    {
+      "id": 9,
+      "question": "Quelles différences clefs avec Webpack Encore faut-il retenir pour la certification ?",
+      "type": "multiple_choice",
+      "options": [
+        "Webpack = bundling Node, idéal SPA lourdes (React/Vue)",
+        "AssetMapper = HTTP/2 + Import Maps, idéal applis Symfony classiques",
+        "Webpack offre tree-shaking avancé, AssetMapper non",
+        "AssetMapper impose de committer `public/build`"
+      ],
+      "correct_answers": [
+        "Webpack = bundling Node, idéal SPA lourdes (React/Vue)",
+        "AssetMapper = HTTP/2 + Import Maps, idéal applis Symfony classiques",
+        "Webpack offre tree-shaking avancé, AssetMapper non"
+      ],
+      "explanation": "Les deux approches ciblent des besoins différents ; AssetMapper n'impose pas de committer un dossier de build Node."
+    },
+    {
+      "id": 10,
+      "question": "Quel piège concerne la compatibilité navigateur des Import Maps ?",
+      "type": "single_choice",
+      "options": [
+        "Les Import Maps ne fonctionnent qu'en HTTP/3.",
+        "Les navigateurs anciens nécessitent un shim (fourni) pour supporter les Import Maps.",
+        "Les Import Maps exigent un service worker.",
+        "Il faut un CDN propriétaire."
+      ],
+      "correct_answers": [
+        "Les navigateurs anciens nécessitent un shim (fourni) pour supporter les Import Maps."
+      ],
+      "explanation": "AssetMapper inclut un shim pour les navigateurs qui n'ont pas un support natif complet."
     }
   ]
 }

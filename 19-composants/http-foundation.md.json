@@ -4,63 +4,177 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est le rôle principal du composant `HttpFoundation` ?",
-      "type": "single_choice",
+      "question": "Qu'encapsule HttpFoundation ?",
+      "type": "multiple_choice",
       "options": [
-        "Gérer la base de données.",
-        "Fournir une couche d'abstraction orientée objet pour la spécification HTTP (Request/Response), remplaçant les superglobales PHP.",
-        "Gérer le routing.",
-        "Fournir un serveur web."
+        "Les superglobales PHP via `Request` (GET/POST/FILES/COOKIE/SERVER)",
+        "Les en-têtes via `HeaderBag`",
+        "Les réponses HTTP via `Response` et dérivées",
+        "Le routage"
       ],
       "correct_answers": [
-        "Fournir une couche d'abstraction orientée objet pour la spécification HTTP (Request/Response), remplaçant les superglobales PHP."
+        "Les superglobales PHP via `Request` (GET/POST/FILES/COOKIE/SERVER)",
+        "Les en-têtes via `HeaderBag`",
+        "Les réponses HTTP via `Response` et dérivées"
       ],
-      "explanation": "Il encapsule `$_GET`, `$_POST` etc. dans des objets `Request` et permet de construire des objets `Response`."
+      "explanation": "HttpFoundation fournit Request/Response, pas le routing."
     },
     {
       "id": 2,
-      "question": "Comment accéder à un paramètre d'URL (Query String, équivalent à `$_GET['page']`) via l'objet Request ?",
+      "question": "Quelles sont les priorités de `$request->get('key')` (à éviter) ?",
       "type": "single_choice",
       "options": [
-        "`$request->get('page')`",
-        "`$request->query->get('page')`",
-        "`$request->request->get('page')`",
-        "`$request->attributes->get('page')`"
+        "query puis attributes puis request",
+        "request puis query",
+        "attributes puis query",
+        "cookies puis server"
       ],
       "correct_answers": [
-        "`$request->query->get('page')`"
+        "query puis attributes puis request"
       ],
-      "explanation": "La propriété `query` est un `ParameterBag` contenant les paramètres GET."
+      "explanation": "D'où la recommandation d'utiliser `query/request/attributes` explicitement."
     },
     {
       "id": 3,
-      "question": "Quelle classe de Réponse est optimisée pour envoyer des fichiers volumineux (supportant `Range`, `X-Sendfile`) ?",
+      "question": "Comment lire un JSON payload en tableau ?",
       "type": "single_choice",
       "options": [
-        "`Response`",
-        "`StreamedResponse`",
-        "`BinaryFileResponse`",
-        "`FileResponse`"
+        "`$request->toArray()` (Symfony >=5.2)",
+        "`$request->getJson()`",
+        "`json_decode($_POST)`",
+        "`$request->request->all()`"
       ],
       "correct_answers": [
-        "`BinaryFileResponse`"
+        "`$request->toArray()` (Symfony >=5.2)"
       ],
-      "explanation": "`BinaryFileResponse` gère automatiquement les en-têtes pour le téléchargement de fichiers et supporte la reprise de téléchargement."
+      "explanation": "toArray() parse le body JSON et lève en cas d'erreur."
     },
     {
       "id": 4,
-      "question": "Pourquoi faut-il configurer les 'Trusted Proxies' si votre application est derrière un Load Balancer ?",
-      "type": "single_choice",
+      "question": "Quelles classes de réponse spécialisées existent ?",
+      "type": "multiple_choice",
       "options": [
-        "Pour des raisons de performance.",
-        "Pour que `$request->getClientIp()` retourne la véritable IP du client (via `X-Forwarded-For`) et non celle du Load Balancer.",
-        "Pour activer le HTTPS.",
-        "Pour empêcher le DDoS."
+        "JsonResponse",
+        "StreamedResponse",
+        "BinaryFileResponse",
+        "RedirectResponse"
       ],
       "correct_answers": [
-        "Pour que `$request->getClientIp()` retourne la véritable IP du client (via `X-Forwarded-For`) et non celle du Load Balancer."
+        "JsonResponse",
+        "StreamedResponse",
+        "BinaryFileResponse",
+        "RedirectResponse"
       ],
-      "explanation": "Sans cela, l'application croit que toutes les requêtes viennent de l'IP interne du proxy."
+      "explanation": "Plusieurs helpers pour JSON, streaming, fichiers, redirections."
+    },
+    {
+      "id": 5,
+      "question": "Quand utiliser `BinaryFileResponse` vs `StreamedResponse` ?",
+      "type": "single_choice",
+      "options": [
+        "BinaryFileResponse pour un fichier existant (support Range), StreamedResponse pour générer à la volée",
+        "Binary pour les JSON",
+        "Streamed pour les images uniquement",
+        "Indifférent"
+      ],
+      "correct_answers": [
+        "BinaryFileResponse pour un fichier existant (support Range), StreamedResponse pour générer à la volée"
+      ],
+      "explanation": "Binary envoie un fichier, Streamed produit du contenu live."
+    },
+    {
+      "id": 6,
+      "question": "Comment gérer le cache HTTP avec Response ?",
+      "type": "multiple_choice",
+      "options": [
+        "`setPublic()/setMaxAge()/setSharedMaxAge()`",
+        "`setEtag()` puis `isNotModified($request)`",
+        "En ajoutant `Cache-Control` manuellement",
+        "En désactivant les headers"
+      ],
+      "correct_answers": [
+        "`setPublic()/setMaxAge()/setSharedMaxAge()`",
+        "`setEtag()` puis `isNotModified($request)`"
+      ],
+      "explanation": "Helpers pour cache contrôlé et 304."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi configurer les Trusted Proxies/Hosts ?",
+      "type": "single_choice",
+      "options": [
+        "Pour que `getClientIp()` et les URLs reflètent le client réel derrière un LB (`X-Forwarded-*`)",
+        "Pour activer HTTPS",
+        "Pour gérer les sessions",
+        "Pour router les requêtes"
+      ],
+      "correct_answers": [
+        "Pour que `getClientIp()` et les URLs reflètent le client réel derrière un LB (`X-Forwarded-*`)"
+      ],
+      "explanation": "Les proxies doivent être déclarés pour faire confiance aux headers forward."
+    },
+    {
+      "id": 8,
+      "question": "Quand la session est-elle réellement démarrée ?",
+      "type": "single_choice",
+      "options": [
+        "À l'appel de `$request->getSession()` ou lors d'un write, pas automatiquement",
+        "Toujours au début de la requête",
+        "Jamais en Symfony",
+        "Uniquement en CLI"
+      ],
+      "correct_answers": [
+        "À l'appel de `$request->getSession()` ou lors d'un write, pas automatiquement"
+      ],
+      "explanation": "La session est lazy, démarrée seulement si utilisée."
+    },
+    {
+      "id": 9,
+      "question": "Quelles méthodes de `ParameterBag` aident à filtrer/caster ?",
+      "type": "multiple_choice",
+      "options": [
+        "`getInt()`",
+        "`getBoolean()`",
+        "`getAlpha()`",
+        "`getDigits()`"
+      ],
+      "correct_answers": [
+        "`getInt()`",
+        "`getBoolean()`",
+        "`getAlpha()`",
+        "`getDigits()`"
+      ],
+      "explanation": "ParameterBag fournit des helpers de filtrage simples."
+    },
+    {
+      "id": 10,
+      "question": "Comment récupérer l'IP client de façon fiable derrière un LB ?",
+      "type": "single_choice",
+      "options": [
+        "Configurer TrustedProxies puis appeler `$request->getClientIp()`",
+        "Lire `$_SERVER['REMOTE_ADDR']` directement",
+        "Toujours utiliser `X-Forwarded-For` sans filtre",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Configurer TrustedProxies puis appeler `$request->getClientIp()`"
+      ],
+      "explanation": "TrustedProxies permet à HttpFoundation d'utiliser les headers forward."
+    },
+    {
+      "id": 11,
+      "question": "Quelle méthode statique crée une Request depuis les superglobales (entrypoint front controller) ?",
+      "type": "single_choice",
+      "options": [
+        "`Request::createFromGlobals()`",
+        "`Request::fromSuperglobals()`",
+        "`Request::init()`",
+        "`Request::boot()`"
+      ],
+      "correct_answers": [
+        "`Request::createFromGlobals()`"
+      ],
+      "explanation": "Utilisée dans public/index.php."
     }
   ]
 }

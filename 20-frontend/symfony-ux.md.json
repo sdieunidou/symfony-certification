@@ -4,63 +4,160 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel framework JavaScript est au cœur de l'initiative Symfony UX ?",
-      "type": "single_choice",
+      "question": "Quels attributs HTML relient un contrôleur Stimulus et ses éléments ?",
+      "type": "multiple_choice",
       "options": [
-        "React",
-        "Vue.js",
-        "Stimulus",
-        "Angular"
+        "`data-controller=\"hello\"` pour lier le contrôleur",
+        "`data-hello-target=\"output\"` pour exposer un target",
+        "`data-action=\"click->hello#greet\"` pour relier un événement à une méthode",
+        "`id=\"hello\"` pour auto-instancier le contrôleur"
       ],
       "correct_answers": [
-        "Stimulus"
+        "`data-controller=\"hello\"` pour lier le contrôleur",
+        "`data-hello-target=\"output\"` pour exposer un target",
+        "`data-action=\"click->hello#greet\"` pour relier un événement à une méthode"
       ],
-      "explanation": "Stimulus a été choisi pour sa légèreté et sa capacité à enrichir le HTML existant (rendu serveur) plutôt que de le remplacer."
+      "explanation": "Stimulus se branche via des attributs `data-*`. L'id n'a aucun effet automatique pour Stimulus."
     },
     {
       "id": 2,
-      "question": "Comment lie-t-on un contrôleur Stimulus à un élément HTML ?",
+      "question": "Dans l'exemple, que fait la méthode `greet()` du contrôleur Stimulus ?",
       "type": "single_choice",
       "options": [
-        "Avec un ID spécifique.",
-        "Avec l'attribut `data-controller=\"nom-du-controleur\"`.",
-        "Avec une classe CSS.",
-        "Avec une balise `<script>`."
+        "Elle change la classe CSS du bouton.",
+        "Elle lit `this.nameValue` et écrit \"Hello, <name>!\" dans `this.outputTarget`.",
+        "Elle recharge la page.",
+        "Elle crée dynamiquement un nouveau contrôleur."
       ],
       "correct_answers": [
-        "Avec l'attribut `data-controller=\"nom-du-controleur\"`."
+        "Elle lit `this.nameValue` et écrit \"Hello, <name>!\" dans `this.outputTarget`."
       ],
-      "explanation": "C'est le mécanisme de base de Stimulus. Dès que cet attribut apparaît dans le DOM, le contrôleur JS est instancié."
+      "explanation": "La valeur vient de l'attribut `data-hello-name-value` et la cible est `data-hello-target=\"output\"`."
     },
     {
       "id": 3,
-      "question": "Quel composant Symfony UX permet de transformer la navigation classique en expérience SPA (Single Page App) sans rechargement complet ?",
+      "question": "Quelle est la promesse principale de Stimulus par rapport à React/Vue dans Symfony UX ?",
       "type": "single_choice",
       "options": [
-        "UX Chart.js",
-        "UX Turbo (basé sur Turbo Drive).",
-        "UX Live Component.",
-        "UX React."
+        "Stimulus remplace totalement Twig.",
+        "Stimulus s'attache au HTML existant rendu côté serveur sans prendre le contrôle complet du DOM.",
+        "Stimulus nécessite un Virtual DOM.",
+        "Stimulus impose une compilation JSX."
       ],
       "correct_answers": [
-        "UX Turbo (basé sur Turbo Drive)."
+        "Stimulus s'attache au HTML existant rendu côté serveur sans prendre le contrôle complet du DOM."
       ],
-      "explanation": "Turbo intercepte les clics et les formulaires pour mettre à jour le `<body>` via Ajax, conservant l'état des scripts et du CSS."
+      "explanation": "Stimulus est conçu pour enrichir, pas pour remplacer le rendu serveur."
     },
     {
       "id": 4,
-      "question": "Quel est l'avantage d'utiliser un composant comme `symfony/ux-chartjs` plutôt que d'utiliser Chart.js directement ?",
-      "type": "single_choice",
+      "question": "Quelles capacités spécifiques apporte StimulusBundle dans un projet Symfony 7 ?",
+      "type": "multiple_choice",
       "options": [
-        "C'est gratuit.",
-        "Il permet de configurer le graphique entièrement en PHP (via un Builder) et de le rendre en une ligne Twig, tout en gérant l'initialisation JS automatiquement.",
-        "Il est plus rapide.",
-        "Il n'y en a pas."
+        "Découverte auto des contrôleurs dans `assets/controllers/`",
+        "Lazy-loading des contrôleurs via `/* stimulusFetch: 'lazy' */`",
+        "Compilation JSX des contrôleurs par défaut",
+        "Configuration automatique des contrôleurs tiers via `assets/controllers.json`"
       ],
       "correct_answers": [
-        "Il permet de configurer le graphique entièrement en PHP (via un Builder) et de le rendre en une ligne Twig, tout en gérant l'initialisation JS automatiquement."
+        "Découverte auto des contrôleurs dans `assets/controllers/`",
+        "Lazy-loading des contrôleurs via `/* stimulusFetch: 'lazy' */`",
+        "Configuration automatique des contrôleurs tiers via `assets/controllers.json`"
       ],
-      "explanation": "Cela permet au développeur Backend de créer des interfaces riches sans écrire de JavaScript."
+      "explanation": "StimulusBundle automatise l'enregistrement, supporte le lazy et lit le mapping des paquets UX tiers."
+    },
+    {
+      "id": 5,
+      "question": "Quel package Symfony UX choisir pour une navigation sans rechargement complet du `<body>` ?",
+      "type": "single_choice",
+      "options": [
+        "UX Chart.js",
+        "UX Turbo (Turbo Drive)",
+        "UX Cropperjs",
+        "UX Live Component seulement"
+      ],
+      "correct_answers": [
+        "UX Turbo (Turbo Drive)"
+      ],
+      "explanation": "Turbo Drive intercepte liens/formulaires et remplace le `<body>` via XHR."
+    },
+    {
+      "id": 6,
+      "question": "Pour limiter les rechargements complets, quelle combinaison Turbo utiliser pour ne mettre à jour qu'une portion de page ?",
+      "type": "multiple_choice",
+      "options": [
+        "Turbo Frames pour délimiter les zones partielles",
+        "Turbo Streams pour pousser des mises à jour HTML ciblées",
+        "Turbo Drive seul suffit toujours",
+        "Un contrôleur Stimulus obligatoire"
+      ],
+      "correct_answers": [
+        "Turbo Frames pour délimiter les zones partielles",
+        "Turbo Streams pour pousser des mises à jour HTML ciblées"
+      ],
+      "explanation": "Turbo Drive gère la navigation, Frames/Streams gèrent les mises à jour partielles côté client."
+    },
+    {
+      "id": 7,
+      "question": "Quelles commandes installent typiquement un composant UX (ex: `symfony/ux-chartjs`) avec AssetMapper ?",
+      "type": "multiple_choice",
+      "options": [
+        "`composer require symfony/ux-chartjs`",
+        "`npm install --force` si Encore est utilisé",
+        "`php bin/console importmap:require chart.js`",
+        "`yarn encore:install`"
+      ],
+      "correct_answers": [
+        "`composer require symfony/ux-chartjs`",
+        "`php bin/console importmap:require chart.js`"
+      ],
+      "explanation": "Composer ajoute le bundle PHP/JS, importmap référence la lib côté navigateur. `npm install` n'est requis que si Encore est choisi."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi un composant UX (ex: Live Component) s'intègre-t-il bien avec Twig côté serveur ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'il compile Twig en WebAssembly.",
+        "Parce qu'il expose des helpers Twig générant le HTML et connectant automatiquement le contrôleur Stimulus associé.",
+        "Parce qu'il supprime le besoin de contrôleurs Symfony.",
+        "Parce qu'il nécessite un CDN externe."
+      ],
+      "correct_answers": [
+        "Parce qu'il expose des helpers Twig générant le HTML et connectant automatiquement le contrôleur Stimulus associé."
+      ],
+      "explanation": "Les tags/helpers Twig rendent le markup attendu et branchent le JS côté client."
+    },
+    {
+      "id": 9,
+      "question": "Dans quel cas l'attribut `data-hello-name-value` est-il lu par Stimulus ?",
+      "type": "single_choice",
+      "options": [
+        "Uniquement si le contrôleur étend React.Component.",
+        "Quand le contrôleur définit `static values = { name: String }` et est attaché via `data-controller`.",
+        "Jamais, cet attribut est ignoré.",
+        "Seulement si l'on compile avec Webpack Encore."
+      ],
+      "correct_answers": [
+        "Quand le contrôleur définit `static values = { name: String }` et est attaché via `data-controller`."
+      ],
+      "explanation": "La déclaration des `values` permet à Stimulus de typer et de lire l'attribut correspondant."
+    },
+    {
+      "id": 10,
+      "question": "Quel piège courant avec Symfony UX Turbo en présence de code JS custom ?",
+      "type": "multiple_choice",
+      "options": [
+        "Turbo remplace le `<body>` : il faut réinitialiser les listeners JS qui n'utilisent pas Stimulus.",
+        "Turbo supprime les balises `<script>` inline, donc un code placé en inline peut ne pas être réévalué.",
+        "Turbo empêche tout POST.",
+        "Turbo désactive les formulaires multipart."
+      ],
+      "correct_answers": [
+        "Turbo remplace le `<body>` : il faut réinitialiser les listeners JS qui n'utilisent pas Stimulus.",
+        "Turbo supprime les balises `<script>` inline, donc un code placé en inline peut ne pas être réévalué."
+      ],
+      "explanation": "Le remplacement du body implique de se rebrancher sur les événements. Stimulus évite ce piège en se reinitialisant automatiquement."
     }
   ]
 }

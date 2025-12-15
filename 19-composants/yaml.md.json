@@ -4,63 +4,196 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle est la règle stricte concernant l'indentation dans les fichiers YAML avec Symfony ?",
-      "type": "single_choice",
+      "question": "Quelles sont les classes/facades principales exposées par le composant YAML ?",
+      "type": "multiple_choice",
       "options": [
-        "Les tabulations sont obligatoires.",
-        "Les tabulations sont interdites, il faut utiliser des espaces (généralement 2 ou 4).",
-        "Peu importe, tant que c'est aligné.",
-        "Il ne faut pas indenter."
+        "`Yaml` (façade statique)",
+        "`Parser`",
+        "`Dumper`",
+        "`YamlManager`"
       ],
       "correct_answers": [
-        "Les tabulations sont interdites, il faut utiliser des espaces (généralement 2 ou 4)."
+        "`Yaml` (façade statique)",
+        "`Parser`",
+        "`Dumper`"
       ],
-      "explanation": "La spécification YAML interdit les tabulations pour l'indentation pour éviter les ambiguïtés visuelles."
+      "explanation": "La façade `Yaml` simplifie l'usage, mais `Parser` et `Dumper` existent pour un contrôle fin."
     },
     {
       "id": 2,
-      "question": "Quelle méthode permet de transformer un tableau PHP en chaîne YAML ?",
-      "type": "single_choice",
+      "question": "Quelles méthodes du composant YAML lisent du contenu ?",
+      "type": "multiple_choice",
       "options": [
-        "`Yaml::parse()`",
-        "`Yaml::dump()`",
-        "`Yaml::serialize()`",
-        "`Yaml::stringify()`"
+        "`Yaml::parse()` pour une chaîne",
+        "`Yaml::parseFile()` pour un fichier",
+        "`Yaml::dump()` pour un fichier",
+        "`Yaml::encode()` pour un fichier"
       ],
       "correct_answers": [
-        "`Yaml::dump()`"
+        "`Yaml::parse()` pour une chaîne",
+        "`Yaml::parseFile()` pour un fichier"
       ],
-      "explanation": "`dump()` est l'équivalent de `json_encode`, tandis que `parse()` est l'équivalent de `json_decode`."
+      "explanation": "`parse()`/`parseFile()` lisent et transforment en structures PHP ; `dump()` fait l'inverse."
     },
     {
       "id": 3,
-      "question": "À quoi correspond le symbole `~` (tilde) en YAML standard ?",
-      "type": "single_choice",
+      "question": "Quelles options de `Yaml::dump($data, $inline, $indent, $flags)` contrôlent la forme de sortie ?",
+      "type": "multiple_choice",
       "options": [
-        "À une chaîne vide.",
-        "À la valeur `null`.",
-        "À l'infini.",
-        "À un commentaire."
+        "Le niveau inline (2e argument) décide à partir de quel niveau on passe en syntaxe `{ ... }`",
+        "L'indentation (3e argument) règle le nombre d'espaces par niveau",
+        "Les flags (4e argument) permettent de forcer des comportements (null en `~`, objects, multi-line block)",
+        "Le premier argument contrôle le type de parsing"
       ],
       "correct_answers": [
-        "À la valeur `null`."
+        "Le niveau inline (2e argument) décide à partir de quel niveau on passe en syntaxe `{ ... }`",
+        "L'indentation (3e argument) règle le nombre d'espaces par niveau",
+        "Les flags (4e argument) permettent de forcer des comportements (null en `~`, objects, multi-line block)"
       ],
-      "explanation": "Dans Symfony et YAML, `~` est analysé comme `null`."
+      "explanation": "Les trois derniers paramètres pilotent format et style de sortie."
     },
     {
       "id": 4,
-      "question": "Quelle commande permet de valider la syntaxe de vos fichiers YAML de configuration ?",
+      "question": "Quels flags de parsing permettent de contrôler le type de données retourné ?",
+      "type": "multiple_choice",
+      "options": [
+        "`Yaml::PARSE_OBJECT` pour retourner des stdClass",
+        "`Yaml::PARSE_OBJECT_FOR_MAP` pour forcer stdClass sur les maps",
+        "`Yaml::PARSE_DATETIME` pour transformer les dates en `DateTime`",
+        "`Yaml::DUMP_OBJECT` pour forcer stdClass"
+      ],
+      "correct_answers": [
+        "`Yaml::PARSE_OBJECT` pour retourner des stdClass",
+        "`Yaml::PARSE_OBJECT_FOR_MAP` pour forcer stdClass sur les maps",
+        "`Yaml::PARSE_DATETIME` pour transformer les dates en `DateTime`"
+      ],
+      "explanation": "Les trois premiers sont des flags de parsing ; `DUMP_*` concerne l'écriture."
+    },
+    {
+      "id": 5,
+      "question": "Quels flags de dump influencent la représentation des objets ou valeurs ?",
+      "type": "multiple_choice",
+      "options": [
+        "`Yaml::DUMP_OBJECT`",
+        "`Yaml::DUMP_OBJECT_AS_MAP`",
+        "`Yaml::DUMP_NULL_AS_TILDE`",
+        "`Yaml::PARSE_CUSTOM_TAGS`"
+      ],
+      "correct_answers": [
+        "`Yaml::DUMP_OBJECT`",
+        "`Yaml::DUMP_OBJECT_AS_MAP`",
+        "`Yaml::DUMP_NULL_AS_TILDE`"
+      ],
+      "explanation": "Les flags DUMP affectent l'écriture. `PARSE_CUSTOM_TAGS` est un flag de lecture."
+    },
+    {
+      "id": 6,
+      "question": "Comment représenter correctement une chaîne multi-lignes lisible dans un dump YAML ?",
       "type": "single_choice",
       "options": [
-        "`php bin/console cache:clear`",
+        "Utiliser le style bloc `|` via `Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK`",
+        "Forcer en une seule ligne",
+        "Toujours échapper les sauts de ligne",
+        "Utiliser uniquement le style `>`"
+      ],
+      "correct_answers": [
+        "Utiliser le style bloc `|` via `Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK`"
+      ],
+      "explanation": "Le flag force le style littéral, plus lisible pour plusieurs lignes."
+    },
+    {
+      "id": 7,
+      "question": "Quels types et syntaxes sont explicitement cités comme supportés par le composant ?",
+      "type": "multiple_choice",
+      "options": [
+        "Sequences `- item` et maps `key: value`",
+        "Types scalaires (string, int, float, bool, null, dates)",
+        "Commentaires `# ...`",
+        "Les tabulations comme indentation officielle"
+      ],
+      "correct_answers": [
+        "Sequences `- item` et maps `key: value`",
+        "Types scalaires (string, int, float, bool, null, dates)",
+        "Commentaires `# ...`"
+      ],
+      "explanation": "Le composant couvre ce sous-ensemble ; les tabs restent interdites."
+    },
+    {
+      "id": 8,
+      "question": "Quelle erreur fréquente d'indentation est rappelée dans les points de vigilance ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser 3 espaces",
+        "Utiliser des tabulations au lieu d'espaces",
+        "Utiliser trop de commentaires",
+        "Mettre des virgules après chaque clé"
+      ],
+      "correct_answers": [
+        "Utiliser des tabulations au lieu d'espaces"
+      ],
+      "explanation": "Les tabs sont interdites par la spec YAML et provoquent des erreurs de parsing."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi le parsing YAML est-il mis en cache en production dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que YAML est très rapide",
+        "Pour éviter de parser à chaque requête un format coûteux en CPU",
+        "Parce que YAML est illisible",
+        "Pour empêcher l'usage de JSON"
+      ],
+      "correct_answers": [
+        "Pour éviter de parser à chaque requête un format coûteux en CPU"
+      ],
+      "explanation": "Le cache de config transforme le YAML en PHP compilé pour les perfs."
+    },
+    {
+      "id": 10,
+      "question": "Quelle commande Symfony permet de linter vos fichiers YAML avant exécution ?",
+      "type": "single_choice",
+      "options": [
         "`php bin/console lint:yaml config/`",
-        "`php bin/console check:yaml`",
-        "`php bin/console validate:config`"
+        "`php bin/console cache:warmup`",
+        "`php bin/console lint:twig`",
+        "`php bin/console lint:container`"
       ],
       "correct_answers": [
         "`php bin/console lint:yaml config/`"
       ],
-      "explanation": "Le linter parse les fichiers et signale les erreurs de syntaxe avant l'exécution."
+      "explanation": "Cette commande valide la syntaxe YAML et signale les erreurs avec localisation."
+    },
+    {
+      "id": 11,
+      "question": "Comment traiter les dates dans YAML pour obtenir des `DateTime` automatiquement ?",
+      "type": "single_choice",
+      "options": [
+        "En activant `Yaml::PARSE_DATETIME` lors du parse",
+        "En activant `Yaml::DUMP_DATETIME`",
+        "En ajoutant `date: true` dans le fichier",
+        "En utilisant des timestamps uniquement"
+      ],
+      "correct_answers": [
+        "En activant `Yaml::PARSE_DATETIME` lors du parse"
+      ],
+      "explanation": "Le flag de parsing convertit les scalaires datés en objets DateTime."
+    },
+    {
+      "id": 12,
+      "question": "Quels risques/pièges entourent l'usage des tags YAML personnalisés dans Symfony ?",
+      "type": "multiple_choice",
+      "options": [
+        "Ils sont ignorés si `Yaml::PARSE_CUSTOM_TAGS` n'est pas activé",
+        "Ils peuvent nécessiter un handling applicatif pour être compris",
+        "Ils provoquent toujours une exception, même avec le flag",
+        "Ils peuvent être combinés à `!php/const` si le flag constant est activé"
+      ],
+      "correct_answers": [
+        "Ils sont ignorés si `Yaml::PARSE_CUSTOM_TAGS` n'est pas activé",
+        "Ils peuvent nécessiter un handling applicatif pour être compris",
+        "Ils peuvent être combinés à `!php/const` si le flag constant est activé"
+      ],
+      "explanation": "Les tags custom nécessitent `PARSE_CUSTOM_TAGS` et une prise en charge côté application."
     }
   ]
 }
