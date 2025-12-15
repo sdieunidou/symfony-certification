@@ -61,6 +61,96 @@
         "Non, car le mécanisme repose sur l'héritage pour surcharger les propriétés ou méthodes (sauf si on proxyfie une interface)."
       ],
       "explanation": "Si la classe est finale, on ne peut pas l'étendre pour y injecter la logique de lazy loading. L'alternative est d'utiliser une interface."
+    },
+    {
+      "id": 5,
+      "question": "Quel effet sur l'identité d'objet distingue Ghost et Virtual Proxy ?",
+      "type": "single_choice",
+      "options": [
+        "Ghost : `$obj === $proxy` reste vrai; Proxy : référence différente",
+        "Les deux sont toujours identiques",
+        "Seul Proxy garde l'identité",
+        "Aucun n'est comparable"
+      ],
+      "correct_answers": [
+        "Ghost : `$obj === $proxy` reste vrai; Proxy : référence différente"
+      ],
+      "explanation": "Ghost modifie l'objet in-place; Proxy délègue à un autre objet."
+    },
+    {
+      "id": 6,
+      "question": "Comment activer un service lazy dans `services.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "Ajouter `lazy: true` sur la définition du service",
+        "Mettre `public: true`",
+        "Utiliser autowire",
+        "Déclarer en XML"
+      ],
+      "correct_answers": [
+        "Ajouter `lazy: true` sur la définition du service"
+      ],
+      "explanation": "Le conteneur générera un proxy/ghost pour différer l'initialisation."
+    },
+    {
+      "id": 7,
+      "question": "Depuis Symfony 6.3, quel type de lazy est utilisé par défaut pour un service `lazy: true` ?",
+      "type": "single_choice",
+      "options": [
+        "Ghost Object",
+        "Virtual Proxy",
+        "Null Object",
+        "Aucun, il instancie directement"
+      ],
+      "correct_answers": [
+        "Ghost Object"
+      ],
+      "explanation": "Le conteneur privilégie les Ghosts pour performance et empreinte mémoire."
+    },
+    {
+      "id": 8,
+      "question": "Quel est le principal inconvénient du Virtual Proxy par rapport au Ghost ?",
+      "type": "single_choice",
+      "options": [
+        "Deux objets en mémoire et identité différente",
+        "Impossible de surcharger les méthodes",
+        "Pas compatible PSR-4",
+        "Nécessite Twig"
+      ],
+      "correct_answers": [
+        "Deux objets en mémoire et identité différente"
+      ],
+      "explanation": "Le proxy est un wrapper qui contient le sujet réel, augmentant la surcharge."
+    },
+    {
+      "id": 9,
+      "question": "Quel point de vigilance sur les propriétés privées/readonly avec LazyGhostTrait ?",
+      "type": "single_choice",
+      "options": [
+        "Le trait gère leur initialisation sans réflexion lourde",
+        "Elles sont interdites",
+        "Elles sont toujours null",
+        "Il faut les rendre publiques"
+      ],
+      "correct_answers": [
+        "Le trait gère leur initialisation sans réflexion lourde"
+      ],
+      "explanation": "LazyGhostTrait hydrate correctement private/readonly en interne."
+    },
+    {
+      "id": 10,
+      "question": "Quel est un cas d'usage typique du lazy dans le conteneur ?",
+      "type": "single_choice",
+      "options": [
+        "Services lourds rarement utilisés (client API, connecteur lourd)",
+        "Toutes les entités Doctrine",
+        "Les Value Objects",
+        "Les DTO"
+      ],
+      "correct_answers": [
+        "Services lourds rarement utilisés (client API, connecteur lourd)"
+      ],
+      "explanation": "Lazy évite le coût d'initialisation tant que le service n'est pas appelé."
     }
   ]
 }

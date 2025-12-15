@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est le principe de base d'un déploiement Zéro Downtime ?",
+      "question": "Principe d'un déploiement ZDD ?",
       "type": "single_choice",
       "options": [
-        "Le site est mis en maintenance.",
-        "La nouvelle version est déployée en parallèle, et on bascule le trafic (via lien symbolique ou load balancer) instantanément.",
-        "On écrase les fichiers en direct.",
-        "On utilise FTP."
+        "Déployer en parallèle puis basculer le trafic instantanément (symlink ou load balancer)",
+        "Mettre en maintenance",
+        "FTP direct",
+        "Écraser les fichiers en place"
       ],
       "correct_answers": [
-        "La nouvelle version est déployée en parallèle, et on bascule le trafic (via lien symbolique ou load balancer) instantanément."
+        "Déployer en parallèle puis basculer le trafic instantanément (symlink ou load balancer)"
       ],
-      "explanation": "L'objectif est que l'utilisateur ne voie jamais d'erreur ou de page de maintenance."
+      "explanation": "L'utilisateur ne doit pas voir d'interruption."
     },
     {
       "id": 2,
@@ -76,6 +76,81 @@
         "Découpler le déploiement du code de l'activation de la fonctionnalité, permettant un déploiement continu même si la fonctionnalité n'est pas finie ou doit être activée progressivement."
       ],
       "explanation": "Cela permet de tester en prod (pour certains utilisateurs) et de faire un rollback instantané (désactivation) sans redéployer."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi les changements DB destructeurs sont dangereux en ZDD ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que code V1 et V2 doivent fonctionner avec la même DB pendant le déploiement",
+        "Parce que Doctrine l'interdit",
+        "Parce que Git échoue",
+        "Parce que Redis crash"
+      ],
+      "correct_answers": [
+        "Parce que code V1 et V2 doivent fonctionner avec la même DB pendant le déploiement"
+      ],
+      "explanation": "Il faut des migrations compatibles (expand/contract)."
+    },
+    {
+      "id": 7,
+      "question": "Quel pattern apply pour renommer une colonne sans downtime ?",
+      "type": "single_choice",
+      "options": [
+        "Expand and Contract en plusieurs déploiements",
+        "Renommer en une fois",
+        "Supprimer puis créer",
+        "Utiliser ftp"
+      ],
+      "correct_answers": [
+        "Expand and Contract en plusieurs déploiements"
+      ],
+      "explanation": "Ajouter colonne, écrire double, migrer, puis supprimer."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi un reload PHP-FPM est-il préféré à un restart brutal ?",
+      "type": "single_choice",
+      "options": [
+        "Reload est gracieux et ne coupe pas les connexions en cours",
+        "Restart est plus rapide",
+        "Restart vide Redis",
+        "Reload supprime les logs"
+      ],
+      "correct_answers": [
+        "Reload est gracieux et ne coupe pas les connexions en cours"
+      ],
+      "explanation": "Reload charge la nouvelle codebase sans tuer brutalement les requêtes."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi stocker les sessions en Redis aide en ZDD ?",
+      "type": "single_choice",
+      "options": [
+        "Sessions partagées entre instances, évite les pertes lors du basculement",
+        "Plus rapide que PHP",
+        "Obligatoire",
+        "Désactive les cookies"
+      ],
+      "correct_answers": [
+        "Sessions partagées entre instances, évite les pertes lors du basculement"
+      ],
+      "explanation": "Un backend partagé rend le sticky non nécessaire."
+    },
+    {
+      "id": 10,
+      "question": "Quel mécanisme sépare déploiement et activation de features ?",
+      "type": "single_choice",
+      "options": [
+        "Feature Flags / Toggles",
+        "OPcache",
+        "Git branches",
+        "Xdebug"
+      ],
+      "correct_answers": [
+        "Feature Flags / Toggles"
+      ],
+      "explanation": "Permet activation progressive ou rollback immédiat sans déployer."
     }
   ]
 }

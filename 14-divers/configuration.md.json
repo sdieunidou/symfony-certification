@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel fichier a la priorité la plus élevée (écrase tous les autres) pour définir une variable d'environnement ?",
+      "question": "Quelle source a la priorité absolue pour une variable d'env ?",
       "type": "single_choice",
       "options": [
-        "Le fichier `.env` à la racine.",
-        "Le fichier `.env.local`.",
-        "Une vraie variable d'environnement système (définie via export, Apache, Docker...).",
-        "Le fichier `.env.prod`."
+        "Variable d'environnement système réelle",
+        ".env.local",
+        ".env",
+        ".env.prod"
       ],
       "correct_answers": [
-        "Une vraie variable d'environnement système (définie via export, Apache, Docker...)."
+        "Variable d'environnement système réelle"
       ],
-      "explanation": "Les variables système réelles ont toujours la priorité absolue sur les fichiers `.env` gérés par le composant Dotenv."
+      "explanation": "Les valeurs réelles (export/serveur) l'emportent sur les fichiers."
     },
     {
       "id": 2,
@@ -76,6 +76,81 @@
         "`php bin/console secrets:set`"
       ],
       "explanation": "Cette commande chiffre la valeur avec la clé publique et la stocke dans `config/secrets/{env}/{nom}.{env}.list`."
+    },
+    {
+      "id": 6,
+      "question": "Ordre de chargement des fichiers de config dans `config/packages` ?",
+      "type": "single_choice",
+      "options": [
+        "Globaux puis spécifiques env (`config/packages/*.yaml` puis `config/packages/{env}/*.yaml`)",
+        "Spécifiques env puis globaux",
+        "Aléatoire",
+        "Uniquement globaux"
+      ],
+      "correct_answers": [
+        "Globaux puis spécifiques env (`config/packages/*.yaml` puis `config/packages/{env}/*.yaml`)"
+      ],
+      "explanation": "Les fichiers env surchargent les globaux."
+    },
+    {
+      "id": 7,
+      "question": "Comment injecter une variable d'env transformée en array JSON ?",
+      "type": "single_choice",
+      "options": [
+        "`#[Autowire(env: 'json:MY_FLAGS')]`",
+        "`#[Autowire('%json:MY_FLAGS%')]`",
+        "`#[Env(json: MY_FLAGS)]`",
+        "`%env(json:MY_FLAGS)%` uniquement dans Twig"
+      ],
+      "correct_answers": [
+        "`#[Autowire(env: 'json:MY_FLAGS')]`"
+      ],
+      "explanation": "Autowire avec `env:` accepte les processeurs (json) et injecte un array."
+    },
+    {
+      "id": 8,
+      "question": "Quand utiliser ContainerBagInterface plutôt que l'injection directe ?",
+      "type": "single_choice",
+      "options": [
+        "Pour un accès programmatique ponctuel, pas pour des dépendances scalaires fréquentes",
+        "Toujours",
+        "Jamais",
+        "Pour les services publics"
+      ],
+      "correct_answers": [
+        "Pour un accès programmatique ponctuel, pas pour des dépendances scalaires fréquentes"
+      ],
+      "explanation": "L'injection directe est préférée; ContainerBag sert de fallback."
+    },
+    {
+      "id": 9,
+      "question": "Quel outil Symfony permet de voir toutes les options configurables d'un bundle avec leurs valeurs par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "`config:dump-reference <bundle>`",
+        "`debug:container`",
+        "`debug:config`",
+        "`router:match`"
+      ],
+      "correct_answers": [
+        "`config:dump-reference <bundle>`"
+      ],
+      "explanation": "config:dump-reference liste la référence complète des options."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi utiliser `composer dump-env prod` ?",
+      "type": "single_choice",
+      "options": [
+        "Compiler les .env en PHP (`.env.local.php`) pour éviter leur parsing à chaque requête",
+        "Chiffrer les .env",
+        "Créer un docker-compose",
+        "Activer debug"
+      ],
+      "correct_answers": [
+        "Compiler les .env en PHP (`.env.local.php`) pour éviter leur parsing à chaque requête"
+      ],
+      "explanation": "dump-env génère un cache PHP rapide des variables."
     }
   ]
 }

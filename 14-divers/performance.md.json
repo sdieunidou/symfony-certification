@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle est l'optimisation PHP la plus cruciale à activer en production ?",
+      "question": "Optimisation PHP cruciale en prod ?",
       "type": "single_choice",
       "options": [
-        "Le JIT Compiler.",
-        "OPcache (avec `validate_timestamps=0`).",
-        "APCu.",
-        "Xdebug."
+        "OPcache avec validate_timestamps=0",
+        "Xdebug",
+        "Désactiver OPCache",
+        "Activer JIT uniquement"
       ],
       "correct_answers": [
-        "OPcache (avec `validate_timestamps=0`)."
+        "OPcache avec validate_timestamps=0"
       ],
-      "explanation": "Cela évite à PHP de vérifier si les fichiers ont changé à chaque requête, supprimant une grande partie des I/O."
+      "explanation": "Supprime les checks de fichiers, nécessite restart après déploiement."
     },
     {
       "id": 2,
@@ -76,6 +76,81 @@
         "Cela permet à PHP de garder en mémoire les chemins de fichiers résolus plus longtemps, réduisant les appels système (stat) pour les projets avec beaucoup de fichiers."
       ],
       "explanation": "Symfony comportant des milliers de fichiers, le cache realpath par défaut est souvent insuffisant."
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert `.container.dumper.inline_factories: true` ?",
+      "type": "single_choice",
+      "options": [
+        "Compiler le conteneur en un seul fichier favorable au preloading",
+        "Rendre les services publics",
+        "Activer Xdebug",
+        "Désactiver le cache"
+      ],
+      "correct_answers": [
+        "Compiler le conteneur en un seul fichier favorable au preloading"
+      ],
+      "explanation": "Réduit le nombre de fichiers chargés et favorise preload/OPcache."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi limiter `framework.enabled_locales` ?",
+      "type": "single_choice",
+      "options": [
+        "Éviter de charger des fichiers de traduction inutiles",
+        "Activer toutes les langues",
+        "Obligatoire en dev",
+        "Accélérer Twig"
+      ],
+      "correct_answers": [
+        "Éviter de charger des fichiers de traduction inutiles"
+      ],
+      "explanation": "Moins de locales = moins de ressources chargées."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi désactiver `debug.container.dump` sur gros projets ?",
+      "type": "single_choice",
+      "options": [
+        "Le dump XML du conteneur ralentit fortement le cache warmup",
+        "Cela supprime les logs",
+        "Cela désactive le profiler",
+        "Cela casse Twig"
+      ],
+      "correct_answers": [
+        "Le dump XML du conteneur ralentit fortement le cache warmup"
+      ],
+      "explanation": "Le fichier généré devient énorme et coûteux."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi OPcache.preload est utile ?",
+      "type": "single_choice",
+      "options": [
+        "Charge et compile les classes au démarrage, évitant l'I/O par requête",
+        "Désactive OPcache",
+        "Active debug",
+        "Génère les assets"
+      ],
+      "correct_answers": [
+        "Charge et compile les classes au démarrage, évitant l'I/O par requête"
+      ],
+      "explanation": "Preload profite aux apps long-running ou à forte charge."
+    },
+    {
+      "id": 10,
+      "question": "Quel outil de profiling avancé est recommandé pour investiguer CPU/IO en profondeur ?",
+      "type": "single_choice",
+      "options": [
+        "Blackfire",
+        "Stopwatch",
+        "dump()",
+        "Logger"
+      ],
+      "correct_answers": [
+        "Blackfire"
+      ],
+      "explanation": "Blackfire produit des call graphs détaillés pour les optimisations fines."
     }
   ]
 }

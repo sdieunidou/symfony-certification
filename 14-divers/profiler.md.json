@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Comment activer le Profiler pour une requête API (qui ne rend pas de HTML et donc pas de Toolbar) ?",
+      "question": "Comment récupérer le profil d'une requête API sans WDT ?",
       "type": "single_choice",
       "options": [
-        "Ce n'est pas possible.",
-        "En ajoutant le header `X-Debug-Token-Link`.",
-        "Le profiler est actif en arrière-plan. On peut retrouver le profil via l'historique (`/_profiler`) ou via le header de réponse `X-Debug-Token-Link` qui donne l'URL directe.",
-        "En passant un paramètre `?profile=1`."
+        "Le profil est disponible via `/_profiler` ou via le header `X-Debug-Token-Link`",
+        "Impossible sans HTML",
+        "En ajoutant ?profile=1",
+        "En activant Twig"
       ],
       "correct_answers": [
-        "Le profiler est actif en arrière-plan. On peut retrouver le profil via l'historique (`/_profiler`) ou via le header de réponse `X-Debug-Token-Link` qui donne l'URL directe."
+        "Le profil est disponible via `/_profiler` ou via le header `X-Debug-Token-Link`"
       ],
-      "explanation": "Le profiler stocke les données indépendamment de l'affichage de la WDT."
+      "explanation": "Même sans WDT, le profiler enregistre et donne le lien dans le header."
     },
     {
       "id": 2,
@@ -61,6 +61,98 @@
         "`$client->getProfile()`"
       ],
       "explanation": "Cette méthode retourne l'objet `Symfony\\Component\\HttpKernel\\Profiler\\Profile` associé à la dernière requête."
+    },
+    {
+      "id": 5,
+      "question": "Quelle commande affiche les options configurables par défaut d'un bundle (référence) ?",
+      "type": "single_choice",
+      "options": [
+        "`config:dump-reference <bundle>`",
+        "`debug:config`",
+        "`debug:router`",
+        "`debug:container`"
+      ],
+      "correct_answers": [
+        "`config:dump-reference <bundle>`"
+      ],
+      "explanation": "Utile pour créer un data collector avec config sémantique."
+    },
+    {
+      "id": 6,
+      "question": "Quel listener ajoute la Web Debug Toolbar dans la réponse HTML ?",
+      "type": "single_choice",
+      "options": [
+        "`WebDebugToolbarListener`",
+        "`EventDispatcher`",
+        "`RouterListener`",
+        "`ProfilerListener`"
+      ],
+      "correct_answers": [
+        "`WebDebugToolbarListener`"
+      ],
+      "explanation": "Il injecte la barre juste avant </body> en dev."
+    },
+    {
+      "id": 7,
+      "question": "Que renvoie `$client->getProfile()` si le profiler est désactivé ?",
+      "type": "single_choice",
+      "options": [
+        "null",
+        "Une exception",
+        "Un tableau",
+        "Un logger"
+      ],
+      "correct_answers": [
+        "null"
+      ],
+      "explanation": "Sans profiler actif, pas de profil disponible."
+    },
+    {
+      "id": 8,
+      "question": "Comment taguer un service collector personnalisé ?",
+      "type": "single_choice",
+      "options": [
+        "Tag `data_collector` avec `id`, `template`, `priority`",
+        "Tag `profiler`",
+        "Tag `kernel.event_listener`",
+        "Aucun tag"
+      ],
+      "correct_answers": [
+        "Tag `data_collector` avec `id`, `template`, `priority`"
+      ],
+      "explanation": "Le tag data_collector enregistre le collector et son template."
+    },
+    {
+      "id": 9,
+      "question": "Que contient le header `X-Debug-Token-Link` ?",
+      "type": "single_choice",
+      "options": [
+        "L'URL directe vers le profil de la requête",
+        "Le token CSRF",
+        "Le cookie session",
+        "L'URL du router"
+      ],
+      "correct_answers": [
+        "L'URL directe vers le profil de la requête"
+      ],
+      "explanation": "Pratique pour récupérer le profil d'une requête API/AJAX."
+    },
+    {
+      "id": 10,
+      "question": "Où sont persistés les profils ?",
+      "type": "multiple_choice",
+      "options": [
+        "Dans `var/cache/dev/profiler`",
+        "Stockage fichier",
+        "Persistant entre requêtes",
+        "En base SQL par défaut"
+      ],
+      "correct_answers": [
+        "Dans `var/cache/dev/profiler`",
+        "Stockage fichier",
+        "Persistant entre requêtes"
+      ],
+      "explanation": "Par défaut, les profils sont des fichiers conservés dans var/cache/dev/profiler."
     }
   ]
 }

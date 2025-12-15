@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "À quoi sert la commande `php bin/console server:dump` ?",
+      "question": "À quoi sert `php bin/console server:dump` ?",
       "type": "single_choice",
       "options": [
-        "À vider le cache du serveur.",
-        "À lancer un serveur d'affichage pour la fonction `dump()`, évitant de polluer la sortie HTTP (API) ou CLI.",
-        "À dumper la base de données.",
-        "À afficher la configuration du serveur web."
+        "Afficher les dump() hors de la réponse HTTP/CLI (API, workers)",
+        "Vider le cache",
+        "Dumper la base",
+        "Afficher la config"
       ],
       "correct_answers": [
-        "À lancer un serveur d'affichage pour la fonction `dump()`, évitant de polluer la sortie HTTP (API) ou CLI."
+        "Afficher les dump() hors de la réponse HTTP/CLI (API, workers)"
       ],
-      "explanation": "C'est idéal pour déboguer des APIs JSON ou des Workers : les `dump()` sont interceptés et affichés dans la console où tourne `server:dump`."
+      "explanation": "Le serveur collecte les dumps et les affiche dans le terminal."
     },
     {
       "id": 2,
@@ -61,6 +61,96 @@
         "Dans la 'Debug Toolbar' (icône cible) au survol."
       ],
       "explanation": "Le VarDumper intercepte la sortie et l'intègre proprement dans la barre de débogage pour ne pas casser le layout de la page."
+    },
+    {
+      "id": 5,
+      "question": "Quel bundle fournit la WDT et le profiler en dev ?",
+      "type": "single_choice",
+      "options": [
+        "DebugBundle",
+        "FrameworkBundle",
+        "TwigBundle",
+        "DoctrineBundle"
+      ],
+      "correct_answers": [
+        "DebugBundle"
+      ],
+      "explanation": "DebugBundle active WDT/profiler en environnement dev."
+    },
+    {
+      "id": 6,
+      "question": "Quel risque en prod si `dump()` reste dans le code ?",
+      "type": "single_choice",
+      "options": [
+        "Fatal error si var-dumper est en require-dev",
+        "Aucun",
+        "Compile Twig",
+        "Active debug"
+      ],
+      "correct_answers": [
+        "Fatal error si var-dumper est en require-dev"
+      ],
+      "explanation": "Sans var-dumper en prod, `dump()` n'existe pas."
+    },
+    {
+      "id": 7,
+      "question": "Comment afficher des temps custom dans la timeline profiler depuis Twig ?",
+      "type": "single_choice",
+      "options": [
+        "Avec les balises `{% stopwatch 'label' %}...{% endstopwatch %}`",
+        "Avec dump()",
+        "Avec profiler:log",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Avec les balises `{% stopwatch 'label' %}...{% endstopwatch %}`"
+      ],
+      "explanation": "Stopwatch expose des balises Twig pour profiler des blocs."
+    },
+    {
+      "id": 8,
+      "question": "Que se passe-t-il si le profiler est désactivé ?",
+      "type": "single_choice",
+      "options": [
+        "`$client->getProfile()` retourne null et aucune WDT/collecte",
+        "Erreur 500",
+        "Les logs disparaissent",
+        "Rien"
+      ],
+      "correct_answers": [
+        "`$client->getProfile()` retourne null et aucune WDT/collecte"
+      ],
+      "explanation": "Sans profiler activé, pas de profil disponible."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi éviter de laisser `debug.container.dump: true` sur gros projets ?",
+      "type": "single_choice",
+      "options": [
+        "Cela ralentit fortement le warmup en générant un gros XML du conteneur",
+        "Cela supprime le cache",
+        "Cela casse Twig",
+        "Cela désactive le profiler"
+      ],
+      "correct_answers": [
+        "Cela ralentit fortement le warmup en générant un gros XML du conteneur"
+      ],
+      "explanation": "Le dump XML volumineux pénalise le cache:clear/warmup."
+    },
+    {
+      "id": 10,
+      "question": "Comment mesurer facilement une section de code côté service ?",
+      "type": "single_choice",
+      "options": [
+        "`$stopwatch->start('event'); ... $stopwatch->stop('event');`",
+        "dump()",
+        "sleep()",
+        "logger->info()"
+      ],
+      "correct_answers": [
+        "`$stopwatch->start('event'); ... $stopwatch->stop('event');`"
+      ],
+      "explanation": "Stopwatch donne durée/mémoire et apparaît dans la timeline."
     }
   ]
 }

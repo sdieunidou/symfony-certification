@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle commande Composer doit-on lancer lors d'un déploiement en production pour optimiser les performances et exclure les outils de dev ?",
+      "question": "Quelle commande Composer optimiser en prod ?",
       "type": "single_choice",
       "options": [
-        "`composer update`",
         "`composer install --no-dev --optimize-autoloader`",
-        "`composer require prod`",
+        "`composer update`",
+        "`composer install`",
         "`composer dump-autoload`"
       ],
       "correct_answers": [
         "`composer install --no-dev --optimize-autoloader`"
       ],
-      "explanation": "L'option `--no-dev` évite d'installer les paquets de test (phpunit, profiler) et `--optimize-autoloader` génère une classmap statique plus rapide."
+      "explanation": "No-dev + autoloader optimisé pour la prod."
     },
     {
       "id": 2,
@@ -76,6 +76,81 @@
         "`APP_DEBUG`"
       ],
       "explanation": "`APP_DEBUG=0` désactive le profiler, le re-parsing des fichiers de config à chaque requête et les pages d'erreur détaillées."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi éviter `doctrine:schema:update --force` en prod ?",
+      "type": "single_choice",
+      "options": [
+        "Non versionné, risque de perte de données, pas de rollback",
+        "Trop lent",
+        "Obligatoire en dev",
+        "Parce que migrations est plus lent"
+      ],
+      "correct_answers": [
+        "Non versionné, risque de perte de données, pas de rollback"
+      ],
+      "explanation": "Les migrations offrent du contrôle et un historique."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi `APP_ENV=prod APP_DEBUG=0 php bin/console cache:clear` lors du déploiement ?",
+      "type": "single_choice",
+      "options": [
+        "Pour warmup le cache/contener/routes/templates et éviter la lenteur pour le premier utilisateur",
+        "Pour vider la base",
+        "Pour supprimer les logs",
+        "Pour recompiler Composer"
+      ],
+      "correct_answers": [
+        "Pour warmup le cache/contener/routes/templates et éviter la lenteur pour le premier utilisateur"
+      ],
+      "explanation": "Le warmup prépare le cache prod."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi préférer un déploiement atomique (symlink) ?",
+      "type": "single_choice",
+      "options": [
+        "Basculer instantanément vers la nouvelle release sans downtime",
+        "Parce que git l'impose",
+        "Pour éviter les migrations",
+        "Pour supprimer les assets"
+      ],
+      "correct_answers": [
+        "Basculer instantanément vers la nouvelle release sans downtime"
+      ],
+      "explanation": "On prépare une release complète puis on switch le lien `current`."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi faut-il définir `APP_ENV=prod` AVANT l'installation Composer en CI/CD ?",
+      "type": "single_choice",
+      "options": [
+        "Certains scripts post-install dépendent de l'env pour charger la bonne config",
+        "Sinon Composer échoue",
+        "Pour activer debug",
+        "Pour générer .env"
+      ],
+      "correct_answers": [
+        "Certains scripts post-install dépendent de l'env pour charger la bonne config"
+      ],
+      "explanation": "Env propage aux scripts et influence les paquets dev/no-dev."
+    },
+    {
+      "id": 10,
+      "question": "Quel package vérifier en environnement mutualisé Apache ?",
+      "type": "single_choice",
+      "options": [
+        "`symfony/apache-pack` pour .htaccess",
+        "`symfony/asset-mapper`",
+        "`symfony/webpack-encore-bundle`",
+        "`doctrine/doctrine-bundle`"
+      ],
+      "correct_answers": [
+        "`symfony/apache-pack` pour .htaccess"
+      ],
+      "explanation": "apache-pack installe la conf .htaccess adaptée."
     }
   ]
 }

@@ -76,6 +76,81 @@
         "À définir, valider et documenter la structure de configuration (YAML) exposée aux utilisateurs du bundle."
       ],
       "explanation": "Elle permet de fournir une configuration typée et validée (ex: `my_bundle: { api_key: ... }`) plutôt que des paramètres plats en vrac."
+    },
+    {
+      "id": 6,
+      "question": "Quel fichier composer doit indiquer `type: symfony-bundle` ?",
+      "type": "single_choice",
+      "options": [
+        "composer.json du bundle",
+        "composer.lock",
+        "composer.json de l'app",
+        "services.yaml"
+      ],
+      "correct_answers": [
+        "composer.json du bundle"
+      ],
+      "explanation": "Déclarer le type permet à Flex/Composer de reconnaître et installer le bundle correctement."
+    },
+    {
+      "id": 7,
+      "question": "À quoi sert la méthode `build(ContainerBuilder $container)` dans un Bundle ?",
+      "type": "single_choice",
+      "options": [
+        "Enregistrer des Compiler Passes pour modifier le container à la compilation",
+        "Charger les routes",
+        "Configurer Twig",
+        "Démarrer le kernel"
+      ],
+      "correct_answers": [
+        "Enregistrer des Compiler Passes pour modifier le container à la compilation"
+      ],
+      "explanation": "build() est le hook pour ajouter des compiler passes."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi préfixer les IDs de services d'un bundle ?",
+      "type": "single_choice",
+      "options": [
+        "Éviter les collisions avec l'application ou d'autres bundles",
+        "Accélérer le cache",
+        "Rendre les services publics",
+        "Obligatoire pour autowiring"
+      ],
+      "correct_answers": [
+        "Éviter les collisions avec l'application ou d'autres bundles"
+      ],
+      "explanation": "Un préfixe (acme_blog.*) évite les conflits de noms."
+    },
+    {
+      "id": 9,
+      "question": "Quand choisir d'écrire un bundle plutôt que du code dans `src/` ?",
+      "type": "multiple_choice",
+      "options": [
+        "Pour partager une fonctionnalité entre plusieurs projets",
+        "Pour publier une librairie open-source",
+        "Pour isoler du code métier interne à l'app courante"
+      ],
+      "correct_answers": [
+        "Pour partager une fonctionnalité entre plusieurs projets",
+        "Pour publier une librairie open-source"
+      ],
+      "explanation": "Le code applicatif reste dans src; les bundles servent au partage/distribution."
+    },
+    {
+      "id": 10,
+      "question": "Dans `AbstractBundle`, quel trio de méthodes couvre config, chargement et prepend ?",
+      "type": "multiple_choice",
+      "options": [
+        "configure(DefinitionConfigurator), loadExtension(), prependExtension()",
+        "build(), boot(), shutdown()",
+        "register(), boot(), terminate()",
+        "init(), run(), stop()"
+      ],
+      "correct_answers": [
+        "configure(DefinitionConfigurator), loadExtension(), prependExtension()"
+      ],
+      "explanation": "AbstractBundle expose ces hooks pour config sémantique, chargement et prepend d'autres bundles."
     }
   ]
 }

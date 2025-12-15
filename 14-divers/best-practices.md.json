@@ -91,6 +91,66 @@
         "Directement dans le template Twig."
       ],
       "explanation": "Le style et le libellé du bouton dépendent souvent du contexte d'affichage (ex: 'Créer' vs 'Modifier'), il est donc plus flexible de le gérer dans la vue."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi utiliser `AbstractController` est acceptable malgré le couplage au framework ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que la couche contrôleur est déjà dédiée au protocole HTTP et peut dépendre du framework",
+        "Parce que cela rend tout le code testable sans kernel",
+        "Parce que cela rend les entités plus rapides",
+        "Parce que les services ne fonctionnent pas sans"
+      ],
+      "correct_answers": [
+        "Parce que la couche contrôleur est déjà dédiée au protocole HTTP et peut dépendre du framework"
+      ],
+      "explanation": "Le couplage au framework est limité à la couche Web; le métier reste isolé."
+    },
+    {
+      "id": 8,
+      "question": "Quel format privilégier pour la configuration des services applicatifs ?",
+      "type": "single_choice",
+      "options": [
+        "YAML concis pour la majorité, PHP pour les cas complexes",
+        "XML obligatoire",
+        "Annotations doctrine",
+        "Tout en .env"
+      ],
+      "correct_answers": [
+        "YAML concis pour la majorité, PHP pour les cas complexes"
+      ],
+      "explanation": "Le guide recommande YAML par défaut et PHP quand nécessaire."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi préférer les attributs PHP pour le routing, cache et sécurité ?",
+      "type": "single_choice",
+      "options": [
+        "Ils regroupent la config au plus près du code et évitent les XML/YAML séparés",
+        "Ils accélèrent PHP",
+        "Ils sont obligatoires en prod",
+        "Ils remplacent les tests"
+      ],
+      "correct_answers": [
+        "Ils regroupent la config au plus près du code et évitent les XML/YAML séparés"
+      ],
+      "explanation": "Les attributs rendent la configuration explicite et locale."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi `AssetMapper` est conseillé comme choix par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "Il évite la toolchain Node/Webpack pour la plupart des besoins modernes",
+        "Il compile plus vite que tout",
+        "Il est requis en prod",
+        "Il ne supporte pas HTTP/2"
+      ],
+      "correct_answers": [
+        "Il évite la toolchain Node/Webpack pour la plupart des besoins modernes"
+      ],
+      "explanation": "Philosophie no-build : JS/CSS modernes sans complexité front quand c'est suffisant."
     }
   ]
 }

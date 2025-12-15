@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Dans quel dossier devez-vous placer vos templates Twig pour personnaliser les pages d'erreur (404, 500) ?",
+      "question": "Où placer les templates Twig d'erreur personnalisés ?",
       "type": "single_choice",
       "options": [
-        "`templates/errors/`",
         "`templates/bundles/TwigBundle/Exception/`",
+        "`templates/errors/`",
         "`templates/exception/`",
         "`src/Exception/Templates/`"
       ],
       "correct_answers": [
         "`templates/bundles/TwigBundle/Exception/`"
       ],
-      "explanation": "C'est la convention de surcharge de Symfony pour le TwigBundle. Par exemple : `error404.html.twig`."
+      "explanation": "Convention de surcharge des pages d'erreur."
     },
     {
       "id": 2,
@@ -76,6 +76,81 @@
         "`status_code`, `status_text`, `exception`"
       ],
       "explanation": "Ces variables permettent d'afficher le code HTTP, le message standard et d'accéder à l'objet exception."
+    },
+    {
+      "id": 6,
+      "question": "Quel événement pouvez-vous écouter pour personnaliser le handling d'une exception avant rendu ?",
+      "type": "single_choice",
+      "options": [
+        "`kernel.exception` (ExceptionEvent)",
+        "`kernel.request`",
+        "`kernel.response`",
+        "`kernel.terminate`"
+      ],
+      "correct_answers": [
+        "`kernel.exception` (ExceptionEvent)"
+      ],
+      "explanation": "ExceptionEvent permet de loguer, modifier la réponse ou rediriger."
+    },
+    {
+      "id": 7,
+      "question": "Comment tester une page d'erreur Twig sans déclencher d'exception en prod ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `error:dump` pour générer et consulter les pages statiques",
+        "Lancer une 404 réelle",
+        "Activer debug",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Utiliser `error:dump` pour générer et consulter les pages statiques"
+      ],
+      "explanation": "error:dump génère les pages HTML à servir par le serveur web."
+    },
+    {
+      "id": 8,
+      "question": "Quelle variable dans le template ne doit pas être exposée telle quelle en prod (risque de fuite) ?",
+      "type": "single_choice",
+      "options": [
+        "`exception` (message/trace)",
+        "`status_code`",
+        "`status_text`",
+        "`app.request`"
+      ],
+      "correct_answers": [
+        "`exception` (message/trace)"
+      ],
+      "explanation": "Le message/trace peut révéler des secrets; en prod il faut filtrer."
+    },
+    {
+      "id": 9,
+      "question": "Que se passe-t-il si une erreur survient lors du rendu de `error500.html.twig` ?",
+      "type": "single_choice",
+      "options": [
+        "Symfony affiche une page de secours minimaliste hardcodée",
+        "Page blanche",
+        "Redirect /",
+        "Kernel stoppe sans réponse"
+      ],
+      "correct_answers": [
+        "Symfony affiche une page de secours minimaliste hardcodée"
+      ],
+      "explanation": "Fallback de secours pour éviter le blank screen."
+    },
+    {
+      "id": 10,
+      "question": "Comment gérer la réponse JSON pour les erreurs si le client en demande ?",
+      "type": "single_choice",
+      "options": [
+        "ErrorHandler renvoie du JSON si Accept le demande et Serializer est dispo",
+        "Toujours HTML",
+        "Toujours 204",
+        "Il faut écrire son propre listener"
+      ],
+      "correct_answers": [
+        "ErrorHandler renvoie du JSON si Accept le demande et Serializer est dispo"
+      ],
+      "explanation": "Le handler adapte le format selon Accept et dispo du serializer."
     }
   ]
 }

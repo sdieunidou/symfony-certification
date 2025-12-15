@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est le rôle du composant `Runtime` introduit dans Symfony 5.3 ?",
+      "question": "Rôle du composant Runtime ?",
       "type": "single_choice",
       "options": [
-        "Gérer les erreurs d'exécution.",
-        "Abstraire la logique de démarrage de l'application (`index.php`) pour la découpler du serveur web (FPM, CLI, Swoole).",
-        "Optimiser la vitesse de PHP.",
-        "Gérer les cron jobs."
+        "Découpler le boot (index.php) du serveur (FPM/CLI/Swoole)",
+        "Gérer les logs",
+        "Compiler Twig",
+        "Servir les assets"
       ],
       "correct_answers": [
-        "Abstraire la logique de démarrage de l'application (`index.php`) pour la découpler du serveur web (FPM, CLI, Swoole)."
+        "Découpler le boot (index.php) du serveur (FPM/CLI/Swoole)"
       ],
-      "explanation": "`index.php` ne contient plus que le chargement de `autoload_runtime.php` et une closure retournant le Kernel."
+      "explanation": "Runtime abstrait le démarrage et choisit le runner approprié."
     },
     {
       "id": 2,
@@ -46,6 +46,111 @@
         "Via des variables d'environnement (`APP_RUNTIME_ENV`, `APP_RUNTIME_DEBUG`)."
       ],
       "explanation": "Le Runtime lit ces variables avant même de booter le Kernel."
+    },
+    {
+      "id": 4,
+      "question": "Quel fichier bootstrap le runtime ?",
+      "type": "single_choice",
+      "options": [
+        "`vendor/autoload_runtime.php`",
+        "`vendor/autoload.php` uniquement",
+        "`config/bootstrap.php`",
+        "`bin/console`"
+      ],
+      "correct_answers": [
+        "`vendor/autoload_runtime.php`"
+      ],
+      "explanation": "index.php inclut autoload_runtime qui choisit le Runtime."
+    },
+    {
+      "id": 5,
+      "question": "Quel Runtime est utilisé par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "`SymfonyRuntime`",
+        "`FrankenRuntime`",
+        "`CliRuntime`",
+        "`FpmRuntime`"
+      ],
+      "correct_answers": [
+        "`SymfonyRuntime`"
+      ],
+      "explanation": "SymfonyRuntime est la mise en œuvre par défaut fournie."
+    },
+    {
+      "id": 6,
+      "question": "Quel fichier définit le Kernel retourné pour le runtime HTTP ?",
+      "type": "single_choice",
+      "options": [
+        "`public/index.php` closure retournant new Kernel(...)",
+        "`bin/console`",
+        "`composer.json`",
+        "`.env`"
+      ],
+      "correct_answers": [
+        "`public/index.php` closure retournant new Kernel(...)"
+      ],
+      "explanation": "index.php retourne une closure que le Runtime invoque."
+    },
+    {
+      "id": 7,
+      "question": "Le composant Runtime facilite quel type d'exécution longue durée ?",
+      "type": "single_choice",
+      "options": [
+        "Runtimes alternatifs long-running (FrankenPHP/RoadRunner/Swoole)",
+        "Uniquement PHP-FPM",
+        "Uniquement CLI",
+        "Uniquement Apache"
+      ],
+      "correct_answers": [
+        "Runtimes alternatifs long-running (FrankenPHP/RoadRunner/Swoole)"
+      ],
+      "explanation": "Runtime abstrait l'exécution pour ces environnements persistants."
+    },
+    {
+      "id": 8,
+      "question": "Point d'entrée CLI d'une app Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "`bin/console`",
+        "`public/index.php`",
+        "`cli.php`",
+        "`kernel.php`"
+      ],
+      "correct_answers": [
+        "`bin/console`"
+      ],
+      "explanation": "bin/console est le front controller CLI utilisant aussi le Runtime."
+    },
+    {
+      "id": 9,
+      "question": "Quel avantage pour le fichier index.php généré par Flex avec Runtime ?",
+      "type": "single_choice",
+      "options": [
+        "Il est minimal et rarement modifié, rendant les upgrades plus simples",
+        "Il compile Twig",
+        "Il configure Doctrine",
+        "Il charge les routes"
+      ],
+      "correct_answers": [
+        "Il est minimal et rarement modifié, rendant les upgrades plus simples"
+      ],
+      "explanation": "Moins de code bootstrap facilite maintenance et portage."
+    },
+    {
+      "id": 10,
+      "question": "Comment activer/désactiver debug pour le Runtime sans modifier le code ?",
+      "type": "single_choice",
+      "options": [
+        "En changeant `APP_RUNTIME_DEBUG` (ou APP_DEBUG) dans l'environnement",
+        "En éditant index.php",
+        "En modifiant Kernel.php",
+        "En supprimant vendor"
+      ],
+      "correct_answers": [
+        "En changeant `APP_RUNTIME_DEBUG` (ou APP_DEBUG) dans l'environnement"
+      ],
+      "explanation": "Le Runtime lit les variables d'env pour debug/env."
     }
   ]
 }

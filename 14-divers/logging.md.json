@@ -4,7 +4,7 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle interface standard (PSR) Symfony utilise-t-il pour le logging ?",
+      "question": "Quelle interface standard de logging Symfony utilise-t-il ?",
       "type": "single_choice",
       "options": [
         "`Psr\\Log\\LoggerInterface`",
@@ -15,7 +15,7 @@
       "correct_answers": [
         "`Psr\\Log\\LoggerInterface`"
       ],
-      "explanation": "Symfony suit le standard PSR-3. L'interface `LoggerInterface` permet de typer les dépendances sans se coupler à Monolog directement."
+      "explanation": "Symfony suit PSR-3 et autowire LoggerInterface."
     },
     {
       "id": 2,
@@ -77,6 +77,81 @@
         "À ajouter automatiquement des informations supplémentaires (contexte) à tous les logs (ex: IP du client, ID de session)."
       ],
       "explanation": "Un processor est un callback qui reçoit l'enregistrement de log et l'enrichit avant qu'il ne soit passé aux handlers."
+    },
+    {
+      "id": 6,
+      "question": "Quel handler prod capture tous les logs précédant une erreur ?",
+      "type": "single_choice",
+      "options": [
+        "`fingers_crossed`",
+        "`stream`",
+        "`console`",
+        "`rotating_file`"
+      ],
+      "correct_answers": [
+        "`fingers_crossed`"
+      ],
+      "explanation": "Il bufferise et flush tout si un niveau déclencheur est atteint."
+    },
+    {
+      "id": 7,
+      "question": "Comment définir un canal personnalisé ?",
+      "type": "single_choice",
+      "options": [
+        "Ajouter le nom dans `monolog.channels` (monolog.yaml)",
+        "Créer un Logger à la main",
+        "Déclarer un service",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Ajouter le nom dans `monolog.channels` (monolog.yaml)"
+      ],
+      "explanation": "On liste les canaux custom dans monolog.yaml."
+    },
+    {
+      "id": 8,
+      "question": "Comment exclure un canal d'un handler ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `channels: ['!event']` dans le handler",
+        "Supprimer le canal",
+        "Changer le niveau",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Utiliser `channels: ['!event']` dans le handler"
+      ],
+      "explanation": "Le `!` exclut des canaux d'un handler."
+    },
+    {
+      "id": 9,
+      "question": "Quel handler crée un fichier par jour et supprime les anciens ?",
+      "type": "single_choice",
+      "options": [
+        "`rotating_file`",
+        "`fingers_crossed`",
+        "`group`",
+        "`browser_console`"
+      ],
+      "correct_answers": [
+        "`rotating_file`"
+      ],
+      "explanation": "rotating_file gère la rotation et la rétention."
+    },
+    {
+      "id": 10,
+      "question": "Comment enrichir tous les logs avec une donnée globale (ex: userId) ?",
+      "type": "single_choice",
+      "options": [
+        "Créer un processor taggé `monolog.processor` qui ajoute `userId`",
+        "Concaténer dans chaque message",
+        "Modifier Monolog core",
+        "Utiliser printf"
+      ],
+      "correct_answers": [
+        "Créer un processor taggé `monolog.processor` qui ajoute `userId`"
+      ],
+      "explanation": "Un processor centralise l'enrichissement de chaque record."
     }
   ]
 }
