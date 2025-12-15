@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel est le principe fondamental de la Loi de Déméter ?",
+      "question": "Principe fondamental de la LoD ?",
       "type": "single_choice",
       "options": [
-        "Ne jamais utiliser de méthodes statiques.",
-        "Un module ne doit pas connaître les détails internes des objets qu'il manipule ('Ne parlez qu'à vos amis immédiats').",
-        "Toujours utiliser l'injection de dépendances.",
-        "Ne jamais utiliser de boucles `for`."
+        "Ne parlez qu'à vos amis immédiats (pas de chaînes longues)",
+        "Ne jamais utiliser Twig",
+        "Toujours utiliser des singletons",
+        "Éviter les tests"
       ],
       "correct_answers": [
-        "Un module ne doit pas connaître les détails internes des objets qu'il manipule ('Ne parlez qu'à vos amis immédiats')."
+        "Ne parlez qu'à vos amis immédiats (pas de chaînes longues)"
       ],
-      "explanation": "Cela vise à réduire le couplage en interdisant le chaînage excessif de méthodes (`$a->getB()->getC()->do()`)."
+      "explanation": "Limiter les connaissances internes réduit le couplage."
     },
     {
       "id": 2,
@@ -46,6 +46,114 @@
         "Car cela viole la Loi de Déméter (on parle au conteneur pour parler au service) et masque les dépendances réelles."
       ],
       "explanation": "On demande à 'l'ami' (Container) de nous donner 'l'ami de l'ami' (Service). Il faut injecter le Service directement."
+    },
+    {
+      "id": 4,
+      "question": "Quel refactoring simple respecte la LoD dans l'exemple User->Address->ZipCode ?",
+      "type": "single_choice",
+      "options": [
+        "Ajouter une méthode `getDeliveryZipCode()` sur User",
+        "Rendre Address publique",
+        "Chaîner encore plus",
+        "Injecter ContainerInterface"
+      ],
+      "correct_answers": [
+        "Ajouter une méthode `getDeliveryZipCode()` sur User"
+      ],
+      "explanation": "On demande à l'ami direct (User) l'info, pas à l'ami de l'ami."
+    },
+    {
+      "id": 5,
+      "question": "Pourquoi la LoD améliore la testabilité ?",
+      "type": "single_choice",
+      "options": [
+        "Moins de dépendances implicites à mocker (seuls amis directs)",
+        "Elle impose des singletons",
+        "Elle supprime les exceptions",
+        "Elle force Twig"
+      ],
+      "correct_answers": [
+        "Moins de dépendances implicites à mocker (seuls amis directs)"
+      ],
+      "explanation": "Réduire le couplage facilite le mocking ciblé."
+    },
+    {
+      "id": 6,
+      "question": "Comment la LoD s'applique aux services Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Ne pas utiliser le service locator, injecter directement les dépendances nécessaires",
+        "Toujours injecter le container",
+        "Utiliser des singletons",
+        "Éviter l'autowiring"
+      ],
+      "correct_answers": [
+        "Ne pas utiliser le service locator, injecter directement les dépendances nécessaires"
+      ],
+      "explanation": "On parle à ses dépendances directes, pas au container global."
+    },
+    {
+      "id": 7,
+      "question": "Comment la LoD s'applique aux templates Twig ?",
+      "type": "single_choice",
+      "options": [
+        "Éviter les chaînes profondes `app.user.subscription.plan.name`, exposer un getter direct",
+        "Utiliser des macros",
+        "Toujours des filtres",
+        "Mettre la logique dans Twig"
+      ],
+      "correct_answers": [
+        "Éviter les chaînes profondes `app.user.subscription.plan.name`, exposer un getter direct"
+      ],
+      "explanation": "Réduire le chaînage protège des changements internes et allège Twig."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi LoD et DIP sont complémentaires ?",
+      "type": "single_choice",
+      "options": [
+        "LoD limite le nombre d'amis, DIP impose qu'ils soient des abstractions",
+        "Ils sont opposés",
+        "LoD impose des singletons",
+        "DIP supprime l'injection"
+      ],
+      "correct_answers": [
+        "LoD limite le nombre d'amis, DIP impose qu'ils soient des abstractions"
+      ],
+      "explanation": "Moins d'amis et amis abstraits réduisent couplage et rigidité."
+    },
+    {
+      "id": 9,
+      "question": "Quelle règle pratique résume la LoD sur un objet `O` ?",
+      "type": "multiple_choice",
+      "options": [
+        "Parler à soi-même (`this`)",
+        "Parler aux paramètres de la méthode",
+        "Parler aux objets créés dans la méthode",
+        "Parler aux champs/propriétés directes"
+      ],
+      "correct_answers": [
+        "Parler à soi-même (`this`)",
+        "Parler aux paramètres de la méthode",
+        "Parler aux objets créés dans la méthode",
+        "Parler aux champs/propriétés directes"
+      ],
+      "explanation": "Limiter la conversation à ces quatre catégories respecte la LoD."
+    },
+    {
+      "id": 10,
+      "question": "Quel symptôme code révèle une violation LoD ?",
+      "type": "single_choice",
+      "options": [
+        "Chaînes d'appels longues `$a->getB()->getC()->do()`",
+        "Injection par constructeur",
+        "Utilisation d'interfaces",
+        "Logs dans les services"
+      ],
+      "correct_answers": [
+        "Chaînes d'appels longues `$a->getB()->getC()->do()`"
+      ],
+      "explanation": "Le chaînage profond traverse des amis d'amis et crée du couplage."
     }
   ]
 }

@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel Design Pattern est utilisé par le composant Messenger pour exécuter une série d'actions (Logging, Transaction...) autour du traitement d'un message ?",
+      "question": "Quel pattern est illustré par la chaîne de middlewares Messenger ?",
       "type": "single_choice",
       "options": [
+        "Chain of Responsibility",
         "Strategy",
-        "Chain of Responsibility (Middleware)",
         "Observer",
         "Visitor"
       ],
       "correct_answers": [
-        "Chain of Responsibility (Middleware)"
+        "Chain of Responsibility"
       ],
-      "explanation": "Les Middlewares forment une chaîne où chacun peut agir avant et après le suivant."
+      "explanation": "Chaque middleware peut traiter ou déléguer au suivant."
     },
     {
       "id": 2,
@@ -49,33 +49,108 @@
     },
     {
       "id": 4,
-      "question": "Dans Symfony, comment implémente-t-on généralement le pattern 'Strategy' pour choisir un algorithme parmi plusieurs (ex: Calcul de frais de port) ?",
+      "question": "Comment implémenter Strategy pour calculer des frais (ex: via tagged iterator) ?",
       "type": "single_choice",
       "options": [
-        "Avec des `if/else` géants.",
-        "En injectant un itérateur de services taggés (Tagged Iterator) et en sélectionnant le bon via une méthode `supports()`.",
-        "En utilisant l'héritage multiple.",
-        "En clonant les services."
+        "Injecter un itérateur de stratégies taggées et choisir via `supports()`",
+        "Un switch géant",
+        "Des méthodes statiques",
+        "Héritage multiple"
       ],
       "correct_answers": [
-        "En injectant un itérateur de services taggés (Tagged Iterator) et en sélectionnant le bon via une méthode `supports()`."
+        "Injecter un itérateur de stratégies taggées et choisir via `supports()`"
       ],
-      "explanation": "C'est l'implémentation idiomatique dans Symfony : on injecte toutes les stratégies disponibles et on boucle pour trouver celle qui s'applique."
+      "explanation": "Symfony favorise les stratégies en services taggés sélectionnées dynamiquement."
     },
     {
       "id": 5,
-      "question": "Quel pattern le Serializer utilise-t-il pour parcourir et transformer un graphe d'objets complexe ?",
+      "question": "ExpressionLanguage illustre quel pattern ?",
+      "type": "single_choice",
+      "options": [
+        "Interpreter",
+        "State",
+        "Visitor",
+        "Iterator"
+      ],
+      "correct_answers": [
+        "Interpreter"
+      ],
+      "explanation": "Il évalue un mini-langage sur un contexte."
+    },
+    {
+      "id": 6,
+      "question": "Finder qui retourne un itérateur de fichiers illustre ?",
+      "type": "single_choice",
+      "options": [
+        "Iterator",
+        "Mediator",
+        "Command",
+        "Template Method"
+      ],
+      "correct_answers": [
+        "Iterator"
+      ],
+      "explanation": "Finder implémente IteratorAggregate pour parcourir sans exposer la structure."
+    },
+    {
+      "id": 7,
+      "question": "EventDispatcher comme médiateur correspond à quel pattern ?",
+      "type": "single_choice",
+      "options": [
+        "Mediator",
+        "Observer",
+        "Visitor",
+        "Memento"
+      ],
+      "correct_answers": [
+        "Mediator"
+      ],
+      "explanation": "Il coordonne les collègues sans couplage direct."
+    },
+    {
+      "id": 8,
+      "question": "Workflow changeant de comportement selon l'état d'un Article correspond à ?",
+      "type": "single_choice",
+      "options": [
+        "State",
+        "Command",
+        "Iterator",
+        "Observer"
+      ],
+      "correct_answers": [
+        "State"
+      ],
+      "explanation": "Les transitions dépendent de l'état courant (place)."
+    },
+    {
+      "id": 9,
+      "question": "Quel pattern capture l'état original (originalEntityData) pour restauration ?",
+      "type": "single_choice",
+      "options": [
+        "Memento",
+        "Strategy",
+        "Proxy",
+        "Facade"
+      ],
+      "correct_answers": [
+        "Memento"
+      ],
+      "explanation": "Memento stocke l'état pour éventuel rollback."
+    },
+    {
+      "id": 10,
+      "question": "Le Serializer parcourant un graphe et transformant chaque nœud illustre ?",
       "type": "single_choice",
       "options": [
         "Visitor",
         "Template Method",
         "Interpreter",
-        "Mediator"
+        "Chain of Responsibility"
       ],
       "correct_answers": [
         "Visitor"
       ],
-      "explanation": "Le Serializer 'visite' chaque nœud (objet, propriété) du graphe pour lui appliquer une transformation (normalisation)."
+      "explanation": "Il visite chaque élément pour appliquer une opération (normalisation)."
     }
   ]
 }

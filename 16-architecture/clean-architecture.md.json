@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quelle est la règle d'or (The Dependency Rule) de la Clean Architecture ?",
+      "question": "Quelle est la règle de dépendance (Dependency Rule) ?",
       "type": "single_choice",
       "options": [
-        "Les dépendances doivent toujours aller de l'intérieur (Domaine) vers l'extérieur (Infrastructure).",
-        "Les dépendances doivent toujours aller de l'extérieur (Infrastructure) vers l'intérieur (Domaine).",
-        "Toutes les couches peuvent dépendre les unes des autres.",
-        "La base de données est le centre de l'application."
+        "Les dépendances pointent vers l'intérieur (Domain/Application), jamais l'inverse",
+        "Les dépendances pointent vers l'extérieur",
+        "Elles sont cycliques",
+        "Elles dépendent de la base de données"
       ],
       "correct_answers": [
-        "Les dépendances doivent toujours aller de l'extérieur (Infrastructure) vers l'intérieur (Domaine)."
+        "Les dépendances pointent vers l'intérieur (Domain/Application), jamais l'inverse"
       ],
-      "explanation": "Le code source des couches internes (Domaine, Application) ne doit jamais connaître, ni dépendre, des couches externes (Framework, UI, DB)."
+      "explanation": "Les cercles internes ignorent les détails externes (framework/DB/UI)."
     },
     {
       "id": 2,
@@ -61,6 +61,101 @@
         "Avec des Tests Unitaires purs, sans démarrer le Kernel Symfony ni la Base de Données, en mockant les interfaces (Ports)."
       ],
       "explanation": "Puisque le métier ne dépend de rien d'externe, il est testable en isolation totale, ce qui est extrêmement rapide."
+    },
+    {
+      "id": 5,
+      "question": "Quelles couches composent le schéma en cercles ?",
+      "type": "multiple_choice",
+      "options": [
+        "Domain (Enterprise Business Rules)",
+        "Application (Use Cases)",
+        "Interface Adapters (Controllers/Presenters/Gateways)",
+        "Frameworks & Drivers (Symfony, DB, UI)"
+      ],
+      "correct_answers": [
+        "Domain (Enterprise Business Rules)",
+        "Application (Use Cases)",
+        "Interface Adapters (Controllers/Presenters/Gateways)",
+        "Frameworks & Drivers (Symfony, DB, UI)"
+      ],
+      "explanation": "Les dépendances vont de l'extérieur vers l'intérieur seulement."
+    },
+    {
+      "id": 6,
+      "question": "Quelle structure 'Screaming Architecture' est recommandée ?",
+      "type": "single_choice",
+      "options": [
+        "src/Contexte/Domain, Application, Infrastructure (Controllers/Doctrine/Adapters)",
+        "src/Controller, src/Repository uniquement",
+        "Tout dans un dossier Services",
+        "Un seul namespace App pour tout"
+      ],
+      "correct_answers": [
+        "src/Contexte/Domain, Application, Infrastructure (Controllers/Doctrine/Adapters)"
+      ],
+      "explanation": "Le dossier crie le domaine, pas le framework."
+    },
+    {
+      "id": 7,
+      "question": "Comment appliquer l'Inversion de Dépendance pour un Repository ?",
+      "type": "single_choice",
+      "options": [
+        "Définir l'interface dans le domaine, l'implémenter en infrastructure, et laisser DI injecter l'implémentation",
+        "Appeler Doctrine directement dans le use case",
+        "Mettre tout dans l'entité",
+        "Utiliser un static"
+      ],
+      "correct_answers": [
+        "Définir l'interface dans le domaine, l'implémenter en infrastructure, et laisser DI injecter l'implémentation"
+      ],
+      "explanation": "Le use case dépend de l'interface (port), pas de Doctrine."
+    },
+    {
+      "id": 8,
+      "question": "Quel est le flux Request/Response recommandé ?",
+      "type": "multiple_choice",
+      "options": [
+        "Controller -> DTO Request -> Handler (Use Case) -> Repository (via interface) -> Entities -> DTO Response -> Presenter/Controller -> Response HTTP",
+        "Controller -> Entity -> Twig",
+        "Controller -> DB directe",
+        "Kernel -> Twig"
+      ],
+      "correct_answers": [
+        "Controller -> DTO Request -> Handler (Use Case) -> Repository (via interface) -> Entities -> DTO Response -> Presenter/Controller -> Response HTTP"
+      ],
+      "explanation": "Les frontières se traversent via DTOs, pas via entités gérées."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi éviter de passer une Entité Doctrine directement à la Vue ?",
+      "type": "single_choice",
+      "options": [
+        "Risque de Lazy Loading inattendu et d'exposition de données sensibles",
+        "C'est impossible",
+        "Twig ne supporte pas les objets",
+        "Doctrine interdit l'accès"
+      ],
+      "correct_answers": [
+        "Risque de Lazy Loading inattendu et d'exposition de données sensibles"
+      ],
+      "explanation": "Utiliser des DTO/Response Models sécurise les frontières."
+    },
+    {
+      "id": 10,
+      "question": "Quels bénéfices clés sont visés ?",
+      "type": "multiple_choice",
+      "options": [
+        "Testabilité (use cases isolés)",
+        "Indépendance vis-à-vis du framework/DB/UI",
+        "Flexibilité pour remplacer un adapter (Doctrine -> API externe)",
+        "Dépendance forte au framework"
+      ],
+      "correct_answers": [
+        "Testabilité (use cases isolés)",
+        "Indépendance vis-à-vis du framework/DB/UI",
+        "Flexibilité pour remplacer un adapter (Doctrine -> API externe)"
+      ],
+      "explanation": "L'isolation métier permet de remplacer les détails sans casser le cœur."
     }
   ]
 }

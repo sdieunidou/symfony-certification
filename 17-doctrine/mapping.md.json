@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Depuis PHP 8 et les versions récentes de Symfony, quelle est la méthode recommandée pour définir le mapping Doctrine ?",
+      "question": "Quelle syntaxe est recommandée pour le mapping Doctrine en Symfony 7 ?",
       "type": "single_choice",
       "options": [
-        "Les fichiers XML.",
-        "Les fichiers YAML.",
-        "Les Annotations PHPDoc (`/** @ORM... */`).",
-        "Les Attributs PHP (`#[ORM\\...]`)."
+        "Attributs PHP (`#[ORM\\...]`)",
+        "Annotations PHPDoc",
+        "XML",
+        "YAML"
       ],
       "correct_answers": [
-        "Les Attributs PHP (`#[ORM\\...]`)."
+        "Attributs PHP (`#[ORM\\...]`)"
       ],
-      "explanation": "Les Attributs sont natifs au langage, plus performants et offrent une meilleure analyse statique que les annotations."
+      "explanation": "Les attributs sont natifs, modernes et préférés aux formats legacy."
     },
     {
       "id": 2,
@@ -61,6 +61,96 @@
         "En utilisant l'option `enumType: MaClasseEnum::class` dans l'attribut `#[ORM\\Column]`."
       ],
       "explanation": "Doctrine supporte nativement les Backed Enums via cette option simple."
+    },
+    {
+      "id": 5,
+      "question": "Quel type est recommandé pour représenter une date/heure en lecture seule ?",
+      "type": "single_choice",
+      "options": [
+        "`datetime_immutable`",
+        "`datetime`",
+        "`timestamp`",
+        "`time`"
+      ],
+      "correct_answers": [
+        "`datetime_immutable`"
+      ],
+      "explanation": "datetime_immutable évite les mutations silencieuses d'objet DateTime."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi préférer `decimal` à `float` pour stocker de l'argent ?",
+      "type": "single_choice",
+      "options": [
+        "decimal évite les erreurs d'arrondi binaires",
+        "float est plus lent",
+        "decimal chiffre les données",
+        "float est interdit en SQL"
+      ],
+      "correct_answers": [
+        "decimal évite les erreurs d'arrondi binaires"
+      ],
+      "explanation": "decimal/NUMERIC garde une précision exacte, adaptée aux montants."
+    },
+    {
+      "id": 7,
+      "question": "Que fait `#[ORM\\GeneratedValue(strategy: 'CUSTOM')]` avec `#[ORM\\CustomIdGenerator]` ?",
+      "type": "single_choice",
+      "options": [
+        "Utilise un générateur d'ID personnalisé (ex: UUID/ULID)",
+        "Force l'auto-increment",
+        "Supprime la clé primaire",
+        "Désactive le flush"
+      ],
+      "correct_answers": [
+        "Utilise un générateur d'ID personnalisé (ex: UUID/ULID)"
+      ],
+      "explanation": "strategy CUSTOM + CustomIdGenerator permettent de plugger un générateur d'ID."
+    },
+    {
+      "id": 8,
+      "question": "À quoi sert `#[ORM\\HasLifecycleCallbacks]` ?",
+      "type": "single_choice",
+      "options": [
+        "Autoriser les callbacks `PrePersist/PreUpdate/...` annotés dans l'entité",
+        "Activer le cache",
+        "Gérer les migrations",
+        "Forcer le lazy loading"
+      ],
+      "correct_answers": [
+        "Autoriser les callbacks `PrePersist/PreUpdate/...` annotés dans l'entité"
+      ],
+      "explanation": "HasLifecycleCallbacks enregistre la classe pour les événements du cycle de vie Doctrine."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi faut-il préciser `length` sur un `#[ORM\\Column(type: 'string')]` ?",
+      "type": "single_choice",
+      "options": [
+        "Sans length, Doctrine ne peut pas générer le schéma VARCHAR correctement",
+        "Sinon c'est toujours NVARCHAR",
+        "Pour activer le cache",
+        "Pour l'autowiring"
+      ],
+      "correct_answers": [
+        "Sans length, Doctrine ne peut pas générer le schéma VARCHAR correctement"
+      ],
+      "explanation": "Le type string requiert une longueur pour générer la colonne SQL."
+    },
+    {
+      "id": 10,
+      "question": "Quel argument de `#[ORM\\Entity]` permet de lier un repository dédié ?",
+      "type": "single_choice",
+      "options": [
+        "`repositoryClass`",
+        "`table`",
+        "`indexes`",
+        "`listener`"
+      ],
+      "correct_answers": [
+        "`repositoryClass`"
+      ],
+      "explanation": "repositoryClass pointe vers la classe de Repository à utiliser pour cette entité."
     }
   ]
 }

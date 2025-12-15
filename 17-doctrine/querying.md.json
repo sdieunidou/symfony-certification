@@ -4,6 +4,24 @@
   "questions": [
     {
       "id": 1,
+      "question": "Quels niveaux d'abstraction Doctrine propose pour lire des données ?",
+      "type": "multiple_choice",
+      "options": [
+        "find/findBy/findOneBy (méthodes magiques)",
+        "QueryBuilder",
+        "DQL",
+        "SQL natif"
+      ],
+      "correct_answers": [
+        "find/findBy/findOneBy (méthodes magiques)",
+        "QueryBuilder",
+        "DQL",
+        "SQL natif"
+      ],
+      "explanation": "Du plus simple au plus bas niveau, selon la complexité/perf."
+    },
+    {
+      "id": 2,
       "question": "Quelle méthode de l'EntityManager permet de récupérer une entité par sa clé primaire ?",
       "type": "single_choice",
       "options": [
@@ -18,7 +36,7 @@
       "explanation": "`find()` est la méthode de base. Elle utilise l'Identity Map pour ne pas refaire de requête si l'objet est déjà en mémoire."
     },
     {
-      "id": 2,
+      "id": 3,
       "question": "Quelle est la différence fondamentale entre DQL (Doctrine Query Language) et SQL ?",
       "type": "single_choice",
       "options": [
@@ -33,7 +51,7 @@
       "explanation": "DQL permet de faire abstraction du schéma physique. `SELECT p FROM App\\Entity\\Product p` fonctionne quelle que soit la table sous-jacente."
     },
     {
-      "id": 3,
+      "id": 4,
       "question": "Pourquoi devez-vous toujours utiliser `setParameter()` dans le QueryBuilder ?",
       "type": "single_choice",
       "options": [
@@ -48,7 +66,7 @@
       "explanation": "Concaténer des variables utilisateur directement dans la chaîne de requête est la faille de sécurité #1 (SQL Injection)."
     },
     {
-      "id": 4,
+      "id": 5,
       "question": "Quel mode d'hydratation est le plus performant pour de l'affichage simple en lecture seule ?",
       "type": "single_choice",
       "options": [
@@ -61,6 +79,81 @@
         "`getArrayResult()` (Array Hydration)"
       ],
       "explanation": "L'hydratation objet (`getResult`) est coûteuse (instanciation, tracking). L'hydratation tableau (`getArrayResult`) retourne des données brutes, beaucoup plus légères."
+    },
+    {
+      "id": 6,
+      "question": "À quoi sert `toIterable()` sur une requête ?",
+      "type": "single_choice",
+      "options": [
+        "Itérer un grand jeu de résultats sans charger tout en mémoire",
+        "Compresser les résultats",
+        "Hydrater en JSON",
+        "Exécuter la requête en async"
+      ],
+      "correct_answers": [
+        "Itérer un grand jeu de résultats sans charger tout en mémoire"
+      ],
+      "explanation": "toIterable (remplaçant de iterate) streame les résultats pour les gros volumes."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi l'alias racine est-il obligatoire dans le QueryBuilder ?",
+      "type": "single_choice",
+      "options": [
+        "Doctrine a besoin d'un alias pour référencer l'entité dans la requête",
+        "Pour la couleur syntaxique",
+        "Pour activer le cache",
+        "Pour générer les migrations"
+      ],
+      "correct_answers": [
+        "Doctrine a besoin d'un alias pour référencer l'entité dans la requête"
+      ],
+      "explanation": "Chaque FROM doit avoir un alias (ex: 'p') utilisé dans les conditions/jointures."
+    },
+    {
+      "id": 8,
+      "question": "Comment ajouter une fonction SQL spécifique (ex: RAND, MD5) non supportée nativement en DQL ?",
+      "type": "single_choice",
+      "options": [
+        "Enregistrant une fonction DQL custom dans `doctrine.orm.dql.*_functions` ou via beberlei/doctrineextensions",
+        "Impossible",
+        "En écrivant en YAML dans routes",
+        "En réécrivant le driver PDO"
+      ],
+      "correct_answers": [
+        "Enregistrant une fonction DQL custom dans `doctrine.orm.dql.*_functions` ou via beberlei/doctrineextensions"
+      ],
+      "explanation": "On mappe la fonction SQL à un FunctionNode custom ou on utilise les extensions beberlei."
+    },
+    {
+      "id": 9,
+      "question": "Quand préférer le SQL natif plutôt que DQL/QueryBuilder ?",
+      "type": "single_choice",
+      "options": [
+        "Pour des besoins de performance ou de fonctionnalités SGBD très spécifiques",
+        "Toujours",
+        "Jamais",
+        "Uniquement pour DELETE"
+      ],
+      "correct_answers": [
+        "Pour des besoins de performance ou de fonctionnalités SGBD très spécifiques"
+      ],
+      "explanation": "Le SQL natif reste possible pour les cas extrêmes ou très dépendants du SGBD."
+    },
+    {
+      "id": 10,
+      "question": "Quel risque principal avec `getResult()` sur de gros volumes ?",
+      "type": "single_choice",
+      "options": [
+        "Explosion mémoire/CPU (hydrater et gérer beaucoup d'entités Managed)",
+        "Aucun, c'est gratuit",
+        "Cela force un commit",
+        "Cela supprime les proxys"
+      ],
+      "correct_answers": [
+        "Explosion mémoire/CPU (hydrater et gérer beaucoup d'entités Managed)"
+      ],
+      "explanation": "Pour les gros volumes, préférer `getArrayResult` ou `toIterable` non managé."
     }
   ]
 }

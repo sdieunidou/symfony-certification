@@ -4,6 +4,24 @@
   "questions": [
     {
       "id": 1,
+      "question": "Quels types de relations Doctrine fournit ?",
+      "type": "multiple_choice",
+      "options": [
+        "ManyToOne",
+        "OneToMany",
+        "ManyToMany",
+        "OneToOne"
+      ],
+      "correct_answers": [
+        "ManyToOne",
+        "OneToMany",
+        "ManyToMany",
+        "OneToOne"
+      ],
+      "explanation": "Ce sont les quatre cardinalités supportées."
+    },
+    {
+      "id": 2,
       "question": "Dans une relation bidirectionnelle (ex: Product <-> Category), quel côté est le 'Owning Side' (Propriétaire) qui déclenche la mise à jour en base ?",
       "type": "single_choice",
       "options": [
@@ -18,7 +36,7 @@
       "explanation": "Doctrine ne regarde QUE le côté propriétaire pour persister les changements. Modifier la collection du côté inverse (`mappedBy`) sans mettre à jour le propriétaire ne fait rien."
     },
     {
-      "id": 2,
+      "id": 3,
       "question": "Si vous avez une relation OneToMany `$category->products`, que se passe-t-il si vous activez `orphanRemoval: true` et que vous retirez un produit de la collection ?",
       "type": "single_choice",
       "options": [
@@ -33,7 +51,7 @@
       "explanation": "`orphanRemoval: true` indique que si un enfant n'est plus lié à son parent, il doit être détruit (il ne peut pas exister sans parent)."
     },
     {
-      "id": 3,
+      "id": 4,
       "question": "Pourquoi est-il recommandé d'avoir des méthodes synchronisées (ex: `addProduct`) qui mettent à jour les deux côtés de la relation ?",
       "type": "single_choice",
       "options": [
@@ -48,7 +66,7 @@
       "explanation": "Sans cela, votre graphe d'objets en mémoire est incohérent jusqu'au prochain rechargement depuis la base."
     },
     {
-      "id": 4,
+      "id": 5,
       "question": "Quelle option de `cascade` permet de sauvegarder automatiquement une nouvelle entité liée sans appeler `persist()` dessus explicitement ?",
       "type": "single_choice",
       "options": [
@@ -61,6 +79,81 @@
         "`cascade: ['persist']`"
       ],
       "explanation": "Si `Category` a `cascade: ['persist']` sur `products`, persister la catégorie persistera aussi tous les nouveaux produits ajoutés à sa collection."
+    },
+    {
+      "id": 6,
+      "question": "Dans une ManyToMany, quel côté est propriétaire ?",
+      "type": "single_choice",
+      "options": [
+        "Celui qui déclare `#[ORM\\JoinTable]` (ou sans `mappedBy`)",
+        "Toujours le côté inverse",
+        "Les deux",
+        "Aucun"
+      ],
+      "correct_answers": [
+        "Celui qui déclare `#[ORM\\JoinTable]` (ou sans `mappedBy`)"
+      ],
+      "explanation": "Le côté sans `mappedBy` porte la JoinTable et est propriétaire."
+    },
+    {
+      "id": 7,
+      "question": "Quel est l'effet d'un `#[ORM\\JoinColumn(nullable: true)]` sur une ManyToOne ?",
+      "type": "single_choice",
+      "options": [
+        "La relation devient optionnelle (FK nullable)",
+        "La relation devient obligatoire",
+        "La table est supprimée",
+        "La jointure est toujours EAGER"
+      ],
+      "correct_answers": [
+        "La relation devient optionnelle (FK nullable)"
+      ],
+      "explanation": "nullable:true autorise NULL dans la colonne de clé étrangère."
+    },
+    {
+      "id": 8,
+      "question": "Quel est le mode de fetch par défaut d'une association Doctrine ?",
+      "type": "single_choice",
+      "options": [
+        "LAZY",
+        "EAGER",
+        "EXTRA_LAZY",
+        "CACHE_ONLY"
+      ],
+      "correct_answers": [
+        "LAZY"
+      ],
+      "explanation": "LAZY est par défaut ; EAGER est à utiliser avec parcimonie."
+    },
+    {
+      "id": 9,
+      "question": "Différence entre `cascade: ['remove']` et `orphanRemoval: true` sur une OneToMany ?",
+      "type": "single_choice",
+      "options": [
+        "`cascade remove` supprime quand le parent est supprimé; `orphanRemoval` supprime quand l'enfant est détaché de la collection",
+        "Aucune différence",
+        "orphanRemoval supprime aussi le parent",
+        "cascade remove ne supprime jamais"
+      ],
+      "correct_answers": [
+        "`cascade remove` supprime quand le parent est supprimé; `orphanRemoval` supprime quand l'enfant est détaché de la collection"
+      ],
+      "explanation": "orphanRemoval réagit au retrait de la collection, pas seulement à la suppression du parent."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi initialiser les collections (ArrayCollection) dans le constructeur ?",
+      "type": "single_choice",
+      "options": [
+        "Pour éviter des `null` sur les relations OneToMany/ManyToMany et pouvoir ajouter/supprimer sans vérifications",
+        "Pour la performance SQL",
+        "Pour activer le cache Doctrine",
+        "Ce n'est pas nécessaire"
+      ],
+      "correct_answers": [
+        "Pour éviter des `null` sur les relations OneToMany/ManyToMany et pouvoir ajouter/supprimer sans vérifications"
+      ],
+      "explanation": "Sans initialisation, les collections sont null et les add/remove cassent."
     }
   ]
 }

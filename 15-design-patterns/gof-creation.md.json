@@ -4,63 +4,153 @@
   "questions": [
     {
       "id": 1,
-      "question": "Comment le pattern Singleton est-il implémenté dans Symfony ?",
+      "question": "Comment Symfony implémente proprement un singleton ?",
       "type": "single_choice",
       "options": [
-        "Par des classes statiques (`MyClass::getInstance()`).",
-        "Par le Conteneur de Services qui, par défaut, partage une instance unique de chaque service.",
-        "Il n'est pas utilisé.",
-        "Par le mot clé `global`."
+        "Par le conteneur de services (services partagés par défaut)",
+        "Par une classe statique avec instance globale",
+        "Par la session PHP",
+        "Par un fichier cache"
       ],
       "correct_answers": [
-        "Par le Conteneur de Services qui, par défaut, partage une instance unique de chaque service."
+        "Par le conteneur de services (services partagés par défaut)"
       ],
-      "explanation": "Dans Symfony, un service est un singleton 'par conteneur'. C'est la méthode propre pour gérer l'unicité sans coupler le code."
+      "explanation": "Le conteneur partage l'instance ; pas besoin de singleton manuel."
     },
     {
       "id": 2,
-      "question": "Quel pattern utilise le `FormBuilder` pour construire un formulaire complexe étape par étape (`->add(...)`) ?",
+      "question": "Quand configurer `shared: false` sur un service ?",
       "type": "single_choice",
       "options": [
-        "Factory Method",
-        "Builder",
-        "Prototype",
-        "Abstract Factory"
+        "Quand on veut un prototype (nouvelle instance à chaque fois)",
+        "Pour le rendre singleton",
+        "Pour le rendre public",
+        "Pour activer le cache HTTP"
       ],
       "correct_answers": [
-        "Builder"
+        "Quand on veut un prototype (nouvelle instance à chaque fois)"
       ],
-      "explanation": "Le pattern Builder sépare la construction d'un objet complexe de sa représentation."
+      "explanation": "shared:false désactive le comportement singleton du conteneur."
     },
     {
       "id": 3,
-      "question": "Quand on utilise la méthode `$this->createForm()` dans un contrôleur, quel pattern est utilisé pour masquer la complexité d'instanciation ?",
+      "question": "Quel pattern illustre `createForm()` dans un contrôleur ?",
       "type": "single_choice",
       "options": [
         "Factory Method",
-        "Singleton",
         "Prototype",
-        "Builder"
+        "Singleton",
+        "Facade"
       ],
       "correct_answers": [
         "Factory Method"
       ],
-      "explanation": "Le contrôleur agit comme une fabrique (Factory) : on lui demande un produit (le Form) sans se soucier de comment il est instancié (dépendances, options...)."
+      "explanation": "Le contrôleur sert de fabrique simplifiant la création du Form."
     },
     {
       "id": 4,
-      "question": "À quoi sert le pattern Prototype (clonage) dans le contexte des entités ?",
+      "question": "Quel pattern est incarné par le FormBuilder ?",
       "type": "single_choice",
       "options": [
-        "À rien, c'est interdit.",
-        "À dupliquer un objet existant (ex: un projet template) avec ses relations, en utilisant `__clone` pour assurer une copie profonde (Deep Copy).",
-        "À créer des singletons.",
-        "À valider les données."
+        "Builder (avec Director = FormFactory)",
+        "Adapter",
+        "Proxy",
+        "Observer"
       ],
       "correct_answers": [
-        "À dupliquer un objet existant (ex: un projet template) avec ses relations, en utilisant `__clone` pour assurer une copie profonde (Deep Copy)."
+        "Builder (avec Director = FormFactory)"
       ],
-      "explanation": "Le clonage permet de créer une nouvelle instance basée sur une instance existante plutôt que de repartir de zéro."
+      "explanation": "Construction étape par étape, orchestrée par le FormFactory (Director)."
+    },
+    {
+      "id": 5,
+      "question": "Différence clé entre Abstract Factory et Factory Method ?",
+      "type": "single_choice",
+      "options": [
+        "Abstract Factory fabrique des familles de produits liés; Factory Method crée un produit précis",
+        "Factory Method fabrique des familles; Abstract Factory un seul produit",
+        "Aucune différence",
+        "Factory Method impose l'héritage, Abstract Factory non"
+      ],
+      "correct_answers": [
+        "Abstract Factory fabrique des familles de produits liés; Factory Method crée un produit précis"
+      ],
+      "explanation": "Abstract Factory coordonne plusieurs créations cohérentes; Factory Method un produit."
+    },
+    {
+      "id": 6,
+      "question": "Exemple d'Abstract Factory dans des notifications ?",
+      "type": "single_choice",
+      "options": [
+        "Créer EmailMessage + SmtpTransport ou SmsMessage + ApiTransport",
+        "Cloner une entité",
+        "Décorer un service",
+        "Choisir un logger"
+      ],
+      "correct_answers": [
+        "Créer EmailMessage + SmtpTransport ou SmsMessage + ApiTransport"
+      ],
+      "explanation": "La fabrique fournit des produits apparentés (message+transport) par canal."
+    },
+    {
+      "id": 7,
+      "question": "Prototype : cas d'usage typique ?",
+      "type": "single_choice",
+      "options": [
+        "Dupliquer un projet/template avec ses relations via `__clone`",
+        "Forcer le singleton",
+        "Créer un proxy",
+        "Changer de transport mail"
+      ],
+      "correct_answers": [
+        "Dupliquer un projet/template avec ses relations via `__clone`"
+      ],
+      "explanation": "Le clonage deep copy sert à copier un graph d'objets existant."
+    },
+    {
+      "id": 8,
+      "question": "Quel anti-pattern Singleton faut-il éviter ?",
+      "type": "single_choice",
+      "options": [
+        "Classe avec instance statique globale et constructeur privé",
+        "Service partagé du conteneur",
+        "Factory Method",
+        "Builder"
+      ],
+      "correct_answers": [
+        "Classe avec instance statique globale et constructeur privé"
+      ],
+      "explanation": "Le singleton manuel complique tests et couplage, préférer le conteneur."
+    },
+    {
+      "id": 9,
+      "question": "Comment le conteneur joue-t-il le rôle de Prototype si besoin ?",
+      "type": "single_choice",
+      "options": [
+        "En configurant `shared: false` pour créer une nouvelle instance à chaque demande",
+        "En ajoutant un tag",
+        "En rendant le service public",
+        "En utilisant autoconfigure"
+      ],
+      "correct_answers": [
+        "En configurant `shared: false` pour créer une nouvelle instance à chaque demande"
+      ],
+      "explanation": "shared:false bascule le service en mode prototype."
+    },
+    {
+      "id": 10,
+      "question": "Quel pattern de création facilite le découplage d'une lib tierce en fabriquant ses objets via une interface ?",
+      "type": "single_choice",
+      "options": [
+        "Abstract Factory",
+        "Singleton",
+        "Observer",
+        "Iterator"
+      ],
+      "correct_answers": [
+        "Abstract Factory"
+      ],
+      "explanation": "On isole la création d'objets externes derrière une fabrique d'abstractions."
     }
   ]
 }

@@ -4,6 +4,22 @@
   "questions": [
     {
       "id": 1,
+      "question": "Pourquoi les tests fonctionnels BDD sont-ils délicats ?",
+      "type": "multiple_choice",
+      "options": [
+        "Lenteur (création BDD, fixtures)",
+        "Effets de bord entre tests (pollution des données)",
+        "Ils nécessitent une licence payante",
+        "Ils ne peuvent pas tourner en CI"
+      ],
+      "correct_answers": [
+        "Lenteur (création BDD, fixtures)",
+        "Effets de bord entre tests (pollution des données)"
+      ],
+      "explanation": "Coût de setup et absence d'isolation sont les deux vrais problèmes."
+    },
+    {
+      "id": 2,
       "question": "Quel est le principal problème des tests fonctionnels qui modifient la base de données ?",
       "type": "single_choice",
       "options": [
@@ -18,7 +34,7 @@
       "explanation": "L'isolation est clé. Chaque test doit partir d'un état connu."
     },
     {
-      "id": 2,
+      "id": 3,
       "question": "Comment le bundle `dama/doctrine-test-bundle` résout-il le problème d'isolation des tests de manière performante ?",
       "type": "single_choice",
       "options": [
@@ -33,7 +49,7 @@
       "explanation": "C'est la méthode la plus efficace car elle évite le coût prohibitif de purger/recharger les données."
     },
     {
-      "id": 3,
+      "id": 4,
       "question": "Quelle classe de test Symfony permet de tester un Repository Doctrine en accédant au conteneur de services ?",
       "type": "single_choice",
       "options": [
@@ -48,7 +64,7 @@
       "explanation": "`KernelTestCase` permet de booter le kernel et d'accéder au vrai service Repository connecté à la base de test."
     },
     {
-      "id": 4,
+      "id": 5,
       "question": "Comment Symfony sépare-t-il la base de données de production de celle de test ?",
       "type": "single_choice",
       "options": [
@@ -61,6 +77,81 @@
         "Via la variable d'environnement `DATABASE_URL` définie spécifiquement dans le fichier `.env.test` (souvent suffixée par `_test`)."
       ],
       "explanation": "Cela garantit que les tests ne touchent jamais aux données de dev ou de prod."
+    },
+    {
+      "id": 6,
+      "question": "Quel est l'apport principal du rollback transactionnel (DAMA) par rapport à une recréation de schéma à chaque test ?",
+      "type": "single_choice",
+      "options": [
+        "Isolation quasi instantanée sans coût de migration/fixtures entre tests",
+        "Il force la base en mémoire",
+        "Il réduit la taille du binaire PHP",
+        "Il remplace PHPUnit"
+      ],
+      "correct_answers": [
+        "Isolation quasi instantanée sans coût de migration/fixtures entre tests"
+      ],
+      "explanation": "Le rollback d'une transaction est beaucoup plus rapide qu'un drop/create + fixtures."
+    },
+    {
+      "id": 7,
+      "question": "Quelle configuration est nécessaire pour activer DAMA Doctrine Test Bundle avec PHPUnit ?",
+      "type": "single_choice",
+      "options": [
+        "Déclarer l'extension `<bootstrap class=\"DAMA\\DoctrineTestBundle\\PHPUnit\\PHPUnitExtension\"/>` dans `phpunit.xml`",
+        "Activer une annotation sur chaque test",
+        "Modifier php.ini",
+        "Passer par un listener Twig"
+      ],
+      "correct_answers": [
+        "Déclarer l'extension `<bootstrap class=\"DAMA\\DoctrineTestBundle\\PHPUnit\\PHPUnitExtension\"/>` dans `phpunit.xml`"
+      ],
+      "explanation": "L'extension se branche avant/après chaque test pour gérer la transaction."
+    },
+    {
+      "id": 8,
+      "question": "Que se passe-t-il si vous utilisez la même base que le dev/prod pour vos tests ?",
+      "type": "single_choice",
+      "options": [
+        "Risque majeur de destruction/modification de données réelles",
+        "Aucun risque",
+        "Les tests deviennent plus rapides",
+        "Doctrine bloque l'accès automatiquement"
+      ],
+      "correct_answers": [
+        "Risque majeur de destruction/modification de données réelles"
+      ],
+      "explanation": "D'où l'importance d'un `DATABASE_URL` séparé pour l'env `test`."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi les fixtures restent utiles même avec DAMA ?",
+      "type": "single_choice",
+      "options": [
+        "Elles préparent un état de référence avant la transaction, réutilisé et rollbacké à chaque test",
+        "Elles accélèrent le JIT",
+        "Elles remplacent les repositories",
+        "Elles rendent les tests unitaires inutiles"
+      ],
+      "correct_answers": [
+        "Elles préparent un état de référence avant la transaction, réutilisé et rollbacké à chaque test"
+      ],
+      "explanation": "On charge une fois avant la suite, chaque test rollback vers cet état."
+    },
+    {
+      "id": 10,
+      "question": "Quel type de test convient pour valider une méthode de Repository qui fait du DQL complexe ?",
+      "type": "single_choice",
+      "options": [
+        "Un test fonctionnel via `KernelTestCase` avec vraie BDD de test",
+        "Un test unitaire en mockant EntityManager",
+        "Un test e2e navigateur",
+        "Aucun test n'est nécessaire"
+      ],
+      "correct_answers": [
+        "Un test fonctionnel via `KernelTestCase` avec vraie BDD de test"
+      ],
+      "explanation": "Le Repository dépend du mapping/SQL réel, donc on le teste contre la vraie base de test."
     }
   ]
 }

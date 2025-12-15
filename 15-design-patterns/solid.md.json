@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Dans l'exemple du principe de Responsabilité Unique (SRP), pourquoi la classe `UserService` initiale est-elle problématique ?",
+      "question": "Pourquoi l'exemple initial de UserService viole SRP ?",
       "type": "single_choice",
       "options": [
-        "Parce qu'elle utilise l'injection de dépendance.",
-        "Parce qu'elle gère à la fois la validation, la persistance et l'envoi d'emails.",
-        "Parce qu'elle est déclarée `final`.",
-        "Parce qu'elle n'implémente pas d'interface."
+        "Il mélange validation, persistance et email dans la même classe",
+        "Il est final",
+        "Il utilise des interfaces",
+        "Il a un constructeur"
       ],
       "correct_answers": [
-        "Parce qu'elle gère à la fois la validation, la persistance et l'envoi d'emails."
+        "Il mélange validation, persistance et email dans la même classe"
       ],
-      "explanation": "Le SRP stipule qu'une classe ne doit avoir qu'une seule raison de changer. Cumuler validation, persistance et notification viole ce principe."
+      "explanation": "Plusieurs raisons de changer => violation SRP."
     },
     {
       "id": 2,
@@ -76,6 +76,83 @@
         "Injecter une collection de services implémentant `NotificationServiceInterface`."
       ],
       "explanation": "DIP préconise de dépendre d'abstractions (interfaces) injectées plutôt que d'instancier des classes concrètes (via `new`)."
+    },
+    {
+      "id": 6,
+      "question": "Comment appliquer SRP à un contrôleur Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Le limiter à l'orchestration (requête->DTO->use case->réponse) sans logique métier",
+        "Mettre toute la logique métier dedans",
+        "Gérer directement l'EntityManager",
+        "Faire du render uniquement"
+      ],
+      "correct_answers": [
+        "Le limiter à l'orchestration (requête->DTO->use case->réponse) sans logique métier"
+      ],
+      "explanation": "Un contrôleur doit rester mince et déléguer aux services métiers."
+    },
+    {
+      "id": 7,
+      "question": "Quel code est un signal de violation OCP ?",
+      "type": "single_choice",
+      "options": [
+        "Un switch/if sur type pour choisir une implémentation",
+        "Injection sur interface",
+        "Décoration d'un service",
+        "Utilisation de traits"
+      ],
+      "correct_answers": [
+        "Un switch/if sur type pour choisir une implémentation"
+      ],
+      "explanation": "Les conditions ajoutées à chaque nouveau cas révèlent un manque de polymorphisme."
+    },
+    {
+      "id": 8,
+      "question": "Symptôme de violation LSP dans une sous-classe ?",
+      "type": "single_choice",
+      "options": [
+        "Elle restreint les préconditions ou lève de nouvelles exceptions par rapport au parent",
+        "Elle ajoute une méthode utilitaire",
+        "Elle est finale",
+        "Elle utilise une interface"
+      ],
+      "correct_answers": [
+        "Elle restreint les préconditions ou lève de nouvelles exceptions par rapport au parent"
+      ],
+      "explanation": "Modifier le contrat/les exceptions casse la substituabilité."
+    },
+    {
+      "id": 9,
+      "question": "Exemple d'ISP dans Symfony Routing ?",
+      "type": "single_choice",
+      "options": [
+        "Séparer UrlGeneratorInterface et UrlMatcherInterface",
+        "Mettre toutes les méthodes dans RouterInterface",
+        "Utiliser un singleton",
+        "Passer par le container"
+      ],
+      "correct_answers": [
+        "Séparer UrlGeneratorInterface et UrlMatcherInterface"
+      ],
+      "explanation": "Deux interfaces fines au lieu d'une obèse."
+    },
+    {
+      "id": 10,
+      "question": "Bonnes pratiques DIP en Symfony ?",
+      "type": "multiple_choice",
+      "options": [
+        "Typer sur des interfaces (EntityManagerInterface, CacheInterface...)",
+        "Injection par constructeur",
+        "Éviter les `new` de classes concrètes dans le métier",
+        "Utiliser ContainerInterface comme service locator"
+      ],
+      "correct_answers": [
+        "Typer sur des interfaces (EntityManagerInterface, CacheInterface...)",
+        "Injection par constructeur",
+        "Éviter les `new` de classes concrètes dans le métier"
+      ],
+      "explanation": "DIP privilégie abstractions et injection; éviter le Service Locator."
     }
   ]
 }

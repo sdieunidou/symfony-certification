@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "En DDD, qu'est-ce qu'un 'Value Object' (VO) ?",
+      "question": "Qu'est-ce qu'un Value Object (VO) en DDD ?",
       "type": "single_choice",
       "options": [
-        "Une entité avec un ID.",
-        "Un objet défini uniquement par ses attributs, sans identité propre, et immuable (ex: une coordonnée GPS, une somme d'argent).",
-        "Un service Symfony.",
-        "Un tableau PHP."
+        "Un objet sans identité, immuable, égal par valeurs (ex: Money, Email)",
+        "Une entité Doctrine",
+        "Un service applicatif",
+        "Un tableau"
       ],
       "correct_answers": [
-        "Un objet défini uniquement par ses attributs, sans identité propre, et immuable (ex: une coordonnée GPS, une somme d'argent)."
+        "Un objet sans identité, immuable, égal par valeurs (ex: Money, Email)"
       ],
-      "explanation": "Deux VOs sont identiques s'ils ont les mêmes valeurs. Ils ne changent jamais : pour modifier une valeur, on crée un nouveau VO."
+      "explanation": "Les VO sont définis par leurs attributs et ne mutent pas."
     },
     {
       "id": 2,
@@ -61,6 +61,143 @@
         "À traduire les modèles d'un système externe (ou legacy) vers votre propre modèle de domaine, pour éviter de polluer votre code avec des concepts étrangers."
       ],
       "explanation": "L'ACL agit comme un adaptateur/traducteur protecteur aux frontières d'un Bounded Context."
+    },
+    {
+      "id": 5,
+      "question": "Qu'est-ce qu'un Bounded Context ?",
+      "type": "single_choice",
+      "options": [
+        "Une frontière explicite où un modèle métier donné est valide",
+        "Un microservice",
+        "Une table SQL",
+        "Un bundle Symfony"
+      ],
+      "correct_answers": [
+        "Une frontière explicite où un modèle métier donné est valide"
+      ],
+      "explanation": "Chaque contexte a son modèle ; même termes peuvent diverger entre contextes."
+    },
+    {
+      "id": 6,
+      "question": "Quels patterns de Context Mapping sont cités ?",
+      "type": "multiple_choice",
+      "options": [
+        "Shared Kernel",
+        "Customer/Supplier",
+        "Anti-Corruption Layer (ACL)",
+        "Bridge Pattern Symfony"
+      ],
+      "correct_answers": [
+        "Shared Kernel",
+        "Customer/Supplier",
+        "Anti-Corruption Layer (ACL)"
+      ],
+      "explanation": "Ces relations décrivent comment les contextes collaborent et se protègent."
+    },
+    {
+      "id": 7,
+      "question": "Quel est le rôle d'un Domain Service ?",
+      "type": "single_choice",
+      "options": [
+        "Porter une logique métier qui n'appartient pas naturellement à une entité ou un VO",
+        "Gérer l'HTTP",
+        "Accéder aux fichiers",
+        "Remplacer les repositories"
+      ],
+      "correct_answers": [
+        "Porter une logique métier qui n'appartient pas naturellement à une entité ou un VO"
+      ],
+      "explanation": "Domain Service couvre les règles transverses impliquant plusieurs entités/agrégats."
+    },
+    {
+      "id": 8,
+      "question": "Comment sont nommés les Domain Events ?",
+      "type": "single_choice",
+      "options": [
+        "Verbe au passé (ex: OrderPlaced)",
+        "En majuscules",
+        "En snake_case",
+        "Toujours prefix 'On'"
+      ],
+      "correct_answers": [
+        "Verbe au passé (ex: OrderPlaced)"
+      ],
+      "explanation": "Ils décrivent un fait passé intéressant pour le métier."
+    },
+    {
+      "id": 9,
+      "question": "Où doit vivre l'interface d'un Repository DDD ?",
+      "type": "single_choice",
+      "options": [
+        "Dans le Domaine, implémentée en Infrastructure",
+        "Dans l'Infrastructure",
+        "Dans Twig",
+        "Dans config/services.yaml"
+      ],
+      "correct_answers": [
+        "Dans le Domaine, implémentée en Infrastructure"
+      ],
+      "explanation": "Le contrat métier est dans le domaine; l'infra fournit l'adapter."
+    },
+    {
+      "id": 10,
+      "question": "Quelle règle transactionnelle concerne les agrégats ?",
+      "type": "single_choice",
+      "options": [
+        "Une transaction doit idéalement modifier un seul agrégat à la fois",
+        "Modifier tous les agrégats d'un coup",
+        "Toujours plusieurs agrégats par transaction",
+        "Jamais de transaction"
+      ],
+      "correct_answers": [
+        "Une transaction doit idéalement modifier un seul agrégat à la fois"
+      ],
+      "explanation": "Évite les invariants croisés et simplifie la cohérence."
+    },
+    {
+      "id": 11,
+      "question": "Comment Messenger peut-il s'intégrer au DDD ?",
+      "type": "single_choice",
+      "options": [
+        "Pour dispatcher commandes (Use Cases) et Domain Events enregistrés par les agrégats",
+        "Pour remplacer Doctrine",
+        "Pour servir les assets",
+        "Pour compiler Twig"
+      ],
+      "correct_answers": [
+        "Pour dispatcher commandes (Use Cases) et Domain Events enregistrés par les agrégats"
+      ],
+      "explanation": "Messenger transporte commands/événements sans coupler le domaine au transport."
+    },
+    {
+      "id": 12,
+      "question": "Pourquoi les entités doivent-elles être 'riches' plutôt qu'anémiques ?",
+      "type": "single_choice",
+      "options": [
+        "Pour encapsuler les invariants métier dans des méthodes explicites plutôt que des setters passifs",
+        "Pour optimiser le CPU",
+        "Pour faciliter Twig",
+        "Parce que Doctrine l'impose"
+      ],
+      "correct_answers": [
+        "Pour encapsuler les invariants métier dans des méthodes explicites plutôt que des setters passifs"
+      ],
+      "explanation": "Les règles métier vivent près des données qu'elles protègent."
+    },
+    {
+      "id": 13,
+      "question": "Quand utiliser une Factory en DDD ?",
+      "type": "single_choice",
+      "options": [
+        "Pour créer des agrégats complexes en respectant les invariants dès l'instanciation",
+        "Pour remplacer les repositories",
+        "Pour cacher les exceptions",
+        "Pour gérer les assets"
+      ],
+      "correct_answers": [
+        "Pour créer des agrégats complexes en respectant les invariants dès l'instanciation"
+      ],
+      "explanation": "Factory encapsule la création quand le constructeur deviendrait trop chargé."
     }
   ]
 }

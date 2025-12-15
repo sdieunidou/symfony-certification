@@ -4,18 +4,18 @@
   "questions": [
     {
       "id": 1,
-      "question": "Quel pattern permet de faire collaborer une classe tierce (interface incompatible) avec votre propre code (interface attendue) ?",
+      "question": "Quel pattern permet d'adapter une librairie Stripe à votre interface `PaymentGatewayInterface` ?",
       "type": "single_choice",
       "options": [
-        "Bridge",
         "Adapter",
-        "Decorator",
-        "Proxy"
+        "Bridge",
+        "Proxy",
+        "Composite"
       ],
       "correct_answers": [
         "Adapter"
       ],
-      "explanation": "L'Adaptateur convertit l'interface d'une classe en une autre interface attendue par le client."
+      "explanation": "Adapter convertit l'interface externe en interface attendue."
     },
     {
       "id": 2,
@@ -61,6 +61,96 @@
         "Facade"
       ],
       "explanation": "Une Façade fournit une interface simplifiée unifiée pour un ensemble d'interfaces d'un sous-système."
+    },
+    {
+      "id": 5,
+      "question": "Quel pattern structurel est illustré par la hiérarchie Form/Field/Collection dans Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Composite",
+        "Bridge",
+        "Flyweight",
+        "Adapter"
+      ],
+      "correct_answers": [
+        "Composite"
+      ],
+      "explanation": "Un composite traite uniformément feuilles (champs) et sous-formulaires (composites)."
+    },
+    {
+      "id": 6,
+      "question": "Quel pattern explique la séparation LoggerInterface / HandlerInterface dans Monolog ?",
+      "type": "single_choice",
+      "options": [
+        "Bridge",
+        "Adapter",
+        "Decorator",
+        "Proxy"
+      ],
+      "correct_answers": [
+        "Bridge"
+      ],
+      "explanation": "Bridge sépare abstraction (logger) et implémentation (handlers) interchangeables."
+    },
+    {
+      "id": 7,
+      "question": "Quel pattern permet de partager des données communes (ex: rôles) pour économiser la mémoire ?",
+      "type": "single_choice",
+      "options": [
+        "Flyweight",
+        "Singleton",
+        "Prototype",
+        "Iterator"
+      ],
+      "correct_answers": [
+        "Flyweight"
+      ],
+      "explanation": "Flyweight réutilise des instances immuables pour réduire l'empreinte."
+    },
+    {
+      "id": 8,
+      "question": "Dans un décorateur de service, que représente `@.inner` ?",
+      "type": "single_choice",
+      "options": [
+        "L'instance décorée (originale) injectée dans le wrapper",
+        "Le proxy Doctrine",
+        "Le container",
+        "Une factory"
+      ],
+      "correct_answers": [
+        "L'instance décorée (originale) injectée dans le wrapper"
+      ],
+      "explanation": ".inner référence le service d'origine dans la déco Symfony."
+    },
+    {
+      "id": 9,
+      "question": "Quel pattern structurel fournit une interface unifiée pour un sous-système complexe (ex: KernelBrowser) ?",
+      "type": "single_choice",
+      "options": [
+        "Facade",
+        "Adapter",
+        "Bridge",
+        "Proxy"
+      ],
+      "correct_answers": [
+        "Facade"
+      ],
+      "explanation": "Facade simplifie l'accès à un ensemble d'interactions complexes."
+    },
+    {
+      "id": 10,
+      "question": "Comment le pattern Proxy est-il utilisé dans Doctrine pour Lazy Load ?",
+      "type": "single_choice",
+      "options": [
+        "Doctrine retourne un substitut (PersistentCollection) qui déclenche la requête lors de l'accès",
+        "Doctrine exécute toutes les requêtes immédiatement",
+        "Doctrine utilise un adapter HTTP",
+        "Doctrine copie les données en mémoire"
+      ],
+      "correct_answers": [
+        "Doctrine retourne un substitut (PersistentCollection) qui déclenche la requête lors de l'accès"
+      ],
+      "explanation": "Le proxy contrôle l'accès et retarde la requête tant que non nécessaire."
     }
   ]
 }

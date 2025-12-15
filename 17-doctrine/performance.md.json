@@ -4,6 +4,21 @@
   "questions": [
     {
       "id": 1,
+      "question": "Quel est le problème N+1 décrit ?",
+      "type": "single_choice",
+      "options": [
+        "1 requête pour la liste + N requêtes pour chaque relation accédée en Lazy dans une boucle",
+        "Une erreur arithmétique",
+        "Une limite de connexion",
+        "Un bug proxy"
+      ],
+      "correct_answers": [
+        "1 requête pour la liste + N requêtes pour chaque relation accédée en Lazy dans une boucle"
+      ],
+      "explanation": "Le N+1 est causé par le Lazy loading dans une boucle."
+    },
+    {
+      "id": 2,
       "question": "Qu'est-ce que le problème 'N+1' avec Doctrine ?",
       "type": "single_choice",
       "options": [
@@ -18,7 +33,7 @@
       "explanation": "C'est le problème de performance le plus courant. Il se résout en faisant une jointure (Eager Loading) dans la requête initiale."
     },
     {
-      "id": 2,
+      "id": 3,
       "question": "Comment résoudre le problème N+1 lors de la récupération d'une liste d'entités avec leurs relations ?",
       "type": "single_choice",
       "options": [
@@ -33,7 +48,7 @@
       "explanation": "L'`addSelect` est crucial : il dit à Doctrine de peupler l'objet relation (`c`) avec les données retournées par la jointure, évitant ainsi le lazy loading ultérieur."
     },
     {
-      "id": 3,
+      "id": 4,
       "question": "Qu'est-ce qu'un 'Proxy' dans Doctrine ?",
       "type": "single_choice",
       "options": [
@@ -48,7 +63,7 @@
       "explanation": "Le proxy ressemble à l'entité (héritage) mais intercepte les appels de méthode pour charger les données à la volée si nécessaire."
     },
     {
-      "id": 4,
+      "id": 5,
       "question": "Pourquoi est-il risqué d'utiliser des 'Partial Objects' (sélectionner seulement quelques champs d'une entité `select p.id, p.name`) ?",
       "type": "single_choice",
       "options": [
@@ -61,6 +76,81 @@
         "Si vous modifiez et sauvegardez (`flush`) cet objet partiel, Doctrine risque d'écraser les champs non chargés avec `NULL` en base de données."
       ],
       "explanation": "Doctrine gère des objets complets. Pour de la lecture partielle, préférez l'hydratation en tableau (`getArrayResult`) ou en DTO."
+    },
+    {
+      "id": 6,
+      "question": "Quelle stratégie d'eager loading est recommandée ?",
+      "type": "single_choice",
+      "options": [
+        "Eager dynamique via QueryBuilder (join + addSelect) plutôt que fetch: EAGER global",
+        "Toujours fetch: EAGER dans le mapping",
+        "Toujours Lazy",
+        "Dupliquer les données"
+      ],
+      "correct_answers": [
+        "Eager dynamique via QueryBuilder (join + addSelect) plutôt que fetch: EAGER global"
+      ],
+      "explanation": "EAGER global charge trop souvent ; l'eager ciblé par requête évite N+1 sans surcharger partout."
+    },
+    {
+      "id": 7,
+      "question": "Quel mode d'hydratation utiliser pour limiter CPU/RAM sur affichage read-only ?",
+      "type": "single_choice",
+      "options": [
+        "Hydratation tableau (`getArrayResult`)",
+        "Hydratation objet",
+        "Hydratation proxy",
+        "Toujours `getOneOrNullResult`"
+      ],
+      "correct_answers": [
+        "Hydratation tableau (`getArrayResult`)"
+      ],
+      "explanation": "L'hydratation tableau évite l'instanciation/tracking d'entités."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi préférer un DTO (`SELECT NEW ...`) plutôt qu'un 'partial object' pour les lectures optimisées ?",
+      "type": "single_choice",
+      "options": [
+        "DTO ne risque pas d'écraser des colonnes non chargées lors d'un flush",
+        "DTO est plus lent",
+        "DTO force un cache HTTP",
+        "DTO remplace le serializer"
+      ],
+      "correct_answers": [
+        "DTO ne risque pas d'écraser des colonnes non chargées lors d'un flush"
+      ],
+      "explanation": "Le DTO n'est pas managé, donc aucun flush dangereux ; il porte seulement les données nécessaires."
+    },
+    {
+      "id": 9,
+      "question": "Comment déclarer une requête en lecture seule pour éviter le tracking ?",
+      "type": "single_choice",
+      "options": [
+        "Utiliser `getArrayResult()` ou `setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)`",
+        "Appeler `flush()`",
+        "Mettre l'EM en mode auto-commit",
+        "Changer de driver"
+      ],
+      "correct_answers": [
+        "Utiliser `getArrayResult()` ou `setHint(Query::HINT_FORCE_PARTIAL_LOAD, true)`"
+      ],
+      "explanation": "Ces options évitent de gérer un graphe complet d'entités pour une lecture simple."
+    },
+    {
+      "id": 10,
+      "question": "Quel est l'intérêt des proxys pour le Lazy Loading ?",
+      "type": "single_choice",
+      "options": [
+        "Ne déclencher la requête SQL que quand la relation est réellement accédée",
+        "Compiler le schéma",
+        "Forcer l'eager loading",
+        "Créer des migrations"
+      ],
+      "correct_answers": [
+        "Ne déclencher la requête SQL que quand la relation est réellement accédée"
+      ],
+      "explanation": "Les proxys différeront la requête jusqu'à l'accès effectif aux données."
     }
   ]
 }

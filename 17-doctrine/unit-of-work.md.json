@@ -4,6 +4,25 @@
   "questions": [
     {
       "id": 1,
+      "question": "Quels sont les 4 états d'une entité selon l'Unit of Work ?",
+      "type": "multiple_choice",
+      "options": [
+        "New (pas d'ID, pas suivie)",
+        "Managed (suivie par l'EM)",
+        "Detached (connue en BDD mais non suivie)",
+        "Removed (marquée pour suppression)",
+        "Ghost"
+      ],
+      "correct_answers": [
+        "New (pas d'ID, pas suivie)",
+        "Managed (suivie par l'EM)",
+        "Detached (connue en BDD mais non suivie)",
+        "Removed (marquée pour suppression)"
+      ],
+      "explanation": "Ce sont les 4 états cités ; 'Ghost' n'est pas un état officiel."
+    },
+    {
+      "id": 2,
       "question": "Quel est le rôle de la méthode `persist($entity)` ?",
       "type": "single_choice",
       "options": [
@@ -18,7 +37,7 @@
       "explanation": "`persist` ne génère pas de SQL. Il enregistre juste l'objet dans le UnitOfWork."
     },
     {
-      "id": 2,
+      "id": 3,
       "question": "Que fait la méthode `flush()` ?",
       "type": "single_choice",
       "options": [
@@ -33,7 +52,7 @@
       "explanation": "C'est le point de synchronisation. C'est là que la magie opère."
     },
     {
-      "id": 3,
+      "id": 4,
       "question": "Si vous modifiez une entité déjà gérée (récupérée via `find`), devez-vous appeler `persist()` avant le `flush()` ?",
       "type": "single_choice",
       "options": [
@@ -48,7 +67,7 @@
       "explanation": "Le `persist` est inutile pour les objets déjà gérés, bien que l'appeler ne provoque pas d'erreur."
     },
     {
-      "id": 4,
+      "id": 5,
       "question": "Pourquoi faut-il utiliser `$em->clear()` lors des traitements par lots (Batch Processing) de milliers d'entités ?",
       "type": "single_choice",
       "options": [
@@ -61,6 +80,81 @@
         "Pour détacher toutes les entités de l'EntityManager et libérer la mémoire PHP, évitant ainsi les fuites de mémoire (Memory Leaks)."
       ],
       "explanation": "L'EntityManager garde une référence à tous les objets gérés. Sans `clear`, la mémoire ne fait que grossir jusqu'au crash."
+    },
+    {
+      "id": 6,
+      "question": "Quelle différence entre `clear()` et `detach($entity)` ?",
+      "type": "single_choice",
+      "options": [
+        "`clear()` détache toutes les entités, `detach()` une seule",
+        "`detach()` efface la table",
+        "Aucune, ce sont des alias",
+        "`clear()` ferme la connexion DB"
+      ],
+      "correct_answers": [
+        "`clear()` détache toutes les entités, `detach()` une seule"
+      ],
+      "explanation": "clear purge tout le contexte ; detach ne concerne qu'une instance."
+    },
+    {
+      "id": 7,
+      "question": "Quel est l'effet d'un `remove($entity)` sur une entité Managed ?",
+      "type": "single_choice",
+      "options": [
+        "Elle est marquée Removed et supprimée au prochain flush",
+        "Elle est immédiatement supprimée sans flush",
+        "Elle devient New",
+        "Elle devient Detached sans suppression"
+      ],
+      "correct_answers": [
+        "Elle est marquée Removed et supprimée au prochain flush"
+      ],
+      "explanation": "remove marque l'entité ; la suppression SQL s'exécute au flush."
+    },
+    {
+      "id": 8,
+      "question": "Quel mécanisme évite de relire en base une entité déjà chargée ?",
+      "type": "single_choice",
+      "options": [
+        "Identity Map",
+        "Dirty Checking",
+        "Proxy",
+        "Cache HTTP"
+      ],
+      "correct_answers": [
+        "Identity Map"
+      ],
+      "explanation": "L'Identity Map retourne la même instance si déjà chargée."
+    },
+    {
+      "id": 9,
+      "question": "Comment Doctrine sait-il qu'un UPDATE est nécessaire lors du flush ?",
+      "type": "single_choice",
+      "options": [
+        "Dirty Checking compare l'état original et l'état courant des entités Managed",
+        "Il exécute toujours un UPDATE",
+        "Il relit en base à chaque fois",
+        "Il demande au développeur"
+      ],
+      "correct_answers": [
+        "Dirty Checking compare l'état original et l'état courant des entités Managed"
+      ],
+      "explanation": "Le suivi des changements déclenche uniquement les UPDATE nécessaires."
+    },
+    {
+      "id": 10,
+      "question": "Quel ordre de bonnes pratiques pour un traitement par lot est recommandé ?",
+      "type": "single_choice",
+      "options": [
+        "Traitement -> flush périodique -> clear périodique",
+        "clear avant tout -> jamais flush",
+        "flush à chaque entité sans clear",
+        "Aucune importance"
+      ],
+      "correct_answers": [
+        "Traitement -> flush périodique -> clear périodique"
+      ],
+      "explanation": "On flush puis clear par lots (ex: tous les 100) pour limiter mémoire/transactions."
     }
   ]
 }
