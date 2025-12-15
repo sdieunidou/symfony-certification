@@ -76,6 +76,81 @@
         "À stocker l'état de la validation et ajouter de nouvelles violations."
       ],
       "explanation": "Il fournit les méthodes `buildViolation()` et connaît le chemin de la propriété courante."
+    },
+    {
+      "id": 6,
+      "question": "Quelle est la séparation fondamentale entre une `Constraint` et un `ConstraintValidator` ?",
+      "type": "single_choice",
+      "options": [
+        "La Constraint contient la logique, le Validator contient les options.",
+        "La Constraint est un DTO (définition/options), le ConstraintValidator contient la logique de validation.",
+        "Ils sont identiques.",
+        "La Constraint est dépréciée."
+      ],
+      "correct_answers": [
+        "La Constraint est un DTO (définition/options), le ConstraintValidator contient la logique de validation."
+      ],
+      "explanation": "Cette séparation permet de réutiliser la même contrainte avec différentes options, tandis que le validateur implémente la logique une seule fois."
+    },
+    {
+      "id": 7,
+      "question": "Comment le Validator trouve-t-il le `ConstraintValidator` approprié pour une contrainte donnée ?",
+      "type": "single_choice",
+      "options": [
+        "Par convention de nommage : `MyConstraint` cherche `MyConstraintValidator`.",
+        "En utilisant la méthode `validatedBy()` de la contrainte qui retourne le nom du service.",
+        "Les deux méthodes sont possibles : convention de nommage ou `validatedBy()`.",
+        "En cherchant dans un fichier de configuration YAML."
+      ],
+      "correct_answers": [
+        "Les deux méthodes sont possibles : convention de nommage ou `validatedBy()`."
+      ],
+      "explanation": "Par défaut, Symfony cherche `MyConstraintValidator`. Si vous voulez un nom différent, surchargez `validatedBy()` dans la contrainte."
+    },
+    {
+      "id": 8,
+      "question": "Les `ConstraintValidator` sont-ils des services Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "Non, ils sont instanciés manuellement.",
+        "Oui, ils sont enregistrés comme services et peuvent donc avoir des dépendances injectées.",
+        "Seulement si on les configure explicitement dans `services.yaml`.",
+        "Uniquement les validateurs personnalisés."
+      ],
+      "correct_answers": [
+        "Oui, ils sont enregistrés comme services et peuvent donc avoir des dépendances injectées."
+      ],
+      "explanation": "Avec `autoconfigure: true`, les validateurs sont automatiquement tagués et peuvent recevoir des services (EntityManager, Logger, etc.)."
+    },
+    {
+      "id": 9,
+      "question": "Qu'est-ce qu'un `ClassMetadata` dans le contexte de la validation ?",
+      "type": "single_choice",
+      "options": [
+        "Les métadonnées Doctrine d'une entité.",
+        "Un objet contenant toutes les contraintes d'une classe, généré par le `MetadataFactory`.",
+        "Un fichier YAML de configuration.",
+        "Une interface PHP."
+      ],
+      "correct_answers": [
+        "Un objet contenant toutes les contraintes d'une classe, généré par le `MetadataFactory`."
+      ],
+      "explanation": "Le `MetadataFactory` lit les attributs/YAML et produit un `ClassMetadata` qui décrit toutes les contraintes applicables à la classe."
+    },
+    {
+      "id": 10,
+      "question": "Le Validator valide-t-il uniquement les contraintes appartenant aux groupes demandés ?",
+      "type": "single_choice",
+      "options": [
+        "Non, toutes les contraintes sont toujours validées.",
+        "Oui, par défaut il ne valide que les contraintes du groupe `Default`, ou les groupes explicitement passés à `validate()`.",
+        "Seulement si l'option `strict_groups` est activée.",
+        "Cela dépend de la configuration globale."
+      ],
+      "correct_answers": [
+        "Oui, par défaut il ne valide que les contraintes du groupe `Default`, ou les groupes explicitement passés à `validate()`."
+      ],
+      "explanation": "Le système de groupes permet de valider différemment un même objet selon le contexte (inscription vs édition)."
     }
   ]
 }

@@ -76,6 +76,81 @@
         "Parce que ce ne sont pas des services (les entités sont des objets de données, le Kernel est le cœur)."
       ],
       "explanation": "Les entités sont instanciées par Doctrine ou manuellement, pas par le conteneur."
+    },
+    {
+      "id": 6,
+      "question": "Que permet la clé `exclude` dans la section `App\\` ?",
+      "type": "single_choice",
+      "options": [
+        "Ne pas charger certains répertoires/fichiers en tant que services",
+        "Supprimer les services du cache",
+        "Rendre les services publics",
+        "Désactiver l'autowiring"
+      ],
+      "correct_answers": [
+        "Ne pas charger certains répertoires/fichiers en tant que services"
+      ],
+      "explanation": "Prévient l'enregistrement d'éléments qui ne sont pas des services."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi placer `App\\` (service discovery) en haut du fichier `services.yaml` ?",
+      "type": "single_choice",
+      "options": [
+        "Pour des raisons alphabétiques",
+        "Pour que les définitions spécifiques en dessous puissent surcharger les génériques",
+        "Pour rendre les services publics",
+        "Parce que Composer l'exige"
+      ],
+      "correct_answers": [
+        "Pour que les définitions spécifiques en dessous puissent surcharger les génériques"
+      ],
+      "explanation": "L'ordre détermine quelle définition l'emporte."
+    },
+    {
+      "id": 8,
+      "question": "Quelle option d'attribut permet d'activer un service uniquement dans certains environnements ?",
+      "type": "single_choice",
+      "options": [
+        "`#[When(env: 'dev')]` ou `#[WhenNot(env: 'dev')]`",
+        "`#[EnvOnly]`",
+        "`#[Profile('dev')]`",
+        "`#[Environment('dev')]`"
+      ],
+      "correct_answers": [
+        "`#[When(env: 'dev')]` ou `#[WhenNot(env: 'dev')]`"
+      ],
+      "explanation": "Les attributs When/WhenNot restreignent l'enregistrement par env."
+    },
+    {
+      "id": 9,
+      "question": "Comment retirer un service uniquement dans l'environnement de test ?",
+      "type": "single_choice",
+      "options": [
+        "Dans `config/services_test.php`, appeler `$services->remove(Service::class);`",
+        "Mettre public: false",
+        "Supprimer le fichier",
+        "Mettre autowire: false"
+      ],
+      "correct_answers": [
+        "Dans `config/services_test.php`, appeler `$services->remove(Service::class);`"
+      ],
+      "explanation": "Le fichier spécifique à l'env peut enlever une définition."
+    },
+    {
+      "id": 10,
+      "question": "Quel piège avec les imports de répertoires multiples utilisant `namespace` ?",
+      "type": "single_choice",
+      "options": [
+        "Oublier de définir `namespace` provoque des collisions d'IDs de services",
+        "Cela rend les services publics",
+        "Cela désactive l'autowiring",
+        "Cela casse le cache"
+      ],
+      "correct_answers": [
+        "Oublier de définir `namespace` provoque des collisions d'IDs de services"
+      ],
+      "explanation": "Plusieurs ressources sous le même namespace sans préciser `namespace` peuvent écraser des services."
     }
   ]
 }

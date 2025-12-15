@@ -76,6 +76,84 @@
         "Non, jamais. Il retourne une liste d'erreurs."
       ],
       "explanation": "C'est au développeur de vérifier la taille de la liste (`count($errors) > 0`) et d'agir en conséquence (lancer une exception, afficher un message, etc.)."
+    },
+    {
+      "id": 6,
+      "question": "Quelles sont les sources de métadonnées de validation supportées par Symfony ?",
+      "type": "multiple_choice",
+      "options": [
+        "Attributs PHP (recommandé en Symfony 7).",
+        "Fichiers YAML (`config/validator/*.yaml`).",
+        "Fichiers XML.",
+        "Méthode statique `loadValidatorMetadata` (rare)."
+      ],
+      "correct_answers": [
+        "Attributs PHP (recommandé en Symfony 7).",
+        "Fichiers YAML (`config/validator/*.yaml`).",
+        "Fichiers XML.",
+        "Méthode statique `loadValidatorMetadata` (rare)."
+      ],
+      "explanation": "Toutes ces méthodes sont supportées. Les attributs PHP sont la méthode moderne recommandée."
+    },
+    {
+      "id": 7,
+      "question": "Comment accéder aux détails d'une violation spécifique dans une `ConstraintViolationList` ?",
+      "type": "single_choice",
+      "options": [
+        "Via `$errors->getMessage($index)`.",
+        "En itérant sur la liste : chaque élément est un `ConstraintViolation` avec `getMessage()`, `getPropertyPath()`, `getInvalidValue()`.",
+        "Via `$errors->getViolations()`.",
+        "Les violations ne sont pas accessibles individuellement."
+      ],
+      "correct_answers": [
+        "En itérant sur la liste : chaque élément est un `ConstraintViolation` avec `getMessage()`, `getPropertyPath()`, `getInvalidValue()`."
+      ],
+      "explanation": "La liste est itérable et countable. Chaque élément est un objet `ConstraintViolation` avec ses propres méthodes."
+    },
+    {
+      "id": 8,
+      "question": "Peut-on valider un tableau associatif brut (sans mapper sur un objet) avec le service Validator ?",
+      "type": "single_choice",
+      "options": [
+        "Non, il faut toujours créer une classe.",
+        "Oui, en utilisant la contrainte `Collection` et en passant le tableau et les contraintes à `validate()`.",
+        "Seulement avec des annotations.",
+        "Uniquement en mode debug."
+      ],
+      "correct_answers": [
+        "Oui, en utilisant la contrainte `Collection` et en passant le tableau et les contraintes à `validate()`."
+      ],
+      "explanation": "C'est très utile pour valider des données JSON décodées sans créer de DTOs intermédiaires."
+    },
+    {
+      "id": 9,
+      "question": "Quelle est la différence entre valider un objet via le service Validator et via le composant Form ?",
+      "type": "single_choice",
+      "options": [
+        "Il n'y a aucune différence.",
+        "Le composant Form utilise le Validator en interne, mais ajoute des fonctionnalités (mapping, CSRF, etc.). Le Validator seul est plus léger et adapté aux APIs/DTOs.",
+        "Le Validator ne fonctionne que pour les entités Doctrine.",
+        "Le Form est déprécié en faveur du Validator."
+      ],
+      "correct_answers": [
+        "Le composant Form utilise le Validator en interne, mais ajoute des fonctionnalités (mapping, CSRF, etc.). Le Validator seul est plus léger et adapté aux APIs/DTOs."
+      ],
+      "explanation": "Le Validator est autonome et peut être utilisé indépendamment du composant Form pour valider des DTOs ou des données brutes."
+    },
+    {
+      "id": 10,
+      "question": "Quelle est la spécification standard qui a inspiré le composant Validator de Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "JSR-303 (Bean Validation de Java).",
+        "RFC 7807.",
+        "PSR-7.",
+        "W3C Validation."
+      ],
+      "correct_answers": [
+        "JSR-303 (Bean Validation de Java)."
+      ],
+      "explanation": "Le Validator Symfony s'inspire de la spécification Bean Validation (JSR-303) de Java, adaptée à PHP."
     }
   ]
 }

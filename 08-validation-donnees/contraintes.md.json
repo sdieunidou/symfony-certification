@@ -106,6 +106,81 @@
         "`DivisibleBy`"
       ],
       "explanation": "`#[Assert\\DivisibleBy(0.5)]` assure que le nombre est divisible sans reste."
+    },
+    {
+      "id": 8,
+      "question": "Quelle est la différence entre `NotNull` et `NotBlank` ?",
+      "type": "single_choice",
+      "options": [
+        "Ils sont identiques.",
+        "`NotNull` accepte les chaînes vides (`''`) mais refuse `null`. `NotBlank` refuse à la fois `null`, `''`, `false`, et les tableaux vides.",
+        "`NotBlank` est déprécié.",
+        "`NotNull` est plus strict."
+      ],
+      "correct_answers": [
+        "`NotNull` accepte les chaînes vides (`''`) mais refuse `null`. `NotBlank` refuse à la fois `null`, `''`, `false`, et les tableaux vides."
+      ],
+      "explanation": "`NotBlank` est généralement préféré pour les champs obligatoires car il vérifie que la valeur n'est pas 'vide' au sens large."
+    },
+    {
+      "id": 9,
+      "question": "Quelle contrainte permet de vérifier qu'un email n'a pas été compromis (via haveibeenpwned) ?",
+      "type": "single_choice",
+      "options": [
+        "`Email`",
+        "`NotCompromisedPassword`",
+        "`SecureEmail`",
+        "`SafePassword`"
+      ],
+      "correct_answers": [
+        "`NotCompromisedPassword`"
+      ],
+      "explanation": "Cette contrainte vérifie si le mot de passe (ou l'email) apparaît dans la base de données haveibeenpwned."
+    },
+    {
+      "id": 10,
+      "question": "Quelle contrainte permet de détecter les caractères suspects (homoglyphes, caractères invisibles) dans une chaîne ?",
+      "type": "single_choice",
+      "options": [
+        "`NoSuspiciousCharacters`",
+        "`SafeString`",
+        "`CleanText`",
+        "`NoInvisibleChars`"
+      ],
+      "correct_answers": [
+        "`NoSuspiciousCharacters`"
+      ],
+      "explanation": "Cette contrainte de sécurité détecte les caractères qui peuvent être utilisés pour des attaques (homoglyphes, caractères de contrôle invisibles)."
+    },
+    {
+      "id": 11,
+      "question": "Quelle contrainte permet de valider qu'un mot de passe correspond au mot de passe actuel de l'utilisateur (pour changement de MDP) ?",
+      "type": "single_choice",
+      "options": [
+        "`CurrentPassword`",
+        "`UserPassword`",
+        "`MatchPassword`",
+        "`VerifyPassword`"
+      ],
+      "correct_answers": [
+        "`UserPassword`"
+      ],
+      "explanation": "Cette contrainte vérifie que la valeur correspond au mot de passe actuel de l'utilisateur authentifié, utile pour confirmer avant un changement."
+    },
+    {
+      "id": 12,
+      "question": "Quel mode de validation d'email est le plus strict dans la contrainte `Email` ?",
+      "type": "single_choice",
+      "options": [
+        "`loose` (défaut).",
+        "`html5`.",
+        "`strict`.",
+        "`rfc5322`."
+      ],
+      "correct_answers": [
+        "`strict`."
+      ],
+      "explanation": "Le mode `strict` est le plus restrictif. Le mode par défaut (`loose`) peut parfois accepter des emails invalides selon certaines interprétations de la RFC."
     }
   ]
 }

@@ -76,6 +76,81 @@
         "Oui, les contraintes de la classe parente sont automatiquement prises en compte si le groupe `Default` est validé."
       ],
       "explanation": "L'héritage des métadonnées de validation fonctionne nativement avec l'héritage PHP."
+    },
+    {
+      "id": 6,
+      "question": "Si une contrainte appartient à plusieurs groupes (ex: `groups: ['registration', 'profile']`), quand sera-t-elle validée ?",
+      "type": "single_choice",
+      "options": [
+        "Elle sera validée uniquement si TOUS les groupes sont demandés.",
+        "Elle sera validée si AU MOINS UN des groupes est demandé (intersection).",
+        "Elle sera validée deux fois (une fois par groupe).",
+        "Cela dépend de la configuration."
+      ],
+      "correct_answers": [
+        "Elle sera validée si AU MOINS UN des groupes est demandé (intersection)."
+      ],
+      "explanation": "Une contrainte est validée si au moins un de ses groupes correspond aux groupes demandés lors de la validation."
+    },
+    {
+      "id": 7,
+      "question": "Dans un formulaire, quelle est la valeur par défaut de l'option `validation_groups` si elle n'est pas spécifiée ?",
+      "type": "single_choice",
+      "options": [
+        "`['Default']`",
+        "`null` (tous les groupes).",
+        "Le nom de la classe de l'entité.",
+        "Aucun groupe n'est validé."
+      ],
+      "correct_answers": [
+        "`['Default']`"
+      ],
+      "explanation": "Par défaut, le formulaire valide le groupe `Default`, qui correspond aux contraintes sans groupe explicite."
+    },
+    {
+      "id": 8,
+      "question": "Peut-on utiliser une chaîne de caractères simple au lieu d'un tableau pour `validation_groups` dans un formulaire ?",
+      "type": "single_choice",
+      "options": [
+        "Non, il faut toujours un tableau.",
+        "Oui, `validation_groups: 'registration'` est équivalent à `['registration']`.",
+        "Seulement pour le groupe `Default`.",
+        "Uniquement avec une closure."
+      ],
+      "correct_answers": [
+        "Oui, `validation_groups: 'registration'` est équivalent à `['registration']`."
+      ],
+      "explanation": "Symfony accepte une chaîne simple qui sera convertie en tableau à un seul élément."
+    },
+    {
+      "id": 9,
+      "question": "Quelle est la meilleure pratique concernant l'utilisation de nombreux groupes de validation sur une même entité ?",
+      "type": "single_choice",
+      "options": [
+        "C'est toujours la meilleure approche, peu importe le nombre de groupes.",
+        "Parfois, créer deux DTOs distincts (`RegistrationDto`, `ProfileDto`) est plus propre que de bourrer l'entité User de groupes conditionnels.",
+        "Il faut toujours utiliser des groupes plutôt que des DTOs séparés.",
+        "Les groupes sont dépréciés en faveur des DTOs."
+      ],
+      "correct_answers": [
+        "Parfois, créer deux DTOs distincts (`RegistrationDto`, `ProfileDto`) est plus propre que de bourrer l'entité User de groupes conditionnels."
+      ],
+      "explanation": "Trop de groupes rendent le code difficile à lire et maintenir. Les DTOs séparés peuvent être plus clairs pour des contextes très différents."
+    },
+    {
+      "id": 10,
+      "question": "Si vous validez un objet avec `$validator->validate($user, null, ['registration'])`, que signifie le deuxième paramètre `null` ?",
+      "type": "single_choice",
+      "options": [
+        "Il indique qu'aucune contrainte ne doit être appliquée.",
+        "Il signifie 'utiliser les contraintes définies sur l'objet' (métadonnées de la classe).",
+        "C'est une erreur, il faut passer un tableau vide.",
+        "Il désactive la validation."
+      ],
+      "correct_answers": [
+        "Il signifie 'utiliser les contraintes définies sur l'objet' (métadonnées de la classe)."
+      ],
+      "explanation": "Le deuxième paramètre permet de passer des contraintes ad-hoc. `null` signifie utiliser les contraintes définies via attributs/YAML sur la classe."
     }
   ]
 }

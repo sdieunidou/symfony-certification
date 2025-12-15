@@ -76,6 +76,81 @@
         "Cela cache les dépendances réelles de la classe et couple fortement le code au framework (Service Locator pattern)."
       ],
       "explanation": "Il faut toujours préférer l'injection explicite des dépendances nécessaires."
+    },
+    {
+      "id": 6,
+      "question": "Qu'est-ce qu'un service synthétique dans le conteneur ?",
+      "type": "single_choice",
+      "options": [
+        "Un service généré automatiquement",
+        "Un service dont l'instance est fournie de l'extérieur et non créée par le conteneur",
+        "Un alias",
+        "Un service lazy"
+      ],
+      "correct_answers": [
+        "Un service dont l'instance est fournie de l'extérieur et non créée par le conteneur"
+      ],
+      "explanation": "Le conteneur attend qu'on lui fournisse l'objet (ex: kernel, request_stack)."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi les services sont-ils privés par défaut depuis Symfony 4 ?",
+      "type": "single_choice",
+      "options": [
+        "Pour empêcher l'autowiring",
+        "Pour permettre au compilateur d'optimiser (inliner/supprimer) et encourager l'injection",
+        "Pour des raisons de sécurité",
+        "Parce que les publics sont dépréciés"
+      ],
+      "correct_answers": [
+        "Pour permettre au compilateur d'optimiser (inliner/supprimer) et encourager l'injection"
+      ],
+      "explanation": "La visibilité privée libère des optimisations et évite l'anti-pattern service locator."
+    },
+    {
+      "id": 8,
+      "question": "Quelle commande vérifie la résolution des variables d'environnement dans le conteneur (Symfony 7.2+) ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console lint:container --resolve-env-vars`",
+        "`php bin/console debug:env`",
+        "`php bin/console cache:clear`",
+        "`php bin/console about`"
+      ],
+      "correct_answers": [
+        "`php bin/console lint:container --resolve-env-vars`"
+      ],
+      "explanation": "Assure l'existence et la compatibilité des env vars utilisées dans les defs."
+    },
+    {
+      "id": 9,
+      "question": "Quelle différence entre un service public et privé concernant `$container->get()` ?",
+      "type": "single_choice",
+      "options": [
+        "Aucune",
+        "Seuls les services publics sont accessibles via `$container->get()`",
+        "Seuls les services privés sont accessibles",
+        "Tous les services sont accessibles en dev"
+      ],
+      "correct_answers": [
+        "Seuls les services publics sont accessibles via `$container->get()`"
+      ],
+      "explanation": "Les services privés sont destinés à l'injection uniquement."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi `debug:container` en prod peut montrer moins de services qu'en dev ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que le conteneur prod est optimisé et supprime les services privés inutilisés",
+        "Parce que les logs sont désactivés",
+        "Parce que le cache est vide",
+        "Parce que les contrôleurs sont supprimés"
+      ],
+      "correct_answers": [
+        "Parce que le conteneur prod est optimisé et supprime les services privés inutilisés"
+      ],
+      "explanation": "Le RemovingPass élimine ce qui n'est pas référencé."
     }
   ]
 }

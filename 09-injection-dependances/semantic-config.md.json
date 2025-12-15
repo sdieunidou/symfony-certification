@@ -61,6 +61,96 @@
         "PrependExtensionInterface"
       ],
       "explanation": "Elle ajoute la méthode `prepend()` qui est exécutée avant le chargement des autres extensions."
+    },
+    {
+      "id": 5,
+      "question": "Quel est le rôle de `processConfiguration()` dans une Extension de bundle ?",
+      "type": "single_choice",
+      "options": [
+        "Fusionner les configs utilisateur et les valider selon la classe Configuration",
+        "Charger les routes",
+        "Compiler le container",
+        "Ajouter des tags"
+      ],
+      "correct_answers": [
+        "Fusionner les configs utilisateur et les valider selon la classe Configuration"
+      ],
+      "explanation": "Elle retourne le tableau final typé à partir du schema."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi définir la config d'un bundle via le TreeBuilder plutôt que lire directement un YAML ?",
+      "type": "single_choice",
+      "options": [
+        "Pour bénéficier de la validation, des valeurs par défaut et des messages d'erreur précis",
+        "Parce que YAML est déprécié",
+        "Parce que le kernel l'exige",
+        "Parce que c'est plus rapide en prod"
+      ],
+      "correct_answers": [
+        "Pour bénéficier de la validation, des valeurs par défaut et des messages d'erreur précis"
+      ],
+      "explanation": "Le Config component garantit un schéma strict pour l'utilisateur."
+    },
+    {
+      "id": 7,
+      "question": "Comment exposer un paramètre issu de la config utilisateur au conteneur de services ?",
+      "type": "single_choice",
+      "options": [
+        "Via `$container->setParameter('acme.x', $config['x']);` dans l'Extension",
+        "Via `.env` uniquement",
+        "Automatiquement, sans code",
+        "En ajoutant un alias"
+      ],
+      "correct_answers": [
+        "Via `$container->setParameter('acme.x', $config['x']);` dans l'Extension"
+      ],
+      "explanation": "L'Extension sert de pont entre config utilisateur et conteneur."
+    },
+    {
+      "id": 8,
+      "question": "Quel mécanisme permet à un bundle A de préconfigurer un bundle B avant son chargement ?",
+      "type": "single_choice",
+      "options": [
+        "Implémenter `PrependExtensionInterface` et sa méthode `prepend()`",
+        "Créer un CompilerPass",
+        "Utiliser autoconfigure",
+        "Mettre public: true"
+      ],
+      "correct_answers": [
+        "Implémenter `PrependExtensionInterface` et sa méthode `prepend()`"
+      ],
+      "explanation": "prepend() est appelée avant le load des autres extensions."
+    },
+    {
+      "id": 9,
+      "question": "Quel nœud de `TreeBuilder` utiliser pour une liste de scalaires ?",
+      "type": "single_choice",
+      "options": [
+        "scalarNode",
+        "arrayNode avec `scalarPrototype()`",
+        "booleanNode",
+        "enumNode"
+      ],
+      "correct_answers": [
+        "arrayNode avec `scalarPrototype()`"
+      ],
+      "explanation": "Permet une liste de scalaires validée."
+    },
+    {
+      "id": 10,
+      "question": "Que se passe-t-il si une clé requise (marquée `isRequired()->cannotBeEmpty()`) manque dans la config utilisateur ?",
+      "type": "single_choice",
+      "options": [
+        "Une exception de configuration est levée avec un message précis",
+        "Elle vaut null",
+        "Elle est ignorée",
+        "Elle prend une valeur par défaut"
+      ],
+      "correct_answers": [
+        "Une exception de configuration est levée avec un message précis"
+      ],
+      "explanation": "Le composant Config valide strictement les champs requis."
     }
   ]
 }

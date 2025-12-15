@@ -91,6 +91,66 @@
         "En définissant `autoconfigure: false` explicitement pour ce service."
       ],
       "explanation": "Cela permet d'avoir un contrôle total sur la configuration du service, sans interférence automatique."
+    },
+    {
+      "id": 7,
+      "question": "Quelle différence entre `#[AutoconfigureTag]` et l'attribut `#[AsTaggedItem]` appliqué sur la même classe ?",
+      "type": "single_choice",
+      "options": [
+        "`AutoconfigureTag` pose le tag, `AsTaggedItem` configure l'index/priorité pour l'injection",
+        "`AsTaggedItem` remplace `AutoconfigureTag`",
+        "Aucune, ce sont des synonymes",
+        "`AsTaggedItem` crée un alias de service"
+      ],
+      "correct_answers": [
+        "`AutoconfigureTag` pose le tag, `AsTaggedItem` configure l'index/priorité pour l'injection"
+      ],
+      "explanation": "Les deux sont souvent combinés pour enrichir le tag ajouté automatiquement."
+    },
+    {
+      "id": 8,
+      "question": "Dans la section `_instanceof`, que se passe-t-il si deux règles matchent la même classe ?",
+      "type": "single_choice",
+      "options": [
+        "Les deux s'appliquent et leurs tags/appels se cumulent",
+        "La dernière écrase la première",
+        "Erreur de compilation",
+        "Seule la première est prise"
+      ],
+      "correct_answers": [
+        "Les deux s'appliquent et leurs tags/appels se cumulent"
+      ],
+      "explanation": "Le ResolveInstanceofConditionalsPass fusionne les configurations, priorité aux règles les plus spécifiques."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi l'autoconfiguration n'ajoute-t-elle pas un tag si le service a `autoconfigure: false` mais l'interface est autoconfigurée globalement ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que la définition locale prime toujours sur les règles automatiques",
+        "Parce que l'interface n'est pas supportée",
+        "Parce que le tag doit être public",
+        "Parce que les services privés sont ignorés"
+      ],
+      "correct_answers": [
+        "Parce que la définition locale prime toujours sur les règles automatiques"
+      ],
+      "explanation": "La désactivation locale coupe le moteur d'autoconfiguration pour ce service."
+    },
+    {
+      "id": 10,
+      "question": "Quel piège classique avec `autoconfigure` lors d'une migration d'un bundle custom ?",
+      "type": "single_choice",
+      "options": [
+        "Oublier d'ajouter les tags custom dans `_instanceof`, donc le plugin manager ne reçoit rien",
+        "Mettre autowire à false",
+        "Mettre les services en public",
+        "Activer le cache"
+      ],
+      "correct_answers": [
+        "Oublier d'ajouter les tags custom dans `_instanceof`, donc le plugin manager ne reçoit rien"
+      ],
+      "explanation": "Sans règle d'autoconfiguration, les services implémentant vos interfaces maison ne seront jamais tagués."
     }
   ]
 }

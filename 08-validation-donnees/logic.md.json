@@ -76,6 +76,81 @@
         "Directement via `this.propertyName` (si un getter existe, il sera utilisé)."
       ],
       "explanation": "L'ExpressionLanguage utilise le `PropertyAccessor` en coulisses."
+    },
+    {
+      "id": 6,
+      "question": "Quelle est la différence principale entre `Expression` et `When` ?",
+      "type": "single_choice",
+      "options": [
+        "`Expression` valide une valeur, `When` active conditionnellement d'autres contraintes.",
+        "Ils sont identiques.",
+        "`When` est déprécié en faveur de `Expression`.",
+        "`Expression` ne fonctionne que sur les classes."
+      ],
+      "correct_answers": [
+        "`Expression` valide une valeur, `When` active conditionnellement d'autres contraintes."
+      ],
+      "explanation": "`Expression` retourne vrai/faux pour valider directement. `When` active un ensemble de contraintes seulement si l'expression est vraie."
+    },
+    {
+      "id": 7,
+      "question": "Dans une contrainte `Expression`, quelles variables sont disponibles dans le contexte d'évaluation ?",
+      "type": "single_choice",
+      "options": [
+        "Uniquement `this` (l'objet courant).",
+        "`this` (l'objet courant) et `value` (la valeur de la propriété si appliquée sur une propriété).",
+        "`this`, `value`, et `form`.",
+        "Aucune variable n'est disponible."
+      ],
+      "correct_answers": [
+        "`this` (l'objet courant) et `value` (la valeur de la propriété si appliquée sur une propriété)."
+      ],
+      "explanation": "`this` représente l'objet validé, `value` représente la valeur de la propriété si la contrainte est appliquée sur une propriété."
+    },
+    {
+      "id": 8,
+      "question": "Quel est l'avantage principal de `Sequentially` par rapport à une liste de contraintes normales ?",
+      "type": "single_choice",
+      "options": [
+        "Cela valide plus rapidement.",
+        "Cela améliore l'UX en affichant une seule erreur à la fois et évite d'exécuter des validations lourdes (regex) sur des données déjà invalides.",
+        "Cela permet de valider plusieurs propriétés.",
+        "Cela réduit le nombre de contraintes nécessaires."
+      ],
+      "correct_answers": [
+        "Cela améliore l'UX en affichant une seule erreur à la fois et évite d'exécuter des validations lourdes (regex) sur des données déjà invalides."
+      ],
+      "explanation": "L'arrêt au premier échec évite de bombarder l'utilisateur avec plusieurs erreurs pour le même champ et optimise les performances."
+    },
+    {
+      "id": 9,
+      "question": "Peut-on utiliser `When` avec une expression qui fait référence à plusieurs propriétés de l'objet ?",
+      "type": "single_choice",
+      "options": [
+        "Non, `When` ne peut référencer que la propriété courante.",
+        "Oui, l'expression peut accéder à toutes les propriétés de l'objet via `this.propertyName`.",
+        "Seulement si les propriétés sont publiques.",
+        "Uniquement avec des getters explicites."
+      ],
+      "correct_answers": [
+        "Oui, l'expression peut accéder à toutes les propriétés de l'objet via `this.propertyName`."
+      ],
+      "explanation": "L'ExpressionLanguage permet d'accéder à toutes les propriétés de l'objet, même privées (via getters)."
+    },
+    {
+      "id": 10,
+      "question": "Quelle contrainte est préférable pour des conditions simples basées sur l'état de l'objet : `When` ou des Groupes de validation dynamiques ?",
+      "type": "single_choice",
+      "options": [
+        "Les groupes sont toujours préférables.",
+        "`When` est généralement plus lisible pour des conditions simples basées sur l'état de l'objet.",
+        "Cela dépend de la version de Symfony.",
+        "Les deux sont équivalents."
+      ],
+      "correct_answers": [
+        "`When` est généralement plus lisible pour des conditions simples basées sur l'état de l'objet."
+      ],
+      "explanation": "`When` garde la logique conditionnelle près de la contrainte, tandis que les groupes dynamiques nécessitent une closure dans le formulaire."
     }
   ]
 }

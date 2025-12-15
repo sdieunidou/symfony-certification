@@ -76,6 +76,81 @@
         "À transformer la valeur d'une variable d'environnement à la volée (cast, trim, json_decode) lors de son injection."
       ],
       "explanation": "Cela permet de typer les variables d'environnement qui sont toujours des chaînes par défaut."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi injecter un paramètre via `%env(VAR)%` plutôt que le mettre en clair ?",
+      "type": "single_choice",
+      "options": [
+        "Pour respecter Twelve-Factor et changer la valeur par environnement sans redeployer",
+        "Pour aller plus vite",
+        "Pour activer le cache",
+        "Parce que YAML ne supporte pas les strings"
+      ],
+      "correct_answers": [
+        "Pour respecter Twelve-Factor et changer la valeur par environnement sans redeployer"
+      ],
+      "explanation": "Les env vars permettent de configurer l'app sans modifier le code."
+    },
+    {
+      "id": 7,
+      "question": "Comment injecter globalement un paramètre dans tous les arguments nommés `$adminEmail` ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `bind` dans `_defaults`",
+        "Avec autoconfigure",
+        "Avec un alias de service",
+        "En mettant public: true"
+      ],
+      "correct_answers": [
+        "Avec `bind` dans `_defaults`"
+      ],
+      "explanation": "Le binding par nom applique la valeur à tous les services."
+    },
+    {
+      "id": 8,
+      "question": "Quel est l'effet de `%kernel.debug%` injecté dans un service ?",
+      "type": "single_choice",
+      "options": [
+        "Renvoie un booléen selon l'env courant",
+        "Renvoie le dossier cache",
+        "Renvoie la racine projet",
+        "Renvoie la locale"
+      ],
+      "correct_answers": [
+        "Renvoie un booléen selon l'env courant"
+      ],
+      "explanation": "kernel.debug est un paramètre bool exposé par le kernel."
+    },
+    {
+      "id": 9,
+      "question": "Comment consommer un paramètre dans un contrôleur hérité d'`AbstractController` ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `$this->getParameter('param_name')`",
+        "Avec `$this->container->getParameter()` uniquement",
+        "Impossible",
+        "Via la Request"
+      ],
+      "correct_answers": [
+        "Avec `$this->getParameter('param_name')`"
+      ],
+      "explanation": "AbstractController expose un helper pour lire les paramètres."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi éviter de stocker des secrets en clair dans `parameters:` ?",
+      "type": "single_choice",
+      "options": [
+        "Ils seraient commités, mieux vaut `%env(APP_SECRET)%` ou le vault Symfony",
+        "Parce que YAML ne supporte pas les secrets",
+        "Parce que le conteneur ne lit pas parameters",
+        "Parce que cela casse le cache"
+      ],
+      "correct_answers": [
+        "Ils seraient commités, mieux vaut `%env(APP_SECRET)%` ou le vault Symfony"
+      ],
+      "explanation": "Les secrets doivent vivre hors du code source."
     }
   ]
 }

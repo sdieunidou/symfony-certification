@@ -61,6 +61,96 @@
         "En ajoutant `#[Assert\\Valid]` sur la propriété array."
       ],
       "explanation": "`#[Assert\\Valid]` fonctionne aussi sur les tableaux et les collections (Traversable), il itère sur chaque élément."
+    },
+    {
+      "id": 5,
+      "question": "Si vous validez un objet `Order` avec le groupe `registration`, quel groupe sera utilisé pour valider l'objet `Address` imbriqué (si `#[Valid]` est présent) ?",
+      "type": "single_choice",
+      "options": [
+        "Le groupe `Default` uniquement.",
+        "Le même groupe `registration` sera utilisé pour `Address`.",
+        "Aucun groupe, la validation en cascade ignore les groupes.",
+        "Le groupe défini dans l'option `groups` de `#[Valid]`."
+      ],
+      "correct_answers": [
+        "Le même groupe `registration` sera utilisé pour `Address`."
+      ],
+      "explanation": "Par défaut, les groupes sont propagés en cascade. Si `Address` n'a pas de contraintes dans le groupe `registration`, rien ne sera validé."
+    },
+    {
+      "id": 6,
+      "question": "Quelle est la profondeur maximale de validation en cascade par défaut ?",
+      "type": "single_choice",
+      "options": [
+        "1 niveau (uniquement les objets directs).",
+        "Illimitée, la validation descend récursivement tant qu'elle rencontre `#[Valid]`.",
+        "3 niveaux maximum.",
+        "Définie par l'option `maxDepth` de `#[Valid]`."
+      ],
+      "correct_answers": [
+        "Illimitée, la validation descend récursivement tant qu'elle rencontre `#[Valid]`."
+      ],
+      "explanation": "La validation descend récursivement dans l'arbre d'objets tant qu'elle rencontre `#[Valid]`, avec une protection contre les références circulaires."
+    },
+    {
+      "id": 7,
+      "question": "Dans le composant Form, la validation en cascade est-elle activée automatiquement pour les formulaires enfants ?",
+      "type": "single_choice",
+      "options": [
+        "Non, il faut toujours ajouter `#[Valid]` manuellement.",
+        "Oui, le composant Form ajoute automatiquement `#[Valid]` si vous imbriquez des formulaires (option `cascade_validation` est `true` par défaut).",
+        "Seulement si l'option `cascade_validation` est définie explicitement.",
+        "Uniquement pour les collections."
+      ],
+      "correct_answers": [
+        "Oui, le composant Form ajoute automatiquement `#[Valid]` si vous imbriquez des formulaires (option `cascade_validation` est `true` par défaut)."
+      ],
+      "explanation": "Pour la validation d'objets purs (API/DTO), il faut ajouter `#[Valid]` manuellement, mais les formulaires le font automatiquement."
+    },
+    {
+      "id": 8,
+      "question": "Que se passe-t-il si vous oubliez d'ajouter `#[Valid]` sur une propriété contenant un objet avec des contraintes ?",
+      "type": "single_choice",
+      "options": [
+        "Les contraintes de l'objet imbriqué sont quand même validées automatiquement.",
+        "Les contraintes de l'objet imbriqué ne seront PAS validées, même si elles existent.",
+        "Une exception est levée.",
+        "La validation échoue avec une erreur de configuration."
+      ],
+      "correct_answers": [
+        "Les contraintes de l'objet imbriqué ne seront PAS validées, même si elles existent."
+      ],
+      "explanation": "C'est la source d'erreur #1 : oublier `#[Valid]` signifie que les contraintes des sous-objets sont ignorées."
+    },
+    {
+      "id": 9,
+      "question": "Peut-on utiliser `#[Valid]` sur une propriété de type `Collection` (Doctrine) ?",
+      "type": "single_choice",
+      "options": [
+        "Non, uniquement sur les tableaux PHP natifs.",
+        "Oui, `#[Valid]` fonctionne aussi sur les objets `Traversable` comme `Collection`.",
+        "Seulement si on convertit d'abord en tableau.",
+        "Uniquement avec `#[Assert\\All([new Assert\\Valid()])]`."
+      ],
+      "correct_answers": [
+        "Oui, `#[Valid]` fonctionne aussi sur les objets `Traversable` comme `Collection`."
+      ],
+      "explanation": "Le validateur itère sur tout objet implémentant `Traversable`, y compris les `ArrayCollection` de Doctrine."
+    },
+    {
+      "id": 10,
+      "question": "Quelle option de `#[Valid]` permet de mapper les groupes de validation entre l'objet parent et l'enfant (ex: valider `Order` en `Default` déclenche `Address` en `Strict`) ?",
+      "type": "single_choice",
+      "options": [
+        "`groups`",
+        "`traverse`",
+        "`cascade_groups`",
+        "`map_groups`"
+      ],
+      "correct_answers": [
+        "`traverse`"
+      ],
+      "explanation": "L'option `traverse` permet de définir une correspondance complexe entre les groupes, mais c'est rarement nécessaire."
     }
   ]
 }

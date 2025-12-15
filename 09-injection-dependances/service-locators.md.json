@@ -76,6 +76,81 @@
         "`ServiceMethodsSubscriberTrait`"
       ],
       "explanation": "Introduit en Symfony 7.1, il utilise l'attribut `#[SubscribedService]` sur les méthodes."
+    },
+    {
+      "id": 6,
+      "question": "Comment marquer un service comme optionnel dans `getSubscribedServices()` ?",
+      "type": "single_choice",
+      "options": [
+        "En préfixant l'ID/type par `?`",
+        "En mettant public: true",
+        "En utilisant `#[Optional]`",
+        "Ce n'est pas possible"
+      ],
+      "correct_answers": [
+        "En préfixant l'ID/type par `?`"
+      ],
+      "explanation": "Symfony injectera `null` si le service manque."
+    },
+    {
+      "id": 7,
+      "question": "Quelle différence entre `ServiceCollectionInterface` et `ContainerInterface` pour un locator ?",
+      "type": "single_choice",
+      "options": [
+        "ServiceCollection est itérable et countable, ContainerInterface non",
+        "Aucune",
+        "ContainerInterface est public-only",
+        "ServiceCollection interdit les tags"
+      ],
+      "correct_answers": [
+        "ServiceCollection est itérable et countable, ContainerInterface non"
+      ],
+      "explanation": "Introduit en Symfony 7.1 pour itérer sur un locator."
+    },
+    {
+      "id": 8,
+      "question": "Quel avantage du Service Locator sur `#[TaggedIterator]` pour des handlers nombreux mais rarement utilisés ?",
+      "type": "single_choice",
+      "options": [
+        "Aucun",
+        "Le locator ne crée rien tant qu'on ne demande pas un handler précis",
+        "TaggedIterator est plus lent",
+        "TaggedIterator ne supporte pas les tags"
+      ],
+      "correct_answers": [
+        "Le locator ne crée rien tant qu'on ne demande pas un handler précis"
+      ],
+      "explanation": "Économie mémoire/CPU pour de larges collections."
+    },
+    {
+      "id": 9,
+      "question": "Comment construire un locator à partir d'un tag via attribut ?",
+      "type": "single_choice",
+      "options": [
+        "`#[AutowireLocator('app.tag')]`",
+        "`#[TaggedLocator('app.tag')]`",
+        "`#[ServiceLocatorTag('app.tag')]`",
+        "Ce n'est pas possible"
+      ],
+      "correct_answers": [
+        "`#[AutowireLocator('app.tag')]`"
+      ],
+      "explanation": "L'attribut accepte un tag en paramètre."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi les services dans un locator n'ont-ils pas besoin d'être publics ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que le locator est construit via le conteneur et respecte la visibilité interne",
+        "Parce qu'ils deviennent publics automatiquement",
+        "Parce que le locator ne vérifie pas la visibilité",
+        "Parce que les services publics sont interdits"
+      ],
+      "correct_answers": [
+        "Parce que le locator est construit via le conteneur et respecte la visibilité interne"
+      ],
+      "explanation": "Le locator peut fournir des services privés puisqu'il est généré au compile-time."
     }
   ]
 }

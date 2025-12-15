@@ -91,6 +91,66 @@
         "En utilisant `!abstract` comme valeur de l'argument."
       ],
       "explanation": "Cela oblige les services enfants à fournir une valeur pour cet argument spécifique."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi préférer `shared: false` plutôt qu'instancier manuellement un service ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que le conteneur gère toujours la même instance",
+        "Parce que le conteneur continue d'appliquer autowire/calls/configurator sur chaque nouvelle instance",
+        "Parce que c'est plus rapide",
+        "Parce que ça rend public le service"
+      ],
+      "correct_answers": [
+        "Parce que le conteneur continue d'appliquer autowire/calls/configurator sur chaque nouvelle instance"
+      ],
+      "explanation": "On garde la configuration centralisée même pour des prototypes."
+    },
+    {
+      "id": 8,
+      "question": "Comment marquer un service comme déprécié pour afficher un warning lors de son utilisation ?",
+      "type": "single_choice",
+      "options": [
+        "Avec l'option `deprecated: { package: 'pkg', version: '1.0', message: 'Use X' }`",
+        "En mettant public: false",
+        "En supprimant le service",
+        "En ajoutant un tag spécial"
+      ],
+      "correct_answers": [
+        "Avec l'option `deprecated: { package: 'pkg', version: '1.0', message: 'Use X' }`"
+      ],
+      "explanation": "Cette option fait lever un avis lors de la compilation/consommation."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi l'ordre des imports dans `services.yaml` est-il important ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'il détermine l'ordre d'exécution des CompilerPass",
+        "Parce que les définitions ultérieures écrasent les précédentes en cas de conflit",
+        "Parce que les services publics sont listés en dernier",
+        "Aucune importance"
+      ],
+      "correct_answers": [
+        "Parce que les définitions ultérieures écrasent les précédentes en cas de conflit"
+      ],
+      "explanation": "L'ordre dicte la résolution finale des définitions."
+    },
+    {
+      "id": 10,
+      "question": "Quel mécanisme utiliser pour résoudre une dépendance circulaire sans setter, tout en restant typé ?",
+      "type": "single_choice",
+      "options": [
+        "ServiceLocator / ServiceSubscriber pour retarder l'accès à la dépendance",
+        "Mettre public: true",
+        "Supprimer l'autowiring",
+        "Utiliser les variables globales"
+      ],
+      "correct_answers": [
+        "ServiceLocator / ServiceSubscriber pour retarder l'accès à la dépendance"
+      ],
+      "explanation": "Le locator permet un accès lazy sans casser le typage."
     }
   ]
 }

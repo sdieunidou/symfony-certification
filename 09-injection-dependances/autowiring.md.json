@@ -78,6 +78,83 @@
         "#[AutowireCallable]"
       ],
       "explanation": "Cela permet d'injecter une méthode spécifique d'un service comme si c'était un objet implémentant une interface fonctionnelle."
+    },
+    {
+      "id": 6,
+      "question": "Comment injecter une implémentation spécifique quand deux services implémentent la même interface et aucun alias par défaut n'est défini ?",
+      "type": "multiple_choice",
+      "options": [
+        "Attribuer un alias de service vers l'implémentation par défaut",
+        "Utiliser `#[Target('service_id')]` sur l'argument concerné",
+        "Utiliser `#[Autowire(service: 'service_id')]` sur l'argument",
+        "Renommer la variable"
+      ],
+      "correct_answers": [
+        "Attribuer un alias de service vers l'implémentation par défaut",
+        "Utiliser `#[Target('service_id')]` sur l'argument concerné",
+        "Utiliser `#[Autowire(service: 'service_id')]` sur l'argument"
+      ],
+      "explanation": "Alias global ou ciblage local via attributs résolvent l'ambiguïté."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi l'autowiring ne résout-il pas les arguments scalaires sans aide ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que les scalaires ne sont pas typés en PHP",
+        "Parce que le conteneur ne connaît pas la valeur attendue (pas d'ID/type pour matcher), il faut un bind ou `#[Autowire('%param%')]`",
+        "Parce que c'est déprécié",
+        "Parce qu'il faut les rendre publics"
+      ],
+      "correct_answers": [
+        "Parce que le conteneur ne connaît pas la valeur attendue (pas d'ID/type pour matcher), il faut un bind ou `#[Autowire('%param%')]`"
+      ],
+      "explanation": "Les scalaires requièrent une configuration explicite."
+    },
+    {
+      "id": 8,
+      "question": "Quelle est la particularité de l'autowiring sur les méthodes de contrôleurs ?",
+      "type": "single_choice",
+      "options": [
+        "Il est désactivé",
+        "Il fonctionne via le `ServiceValueResolver`, même sans construction de service",
+        "Il nécessite un attribut spécial",
+        "Il ne marche qu'en dev"
+      ],
+      "correct_answers": [
+        "Il fonctionne via le `ServiceValueResolver`, même sans construction de service"
+      ],
+      "explanation": "Les contrôleurs sont instanciés par le framework et résolus à la volée."
+    },
+    {
+      "id": 9,
+      "question": "Quel piège avec `#[Target]` si l'ID visé n'est pas autowirable ?",
+      "type": "single_choice",
+      "options": [
+        "Une erreur d'autowiring est levée à la compilation",
+        "Le service est ignoré silencieusement",
+        "Un autre service est injecté",
+        "Le conteneur bascule en public"
+      ],
+      "correct_answers": [
+        "Une erreur d'autowiring est levée à la compilation"
+      ],
+      "explanation": "Target exige que l'ID référencé existe et soit résolvable."
+    },
+    {
+      "id": 10,
+      "question": "Quel impact de performance l'autowiring a-t-il sur une application Symfony 7 en prod ?",
+      "type": "single_choice",
+      "options": [
+        "Important, car chaque requête utilise la réflexion",
+        "Négligeable : tout est résolu lors de la compilation du conteneur et généré en code PHP statique",
+        "Modéré uniquement sur les contrôleurs",
+        "Il double le temps de boot"
+      ],
+      "correct_answers": [
+        "Négligeable : tout est résolu lors de la compilation du conteneur et généré en code PHP statique"
+      ],
+      "explanation": "Le runtime utilise les classes dumpées, sans réflexion."
     }
   ]
 }

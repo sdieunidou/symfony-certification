@@ -76,6 +76,81 @@
         "Avec l'option `--name=mon_service` ou simplement en passant un argument."
       ],
       "explanation": "Exemple : `php bin/console debug:container mailer` affichera tous les services contenant 'mailer'."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi un service peut-il apparaître dans `debug:container` mais pas dans `debug:autowiring` ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'il est privé",
+        "Parce qu'il n'a pas d'alias de type (pas autowirable)",
+        "Parce qu'il est lazy",
+        "Parce que l'autowiring est désactivé en prod"
+      ],
+      "correct_answers": [
+        "Parce qu'il n'a pas d'alias de type (pas autowirable)"
+      ],
+      "explanation": "Il faut un alias de classe/interface pour qu'il soit proposé à l'autowiring."
+    },
+    {
+      "id": 7,
+      "question": "Quelle commande liste les types autowirables correspondant à 'logger' ?",
+      "type": "single_choice",
+      "options": [
+        "`php bin/console debug:autowiring logger`",
+        "`php bin/console debug:container logger`",
+        "`php bin/console list logger`",
+        "`php bin/console about`"
+      ],
+      "correct_answers": [
+        "`php bin/console debug:autowiring logger`"
+      ],
+      "explanation": "Permet de voir l'alias Psr\\Log\\LoggerInterface -> monolog.logger."
+    },
+    {
+      "id": 8,
+      "question": "Comment inspecter les arguments et tags d'un service privé spécifique ?",
+      "type": "single_choice",
+      "options": [
+        "Impossible car il est privé",
+        "En passant son ID exact à `debug:container ID`",
+        "En activant public: true",
+        "Avec debug:autowiring"
+      ],
+      "correct_answers": [
+        "En passant son ID exact à `debug:container ID`"
+      ],
+      "explanation": "debug:container accepte les services privés si on donne l'ID complet."
+    },
+    {
+      "id": 9,
+      "question": "Quel outil Symfony repère les services marqués comme dépréciés ?",
+      "type": "single_choice",
+      "options": [
+        "`debug:container --deprecations`",
+        "`debug:autowiring --deprecated`",
+        "`lint:container --deprecated`",
+        "`cache:clear --deprecations`"
+      ],
+      "correct_answers": [
+        "`debug:container --deprecations`"
+      ],
+      "explanation": "Affiche les services consommés malgré leur statut déprécié."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi `lint:container` est conseillé dans une pipeline CI ?",
+      "type": "single_choice",
+      "options": [
+        "Pour formater les YAML",
+        "Pour détecter tôt les erreurs d'autowiring/arguments manquants avant déploiement",
+        "Pour vider le cache",
+        "Pour tester la prod"
+      ],
+      "correct_answers": [
+        "Pour détecter tôt les erreurs d'autowiring/arguments manquants avant déploiement"
+      ],
+      "explanation": "Le lint échoue la build si un service est mal configuré."
     }
   ]
 }

@@ -91,6 +91,66 @@
         "`#[AutoconfigureTag]` applique le tag à la classe (définition), tandis que `#[AsTaggedItem]` configure les propriétés de ce tag (index, priorité) pour l'injection."
       ],
       "explanation": "On utilise souvent les deux ensemble si l'interface n'est pas autoconfigurée par défaut."
+    },
+    {
+      "id": 7,
+      "question": "Que se passe-t-il si deux services ont le même index dans un `TaggedIterator` indexé ?",
+      "type": "single_choice",
+      "options": [
+        "Le dernier écrase le précédent",
+        "Une exception est levée",
+        "Les deux sont présents avec des clés différentes",
+        "Ils sont fusionnés"
+      ],
+      "correct_answers": [
+        "Le dernier écrase le précédent"
+      ],
+      "explanation": "Attention aux collisions d'index lors de l'injection."
+    },
+    {
+      "id": 8,
+      "question": "Comment exclure un service spécifique d'un `#[TaggedIterator]` ?",
+      "type": "single_choice",
+      "options": [
+        "Avec l'option `exclude: [ServiceClass::class]` sur l'attribut",
+        "En le rendant privé",
+        "En supprimant le tag",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Avec l'option `exclude: [ServiceClass::class]` sur l'attribut"
+      ],
+      "explanation": "L'attribut accepte une liste de classes/IDs à exclure."
+    },
+    {
+      "id": 9,
+      "question": "Quel attribut permet d'utiliser une méthode statique d'un service tagué pour définir sa clé d'index ?",
+      "type": "single_choice",
+      "options": [
+        "`defaultIndexMethod` dans `#[TaggedIterator]`",
+        "`indexMethod` dans `#[AutoconfigureTag]`",
+        "`AsTaggedItem` uniquement",
+        "Ce n'est pas possible"
+      ],
+      "correct_answers": [
+        "`defaultIndexMethod` dans `#[TaggedIterator]`"
+      ],
+      "explanation": "Permet de dériver la clé à partir d'une méthode statique."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi `TaggedIterator` est-il 'lazy' ?",
+      "type": "single_choice",
+      "options": [
+        "Les services tagués ne sont instanciés qu'au moment où l'on itère dessus",
+        "Parce qu'il stocke les services en cache",
+        "Parce qu'il utilise des proxys",
+        "Parce qu'il est public"
+      ],
+      "correct_answers": [
+        "Les services tagués ne sont instanciés qu'au moment où l'on itère dessus"
+      ],
+      "explanation": "RewindableGenerator crée les instances à la demande lors de l'itération."
     }
   ]
 }

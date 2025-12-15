@@ -76,6 +76,81 @@
         "Oui, en passant un array `[Classe::class, 'methodName']` à l'attribut `#[Assert\\Callback]`."
       ],
       "explanation": "C'est utile pour externaliser la logique de validation et ne pas polluer la classe de l'entité."
+    },
+    {
+      "id": 6,
+      "question": "Quelle est la visibilité recommandée pour une méthode de callback de validation ?",
+      "type": "single_choice",
+      "options": [
+        "`private` uniquement.",
+        "`public` (recommandé), bien que `private` ou `protected` fonctionnent si l'attribut est sur la méthode elle-même.",
+        "`protected` uniquement.",
+        "Cela dépend de l'environnement."
+      ],
+      "correct_answers": [
+        "`public` (recommandé), bien que `private` ou `protected` fonctionnent si l'attribut est sur la méthode elle-même."
+      ],
+      "explanation": "La méthode doit être accessible au validateur. `public` est la pratique recommandée pour la clarté."
+    },
+    {
+      "id": 7,
+      "question": "À quel moment le callback de validation est-il exécuté par rapport aux autres contraintes ?",
+      "type": "single_choice",
+      "options": [
+        "Avant toutes les autres contraintes.",
+        "Après les validations de champs simples (NotBlank, Length), sauf si des groupes ou séquences changent l'ordre.",
+        "En même temps que toutes les autres contraintes.",
+        "Uniquement si toutes les autres contraintes passent."
+      ],
+      "correct_answers": [
+        "Après les validations de champs simples (NotBlank, Length), sauf si des groupes ou séquences changent l'ordre."
+      ],
+      "explanation": "Le callback est généralement exécuté après les validations basiques, permettant de valider des règles métier complexes basées sur plusieurs propriétés."
+    },
+    {
+      "id": 8,
+      "question": "Si vous avez besoin d'accéder à la base de données dans un callback de validation, quelle est la meilleure approche ?",
+      "type": "single_choice",
+      "options": [
+        "Injecter l'EntityManager dans le constructeur de l'entité.",
+        "Créer une Contrainte Personnalisée (Custom Constraint) avec un Validator qui peut injecter des services.",
+        "Utiliser une variable globale.",
+        "C'est impossible."
+      ],
+      "correct_answers": [
+        "Créer une Contrainte Personnalisée (Custom Constraint) avec un Validator qui peut injecter des services."
+      ],
+      "explanation": "Les entités ne sont pas des services, donc pas d'injection de dépendances. Les validateurs personnalisés sont des services et peuvent recevoir l'EntityManager."
+    },
+    {
+      "id": 9,
+      "question": "Quel est le deuxième paramètre de la méthode de callback (après `ExecutionContextInterface`) ?",
+      "type": "single_choice",
+      "options": [
+        "L'objet validé.",
+        "Le `payload` (données arbitraires) défini dans la contrainte.",
+        "Le groupe de validation actif.",
+        "La liste des violations existantes."
+      ],
+      "correct_answers": [
+        "Le `payload` (données arbitraires) défini dans la contrainte."
+      ],
+      "explanation": "Le payload permet de passer des données contextuelles à la méthode de callback pour personnaliser le comportement."
+    },
+    {
+      "id": 10,
+      "question": "Peut-on utiliser un callback pour valider une propriété spécifique plutôt que la classe entière ?",
+      "type": "single_choice",
+      "options": [
+        "Non, les callbacks s'appliquent toujours à la classe entière.",
+        "Oui, en plaçant l'attribut `#[Assert\\Callback]` directement sur la propriété concernée.",
+        "Oui, mais uniquement avec une méthode statique.",
+        "Oui, en utilisant `atPath` dans le callback."
+      ],
+      "correct_answers": [
+        "Oui, en plaçant l'attribut `#[Assert\\Callback]` directement sur la propriété concernée."
+      ],
+      "explanation": "L'attribut peut être placé sur une propriété pour valider spécifiquement ce champ, ou sur la classe pour une validation globale."
     }
   ]
 }

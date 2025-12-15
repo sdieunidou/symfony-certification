@@ -76,6 +76,81 @@
         "Il est remplacé par la séquence définie. Si vous validez le groupe `Default` (comportement standard), c'est la séquence qui est exécutée."
       ],
       "explanation": "C'est pourquoi il est crucial d'inclure le nom de la classe (alias de Default) dans la séquence si on veut valider les contraintes de base."
+    },
+    {
+      "id": 6,
+      "question": "Quel attribut doit être présent sur la classe pour utiliser `GroupSequenceProviderInterface` ?",
+      "type": "single_choice",
+      "options": [
+        "`#[GroupSequence]`",
+        "`#[GroupSequenceProvider]`",
+        "`#[DynamicSequence]`",
+        "Aucun attribut, l'interface suffit."
+      ],
+      "correct_answers": [
+        "`#[GroupSequenceProvider]`"
+      ],
+      "explanation": "L'attribut `#[Assert\\GroupSequenceProvider]` indique au validateur d'utiliser la méthode `getGroupSequence()` de l'interface."
+    },
+    {
+      "id": 7,
+      "question": "Quelle méthode doit implémenter une classe utilisant `GroupSequenceProviderInterface` ?",
+      "type": "single_choice",
+      "options": [
+        "`getSequence()`",
+        "`getGroupSequence()` qui retourne un tableau ou un objet `GroupSequence`.",
+        "`getValidationGroups()`",
+        "`getGroups()`"
+      ],
+      "correct_answers": [
+        "`getGroupSequence()` qui retourne un tableau ou un objet `GroupSequence`."
+      ],
+      "explanation": "Cette méthode est appelée dynamiquement pour déterminer la séquence de groupes à valider selon l'état de l'objet."
+    },
+    {
+      "id": 8,
+      "question": "Dans une `GroupSequence`, que se passe-t-il si le premier groupe génère des violations mais que vous continuez quand même la validation ?",
+      "type": "single_choice",
+      "options": [
+        "C'est le comportement par défaut : tous les groupes sont validés même si le premier échoue.",
+        "Par défaut, la validation s'arrête au premier groupe qui échoue. Pour continuer, il faut utiliser l'option `stopOnFirstError: false`.",
+        "Les violations sont cumulées automatiquement.",
+        "Une exception est levée."
+      ],
+      "correct_answers": [
+        "Par défaut, la validation s'arrête au premier groupe qui échoue. Pour continuer, il faut utiliser l'option `stopOnFirstError: false`."
+      ],
+      "explanation": "Le comportement par défaut est 'fail-fast' : on s'arrête dès qu'un groupe échoue pour éviter les validations lourdes inutiles."
+    },
+    {
+      "id": 9,
+      "question": "Peut-on utiliser à la fois `#[GroupSequence]` et `GroupSequenceProviderInterface` sur la même classe ?",
+      "type": "single_choice",
+      "options": [
+        "Oui, les deux sont compatibles.",
+        "Non, il faut choisir l'un ou l'autre. `GroupSequenceProvider` a la priorité si les deux sont présents.",
+        "Oui, mais uniquement si la séquence statique est vide.",
+        "Non, cela provoque une erreur de compilation."
+      ],
+      "correct_answers": [
+        "Non, il faut choisir l'un ou l'autre. `GroupSequenceProvider` a la priorité si les deux sont présents."
+      ],
+      "explanation": "Si les deux sont présents, le provider dynamique prend le dessus sur la séquence statique."
+    },
+    {
+      "id": 10,
+      "question": "Quel est l'avantage principal d'utiliser une `GroupSequence` plutôt que de valider tous les groupes en même temps ?",
+      "type": "single_choice",
+      "options": [
+        "Cela permet de valider plus rapidement.",
+        "Cela permet d'optimiser les performances en évitant des validations lourdes (DB, API) si les validations simples (format) ont déjà échoué.",
+        "Cela réduit le nombre d'erreurs affichées.",
+        "Cela permet de valider des groupes conditionnels."
+      ],
+      "correct_answers": [
+        "Cela permet d'optimiser les performances en évitant des validations lourdes (DB, API) si les validations simples (format) ont déjà échoué."
+      ],
+      "explanation": "L'arrêt séquentiel (fail-fast) évite d'exécuter des validations coûteuses inutilement si les données de base sont déjà invalides."
     }
   ]
 }

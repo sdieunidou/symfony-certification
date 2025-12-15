@@ -91,6 +91,66 @@
         "La clé `stack`."
       ],
       "explanation": "Cela permet de définir l'ordre d'exécution de manière lisible, sans jouer avec les priorités."
+    },
+    {
+      "id": 7,
+      "question": "Que devient l'ID du service original après décoration ?",
+      "type": "single_choice",
+      "options": [
+        "Il est supprimé",
+        "Il est renommé avec le suffixe `.inner` (ou `decoration_inner_name`), l'ID public pointe sur le décorateur",
+        "Il est rendu public",
+        "Il est dupliqué"
+      ],
+      "correct_answers": [
+        "Il est renommé avec le suffixe `.inner` (ou `decoration_inner_name`), l'ID public pointe sur le décorateur"
+      ],
+      "explanation": "Le décoré reste accessible sous son inner ID pour être injecté."
+    },
+    {
+      "id": 8,
+      "question": "Pourquoi doit-on souvent retaguer un service décoré ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que les tags ne sont pas transférés automatiquement au décorateur",
+        "Parce que les tags deviennent publics",
+        "Parce que le décorateur ne peut pas avoir de tags",
+        "Parce que les tags sont interdits sur les décorateurs"
+      ],
+      "correct_answers": [
+        "Parce que les tags ne sont pas transférés automatiquement au décorateur"
+      ],
+      "explanation": "Sans retaguer, les fonctionnalités liées (console.command, twig.extension) seraient perdues."
+    },
+    {
+      "id": 9,
+      "question": "Quel paramètre `priority` détermine l'ordre d'exécution des décorateurs ?",
+      "type": "single_choice",
+      "options": [
+        "Plus la priorité est élevée, plus le décorateur est extérieur (appelé en premier)",
+        "Plus la priorité est basse, plus le décorateur est extérieur",
+        "La priorité est ignorée",
+        "La priorité est triée alphabétiquement"
+      ],
+      "correct_answers": [
+        "Plus la priorité est élevée, plus le décorateur est extérieur (appelé en premier)"
+      ],
+      "explanation": "La pile se construit du plus haut vers le plus bas."
+    },
+    {
+      "id": 10,
+      "question": "Comment décorer conditionnellement un service optionnel d'un bundle tiers ?",
+      "type": "single_choice",
+      "options": [
+        "Avec `onInvalid: ignore` ou `onInvalid: null`",
+        "En mettant public: true",
+        "En forçant autowire: false",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "Avec `onInvalid: ignore` ou `onInvalid: null`"
+      ],
+      "explanation": "Permet de ne pas casser la compilation si le service cible n'existe pas."
     }
   ]
 }

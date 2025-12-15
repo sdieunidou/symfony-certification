@@ -76,6 +76,81 @@
         "À représenter un lien vers un autre service (l'équivalent du `@` en YAML)."
       ],
       "explanation": "Lors de la compilation, cette référence sera remplacée par l'appel réel au service cible."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi le container compilé est-il dumpé en PHP dans `var/cache/*` ?",
+      "type": "single_choice",
+      "options": [
+        "Pour éviter Composer",
+        "Pour que le runtime utilise du code statique sans réflexion ni YAML/JSON",
+        "Pour la sérialisation des entités",
+        "Pour rendre le conteneur public"
+      ],
+      "correct_answers": [
+        "Pour que le runtime utilise du code statique sans réflexion ni YAML/JSON"
+      ],
+      "explanation": "Le dump génère des méthodes get* optimisées pour la prod."
+    },
+    {
+      "id": 7,
+      "question": "Quel est le risque principal d'une référence circulaire non résolue ?",
+      "type": "single_choice",
+      "options": [
+        "Une `ServiceCircularReferenceException` à la compilation",
+        "Une fuite mémoire en prod",
+        "Une lenteur sur les logs",
+        "Rien, c'est géré automatiquement"
+      ],
+      "correct_answers": [
+        "Une `ServiceCircularReferenceException` à la compilation"
+      ],
+      "explanation": "Il faut setter injection ou locator pour la casser."
+    },
+    {
+      "id": 8,
+      "question": "Quand le Lazy Loading est-il déclenché pour un service marqué `lazy: true` ?",
+      "type": "single_choice",
+      "options": [
+        "Lors de la compilation",
+        "À la première invocation d'une méthode sur le proxy injecté",
+        "Au boot du kernel",
+        "Jamais"
+      ],
+      "correct_answers": [
+        "À la première invocation d'une méthode sur le proxy injecté"
+      ],
+      "explanation": "Le proxy charge la vraie instance uniquement à l'appel d'une méthode."
+    },
+    {
+      "id": 9,
+      "question": "Quelle classe représente la \"recette\" d'un service manipulée pendant la compilation ?",
+      "type": "single_choice",
+      "options": [
+        "`Definition`",
+        "`Service`",
+        "`Instance`",
+        "`ClassMetadata`"
+      ],
+      "correct_answers": [
+        "`Definition`"
+      ],
+      "explanation": "La Definition contient classe, arguments, calls, tags, visibilité."
+    },
+    {
+      "id": 10,
+      "question": "Pourquoi le conteneur est-il immuable (gelé) au runtime ?",
+      "type": "single_choice",
+      "options": [
+        "Pour empêcher les injections SQL",
+        "Pour garantir performance et cohérence du graphe de dépendances",
+        "Parce que les services sont publics",
+        "Pour activer le debug"
+      ],
+      "correct_answers": [
+        "Pour garantir performance et cohérence du graphe de dépendances"
+      ],
+      "explanation": "Aucune modification de structure n'est autorisée après compilation."
     }
   ]
 }

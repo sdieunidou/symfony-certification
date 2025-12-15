@@ -76,6 +76,81 @@
         "`Symfony\\Component\\Validator\\Validator\\ValidatorInterface`"
       ],
       "explanation": "C'est l'interface principale du composant Validator."
+    },
+    {
+      "id": 6,
+      "question": "Quel service helper introduit en Symfony 6.2 simplifie l'accès à l'utilisateur et aux permissions ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\\Bundle\\SecurityBundle\\Security`",
+        "`SecurityContext`",
+        "`UserChecker`",
+        "`AccessDecisionManager`"
+      ],
+      "correct_answers": [
+        "`Symfony\\Bundle\\SecurityBundle\\Security`"
+      ],
+      "explanation": "Expose getUser/isGranted de façon unifiée."
+    },
+    {
+      "id": 7,
+      "question": "Pourquoi préférer typer sur `TranslatorInterface` plutôt que sur le service `translator` ?",
+      "type": "single_choice",
+      "options": [
+        "Pour découpler et permettre le remplacement/mock",
+        "Parce que le service est public",
+        "Parce que le service n'existe pas",
+        "Parce que l'autowiring ne marche pas"
+      ],
+      "correct_answers": [
+        "Pour découpler et permettre le remplacement/mock"
+      ],
+      "explanation": "Toujours typer sur l'interface contractuelle."
+    },
+    {
+      "id": 8,
+      "question": "Quel service utiliser pour accéder au chemin du projet ou aux paramètres système ?",
+      "type": "single_choice",
+      "options": [
+        "`ParameterBagInterface`",
+        "`RequestStack`",
+        "`KernelInterface`",
+        "`ConfigInterface`"
+      ],
+      "correct_answers": [
+        "`ParameterBagInterface`"
+      ],
+      "explanation": "Expose les paramètres compilés (kernel.project_dir, etc.)."
+    },
+    {
+      "id": 9,
+      "question": "Comment récupérer la requête courante dans un service ?",
+      "type": "single_choice",
+      "options": [
+        "Injecter `RequestStack` et appeler `getCurrentRequest()`",
+        "Injecter `Request` directement",
+        "Lire une variable globale",
+        "Via un tag"
+      ],
+      "correct_answers": [
+        "Injecter `RequestStack` et appeler `getCurrentRequest()`"
+      ],
+      "explanation": "Request n'est pas un service; RequestStack centralise les requêtes empilées."
+    },
+    {
+      "id": 10,
+      "question": "Quel type injecter pour le mailer natif de Symfony ?",
+      "type": "single_choice",
+      "options": [
+        "`Symfony\\Component\\Mailer\\MailerInterface`",
+        "`Symfony\\Component\\Mailer\\Mailer`",
+        "`Swift_Mailer`",
+        "`App\\Mailer`"
+      ],
+      "correct_answers": [
+        "`Symfony\\Component\\Mailer\\MailerInterface`"
+      ],
+      "explanation": "Toujours préférer l'interface pour le découplage."
     }
   ]
 }

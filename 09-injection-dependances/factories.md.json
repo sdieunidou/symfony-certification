@@ -76,6 +76,81 @@
         "Non, Symfony utilise l'ID comme classe par défaut, bien que la factory puisse retourner un objet d'un type différent (polymorphisme)."
       ],
       "explanation": "C'est une convention pratique pour réduire la configuration YAML."
+    },
+    {
+      "id": 6,
+      "question": "Quelle est la différence entre une factory statique et une factory service ?",
+      "type": "single_choice",
+      "options": [
+        "La factory service peut avoir ses propres dépendances injectées par le conteneur, la factory statique non",
+        "Aucune",
+        "La factory statique est plus lente",
+        "La factory service ne peut pas retourner d'objet"
+      ],
+      "correct_answers": [
+        "La factory service peut avoir ses propres dépendances injectées par le conteneur, la factory statique non"
+      ],
+      "explanation": "Une factory service est enregistrée comme service et autowirable."
+    },
+    {
+      "id": 7,
+      "question": "Que se passe-t-il si vous définissez `factory` sur un service et que sa classe a un constructeur ?",
+      "type": "single_choice",
+      "options": [
+        "Le constructeur est ignoré, seule la méthode factory décide comment instancier",
+        "Les deux sont appelés",
+        "Erreur de compilation",
+        "Le constructeur est appelé avant la factory"
+      ],
+      "correct_answers": [
+        "Le constructeur est ignoré, seule la méthode factory décide comment instancier"
+      ],
+      "explanation": "La factory prend la main sur l'instanciation."
+    },
+    {
+      "id": 8,
+      "question": "Comment passer des arguments à la factory plutôt qu'au constructeur du service produit ?",
+      "type": "single_choice",
+      "options": [
+        "En les déclarant sous `arguments` de la définition, ils seront passés à la méthode factory",
+        "En utilisant `factory_arguments`",
+        "En utilisant `calls`",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "En les déclarant sous `arguments` de la définition, ils seront passés à la méthode factory"
+      ],
+      "explanation": "Les arguments s'appliquent à l'appel de la factory."
+    },
+    {
+      "id": 9,
+      "question": "Quelle syntaxe YAML permet de définir une factory invokable (méthode `__invoke`) ?",
+      "type": "single_choice",
+      "options": [
+        "factory: '@App\\Factory\\MyFactory'",
+        "factory: ['@App\\Factory\\MyFactory', '__invoke']",
+        "factory: ['App\\Factory\\MyFactory', '__invoke']",
+        "service: '@App\\Factory\\MyFactory'"
+      ],
+      "correct_answers": [
+        "factory: '@App\\Factory\\MyFactory'"
+      ],
+      "explanation": "Si la factory est un service invokable, on peut référencer directement son ID."
+    },
+    {
+      "id": 10,
+      "question": "Quel piège avec une factory qui retourne conditionnellement `null` ?",
+      "type": "single_choice",
+      "options": [
+        "Le conteneur créera un alias null et les consommateurs recevront null, potentiellement causant des `TypeError` si l'argument n'est pas nullable",
+        "Aucun, Symfony gère toujours null",
+        "Le conteneur ignore la définition",
+        "La compilation échoue toujours"
+      ],
+      "correct_answers": [
+        "Le conteneur créera un alias null et les consommateurs recevront null, potentiellement causant des `TypeError` si l'argument n'est pas nullable"
+      ],
+      "explanation": "Il faut marquer l'argument nullable ou gérer l'absence via un locator."
     }
   ]
 }

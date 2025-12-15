@@ -76,6 +76,81 @@
         "`PassConfig::TYPE_BEFORE_OPTIMIZATION`"
       ],
       "explanation": "C'est le moment idéal pour modifier les définitions avant que Symfony n'optimise le conteneur (ex: suppression des services privés)."
+    },
+    {
+      "id": 6,
+      "question": "Pourquoi un CompilerPass ne peut-il pas consommer directement des services ?",
+      "type": "single_choice",
+      "options": [
+        "Parce que le conteneur n'est pas encore compilé, seuls les objets Definition/Reference existent",
+        "Parce que les services sont privés",
+        "Parce que l'autowiring est désactivé",
+        "Parce que le cache est vide"
+      ],
+      "correct_answers": [
+        "Parce que le conteneur n'est pas encore compilé, seuls les objets Definition/Reference existent"
+      ],
+      "explanation": "On manipule des recettes, pas des instances."
+    },
+    {
+      "id": 7,
+      "question": "Quelle méthode utiliser pour récupérer tous les services tagués dans un CompilerPass ?",
+      "type": "single_choice",
+      "options": [
+        "$container->getTaggedServices()",
+        "$container->findTaggedServiceIds('tag')",
+        "$container->debugTags('tag')",
+        "$container->listTags('tag')"
+      ],
+      "correct_answers": [
+        "$container->findTaggedServiceIds('tag')"
+      ],
+      "explanation": "Retourne un tableau id => attributs par occurrence de tag."
+    },
+    {
+      "id": 8,
+      "question": "Comment s'assurer que votre CompilerPass s'exécute après la suppression des services privés inutilisés ?",
+      "type": "single_choice",
+      "options": [
+        "En l'enregistrant avec `PassConfig::TYPE_AFTER_REMOVING`",
+        "En le mettant dans le Kernel en premier",
+        "En activant le debug",
+        "Impossible"
+      ],
+      "correct_answers": [
+        "En l'enregistrant avec `PassConfig::TYPE_AFTER_REMOVING`"
+      ],
+      "explanation": "Ce type passe après le RemovingPass qui supprime les services orphelins."
+    },
+    {
+      "id": 9,
+      "question": "Pourquoi `TaggedIterator` évite souvent d'écrire un CompilerPass ?",
+      "type": "single_choice",
+      "options": [
+        "Parce qu'il génère du code PHP",
+        "Parce qu'il injecte directement une collection taguée sans manipulation manuelle des Definition",
+        "Parce qu'il rend les services publics",
+        "Parce qu'il supprime les tags"
+      ],
+      "correct_answers": [
+        "Parce qu'il injecte directement une collection taguée sans manipulation manuelle des Definition"
+      ],
+      "explanation": "L'attribut/notation YAML encapsule le pattern plugin simple."
+    },
+    {
+      "id": 10,
+      "question": "Quel risque si l'on ajoute un `addMethodCall` dans un CompilerPass sur un service non partagé (`shared: false`) ?",
+      "type": "single_choice",
+      "options": [
+        "Chaque instanciation appliquera l'appel, ce qui est attendu",
+        "L'appel ne sera pas exécuté",
+        "Le service devient public",
+        "Le conteneur échoue à compiler"
+      ],
+      "correct_answers": [
+        "Chaque instanciation appliquera l'appel, ce qui est attendu"
+      ],
+      "explanation": "Les method calls sont rejoués à chaque création d'instance non partagée."
     }
   ]
 }

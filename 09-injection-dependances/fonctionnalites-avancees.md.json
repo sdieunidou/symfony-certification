@@ -76,6 +76,81 @@
         "#[Required]"
       ],
       "explanation": "L'attribut `Symfony\\Contracts\\Service\\Attribute\\Required` indique à l'autowiring de remplir cette propriété après l'instanciation."
+    },
+    {
+      "id": 6,
+      "question": "Quelle différence principale entre un service lazy et un service injecté via Service Locator ?",
+      "type": "single_choice",
+      "options": [
+        "Le lazy crée un proxy d'objet, le locator diffère la résolution complète et ne crée rien tant qu'on ne `get()` pas",
+        "Aucune, c'est identique",
+        "Le locator est toujours plus rapide",
+        "Le lazy nécessite des services publics"
+      ],
+      "correct_answers": [
+        "Le lazy crée un proxy d'objet, le locator diffère la résolution complète et ne crée rien tant qu'on ne `get()` pas"
+      ],
+      "explanation": "Locator évite même la création du proxy pour des collections d'optionnels."
+    },
+    {
+      "id": 7,
+      "question": "Quel risque avec l'Expression Language dans les définitions de services ?",
+      "type": "single_choice",
+      "options": [
+        "Couplage de la config à la logique et évaluation à chaque demande du service",
+        "Impossible à utiliser en prod",
+        "Rend le service public",
+        "Supprime les tags"
+      ],
+      "correct_answers": [
+        "Couplage de la config à la logique et évaluation à chaque demande du service"
+      ],
+      "explanation": "À utiliser avec parcimonie, surtout si l'expression est coûteuse."
+    },
+    {
+      "id": 8,
+      "question": "Comment marquer un argument optionnel pour qu'il vaille `null` si le service n'existe pas ?",
+      "type": "single_choice",
+      "options": [
+        "En préfixant l'ID par `?` (ex: `@?logger`)",
+        "En mettant public: true",
+        "En utilisant `lazy: true`",
+        "En le retirant"
+      ],
+      "correct_answers": [
+        "En préfixant l'ID par `?` (ex: `@?logger`)"
+      ],
+      "explanation": "Syntaxe YAML rapide pour on_invalid: null."
+    },
+    {
+      "id": 9,
+      "question": "Quel package est requis pour les proxys lazy basés sur ProxyManager ?",
+      "type": "single_choice",
+      "options": [
+        "`symfony/proxy-manager-bridge`",
+        "`symfony/var-exporter`",
+        "`ocramius/proxy-manager` uniquement",
+        "Aucun, c'est natif"
+      ],
+      "correct_answers": [
+        "`symfony/proxy-manager-bridge`"
+      ],
+      "explanation": "Le bridge intègre ProxyManager au conteneur."
+    },
+    {
+      "id": 10,
+      "question": "Quelle stratégie privilégier pour des dépendances obligatoires et immuables ?",
+      "type": "single_choice",
+      "options": [
+        "Injection par constructeur",
+        "Injection par propriété",
+        "Setter injection",
+        "Service locator"
+      ],
+      "correct_answers": [
+        "Injection par constructeur"
+      ],
+      "explanation": "Le constructeur garantit un objet valide et documente les dépendances."
     }
   ]
 }
